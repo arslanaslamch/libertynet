@@ -65,7 +65,7 @@
 			</div>
 			<div class="payment-methods">
 				<?php fire_hook('payment.buttons.extend', null, array('membership-plan', $plan['id'], lang($plan['title']), lang($plan['description']), $plan['price'], url_to_pager('membership-payment-success').'?id='.$plan['id'].'&csrf_token='.CSRFProtection::getToken(), url_to_pager('membership-payment-cancel').'?id='.$plan['id'])) ?>
-				<a href="https://www.libertynet.nl/ldfa/index.php"><button style="width: 157px; font-size: 9px; font-family: 'Exo 2'; padding: 5px; border-radius: 5px; font-weight: bold;"><img src="https://ldfa.nl/landing/img/logo.png" style="width: 30px; height: 27px;"> <?php echo lang('ldfa-checkout-button'); ?></button></a>
+				<a href="https://www.libertynet.nl/ldfa"><button style="width: 157px; font-size: 9px; font-family: 'Exo 2'; padding: 5px; border-radius: 5px; font-weight: bold;"><img src="https://ldfa.nl/landing/img/logo.png" style="width: 30px; height: 27px;"> <?php echo lang('ldfa-checkout-button'); ?></button></a>
 				
 				
 			</div>
