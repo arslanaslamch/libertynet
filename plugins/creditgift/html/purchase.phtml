@@ -1,0 +1,25 @@
+<div class="box">
+	<div class="title"><?php echo lang('creditgift::purchase-credit') ?></div>
+	<div class="box-content">
+		<table class="table">
+			<tr>
+				<th><?php echo lang('creditgift::unit') ?></th>
+				<th><?php echo lang('creditgift::description') ?></th>
+				<th><?php echo lang('creditgift::cost') ?></th>
+				<th><?php echo lang('creditgift::action') ?></th>
+			</tr>
+			<?php foreach($purchases->results() as $purchase): ?>
+				<tr>
+					<td><?php echo $purchase['unit']; ?></td>
+					<td><?php echo $purchase['description']; ?></td>
+					<td><?php echo $purchase['cost']; ?></td>
+					<td>
+						<a href="<?php echo url_to_pager('creditgift-receipt')."?planId=".$purchase['id'] ?>" class="btn btn-secondary"><?php echo lang('purchase'); ?></a>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		</table>
+		<?php echo $purchases->links() ?>
+	</div>
+</div>
+<div id="creditgift-show-friends" class="modal hide fade"></div>

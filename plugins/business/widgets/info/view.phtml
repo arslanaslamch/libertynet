@@ -1,0 +1,63 @@
+<?php $business = business_get_claim_business($_SESSION['business_id']); $type = 'business'; $type_id = $business['id'] ?>
+<div class="box business business-info-widget">
+    <div class="business-details">
+        <div class="head">
+            <img src="<?php echo $business['company_logo'] ? url_img($business['company_logo'], 920) : img('business::images/no_image.jpg', 920); ?>" class="image" />
+            <div class="title"><?php echo $business['business_name'] ?></div>
+        </div>
+        <div class="body">
+            <?php $rating = get_ratings($type, $type_id); ?>
+            <div class="rating user-<?php echo $type ?>-<?php echo $type_id ?>">
+                <i class="ion-ios-star star <?php echo $rating >= 1 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></i>
+                <i class="ion-ios-star star <?php echo $rating >= 2 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></i>
+                <i class="ion-ios-star star <?php echo $rating >= 3 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></i>
+                <i class="ion-ios-star star <?php echo $rating >= 4 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></i>
+                <i class="ion-ios-star star <?php echo $rating >= 5 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></i>
+            </div>
+            <div class="details">
+                <div class="detail">
+                    <i class="icon ion-briefcase"></i>
+                    <div class="name"><?php echo lang('business::type') ?></div>
+                    <div class="value"><?php echo $business['business_type_id'] == 1 ? lang('business::personal-business') : lang('business::claim-business') ?></div>
+                </div>
+                <div class="detail">
+                    <i class="icon ion-folder"></i>
+                    <div class="name"><?php echo lang('business::category') ?></div>
+                    <div class="value">
+                        <a href="<?php echo url_to_pager('all-business', array('appends' => '')) ?>?c=<?php echo $business['category_id'] ?>" ajax="true"><?php echo lang($business['category_title']) ?></a>
+                    </div>
+                </div>
+                <div class="detail">
+                    <i class="icon ion-email"></i>
+                    <div class="name"><?php echo lang('business::company-email') ?></div>
+                    <div class="value"><?php echo $business['company_email'] ?></div>
+                </div>
+                <div class="detail">
+                    <i class="icon ion-android-call"></i>
+                    <div class="name"><?php echo lang('business::company-phone-number') ?></div>
+                    <div class="value"><?php echo $business['company_phone'] ?></div>
+                </div>
+                <div class="detail">
+                    <i class="icon ion-android-print"></i>
+                    <div class="name"><?php echo lang('business::company-fax-number') ?></div>
+                    <div class="value"><?php echo $business['fax'] ?></div>
+                </div>
+                <div class="detail">
+                    <i class="icon ion-ios-location"></i>
+                    <div class="name"><?php echo lang('business::company-address') ?></div>
+                    <div class="value"><?php echo $business['company_address'] ?></div>
+                </div>
+                <div class="detail">
+                    <i class="icon ion-ios-timer"></i>
+                    <div class="name"><?php echo lang('business::timezone') ?></div>
+                    <div class="value"><?php echo $business['timezone'] ?></div>
+                </div>
+                <div class="detail">
+                    <i class="icon ion-link"></i>
+                    <div class="name"><?php echo lang('business::website') ?></div>
+                    <div class="value"><a href="<?php echo $business['website'] ?>" target="_blank"><?php echo $business['website'] ?></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

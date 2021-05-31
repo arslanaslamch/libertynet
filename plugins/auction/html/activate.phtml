@@ -1,0 +1,59 @@
+<?php $a_id = null;
+$user_id = input('user-id');
+if ($user_id) { ?>
+    <div class="auction auction">
+        <div class="box">
+            <div class="box-content">
+                <div class="title">Auctions</div>
+                <div class="cart">
+                    <div class="heading">
+                        <p>
+                            <span><?php echo lang('auction::seller') ?></span>
+                            <strong><?php // echo get_user_name($auction['user_id']); ?></strong>
+                        </p>
+                    </div>
+                    <table width="377" height="" class="table table-responsive">
+                        <?php $total = 0; ?>
+                        <?php foreach (get_auction_cart() as $cart) {
+                            foreach (get_auction($cart['auction_id']) as $auction): ?>
+                                <tr>
+                                    <td width="76">
+                                        <img src="<?php echo ($auction['picture']) ? url_img($auction['picture'], 700) : get_avatar(200) ?>" width="70" height="70" />
+                                    </td>
+                                    <input type="hidden" id="cart-price-val-<?php echo $auction['id'] ?><" class="cart-price-val" value="<?php echo $auction['buy_price']; ?>" />
+                                    <td width="123">
+                                        <span id="hides-<?php echo $auction['id'] ?>"><?php echo $auction['title']; ?></span>
+                                    </td>
+                                    <td width="144">
+                                        <label>Auction</label><input type="number" name="qty" value="1" id="qty-<?php echo $auction['id'] ?>" class="qty" min="0" />
+                                    </td>
+                                    <td width="14">$<span class="cart-total"><?php echo $auction['buy_price']; ?></span>.00
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            <?php $total += $auction['buy_price']; ?><?php } ?>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td class="pull-right">
+                                <p>Total: </p>
+                            </td>
+                            <input type="hidden" id="h-total" value="<?php echo $total; ?>" />
+                            <td>
+                                <p>$<span id="total-auction-<?php echo $auction['id'] ?>" class="total-auction"><?php echo $total; ?></span>.00
+                                </p>
+                                <!--<p><a href="" class="btn btn-info">Buy all from seller</a> </p> -->
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <h6><?php echo lang('select-payment-method') ?></h6>
+                <div>
+                    <img src="<?php echo img('images/payment-options.png') ?>" />
+                </div>
+                <div class="payment-methods">
+                    <?php fire_hook('payment.buttons.extend', null, array('auction-pay', $auction['id'], $auction['title'], $auction['description'], $plan['buy_price'], url_to_pager('auction-payment-success').'?id='.$auction['id'].'&csrf_token='.CSRFProtection::getToken(), url_to_pager('auction-payment-cancel').'?id='.$auction['id'])) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>

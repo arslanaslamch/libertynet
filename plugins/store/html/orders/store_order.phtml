@@ -1,0 +1,47 @@
+<div class="box">
+    <div class="title"><?php echo ucwords(lang("store::store-order")); ?></div>
+    <div class="box-content">
+        <?php echo view("store::customization/change-select-store"); ?>
+        <?php if($orders->total) : ?>
+            <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th><?php echo lang("store::buyer");?></th>
+                    <th><?php echo lang("store::payment-type") ?></th>
+                    <th><?php  echo lang("store::status")?></th>
+                    <th><?php  echo lang("store::quantity");?></th>
+                    <th><?php echo ucwords(lang("store::total")); ?></th>
+                    <th><?php _lang("action")?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php $i=1; ?>
+                <?php foreach($orders->results() as $o): ?>
+                    <?php $order = getSingleOrder($o['order_id']);
+                          $product = getSingleProduct($o['product_id']);
+                          $product_price = getProductPurchasePrice($o['order_id'],$o['product_id']);
+                         $buyer = find_user($order['user_id']);
+                    ?>
+                    <tr>
+                        <td><?php echo $o['id']; ?></td>
+                        <td><a href="<?php echo profile_url(null,$buyer)?>" ajax="true"> <?php echo get_user_name($buyer) ?></a></td>
+                        <td><?php echo $order['payment_type']; ?></td>
+                        <td><?php echo getOrderStatus($order);?></td>
+                        <td><?php echo $o['quantity']; ?></td>
+                        <td><?php echo formatPriceNumber($o['sub_total']); ?></td>
+                        <td><a ajax="true" href="<?php url_to_pager("store-single-order-manager") ?>?id=<?php echo $o['id']; ?>" class="btn btn-sm btn-primary"> <?php echo lang("store::view"); ?></a></td>
+                    </tr>
+                <?php $i++; endforeach;; ?>
+                </tbody>
+            </table>
+            </div>
+            <div class="box-content">
+                <?php echo  $orders->links() ?>
+            </div>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang("store::no-order-available") ?></div>
+        <?php endif; ?>
+    </div>
+</div>

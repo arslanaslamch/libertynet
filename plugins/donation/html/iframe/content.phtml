@@ -1,0 +1,73 @@
+<?php $don = Donation::getInstance();
+    $donation = $don->getSingle($id);
+    if($donation){
+       $donation = $donation[0];
+        $show_stat = true;
+    }else{
+       // exit("Donation Not Found");
+        $show_stat = false;
+    }
+if($show_stat):
+$donors = $don->donors($donation['id']);
+$user = find_user($donation['user_id']);
+$r = $don->amountRaised($donation['id']);
+$t = $donation['target_amount'];
+$raised = number_format((float)$r, 2, '.', ',');
+if($t == 0){
+    $tar = 0;
+    $p = 0;
+}else{
+    $tar = number_format((float)$t, 2, '.', ',');
+    $p = (($r / $t) * 100);
+}
+$unlimited = $donation['unlimited'];
+$expired = $expired = ($donation['expire_time'] < time()) ? true : false;
+
+$followers = $don->getDonationFollowers($donation['id']);
+$isf = $don->isFollowing($donation['id']);
+?>
+<div class=" <?php echo (isset($ifr)) ? 'donation-frame-wrapper' : ''; ?>">
+    <p><a style="font-size:15px" href="<?php echo url_to_pager("single_donation",array('id'=>$id)); ?>"><?php echo $donation['title']; ?></a>
+    <span style="">
+           - <?php echo lang("donation::created-by"); ?> <b><a
+                href="<?php echo profile_url(null, $user); ?>"><?php echo get_user_name($user); ?></a></b>
+    </span>
+    </p>
+    <?php if(!isset($featured)): ?>
+    <!--<span style="display:block">
+        <?php /*echo count($donors).' '.lang("donation::donor-s").' . '.count_likes('donation', $id).' '.lang("donation::liked").' . '.$donation['views'].' '.lang("donation::views-s"); */?>
+    </span>-->
+    <?php endif; ?>
+    <div class="donation-sm-img" style="background-image : url(<?php echo url_img($donation['image'], 700) ?>)"></div>
+    <p><b>
+        <span style="color: <?php echo config("amount-raised-text-color", '#297fc6') ?>"
+              class="donation-gotten"> <?php echo $raised ?>
+            <small><?php echo $donation['cur']; ?></small></span>
+        <?php if($t): ?>
+            <span><?php echo lang("donation::raised-of"); ?> <?php echo $tar; ?> <?php echo $donation['cur']; ?>   <?php echo lang("donation::target-amount"); ?></span>
+        <?php else :  ?>
+            <span><?php echo lang("donation::raised"); ?></span>
+        <?php endif; ?>
+       </b>
+    </p>
+    <?php if($t): ?>
+        <div style="background : linear-gradient(to right,  #000 <?php echo $p . '%'; ?> , #ccc 0% );"
+             class="donation-meter"><?php echo ceil($p).'%'; ?></div>
+    <?php endif; ?>
+    <?php if (!$unlimited): ?>
+        <p class="timing-donate">
+            <span style="text-align:left"><?php echo ($expired) ? lang("donation::time-elaspsed") : $don->timeLeft($donation['expire_time']); ?></span>
+        </p>
+    <?php else: ?>
+        <p> <?php echo lang("donation::unlimited-timing"); ?></p>
+    <?php endif; ?>
+    <p><?php echo str_limit($donation['description'],100); ?></p>
+    <p style="text-align:center">
+        <a href="<?php echo url_to_pager("single_donation_donate",array('id'=>$donation['id'])); ?>"
+           style="background : <?php echo config("donate-button-background-color", '#297fc6') ?>;text-align:center;color:#fff"
+           class="btn-donate-bg"><?php echo strtoupper(lang("donation::donate")); ?></a>
+    </p>
+
+</div>
+<?php endif; ?>
+

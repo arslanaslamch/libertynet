@@ -1,0 +1,23 @@
+<div class="box">
+	<div class="title"><?php echo lang('creditgift::transactions') ?></div>
+	<div class="box-content">
+		<table class="table">
+			<tr>
+				<th><?php echo lang('creditgift::action-date') ?></th>
+				<th><?php echo lang('creditgift::action-type') ?></th>
+				<th><?php echo lang('creditgift::credits') ?></th>
+			</tr>
+			<?php foreach($transactions->results() as $transaction): ?>
+				<tr>
+					<td>
+						<span class="timeago" title="<?php echo date('c', $transaction['date']) ?>"><?php echo date('c', $transaction['date']) ?></span>
+					</td>
+					<td><?php echo $transaction['type']; ?></td>
+					<td><?php echo $transaction['amount']; ?></td>
+				</tr>
+			<?php endforeach; ?>
+		</table>
+		<?php echo $transactions->links() ?>
+	</div>
+</div>
+<div id="creditgift-show-friends" class="modal hide fade"></div>

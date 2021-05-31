@@ -1,0 +1,74 @@
+<div class=" lg-title"><?php echo lang('select-payment-method') ?></div>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<div class="container">
+	<div class="box" style="margin: 5% 15%">
+		<div class="box-content">
+			<h6 class="title"><?php echo lang('ads::transaction-details') ?></h6>
+			<?php
+			$coupon = "";
+			$user = get_user();
+			if(config('promotion-coupon', 0)) {
+				$coupon = input('coupon');
+				$data = array('price' => $plan['price'], 'status' => 0);
+				if($coupon) {
+					$data = fire_hook('promotion.coupon.calculate', $data, array($coupon));
+					if($data['status'] == "1") {
+						$plan['price'] = $data['price'];
+						if ($plan['price'] == 0){
+                            $redirectUrl = url_to_pager('feed');
+						    $redirectUrl = fire_hook("coupon.payment.hundred.percentage",$redirectUrl, array($plan,$coupon,"membership"));
+                            redirect($redirectUrl);
+                        }
+					}
+				}
+			}
+			?>
+            <div class="list-table-container">
+                <div class="table-responsive">
+        			<table class="table list-table">
+				<tbody>
+                    <tr>
+                        <td><?php echo lang('username') ?></td>
+                        <td><?php echo $user['username'] ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo lang('Plan Title') ?></td>
+                        <td><?php echo lang($plan['title']) ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo lang('ads::plan-description') ?></td>
+                        <td><?php echo lang($plan['description']) ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo lang('ads::amount') ?></td>
+                        <td><?php echo $plan['price'] ?> (<?php echo config('default-currency') ?>)</td>
+                    </tr>
+				</tbody>
+			</table>
+                </div>
+            </div>
+			<?php
+			if(config('promotion-coupon', 0)) {
+				if(!$coupon || $data['status'] == 0) {
+					fire_hook('promotion.coupon.field', $coupon);
+					?>
+					<?php if($coupon) {
+						if($data['status'] == "0"): ?>
+							<span class="alert-danger"> <?php echo lang('coupon-error') ?></span> <?php endif;
+					}
+				}
+			} ?>
+			<h6><?php echo lang('Select payment method') ?></h6>
+			<div style="text-align:center">
+				<img style="width:200px" src="<?php echo img('images/payment-options.png') ?>"/>
+			</div>
+			<div class="payment-methods">
+				<?php fire_hook('payment.buttons.extend', null, array('membership-plan', $plan['id'], lang($plan['title']), lang($plan['description']), $plan['price'], url_to_pager('membership-payment-success').'?id='.$plan['id'].'&csrf_token='.CSRFProtection::getToken(), url_to_pager('membership-payment-cancel').'?id='.$plan['id'])) ?>
+				<a href="https://www.libertynet.nl/ldfa/index.php"><button style="width: 157px; font-size: 9px; font-family: 'Exo 2'; padding: 5px; border-radius: 5px; font-weight: bold;"><img src="https://ldfa.nl/landing/img/logo.png" style="width: 30px; height: 27px;"> <?php echo lang('ldfa-checkout-button'); ?></button></a>
+				
+				
+			</div>
+		</div>
+	</div>
+</div>

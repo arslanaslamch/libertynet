@@ -1,0 +1,72 @@
+<!-- Modal for activities-->
+<div id="contestInviteModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><?php echo lang('contest::invite') ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php echo lang('close') ?></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="indicator">
+                    <img src="<?php echo img('images/loading.gif') ?>"/>
+                </div>
+                <div class="contest-ajax-result">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- contest promote-->
+<div id="contestPromoteModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><?php echo lang('contest::promote-contest') ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php echo lang('close') ?></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="indicator">
+                    <img src="<?php echo img('images/loading.gif') ?>"/>
+                </div>
+                <div class="contest-promote-result">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--contest terms and condition-->
+<div id="contestTermsModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><?php echo lang('contest::terms-and-condition') ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php echo lang('close') ?></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="box-content">
+                    <div class="slimscroll" data-height="250px">
+                        <?php echo nl2br($contest['terms']); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal"><?php echo lang('contest::cancel') ?></button>
+                <button type="button" data-cid="<?php echo $contest['id']; ?>" id="c-accpt-join"
+                        class="btn btn-primary"><?php echo lang('contest::accept-and-join') ?></button>
+            </div>
+        </div>
+    </div>
+</div>

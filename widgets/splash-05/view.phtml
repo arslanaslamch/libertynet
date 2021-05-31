@@ -1,0 +1,34 @@
+<?php $logo = config('site-logo'); $logo_url = !$logo ? img('images/logo.png') : url_img($logo); ?>
+<div class="splash-container">
+    <div class="splash splash-05">
+        <div class="splash-header">
+            <div class="logo-container">
+                <img alt="logo" src="<?php echo $logo_url ?>" class="logo" />
+            </div>
+            <div class="links-container">
+                <div class="links">
+                    <a href="<?php echo url('login') ?>" class="login-content-toggle" onclick="return show_home_content(true)"><?php echo lang('sign-in') ?></a>
+                    <?php if(config('user-signup', true)): ?>
+                        <a href="<?php echo url('signup') ?>" class="signup-content-toggle" onclick="return show_home_content(false)"><?php echo lang('sign-up') ?></a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <div class="splash-content">
+            <div class="auth-container">
+                <div class="auth signup-content">
+                    <div class="title"><?php echo lang('sign-up') ?></div>
+                    <div class="body">
+                        <?php echo view('signup/portable-signup'); ?>
+                    </div>
+                </div>
+                <div class="auth login-content">
+                    <div class="title"><?php echo lang('sign-in') ?></div>
+                    <div class="body">
+                        <?php echo view('login/portable-login'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,322 @@
+#page-role-template {
+    display: none
+}
+
+.role-delete-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 1px 5px;
+    border-radius: 3px;
+}
+
+.role-delete-button:hover {
+    color: #ffffff;
+    background: #CF000F;
+}
+
+.grid-listing-container .each-item .page-item-info {
+    display: none !important;
+}
+
+.page-list > .head {
+
+}
+
+.page-list > .head .cover {
+    position: relative;
+    height: 300px;
+    border-radius: 10px 10px 0 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.page-list > .head .cover > .title {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, .5);
+    line-height: 50px;
+    font-size: 40px;
+    color: #FFFFFF;
+}
+
+.page-list > .head .cover > .actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 20px;
+}
+
+.page-list > .head > .links {
+    text-align: center;
+}
+
+.page-list > .head > .links .link {
+    padding: 10px;
+    display: inline-block;
+}
+
+.page-list > .head > .links .link:not(:last-child) {
+    border-right: solid 2px rgba(0, 0, 0, .025)
+}
+
+.page-list > .head > .links .link.active {
+    box-shadow: 0 -4px 0 0 var(--color-link) inset;
+}
+
+.page-list > .head > .links .link a {
+    font-size: 15px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.page-list > .head > .filters {
+    padding: 10px;
+    background-color: #F5F5F5;
+    font-size: 0;
+}
+
+.page-list > .head > .filters > * {
+    font-size: initial;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.page-list > .head > .filters > .left {
+    width: calc(100% - 300px);
+}
+
+.page-list > .head > .filters > .left .icon {
+    padding: 0 10px;
+    font-size: 25px;
+}
+
+.page-list > .head > .filters > .left select {
+    margin: 0 10px;
+    border: solid 1px rgba(0, 0, 0, 0.31);
+    border-radius: 4px;
+    padding: 5px 32px 5px 10px;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 15px;
+    vertical-align: 3px;
+}
+
+.page-list > .head > .filters > .right {
+    width: 300px;
+    text-align: right;
+}
+
+.page-list > .head > .filters > .right .search {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    padding: 0;
+    background-color: transparent;
+    display: inline-block;
+}
+
+.page-list > .head > .filters > .right .search input[type="search"] {
+    width: 100%;
+    height: 39px;
+    border: none;
+    border-radius: 10px;
+    background-color: #FFFFFF !important;
+    padding-right: 50px;
+}
+
+.page-list > .head > .filters > .right .search button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    border-radius: 0 10px 10px 0;
+    padding: 4px 14px;
+    background-color: #EEEEEE;
+    font-size: 20px;
+    color: var(--color-primary);
+    line-height: 30px;
+}
+
+.page-list > .body {
+    font-size: 0;
+}
+
+.page-list > .body > * {
+    max-width: 100%;
+    padding: 20px 10px;
+    font-size: initial;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.page-list > .body > .listings {
+    width: 100%;
+}
+
+.page-list > .body > .listings .listing > .title {
+    font-weight: bold;
+}
+
+.page-feed-content .item,
+.page-list > .body > .listings .listing .item {
+    position: relative;
+    border-top: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 0;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.page-feed-content .item > *,
+.page-list > .body > .listings .listing .item > * {
+    font-size: initial;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.page-feed-content .item .thumb,
+.page-list > .body > .listings .listing .item .thumb {
+    position: relative;
+    border-radius: 10px;
+    width: 100px !important;
+    height: 100px !important;
+}
+
+.page-feed-content .item .thumb img,
+.page-list > .body > .listings .listing .item .thumb img {
+    border-radius: 10px;
+    width: 100%;
+}
+
+.page-feed-content .item .thumb .featured,
+.page-list > .body > .listings .listing .item .thumb .featured {
+    position: absolute;
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+    font-size: 18px;
+    top: -7px;
+    left: 15px;
+    width: 33px;
+    height: 33px;
+    line-height: 35px;
+    text-align: center;
+    z-index: 999;
+}
+
+.page-feed-content .item .thumb .featured:after,
+.page-feed-content .item .thumb .featured:before,
+.page-list > .body > .listings .listing .item .thumb .featured:after,
+.page-list > .body > .listings .listing .item .thumb .featured:before {
+    content: '';
+    border: 20px solid transparent;
+    position: absolute;
+    z-index: -1;
+    top: 12px;
+}
+
+.page-feed-content .item .thumb .featured:before,
+.page-list > .body > .listings .listing .item .thumb .featured:before {
+    left: 0;
+    border-left-color: var(--color-primary);
+}
+
+.page-feed-content .item .thumb .featured:after,
+.page-list > .body > .listings .listing .item .thumb .featured:after {
+    right: 0;
+    border-right-color: var(--color-primary);
+}
+
+.page-feed-content .item .thumb .featured i:after,
+.page-list > .body > .listings .listing .item .thumb .featured i:after {
+    content: '';
+    position: absolute;
+    border-left: 5px solid #b75a5a;
+    border-top: 8px solid transparent;
+    top: 0px;
+    right: -5px;
+}
+
+.page-feed-content .item .details,
+.page-list > .body > .listings .listing .item .details {
+    width: calc(100% - 100px);
+    padding: 0 10px;
+}
+
+.page-feed-content .item .details .cover ,
+.page-list > .body > .listings .listing .item .details .cover {
+    height: 50px;
+    margin: 0 -10px 0 -16px;
+    background-size: cover;
+    background-position: center;
+}
+
+.page-feed-content .item .details .title,
+.page-list > .body > .listings .listing .item .details .title {
+    width: 100%;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #000000;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap !important;
+    display: inline-block;
+}
+
+.page-feed-content .item .details .friend-count,
+.page-list > .body > .listings .listing .item .details .friend-count {
+    font-size: 12px;
+    color: #888;
+    line-height: 19px;
+}
+
+.page-feed-content .item .details .member-count,
+.page-list > .body > .listings .listing .item .details .member-count {
+    font-weight: bold;
+    font-size: 12px;
+    color: #888;
+    line-height: 13px;
+}
+
+.page-feed-content .item .details .actions,
+.page-list > .body > .listings .listing .item .details .actions {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: right;
+}
+
+@media (max-width: 500px) {
+    .page-list > .head > .links .link,
+    .page-list > .head > .links .link a {
+        display: block;
+    }
+}
+
+@media (max-width: 1570px) {
+    .page-list > .head > .filters > .left {
+        width: 100%;
+    }
+
+    .page-list > .head > .filters > .left .icon {
+        display: none;
+    }
+
+    .page-list > .head > .filters > .left select {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .page-list > .head > .filters > .right {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 10px;
+    }
+
+    .page-list > .head > .filters > .right .search {
+        max-width: 100%;
+    }
+}

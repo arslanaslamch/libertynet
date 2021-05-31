@@ -1,0 +1,10 @@
+<?php  $img = ($item['main_photo']) ? url_img($item['main_photo']) : img("store::images/comingsoon.png"); ?>
+<div class="each-compare-product" id="compare-<?php echo $item['id'] ?>">
+    <span data-p="<?php echo $item['id']; ?>" class="remove-compare-icon"><i class="ion-ios-close"></i></span>
+    <div class="col-xs-7" style="padding:0">
+        <img src="<?php echo $img; ?>" class="img img-responsive"/>
+    </div>
+    <div class="col-xs-5" style="margin-left:px;padding:0">
+        <span><b><?php echo str_limit($item['name'],20); ?></b></span>
+    </div>
+</div>

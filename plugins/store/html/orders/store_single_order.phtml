@@ -1,0 +1,108 @@
+<?php
+$o = getSingleOrder($order['order_id']);
+/*print_r($order);*/
+$product = getSingleProduct($order['product_id']);
+$commision_on_overall_order = $o['overall_commision'];
+$product_price = getProductPurchasePrice($order['order_id'],$order['product_id']);
+$billing_details = getBillingOrShippingDetails('lp_billing_details',$o['bid']);
+$shipping_details = getBillingOrShippingDetails('lp_shipping_details',$o['bid']);
+$buyer = find_user($o['user_id']);
+?>
+
+<div class="box" id="store-order-detail">
+    <div class="title"><?php echo lang("store::order-details") ?><span class="pull-right"> <?php _lang('date') ?> : <?php echo date('j F, Y  h:i A', $o['time']); ?></span></div>
+    <div class="box-content">
+       <div class="container row">
+           <div class="col-sm-12 nop">
+               <div class="bill-top-styling-lhs">
+                   <h4 class="order-subtitle-header"><?php echo lang("store::billing-info"); ?></h4>
+                   <p><strong><?php echo lang("store::name") ?> : </strong> <?php echo ucwords($billing_details['first_name']).' '.ucwords($billing_details['last_name']); ?></p>
+                   <p><strong><?php echo lang("store::email-address") ?> : </strong> <?php echo $billing_details['email_address']; ?></p>
+                   <p><strong><?php echo lang("store::phone-number") ?> : </strong> <?php echo $billing_details['phone']; ?></p>
+                   <p><strong><?php echo lang("store::country") ?> : </strong> <?php echo ucwords($billing_details['country']); ?></p>
+                   <p><strong><?php echo lang("store::city") ?> : </strong> <?php echo ucfirst($billing_details['city']); ?></p>
+                   <p><strong><?php echo lang("store::address") ?> : </strong> <?php echo ucfirst($billing_details['address']); ?></p>
+               </div>
+               <div class="bill-top-styling-rhs">
+                   <h4 class="order-subtitle-header"><?php echo lang("store::shipping-info"); ?></h4>
+                   <p><strong><?php echo lang("store::name") ?> : </strong> <?php echo ucwords($shipping_details['first_name']).' '.ucwords($billing_details['last_name']); ?></p>
+                   <p><strong><?php echo lang("store::email-address") ?> : </strong> <?php echo $shipping_details['email_address']; ?></p>
+                   <p><strong><?php echo lang("store::phone-number") ?> : </strong> <?php echo $shipping_details['phone']; ?></p>
+                   <p><strong><?php echo lang("store::country") ?> : </strong> <?php echo ucwords($shipping_details['country']); ?></p>
+                   <p><strong><?php echo lang("store::city") ?> : </strong> <?php echo ucfirst($shipping_details['city']); ?></p>
+                   <p><strong><?php echo lang("store::address") ?> : </strong> <?php echo $shipping_details['address']; ?></p>
+               </div>
+           </div>
+           <div style="display:block;margin-top:20px" class="col-sm-12 nop">
+               <div class="bill-top-styling-lhs">
+                   <h4 class="order-subtitle-header"><?php echo lang("store::payment-details"); ?></h4>
+                   <p><strong><?php echo lang("store::payment-status") ?></strong> : <?php echo strtoupper(getOrderStatus($order)); ?></p>
+                   <p><i><strong><?php echo lang('store::shipping') ?></strong> : <?php echo($o['shipping_price']) ? formatPriceNumber($o['shipping_price']) : lang("store::free-shipping"); ?></i></p>
+               </div>
+
+               <div class="bill-top-styling-rhs">
+                   <h4 class="order-subtitle-header"><?php echo lang("store::order-date"); ?></h4>
+                   <p><?php echo date("l jS \of F Y",$order['time']); ?></p>
+               </div>
+           </div>
+           <div class="col-sm-12 nop">
+              <h4 class="order-subtitle-header" style="font-size:16px"><?php echo ""; ?></h4><span onclick="return printDiv()" class="printBtn"><i class="ion-printer"></i> <?php echo lang("store::print"); ?></span>
+          <div class="table-responsive">
+               <table class="table">
+                   <thead>
+                       <tr>
+
+                           <th><?php echo lang("store::order-id") ?></th>
+                           <th><?php echo lang("store::product-name"); ?></th>
+                           <?php
+                           $attributes = perfectUnserialize($order['attr']);
+                           if($attributes):
+                               foreach($attributes as $k=>$v):
+                           ?>
+                           <th><?php echo ucfirst($k); ?></th>
+                           <?php endforeach; endif; ?>
+
+                           <th><?php  echo lang("store::quantity");?></th>
+                           <th><?php echo lang("store::price");?></th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                      <tr>
+                          <td><?php echo "ORDER-".$o['id']; ?></td>
+                          <td><?php echo $product['name']; ?></td>
+                          <?php
+                          $attributes = perfectUnserialize($order['attr']);
+                          if($attributes):
+                              foreach($attributes as $k=>$v):
+                                  ?>
+                                  <td><?php echo ucfirst($v); ?></td>
+                              <?php endforeach; endif; ?>
+
+                          <td><?php echo $order['quantity']; ?></td>
+                          <td><?php  echo  formatPriceNumber($product_price); ?></td>
+                      </tr>
+
+                   </tbody>
+                   <tfoot>
+                   <tr>
+                       <td></td>
+                       <td></td>
+
+                       <?php
+                       $attributes = perfectUnserialize($order['attr']);
+                       if($attributes):
+                           foreach($attributes as $k=>$v):
+                               ?>
+                               <td></td>
+                           <?php endforeach; endif; ?>
+                       <td ><span style="float: right;font-size: 16px"><?php echo lang("store::total") ?></span></td>
+                       <td>
+                           <span style="font-weight: bold;font-size: 16px"><?php echo formatPriceNumber($order['sub_total']) ?></span></td>
+                   </tr>
+                   </tfoot>
+               </table>
+           </div>
+           </div>
+       </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="box">
+	<div class="title"><?php echo lang('giftshop::last-recieved') ?></div>
+	<div class="box-content" id="video-widget">
+		<?php $lasts = giftshop_last_recieved($limit) ?>
+		<?php foreach($lasts as $last): ?>
+			<?php $av = get_giftshop_gift_id($last['gift_id']);
+			$avatar = url_img($av['image']); ?>
+			<div class="media media-lg user">
+				<div class="media-left">
+					<a ajax="true" href="<?php echo url_to_pager('giftshop-mine') ?>">
+						<div class="media-object" style="background-image: url(<?php echo $avatar ?>); background-position: center; background-size: cover;"></div>
+					</a>
+				</div>
+				<div style="padding-top:15px;" class="media-body">
+					<a ajax="true" href="<?php echo url_to_pager('giftshop-mine') ?>">
+						<h6 class="media-heading" style="font-weight:700;"><?php echo $av['name'] ?></h6>
+					</a>
+					<p class=""><?php echo lang('from') ?>
+						<a ajax="true" href="<?php echo profile_url(null, find_user($last['sender_id'])) ?>"><?php echo " ".get_user_name($last['sender_id']) ?></a>
+					</p>
+				</div>
+			</div>
+		<?php endforeach; ?>
+	</div>
+</div>

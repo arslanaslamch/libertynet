@@ -1,0 +1,30 @@
+<div class="field">
+    <div class="<?= $top ? 'top' : 'left'; ?>">
+        <label class="control-label" for="val[category]"><?php echo lang('marketplace::category') ?>: </label>
+    </div>
+    <div class="<?= $top ? 'bottom' : 'right'; ?>">
+        <div class="magic-select search-dropdown" data-name="val[category_id]" data-width="200px">
+            <?php if (isset($listing)) : ?>
+                <input type="hidden" name="val[category_id]" value="<?php echo $listing['category_id'] ?>" class="magic-select-value" />
+                <?php if ($categories) : ?>
+                    <div class="magic-select-toggle">
+                        <?php echo lang($listing['category_title']) ?>
+                    </div>
+                <?php endif ?>
+            <?php else : ?>
+                <div class="magic-select-toggle">
+                    <?php echo lang('select-category') ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="magic-select-content">
+                <?php foreach ($categories as $category) : ?>
+                    <div class="magic-select-option" data-value="<?php echo $category['id'] ?>">
+                        <?php echo lang($category['title']) ?>
+                    </div>
+                <?php endforeach ?>
+            </div>
+        </div>
+        <p class="help-block"><?php echo lang('marketplace::create-listing-category-desc') ?></p>
+    </div>
+</div>

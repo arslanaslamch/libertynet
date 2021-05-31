@@ -1,0 +1,72 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("supportsystem::support-dashboard") ?>
+    </div>
+    <div class="wrapper-content">
+        <?php
+        $arr = array(
+            array(
+                'title' => lang("supportsystem::open-tickets"),
+                'count' => ss_ticket_counts('open'),
+                'icon'=> 'ion-android-folder-open',
+                'url'=> url_to_pager("admincp-support-system-tickets").'?type=0',
+                'color'=>'#06164E'
+            ),array(
+                'title' => lang("supportsystem::closed-tickets"),
+                'count' => ss_ticket_counts('closed'),
+                'icon'=> 'ion-android-clipboard',
+                'url'=> url_to_pager("admincp-support-system-tickets").'?type=2',
+                'color'=>'#00B9DE'
+            ),array(
+                'title' => lang("supportsystem::moderators"),
+                'count' => ss_ticket_counts('moderators'),
+                'icon'=> 'ion-android-people',
+                'url'=> url_to_pager("admincp-support-system-moderator"),
+                'color'=>'#00BA7C'
+            ),array(
+                'title' => lang("supportsystem::faq-article"),
+                'count' => ss_ticket_counts('articles'),
+                'icon'=> 'ion-android-funnel',
+                'url'=> url_to_pager("admincp-support-system-articles"),
+                'color'=>'#2245FF'
+            ),
+        )
+        ?>
+        <div class="row">
+            <?php foreach ($arr as $a): ?>
+            <div class="col-sm-3  col-lg-3">
+                <a style="text-decoration: none;"
+                   href="<?php echo $a['url'] ?>">
+                    <div class="block panel-colorful stats1 " style="background-color: <?php echo $a['color']; ?>">
+                        <div class="content clearfix pad-all">
+                            <p class="white text-semibold">
+                                <i class="white demo-pli-data-storage icon-fw"></i> <?php echo $a['title']; ?> </p>
+
+                            <p class="mar-no" style="float: left; ">
+                                <span class="pull-left text-2x mar-no text-semibold white"><?php echo $a['count']; ?></span>
+                            </p>
+
+                            <div class="right pull-right" style="float: right; ">
+                                <div>
+                                    <i class="<?php echo $a['icon']; ?> icon-3x white"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <h6 class="text-center wrapper-title"><?php echo lang("supportsystem::tickets-by-categories") ?></h6>
+        <?php $chart_data = ss_get_chart_data(); ?>
+        <input type="hidden" id="ss-label" value='<?php echo json_encode(array_keys($chart_data)) ?>' />
+        <input type="hidden" id="ss-data" value='<?php echo json_encode(array_values($chart_data)) ?>' />
+        <input type="hidden" id="ss-color" value='<?php echo json_encode(ss_rand_color(count($chart_data))) ?>' />
+        <div class="row">
+            <div class="ss-charts" style="display:block;margin:0 auto;overflow:hidden">
+                <canvas id="ss-canvas" style="height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

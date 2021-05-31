@@ -1,0 +1,26 @@
+<?php $refId = $contest['id'];
+$refName = 'contest';
+$user = find_user($contest['user_id']); ?>
+<div class="box-content">
+    <div class="clearfix">
+        <div style="float: left; padding: 0px 8px;min-height: 70px;">
+            <img style="border-radius: 50%; float: left;" src="<?php echo get_avatar(75, $user) ?>" width="45" height="45"/>
+        </div>
+        <div>
+            <div>
+                <?php echo lang('contest::publisher') ?>:
+                <a ajax="true" href="<?php echo url($contest['publisher']['id']) ?>"><?php echo $contest['publisher']['name'] ?></a>
+            </div>
+            <div>
+                <?php echo lang('contest::contest-type'); ?>:
+                <a  ajax="true" href="<?php echo url('contests').'?ctype='.$contest['type'] ?>"><b><?php echo lang('contest::'.$contest['type']); ?></b></a>
+            </div>
+            <div>
+                <?php echo lang('contest::category'); ?>:
+                <a ajax="true" href="<?php echo url('contests').'?category='.$contest['category']['id']; ?>"><?php echo lang($contest['category']['title']); ?></a>
+            </div>
+        </div>
+    </div>
+    </div>
+<hr style="margin-top:0px" />
+

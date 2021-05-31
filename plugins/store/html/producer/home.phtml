@@ -1,0 +1,34 @@
+<div class="box" id="store-producer">
+    <div class="title">
+        <?php echo lang('store::manage-producer') ?>
+    </div>
+    <div class="box-content">
+      <table class="table table-striped table-bordered" cellspacing="0" width="100%" >
+          <thead>
+          <tr>
+              <th>ID</th>
+              <th><?php _lang('store::name') ?></th>
+              <th><?php _lang('store::action'); ?></th>
+          </tr>
+          </thead>
+          <tbody>
+          <?php if(!empty($producers)): $i=1;?>
+               <?php foreach($producers as $p ):?>
+                 <tr id="row<?php echo $p['pid'];; ?>">
+                     <td><?php echo $i;  ?></td>
+                     <td><?php echo $p['name'] ?></td>
+                     <td>
+                         <a ajax="true" href="<?php echo url_to_pager('edit-producer') ?>?pid=<?php echo $p['pid']; ?>" class="btn btn-sm btn-warning"><?php _lang('edit') ?></a>
+                         <a href="#" class="btn btn-sm btn-danger remove_producer" data-id="<?php echo $p['pid'] ?>"> <i class="ion-trash-b"></i> </a>
+                     </td>
+                 </tr>
+                <?php $i++;endforeach; ?>
+              <?php else: ?>
+              <tr class="alert alert-info">
+                  <?php _lang('store::no-result-found') ?>
+              </tr>
+          <?php endif;?>
+          </tbody>
+      </table>
+    </div>
+</div>

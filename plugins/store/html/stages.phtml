@@ -1,0 +1,36 @@
+
+
+<div class="container" id="stages">
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4">
+                    <div class="step <?php echo ($type=='cart') ? 'active' : '' ?>">
+                        1.
+                        <?php echo ucfirst(lang("store::cart")); ?>
+                        <div class="hidden-xs caret right"></div>
+                        <div class="visible-xs caret bottom"></div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-4">
+                    <div class="step <?php echo ($type=='sb') ? 'active' : '' ?>">
+                        2.
+                        <?php echo lang("store::shipping&billing-details") ?>
+                        <div class="hidden-xs caret right"></div>
+                        <div class="visible-xs caret bottom"></div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-4">
+                    <div class="step <?php echo ($type=='payment') ? 'active' : '' ?>">
+                        3.
+
+                       <?php echo ucfirst(lang("store::payment")) ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,88 @@
+<div class="box">
+    <div class="livestream-list">
+        <div class="head">
+            <div class="cover" style="background-image: url(<?php echo url_img(config('livestream-list-cover', 'plugins/livestream/images/cover.jpg'), 920); ?>)">
+                <div class="title"><?php echo lang('livestream::livestreams') ?></div>
+                <div class="actions">
+                    <?php if(user_has_permission('can-add-livestream')): ?>
+                        <a class="btn btn-block btn-info action-button" href="<?php echo url_to_pager('livestream-add') ?>" data-toggle="modal" data-target="#livestream-modal" data-title="<?php echo lang('livestream::stream-live') ?>"><?php echo lang('livestream::start-new-livestream') ?></a>
+                    <?php endif ?>
+                </div>
+                <div class="links">
+                    <div class="link <?php echo input('type') ? '' : 'active' ?>">
+                        <a ajax="true" href="<?php echo url('livestreams') ?>"><?php echo lang('livestream::livestreams') ?></a>
+                    </div>
+                    <?php if(is_loggedIn()): ?>
+                        <div class="link <?php echo input('type') === 'mine' ? 'active' : '' ?>">
+                            <a ajax="true" href="<?php echo url('livestreams?u='.get_userid()) ?>"><?php echo lang('livestream::my-livestreams') ?></a>
+                        </div>
+                    <?php endif; ?>
+                    <?php foreach(get_menus('livestreams-menu') as $menu): ?>
+                        <div class="link">
+                            <a ajax="true" href="<?php echo $menu->link ?>"><?php echo lang($menu->title) ?></a>
+                        </div>
+                    <?php endforeach ?>
+                </div>
+            </div>
+            <div class="filters global-filter-container filter-pane" data-url="<?php echo url('livestreams') ?>">
+                <div class="left">
+                    <i class="icon ion-android-options"></i>
+                    <select id="livestream-category-list" onchange="return run_global_filter()" data-name="c" class="c-select filter-input">
+                        <option <?php echo (input('c', 'all') == 'all') ? 'selected' : null ?> value="all"><?php echo lang('livestream::all-categories') ?></option>
+                        <?php foreach(livestream::getCategories() as $category): ?>
+                            <?php $subCategories = Livestream::getCategories($category['id']) ?>
+                            <?php if($subCategories): ?>
+                                <optgroup label="<?php echo lang($category['title']) ?>">
+                                    <?php foreach($subCategories as $cat): ?>
+                                        <option <?php echo (input('c', 'all') == $cat['id']) ? 'selected' : null ?> value="<?php echo $cat['id'] ?>"><?php echo lang($cat['title']) ?></option>
+                                    <?php endforeach ?>
+                                </optgroup>
+                            <?php else: ?>
+                                <option <?php echo (input('c', 'all') == $category['id']) ? 'selected' : null ?> value="<?php echo $category['id'] ?>"><?php echo lang($category['title']) ?></option>
+                            <?php endif ?>
+                        <?php endforeach ?>
+                    </select>
+                    <select id="livestream-filter-select" onchange="return run_global_filter()" data-name="t" class="c-select filter-input">
+                        <option value="all"><?php echo lang('all') ?></option>
+                        <option <?php echo (input('t') == 'f') ? 'selected' : '' ?> value="f"><?php echo lang('livestream::featured') ?></option>
+                        <option <?php echo (input('t') == 'o') ? 'selected' : '' ?> value="o"><?php echo lang('livestream::ongoing') ?></option>
+                    </select>
+                </div>
+                <div class="right">
+                    <form id="livestream-list-search" method="post" onsubmit="return run_global_filter()" action="" class="search form-inline list-search">
+                        <?php CSRFProtection::embed() ?>
+                        <?php if(input('u')): ?>
+                            <input value="<?php echo input('u') ?>" type="hidden" class="form-control filter-input" data-name="u" />
+                        <?php endif; ?>
+                        <input type="search" value="<?php echo input('s') ?>" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>" />
+                        <button type="submit">
+                            <i class="search-icon icon ion-ios-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="listings">
+                <div class="listing row">
+                    <?php foreach($livestreams->results() as $livestream): ?>
+                        <div class="col-md-6">
+                            <?php echo view('livestream::livestream/list_item', array('livestream' => $livestream)) ?>
+                        </div>
+                    <?php endforeach ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-content">
+        <?php if($livestreams->total): ?>
+            <?php $appends = array(); ?>
+            <?php if(input('c')) $appends['c'] = input('c'); ?>
+            <?php if(input('s')) $appends['s'] = input('s'); ?>
+            <?php if(input('t')) $appends['t'] = input('t'); ?>
+            <?php echo $livestreams->append($appends)->links(); ?>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang('livestream::no-livestreams-found-here') ?></div>
+        <?php endif ?>
+    </div>
+</div>

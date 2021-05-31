@@ -1,0 +1,7 @@
+<div class="group-chat-acceptance">
+    <span><?php _lang('chat::chat-request')?></span>
+    <div class="row">
+        <div onclick="return acceptGroupChat('<?php echo $conversation['cid'] ?>')" class="col-sm-6 accept"><i class="fa fa-phone"></i> <?php echo lang('chat::accept')?></div>
+        <div onclick="return leaveGroupChat('<?php echo $conversation['cid'] ?>')" class="col-sm-6 decline"><i class="fa fa-close"></i> <?php echo lang('chat::decline')?></div>
+    </div>
+</div>

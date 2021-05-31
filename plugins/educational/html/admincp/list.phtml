@@ -1,0 +1,47 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("educational::manage-books"); ?>
+    </div>
+
+    <div class="wrapper-content">
+        <form action="" method="get" style="margin: 20px 0">
+            <?php CSRFProtection::embed() ?>
+            <input type="text" class="form-control" name="term" value="<?php echo input('term'); ?>" placeholder="<?php _lang('search')?>"/>
+            <button class="btn btn-sm btn-secondary" style="margin-top: 10px"><?php echo _lang('search')?></button>
+        </form>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th style="width: 15%"><?php _lang('educational::by')?></th>
+                <th style="width: 15%"><?php _lang('title')?></th>
+                <th style="width: 25%"><?php echo lang("educational::description"); ?></th>
+                <th style="width: 15%"><?php echo lang("educational::image"); ?></th>
+                <th style="width: 10%"><?php echo lang("educational::on"); ?></th>
+                <th style="width: 20%"><?php _lang('actions')?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php $edu = Educational::getInstance(); ?>
+            <?php foreach($books->results() as $book):?>
+                <?php $user = find_user($book['user_id']); ?>
+                <tr>
+                    <td><?php echo $book['id']; ?></td>
+                    <td><a href="<?php echo profile_url(null,$user); ?>"><?php echo get_user_name($user); ?></a></td>
+                    <td><?php echo $book['title']; ?></td>
+                    <td><?php echo str_limit($book['description'],100); ?></td>
+                    <td><img style="height:50px;width:50px" src="<?php echo url_img($book['image'],200); ?>" class="img img-responsive" /></td>
+                    <td><?php echo date('M j , Y ',$book['time']); ?></td>
+                    <td>
+                        <a href="<?php echo url_to_pager("admincp-books").'?action=edit&id='.$book['id']; ?>" class="btn btn-primary btn-sm"><i class="ion-edit"></i></a>
+                        <a href="<?php echo url_to_pager("admincp-books").'?action=delete&id='.$book['id']; ?>" class="btn btn-danger btn-sm admin-confirm"><i class="ion-trash-a"></i></a>
+                        <a href="<?php echo url_to_pager('single-book',array('id'=>$book['id'],'slug'=>$book['slug']));?>" class="btn btn-sm btn-secondary"><i class="ion-eye"></i></a>
+                    </td>
+                </tr>
+            <?php endforeach?>
+            </tbody>
+        </table>
+        <?php echo $books->links()?>
+    </div>
+</div>
+

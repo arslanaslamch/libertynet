@@ -1,0 +1,108 @@
+<?php echo view("supportsystem::top-menu",array('create'=>1)) ?>
+<div class="row">
+    <div class="col-sm-8">
+        <div class="box">
+            <div class="title"><?php echo lang("supportsystem::submit-a-ticket"); ?></div>
+            <div class="box-content">
+                <form action="<?php echo ""; ?>" method="post" enctype="multipart/form-data"
+                      class="ajax-form">
+                    <div class="field">
+                        <div class="top">
+                            <label class="control-lable-pro"><?php echo lang('supportsystem::select-department') ?></label>
+                        </div>
+                        <div class="bottom">
+                            <div class="magic-select" data-name="val[category]" data-width="200px">
+                                <?php $categories = get_ss_categories(); ?>
+                                <div class="magic-select-toggle">
+                                    <?php echo lang('supportsystem::select-an-option') ?>
+                                </div>
+                                <div class="magic-select-content">
+                                    <?php foreach ($categories as $category): ?>
+                                        <?php $sub_categories = get_ss_parent_categories($category['id']) ?>
+                                        <?php if ($sub_categories): ?>
+                                            <div class="magic-select-label"><?php echo lang($category['title']) ?></div>
+                                            <?php foreach ($sub_categories as $cat): ?>
+                                                <div class="magic-select-option" data-value="<?php echo $cat['id'] ?>">
+                                                    <?php echo lang($cat['title']) ?>
+                                                </div>
+                                            <?php endforeach ?>
+                                        <?php else: ?>
+                                            <div class="magic-select-option" data-value="<?php echo $category['id'] ?>">
+                                                <?php echo lang($category['title']) ?>
+                                            </div>
+                                        <?php endif ?>
+                                    <?php endforeach ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+
+                    <div class="field">
+                        <div class="top">
+                            <label class="control-lable-pro"><?php echo lang('supportsystem::priority') ?></label>
+                        </div>
+                        <div class="bottom">
+                            <select name="val[priority]" class="c-select">
+                                <?php foreach (get_ss_priorities() as $key => $priority): ?>
+                                    <option value="<?php echo $key ?>"><?php echo $priority; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <br/>
+
+                    <div class="field">
+                        <div class="top">
+                            <label class="control-lable-pro"><?php echo lang('supportsystem::in-few-words-tell-us-about-your-enquiry') ?></label>
+                        </div>
+                        <div class="bottom">
+                            <input value="<?php echo input('val.subject') ?>" type="text" class="form-control"
+                                   name="val[subject]" placeholder=""/>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="field">
+                        <div class="top">
+                            <label class="control-lable-pro"><?php echo lang('supportsystem::tell-us-more') ?></label>
+                        </div>
+                        <div class="bottom">
+                        <textarea name="val[content]" class="form-control ss-min-heght"
+                                  placeholder=""><?php echo input('val.content', null, false) ?></textarea>
+                        </div>
+                    </div>
+                    <input type="hidden" value="user-<?php echo get_userid() ?>" name="val[entity]"/>
+                    <br/>
+                    <div class="field">
+                        <div class="top">
+                            <label class="control-lable-pro"><?php echo lang('supportsystem::attachments-you-can-select-multiple-files') ?></label>
+                        </div>
+                        <div class="bottom">
+                            <button type="button" onclick="return choose_ss_file()"
+                                    class="btn btn-secondary"><?php echo lang("supportsystem::choose-files"); ?></button>
+                            <input type="file" name="file[]" id="ss-type-file" class="form-control"
+                                   style="visibility: hidden"/>
+                        </div>
+                    </div>
+                    <div class="submit">
+                        <button class="btn btn-info"><?php echo lang("supportsystem::submit") ?></button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="box-content mt-4">
+            <h4 style="color :<?php echo config("header-bg-color", "#4C4C4E") ?>"><?php echo lang("supportsystem::before-you-submit") ?></h4>
+            <div class="mt-4">
+                <p><b><?php echo lang("supportsystem::tell-us") ?></b></p>
+                <p><?php echo lang("supportsystem::tell-us-desc") ?></p>
+            </div>
+            <div class="mt-4">
+                <p><b><?php echo lang("supportsystem::show-us") ?></b></p>
+                <p><?php echo lang("supportsystem::show-us-desc") ?></p>
+            </div>
+        </div>
+    </div>
+</div>

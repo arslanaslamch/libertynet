@@ -1,0 +1,24 @@
+<div id="BirthdayModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"  data-bw="<?php echo lang('birthday::write-birthday-wish-to') ?>">Write Birthday wish</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					<span class="sr-only"><?php echo lang('close') ?></span>
+				</button>
+			</div>
+			<div class="modal-body">
+                <textarea class="form-control wish-content" placeholder="<?php echo lang("birthday::write-something-here") ?>"></textarea>
+                <input type="hidden" id="to-uid" />
+                <button class="btn btn-info btn-block btn-sm"><?php echo lang("birthday::congratulate") ?></button>
+
+                <div class="indicator">
+					<img src="<?php echo img('images/loading.gif') ?>"/>
+				</div>
+				<div class="data-lists">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

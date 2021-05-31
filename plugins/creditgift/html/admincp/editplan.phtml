@@ -1,0 +1,31 @@
+<div class="wrapper">
+	<div class="wrapper-title">
+		<a ajax="true" href="<?php echo url_to_pager('admincp-salesplan') ?>">
+			<h4><?php echo lang('creditgift::salesplan-edit') ?></h4>
+		</a>
+	</div>
+	<div class="wrapper-content">
+		<form enctype="multipart/form-data" class="wrapper-form" action="" method="post">
+			<?php CSRFProtection::embed() ?>
+
+			<div>
+				<label><?php echo lang('creditgift::unit') ?>:</label>
+				<input id="inputsm" class="form-control" type="number" name="val[unit]" value="<?php echo $edit['unit']; ?>" required="">
+			</div>
+			<div>
+				<label><?php echo lang('creditgift::description') ?>:</label>
+				<input id="inputsm" class="form-control input-sm" type="text" name="val[description]" value="<?php echo $edit['description']; ?>" required="">
+			</div>
+			<label><?php echo lang('creditgift::cost') ?>:</label>
+			<input id="inputsm" class="form-control input-sm" type="number" name="val[cost]" value="<?php echo $edit['cost']; ?>" required="">
+			<button class="btn btn-info" style="margin-top: 20px"><?php echo lang("edit") ?></button>
+
+	</div>
+	<br/>
+	</form>
+</div>
+<br/>
+
+</form>
+</div>
+</div>

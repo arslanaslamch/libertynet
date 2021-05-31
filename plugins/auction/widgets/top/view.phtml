@@ -1,0 +1,38 @@
+<?php $auction_most_view = auction_most_view(); ?>
+<?php if($auction_most_view): ?>
+	<div class="auction">
+		<div class="box" style="margin-bottom: -3em; padding-bottom: -3em">
+			<div class="title"><?php echo lang('auction::most-viewed-auction') ?></div>
+			<div class="box-content">
+				<ul class="bxslider">
+					<?php foreach($auction_most_view as $auction): ?>
+						<li>
+							<p><img src="<?php echo ($auction['picture']) ? url_img($auction['picture'], 700) : get_avatar(700) ?>"></p>
+							<p>
+								<a href="<?php echo url_to_pager('auction-details').'?id='.$auction['id']; ?>">
+									<h6><strong id="hides" style="font-size: 16px;"><?php echo strtoupper($auction['title']); ?></strong></h6>
+								</a>
+							</p>
+							<p>
+								<table border="1" class="most-view" style="width:calc(100% - 20px); text-align: center">
+									<tr style="text-align: center">
+										<th align="center"><?php echo lang('auction::bid-s') ?></th>
+										<th><?php echo lang('auction::Current Bid') ?></th>
+										<th align="center"><?php echo lang('auction::owner') ?></th>
+										<th><?php echo lang('auction::end') ?></th>
+									</tr>
+									<tr class="view-data">
+										<td height="40"><?php echo count_auction_bid($auction['id']); ?></td>
+										<td>$<?php echo $auction['current_bid']; ?>.00</td>
+										<td><?php echo get_user_name($auction['user_id']) ?></td>
+										<td><?php echo $auction['end_date']; ?></td>
+									</tr>
+								</table>
+							</p>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+		</div>
+	</div>
+<?php endif ?>

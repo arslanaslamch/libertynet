@@ -1,0 +1,106 @@
+<div class="box">
+    <div class="box-content">
+        <?php echo view("store::stages",array('type'=>'cart')); ?>
+    </div>
+</div>
+<div class="box">
+    <div class="box-content">
+        <?php fire_hook('coupon.code.input',null,array()); ?>
+        <form method="post" action="<?php echo url_to_pager("orders-checkout"); ?>" class="cart-form">
+            <?php CSRFProtection::embed()?>
+           <table class="table table-centered">
+               <thead>
+               <tr>
+                   <th style="width: 70%"><?php echo ucwords(lang("store::product")); ?></th>
+                   <th class="hide-in-mobile-x"><?php echo ucwords(lang("store::price")); ?></th>
+                   <th><?php echo ucwords(lang("store::quantity")); ?></th>
+                   <th><?php echo ucwords(lang("store::total")); ?></th>
+                   <th></th>
+               </tr>
+               </thead>
+               <?php if($products): ?>
+               <tbody class="cart-body">
+               <?php foreach($products as $k=>$v):
+                    $product_id = $k;
+                    $p = getSingleProduct($k);
+                   $current_time = time();
+                   $discount_expire_time = $p['e_date'];
+                   //ac represent apply coupon
+                   $actual_price = getProductPrice($p,'ac');
+                   $store = lpGetStoreById($p['store_id']);
+                   if(!$p) continue;
+                   ?>
+                    <tr class="product_<?php echo $p['id']; ?>">
+                        <input type="hidden" name="val[pid][]" value="<?php echo $product_id; ?>" />
+                        <td>
+                            <div class="media media-sm">
+                                <div class="media-left">
+                                    <div class="media-object">
+                                        <img src="<?php echo ($p['main_photo']) ? url_img($p['main_photo']) : img("store::images/comingsoon.png"); ?>"
+                                             alt="<?php echo $p['name'] . ' image'; ?>"/>
+
+                                    </div>
+                                             </div>
+                                <div class="media-body">
+                                    <!--<h4 class="media-heading" style="text-transform: uppercase">
+                                        <?php /*echo $store['name']; */?>
+                                    </h4>-->
+                                    <span class="help-block"  ><a href="<?php echo url_to_pager("single-product",array('slugs'=>$p['slug'])) ?>" ajax="true">
+                                            <?php echo $p['name']; ?>
+                                        </a></span>
+                                </div>
+                            </div>
+
+
+                        </td>
+                        <td class="hide-in-mobile-x">
+                            <?php echo config('currency-sign','$').number_format((float)$actual_price,'2','.',',');  ?>
+                            <input type="hidden" class="price" value="<?php echo number_format((float)($actual_price),'2','.',','); ?>" />
+                        </td>
+                        <td>
+                           <input class="form-control quantity-cart" min="1" max="<?php echo $p['quantity'] ?>" style="font-size: 12px !important; max-width: 100px" type="number" value="<?php echo $v['quantity'] ?>" name="val[quantity][]" />
+                        </td>
+                        <td>
+                            <?php $t[] = $v['quantity'] * $actual_price ?>
+                            <?php  echo config('currency-sign','$'); ?><span class="actualPrice"><?php echo number_format((float)($v['quantity'] * $actual_price),'2','.',',') ?></span>
+
+                        </td>
+                        <td style="text-align: center; font-size: 14px; color: #b94a48">
+                            <i style="cursor: pointer" onclick="return removeFromCart(<?php echo $p['id']; ?>)" class="ion-close"></i>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+
+               </tbody>
+               <?php else: ?>
+                   <tfoot>
+                   <tr>
+                   <td colspan="6"><div class="alert alert-info"><?php echo lang("store::cart-is-empty") ?></div></td>
+                   </tr>
+                   </tfoot>
+               <?php endif; ?>
+               <?php if(isset($t)): ?>
+               <tfoot>
+               <tr class="cart-foot">
+                   <th> </th>
+                   <th></th>
+                   <th colspan="2"><h5 class="cart-total-style"><?php echo ucwords(lang('store::total')).' = '; ?><?php echo config('currency-sign','$'); ?><span class="cart-total"><?php echo number_format((float)array_sum($t),'2','.',','); ?></span> </h5></th>
+               </tr>
+               <tr>
+                   <input type="hidden" value="<?php echo lang('store::do-you-want-to-clear-cart') ?>" id="clearMsg" />
+                   <td colspan="6">
+                       <a class="btn btn-secondary" href="<?php echo url_to_pager("products-home") ?>" style="text-transform: uppercase" ajax="true"><?php echo lang("store::continue-shopping") ?></a>
+                   <div style="float: right">
+                       <button class="btn btn-secondary" id="clear-cart" style="text-transform: uppercase"><?php echo lang("store::clear-cart") ?></button>
+                       <button id="update-quantity" class="btn btn-secondary"  style="text-transform: uppercase" ><?php echo lang("store::update-quantity") ?></button>
+                       <button class="btn btn-secondary"  style="text-transform: uppercase" type="submit"><?php echo lang("store::proceed-to-checkut") ?></button>
+                   </div>
+                   </td>
+               </tr>
+               </tfoot>
+               <?php endif; ?>
+           </table>
+        </form>
+
+    </div>
+</div>

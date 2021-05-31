@@ -1,0 +1,21 @@
+<?php
+  $fe = unix_aff_time($from,$end);
+  $f = $fe['f'];
+  $e = $fe['e'];
+  $row = get_link_tracking($f,$e);
+?>
+<?php if($row->total):
+    foreach($row->results() as $r):
+       $user = find_user($r['ref_id']);
+    ?>
+<tr>
+    <td><?php echo urldecode($r['link']); ?></td>
+    <td><a ajax="true" href="<?php echo profile_url(null,$user); ?>"><img src="<?php echo get_avatar(200,$user); ?>" class="img img-responsive round-aff" /></a></td>
+    <td><?php echo ($r['status']) ? ucwords(lang('yes')) : ucwords(lang('no')); ?></td>
+    <td><?php echo date('d - m - Y',$r['time']); ?></td>
+</tr>
+<?php endforeach;  endif; ?>
+
+<?php if(!$row->total): ?>
+    <tr><td colspan="5"><?php echo lang("affliate::no-record-found");?></td></tr>
+<?php endif; ?>

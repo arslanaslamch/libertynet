@@ -1,0 +1,80 @@
+<div class="wrapper">
+	<div class="wrapper-title">
+		Manage Articles
+
+        <a class="pull-right btn btn-danger" href="<?php echo url_to_pager("admincp-support-system-articles").'?type=add'; ?>"><i class="ion-plus"></i> <?php echo lang("supportsystem::create-new-article") ?></a>
+	</div>
+	<div class="wrapper-content">
+		<form action="" method="get" style="margin: 20px 0">
+			<?php CSRFProtection::embed() ?>
+			<input type="text" class="form-control" name="term" placeholder="<?php echo lang('search') ?>"/>
+
+			<button class="btn btn-sm btn-secondary" style="margin-top: 10px"><?php echo lang('search') ?></button>
+		</form>
+		<div class="list-table-container">
+			<div class="table-responsive">
+				<table class="table table-striped list-table">
+					<thead>
+					<tr>
+						<!--<th>
+							<div class="list-table-select" data-group="users" data-id="0"></div>
+						</th>-->
+						<th>ID</th>
+						<th style=""><?php echo lang('title') ?></th>
+						<th><?php echo lang('blog::written-by') ?></th>
+						<th><?php echo lang('supportsystem::article-category') ?></th>
+						<th><?php echo lang('blog::last-update') ?></th>
+                        <th><?php echo lang("supportsystem::helpful-yes")?></th>
+                        <th><?php echo lang("supportsystem::helpful-no")?></th>
+						<th><?php echo lang('actions') ?></th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php foreach($articles->results() as $article): ?>
+						<tr class="item" id="<?php echo $article['id'] ?>">
+							<!--<td>
+								<div class="list-table-select" data-group="articles" data-id="<?php /*echo $article['id'] */?>"></div>
+							</td>-->
+                            <?php
+                            $user = find_user($article['user_id']);
+                            $category = get_ss_category($article['category_id']);
+                            ?>
+							<td><?php echo $article['id'] ?></td>
+							<td>
+								<a href="<?php echo ss_article_url($article) ?>"><?php echo lang($article['subject']) ?></a>
+							</td>
+                            <td>
+								<a ajax="true" href="<?php echo profile_url(null,$user); ?>"><?php echo get_user_name($user); ?></a>
+							</td>
+                            <td>
+                                <?php echo lang($category['title']); ?>
+                            </td>
+
+							<td>
+								<?php echo date('d F Y  g:ia', $article['update_time']) ?>
+							</td>
+                            <td><?php echo $article['rp_yes']; ?></td>
+                            <td><?php echo $article['rp_no']; ?></td>
+
+							<td>
+								<div class="dropdown actions">
+									<a href="#" data-toggle="dropdown">
+										<i class="ion-android-settings"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right">
+										<a class="ion-edit" href='<?php echo url_to_pager('admincp-support-system-articles').'?type=manage&action=edit&id='.$article['id'] ?>'></a>
+										<a class="admin-confirm ion-android-delete" href="<?php echo url_to_pager('admincp-support-system-articles').'?type=manage&action=delete&id='.$article['id'] ?>"></a>
+									</div>
+								</div>
+							</td>
+
+
+						</tr>
+					<?php endforeach ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<?php echo $articles->links() ?>
+	</div>
+</div>

@@ -1,0 +1,134 @@
+<style>
+.conference#conference-receive-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, .75);
+}
+
+#conference-receive-container #conference-receive {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    max-width: 20rem;
+    width: 100%;
+    padding: 2rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, .1), 0 10px 10px -5px rgba(0, 0, 0, .04);
+    border-radius: .5rem;
+}
+
+#conference-receive>:not(template)~:not(template) {
+    --space-y-reverse: 0;
+    margin-top: calc(4rem * calc(1 - var(--space-y-reverse)));
+    margin-bottom: calc(4rem * var(--space-y-reverse))
+}
+
+h1.instruction#conference-receiver-instruction {
+    color: #4a5568;
+    font-size: .875rem;
+    font-weight: 700;
+}
+
+#conference-receive-container #conference-caller-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#conference-receive-container #conference-caller-info>img {
+    position: relative;
+    width: 8rem;
+    height: 8rem;
+    object-position: center;
+    object-fit: cover;
+    border-radius: 9999px;
+}
+
+#conference-receive-container #conference-caller-info>span {
+    animation: ping 1s cubic-bezier(0, 0, .2, 1) infinite;
+    position: absolute;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 9999px;
+    background-color: #a0aec0;
+}
+
+#conference-receive-container #conference-caller-name {
+    font-size: 1rem;
+    color: #4a5568;
+    font-weight: 700;
+}
+
+#conference-receive-container #conference-receive-actions {
+    display: flex;
+}
+
+#conference-receive-actions>:not(template)~:not(template){
+    --space-x-reverse: 0;
+    margin-right: calc(4rem * var(--space-x-reverse));
+    margin-left: calc(4rem * calc(1 - var(--space-x-reverse)));
+}
+
+#conference-receive-container #conference-receive-actions>a {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    display: block;
+    color: #fff;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    font-size: 1.5rem;
+}
+#conference-receive-container #conference-receive-actions>a>svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+
+#conference-receive-container #conference-receive-actions>a#conference-receive-button {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+#conference-receive-container #conference-receive-actions>a#conference-receive-button:hover {
+    background-color: #289745;
+    border-color: #289745;
+}
+
+#conference-receive-container #conference-receive-actions>a#conference-drop-button {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+#conference-receive-container #conference-receive-actions>a#conference-drop-button:hover {
+    background-color: #bc3545;
+    border-color: #bc3545;
+}
+
+</style>
+<div id="conference-receive-container" class="conference">
+    <div id="conference-receive" class="conference">
+        <h1 id="conference-receiver-instruction" class="instruction"><?php echo lang('mediachat::incoming-call', array('type' => 'video')) ?></h1>
+        <div id="conference-caller-info">
+            <span></span>
+            <img id="conference-caller-avatar" class="avatar" src="<?php get_avatar(200) ?>" />
+        </div>
+        <div id="conference-caller-name"></div>
+        <div id="conference-receive-actions">
+            <a href="#" id="conference-receive-button" title="<?php echo lang('mediachat::receive') ?>"><i class="ion-android-call"></i></a>
+            <a href="#" id="conference-drop-button" title="<?php echo lang('mediachat::end') ?>">
+                <svg class="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>

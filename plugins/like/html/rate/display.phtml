@@ -1,0 +1,8 @@
+<?php $rating = get_ratings($type, $type_id); ?>
+<div class="rating user-<?php echo $type ?>-<?php echo $type_id ?>">
+    <i class="ion-ios-star star <?php echo $rating >= 1 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></i>
+    <i class="ion-ios-star star <?php echo $rating >= 2 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></i>
+    <i class="ion-ios-star star <?php echo $rating >= 3 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></i>
+    <i class="ion-ios-star star <?php echo $rating >= 4 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></i>
+    <i class="ion-ios-star star <?php echo $rating >= 5 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></i>
+</div>

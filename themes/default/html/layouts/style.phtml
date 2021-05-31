@@ -1,0 +1,52 @@
+<style>
+    :root {
+        --color-primary: <?php echo config('header-bg-color', '#4C4C4E') ?>;
+        --color-secondary: <?php echo config('button-bg-color', '#F62459') ?>;
+        --color-loading-line: <?php echo config('loading-line-color', '#F62459') ?>;
+        --color-header-bg: <?php echo config('header-bg-color', '#4C4C4E') ?>;
+        --color-header-brand: <?php echo config('header-brand-color', '#FFFFFF') ?>;
+        --color-header-menu: <?php echo config('header-menu-color','#FFFFFF') ?>;
+        --color-header-menu-icon: <?php echo config('header-menu-icon-color','#FFFFFF') ?>;
+        --color-header-search: <?php echo config('header-search-background','#FFFFFF') ?>;
+        --color-header-search-placeholder: <?php echo config('header-search-placeholder-color','#858585') ?>;
+        --color-header-search-text: <?php echo config('header-search-text-color','#858585') ?>;
+        --color-landing-reg-bg: <?php echo config('landing-reg-bg-color','rgba(46, 62, 69, 0.36)') ?>;
+        --font-welcome-note: <?php echo config('welcomes-notes-font','Segoe UI, Arial, sans-serif') ?>;
+        --color-link: <?php echo config('link-color','#2b354f') ?>;
+        --size-link: <?php echo config('link-size','12px') ?>;
+        --color-explorer-bg: <?php echo config('explorer-bg-color','#F4F4F4') ?>;
+        --color-explorer-link-color: <?php echo config('explorer-link-color','#1c2331') ?>;
+        --color-design: <?php echo app()->design['color'] ?>;
+        --color-explorer-dropdown-bg: <?php echo config('explorer-dropdown-bg-color','#626A73') ?>;
+        --color-explorer-dropdown-text: <?php echo config('explorer-dropdown-text-color','#808080') ?>;
+        --image-design: <?php echo app()->design['image'] ? 'url('.app()->design['image'].')' : 'none' ?>;
+        --position-design: <?php echo app()->design['position'] ?>;
+        --repeat-design: <?php echo app()->design['repeat'] ?>;
+        --image-design-container: <?php echo app()->design['container'] ? app()->design['container'] : 'inherit' ?>;
+        --color-design-link: <?php echo app()->design['link'] ?>;
+        --color-chat-list-bg: <?php echo config('chat-list-bg-color','#FFFFFF') ?>;
+        --color-button-bg: <?php echo config('button-bg-color','#f62459') ?>;
+        --color-dropdown-menu-hover-bg: <?php echo config('dropdown-menu-hover-bg-color','#54A0FF') ?>;
+        --color-dropdown-menu-hover-text: <?php echo config('dropdown-menu-hover-text-color','#FFFFFF') ?>;
+        --size-scroll-bar-width: <?php echo config('scroll-bar-size','4px') ?>;
+        --size-scroll-bar-height: <?php echo config('scroll-bar-height','4px') ?>;
+        --color-verify-badge: <?php echo config('verify-badge-color','#19B5FE') ?>;
+        --image-default-theme-topography-1: url(<?php echo url_img(config('default-theme-topography-image-1','themes/default/images/topography/one.jpg')) ?>);
+        --image-default-theme-topography-2: url(<?php echo url_img(config('default-theme-topography-image-2','themes/default/images/topography/two.jpg')) ?>);
+        --image-default-theme-topography-3: url(<?php echo url_img(config('default-theme-topography-image-3','themes/default/images/topography/three.jpg')) ?>);
+    }
+
+    <?php if(!segment(0)):?>
+    #header {
+        display: none;
+    }
+    <?php endif?>
+    <?php if(!$app->onHeaderContent):?>
+    #header {
+        background: transparent;
+    }
+    <?php endif?>
+    <?php if (config('custom-css') && config('custom-css') !== lang('custom-css-description')): ?>
+    <?php echo str_replace("\\n", '', config('custom-css')); ?>
+    <?php endif; ?>
+</style>

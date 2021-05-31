@@ -1,0 +1,22 @@
+<?php if(isset(app()->Donation)):
+$donation = app()->Donation;
+    $user = find_user($donation['user_id']);
+?>
+<div class="box">
+    <div class="title"><?php echo lang("donation::campaign-owner"); ?></div>
+    <div class="box-content">
+        <div  class="media media-md">
+            <div class="media-left">
+                <div class="media-object">
+                    <img src="<?php echo get_avatar(200, $user)?>"/>
+                </div>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading" style="margin-top:0">
+                    <a ajax="true" href="<?php echo profile_url(null,$user);?>"><?php echo get_user_name($user); ?></a>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

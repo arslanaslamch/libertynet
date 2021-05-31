@@ -1,0 +1,96 @@
+<?php echo view("affliate::tm"); ?>
+<div class="box">
+    <div class="title"><?php echo lang('affliate::network-clients'); ?></div>
+    <div class="box-content">
+        <div class="row container font-14">
+            <?php $user = get_user(); ?>
+            <div class="network-top">
+                <div class="col-sm-12">
+                    <div class="col-sm-2">
+                        <img src="<?php echo get_avatar(200) ?>" class="img network-owner"/>
+                    </div>
+                    <div class="col-sm-10">
+                        <b><a class="font-16" href="<?php echo profile_url(null, $user); ?>"
+                              ajax="true"><?php echo get_user_name(); ?></a></b>
+                        <span class="pull-right"><b><?php echo ucwords(lang('affliate::total')); ?>
+                                :</b> <?php echo $c = count_my_downline(); ?></span>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="col-sm-12" id="sub-network">
+                        <?php $underMe = get_my_downline(); ?>
+                        <?php if($underMe):?>
+                        <ul class="media-list">
+                            <?php foreach($underMe as $u):
+                                $user = find_user($u)
+                                ?>
+                            <li class="media">
+                                <div class="media-left"><a ajax="true" href="<?php echo profile_url(null, $user); ?>"> <img src="<?php echo get_avatar(200,$user) ?>"/> </a>
+                                </div>
+                                <div class="media-body"><h6 class="media-heading"><?php echo get_user_name($user); ?></h6>
+                                <?php
+                                $chren= get_my_children($u);
+                                if($chren):
+                                    foreach($chren as $ch):
+                                        $uc = find_user($ch);  //user children
+                                    ?>
+                                    <div class="media">
+                                        <div class="media-left"><a ajax="true" href="<?php echo profile_url(null, $uc); ?>"> <img src="<?php echo get_avatar(200,$uc) ?>"/>
+                                            </a></div>
+                                        <div class="media-body"><h6 class="media-heading"><?php echo get_user_name($uc); ?></h6>
+                                       <?php $gch = get_my_children($ch); //gch;
+                                            if($gch):
+                                            foreach($gch as $chl):
+                                            $ugc = find_user($chl);  //user grand children
+                                          ?>
+                                            <div class="media">
+                                                <div class="media-left"><a href="<?php echo profile_url(null, $ugc); ?>"> <img
+                                                            src="<?php echo get_avatar(200,$ugc) ?>"/></a></div>
+                                                <div class="media-body"><h6 class="media-heading"><?php echo get_user_name($ugc); ?></h6>
+                                                    <!--For Great Grand Children-->
+                                                <?php $ggch = get_my_children($chl); //gch;
+                                                if($ggch):
+                                                    foreach($ggch as $chl2):
+                                                        $uggc = find_user($chl2);  //user great grand  children
+                                                    ?>
+                                                    <div class="media">
+                                                        <div class="media-left"><a href="<?php echo profile_url(null, $uggc); ?>"> <img
+                                                                    src="<?php echo get_avatar(200,$uggc) ?>"/></a></div>
+                                                        <div class="media-body"><h6 class="media-heading"><?php echo get_user_name($uggc); ?></h6>
+                                                        <?php $gggch = get_my_children($chl2); //gch;
+                                                        if($gggch):
+                                                            foreach($gggch as $chl):
+                                                                $ugggc = find_user($chll);  //user great great grand children
+                                                                ?>
+                                                            <div class="media">
+                                                                <div class="media-left"><a href="<?php echo profile_url(null, $ugggc); ?>"> <img
+                                                                            src="<?php echo get_avatar(200,$ugggc) ?>"/></a></div>
+                                                                <div class="media-body"><h6 class="media-heading"><?php echo get_user_name($ugggc); ?></h6>
+                                                                </div>
+                                                                </div>
+                                                            <?php endforeach; endif; ?>
+                                                            </div>
+                                                        </div>
+                                                        <?php endforeach; endif; ?>
+                                                </div>
+                                            </div>
+                                            <?php endforeach; endif; ?>
+                                        </div>
+                                    </div>
+
+                                <?php endforeach;  endif; ?>
+                                </div>
+                            </li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="modal fade" id="start-quiz-modal" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form action="<?php echo url_to_pager('quiz-submit-answers'); ?>" method="post" enctype="multipart/form-data" class="ajax-form">
+				<div class="modal-form-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<p class="modal-title"><?php echo $quiz['title'] ?></p>
+				</div>
+				<div class="modal-body"  style="display: grid">
+					<?php CSRFProtection::embed() ?>
+					<?php $questions = get_quiz_questions($quiz['id']);$i=1;
+				?>
+					<?php foreach($questions as $question): ?>
+						<div class="quiz-answer-field" style="border-bottom: 1px solid #F1F1F1">
+							<div class="quiz-a-container">
+								<span class="quiz-q-title"><b><?php echo $i ?>.</b><?php echo $question['question']; ?></span>
+								<input type="hidden" name="val[questions][]" value="<?php echo $question['question'] ?>"/>
+								<?php $value = explode(',', $question['answers']);
+								$correct_answers = explode(',',$question['correct_answers']);?>
+								<input type="hidden" name="val[question_id][<?=$i;?>]" value="<?php echo $question['id'] ?>"/>
+								<?php foreach($correct_answers as $c): ?>
+									<input type="hidden" name="val[correct][<?=$i;?>]" value="<?php echo $c ?>"/>
+								<?php endforeach ?>
+								<?php foreach($value as $vl): ?>
+									<span class="each-quiz-answer">
+										<input class="quiz-a-input" type="radio" name="val[checkeditem][<?=$i;?>]" value="<?php echo $vl ?>" required />
+										<?php echo $vl ?>
+										
+									</span>
+								<?php endforeach ?>
+							
+							</div>
+						</div><?php $i++ ?>
+					<?php endforeach ?>
+					<div class="field" style="display: none">
+						<div class="top">
+							<label class="control-label"><?php echo lang('quiz::admin') ?></label><br/>
+						</div>
+						<div class="bottom">
+							<div class="magic-select schedule-host" data-name="val[entity]" data-width="200px">
+								<div class="magic-select-toggle">
+									<img src="<?php echo get_avatar(75) ?>" class="thumb"/>
+									<?php echo get_user_name(); ?>
+								</div>
+							</div>
+							<div class="magic-select-content slimscroll" data-height="200px">
+								<div class="magic-select-option" data-value="user-<?php echo get_userid() ?>">
+									<img src="<?php echo get_avatar(75) ?>" class="thumb"/>
+									<?php echo get_user_name(); ?>
+								</div>
+								<?php fire_hook('entity.select.list') ?>
+							</div>
+						</div>
+					</div>
+							
+				</div>
+				<div class="modal-footer">
+					<div class="submit">
+						
+						<input type="hidden" name="val[quiz_id]" value="<?php echo $quiz['id'] ?>"/>
+						<input type="submit" class="btn btn-default" value="<?php echo lang("quiz::submit") ?>"/>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,44 @@
+ <div class="modal-form-header">
+     <button type="button" class="close" data-dismiss="modal">&times;</button>
+     <p class="modal-title"><?php echo lang('feed::share-to-a-page') ?></p>
+ </div>
+ <div class="modal-body">
+     <div class="row">
+         <div class="col-md-12">
+             <?php echo view('feed::page', array('feed' => $feed))?>
+         </div>
+     </div>
+     <div class="row">
+         <div class="col-md-12 friends">
+             <div class="row online-lists slimscroll" data-height="280px">
+                 <div class="col-md-12 online-friend-list">
+                     <?php if($pages->total > 0): ?>
+                         <?php foreach($pages->results() as $page): ?>
+                            <div class="row" id="feed-send-user-message-<?php echo $page['page_id']?>">
+                                <div class="col-md-8">
+                                    <a onclick="return feedShareToPage('<?php echo $feed['feed_id']?>', '<?php echo $page['page_id']?>')" href="">
+                                        <div class="media media-sm">
+                                            <div class="media-left">
+                                                <div class="media-object">
+                                                    <img src="<?php echo get_page_logo(200, $page) ?>"/>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h6 class="media-heading"><?php echo $page['page_title'] ?></h6>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a class="btn btn-primary btn-sm" onclick="return feedShareToPage('<?php echo $feed['feed_id']?>', '<?php echo $page['page_id']?>')" href=""><?php echo lang('share')?></a>
+                                </div>
+                            </div>
+                         <?php endforeach; ?>
+                     <?php else: ?>
+                         <div class="alert alert-info"><?php echo lang('page::no-page-found') ?></div>
+                     <?php endif ?>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>

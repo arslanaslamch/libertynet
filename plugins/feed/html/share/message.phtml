@@ -1,0 +1,57 @@
+ <div class="modal-form-header">
+     <button type="button" class="close" data-dismiss="modal">&times;</button>
+     <p class="modal-title"><?php echo lang('feed::send-feed-as-message') ?></p>
+ </div>
+ <div class="modal-body">
+     <div class="row">
+         <div class="col-md-12">
+             <?php echo view('feed::page', array('feed' => $feed))?>
+         </div>
+     </div>
+     <div class="row">
+         <div class="col-md-12 friends">
+             <div class="row">
+                 <div class="col-md-12">
+                     <div class="feed-search-friends-wrapper" style="margin: 14px">
+                         <input data-id="<?php echo $feed['feed_id']?>" class="search-input-message-<?php echo $feed['feed_id']?>" data-container="feed-send-message-modal" data-type="message-to-friends" onkeyup=" return shareFeedFriendSearch(this)" type="text" placeholder="<?php echo lang('search') ?>"/>
+                     </div>
+                 </div>
+             </div>
+             <div class="row online-lists slimscroll" data-height="280px">
+                 <div class="col-md-12 online-friend-list" id="friend-content-<?php echo $feed['feed_id']?>">
+                     <?php $users = array_merge(chat_get_onlines(), get_few_offlines()); ?>
+                     <?php if(count($users) > 0): ?>
+                         <?php foreach($users as $user): ?>
+                            <div class="row" id="feed-send-user-message-<?php echo $user['id']?>">
+                                <div class="col-md-8">
+                                    <a onclick="return feedSendMessage('<?php echo $feed['feed_id']?>', '<?php echo $user['id']?>')" href="">
+                                        <div class="media media-sm">
+                                            <div class="media-left">
+                                                <div class="media-object">
+                                                    <img src="<?php echo get_avatar(75, $user) ?>"/>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h6 class="media-heading"><?php echo get_user_name($user) ?></h6>
+                                                <?php if($user['online_time'] < time() - 50): ?>
+                                                    <span class="action"><?php echo timeAgoMin($user['online_time']) ?></span>
+                                                <?php else: ?>
+                                                    <span class="online-status <?php echo get_online_status_icon($user) ?>"></span>
+                                                <?php endif ?>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a class="btn btn-primary btn-sm" onclick="return feedSendMessage('<?php echo $feed['feed_id']?>', '<?php echo $user['id']?>')" href=""><?php echo lang('send')?></a>
+                                </div>
+                            </div>
+                         <?php endforeach; ?>
+                     <?php else: ?>
+                         <div><?php echo lang('chat::no-friends-online') ?></div>
+                     <?php endif ?>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>

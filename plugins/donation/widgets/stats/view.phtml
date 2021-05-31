@@ -1,0 +1,9 @@
+<div class="box">
+    <div class="title"><?php echo lang("donation::statistics");?></div>
+    <div class="box-content">
+        <?php $don = Donation::getInstance(); ?>
+        <p><span><b><?php echo lang("donation::on-going"); ?> : </b> </span> <span class="<?php echo  url('donations?type=all');; ?>"><a href=""><?php echo $don->getStats('ongoing');  ?></a></span></p>
+        <p><span><b><?php echo lang("donation::expired"); ?> : </b> </span> <span class=""><a href="<?php echo  url('donations?type=expired');; ?>"><?php echo $don->getStats('expired');  ?></a></span></p>
+        <p><span><b><?php echo lang("donation::closed"); ?> : </b> </span> <span class=""><a href="<?php echo  url('donations?type=closed');; ?>"><?php echo $don->getStats('closed');  ?></a></span></p>
+    </div>
+</div>

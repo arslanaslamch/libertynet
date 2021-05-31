@@ -1,0 +1,69 @@
+<div class="box">
+    <div class="title"><?php echo lang('sms::two-facto-authentication-settings') ?></div>
+    <div class="box-content">
+        <div class="alert alert-warning">
+            <?php echo lang("sms::two-facto-warnings"); ?>
+        </div>
+        <div style="padding:30px 10%">
+
+        <form action="" method="post" class="ajax-form" >
+            <?php if(getMyPhoneNumber()): ?>
+            <div class="field">
+                <div class="left">
+                    <label class="control-label"><?php echo lang('sms::two-authentication') ?></label><br/>
+                </div>
+                <div class="right">
+                    <label class="c-input c-radio">
+                        <input <?php echo (get_privacy('two_facto_auth', 0) == 1) ? "checked" : null ?> id="radio1" value="1" name="val[two_facto_auth]" type="radio">
+                        <span class="c-indicator"></span>
+                        <?php echo lang('enable') ?>
+                    </label>
+                    <label class="c-input c-radio">
+                        <input <?php echo (get_privacy('two_facto_auth', 0) == 0) ? "checked" : null ?> id="radio2" value="0" name="val[two_facto_auth]" type="radio">
+                        <span class="c-indicator"></span>
+                        <?php echo lang('disable') ?>
+                    </label>
+                </div>
+            </div>
+            <hr/>
+                <b style="color:#555"><?php echo lang("sms::2fa-method"); ?></b><br/>
+                <b style="color:#555"><?php echo lang("sms::phone-number") ?> : <?php echo getMyPhoneNumber(); ?></b>
+                <hr/>
+            <p><b><?php echo lang("sms::back-up-code"); ?></b></p>
+<!--                <p><?php /*echo lang("sms::you-have") */?><b><?php /*echo backupCodeLeft(); */?></b> <?php /*echo lang('sms::backups-code-remaining');  */?></p>
+-->            <p><button class="btn btn-secondary" onclick="return generate_backup_code()"><?php echo lang("sms::generate-codes"); ?></button></p>
+
+            <?php else: ?>
+                <div class="alert alert-info">
+                    <?php echo lang("sms::no-phone-number-is-connected"); ?>
+                </div>
+                <?php echo view('sms::update-general-phn'); ?>
+            <?php endif; ?>
+            <div class="submit">
+                <button class="btn btn-info"><?php echo lang('save') ?></button>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
+<div id="backupModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><?php echo lang('sms::backup-code') ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php echo lang('close') ?></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="indicator">
+                    <img src="<?php echo img('images/loading.gif') ?>"/>
+                </div>
+                <div class="code-lists">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

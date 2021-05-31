@@ -1,0 +1,44 @@
+<?php
+$fe = unix_aff_time($from,$end);
+$f = $fe['f'];
+$e = $fe['e'];
+$name =  (isset($name)) ? $name : null;
+$ptype = (isset($ptype)) ? $ptype : 'any';
+$status = (isset($status)) ? $status : 'any';
+$admin = ($admin == 'yes' && is_admin()) ?  'admin' : 'mine';
+//echo $name;die();
+$row = get_commission_tracking($f, $e, $name, $ptype, $status,$admin);
+?>
+<?php if($row->total):
+    $i = 1;
+    foreach($row->results() as $r):
+        $user = find_user($r['earned_from']);
+        ?>
+        <tr id="ern-<?php echo $r['id']; ?>">
+            <td><?php echo $r['id']; ?></td>
+            <td><?php echo date('F j, Y, g:i a',$r['time']); ?></td>
+            <td><a ajax="true" href="<?php echo profile_url(null,$user); ?>"><?php echo get_user_name($user); ?></a></td>
+            <td><?php echo ucwords(str_replace('-',' ',$r['ptype'])) ?></td>
+            <td><?php echo $r['amount']; ?></td>
+            <td><?php echo $r['percent'].'%'; ?></td>
+            <td><?php echo $r['com_amt']; ?></td>
+            <td><?php echo $r['com_points']; ?></td>
+            <td id="reason-<?php echo $r['id']; ?>"><?php echo $r['reason']; ?></td>
+            <td id="stat-<?php echo $r['id']; ?>"><?php echo get_aff_commission_status($r['status']); ?></td>
+
+            <?php if($admin == 'admin'): ?>
+                <?php if($r['status'] == '1'): ?>
+                    <td id="contain-<?php echo $r['id']; ?>">
+                        <a data-id="<?php echo $r['id']; ?>" data-method="app" class="earn-action btn-sm btn btn-success" href=""><?php echo lang("affliate::respond"); ?></a>
+                    </td>
+                <?php else: ?>
+                    <td> N/A </td>
+                <?php endif; ?>
+
+            <?php endif; ?>
+        </tr>
+    <?php endforeach;  endif; ?>
+
+<?php if(!$row->total): ?>
+    <tr><td colspan="10"><?php echo lang("affliate::no-record-found");?></td></tr>
+<?php endif; ?>

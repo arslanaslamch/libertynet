@@ -1,0 +1,57 @@
+<?php echo view("affliate::tm"); ?>
+
+<div class="box">
+    <div class="title"><?php echo lang("affliate::links"); ?></div>
+    <div class="box-content aff-content links-container">
+        <p><?php echo lang("affliate::promote-us-to-your-contacts-and-visitors"); ?></p>
+
+        <p>
+            <b><?php echo lang("affliate::create-custom-link");  ?> : </b>
+        </p>
+        <hr/>
+
+        <form onsubmit="return submit_af_link(this);" class="form" action="<?php echo url_to_pager("affliate-links"); ?>" method="post">
+            <div class="form-group">
+                <label><b><?php echo lang("affliate::destination-url"); ?></b></label>
+                <input class="form-control" name="val[dl]"  type="text" />
+                <span class="form-help"><?php echo lang("affliate::please-enter-link-within-this-domain"); ?></span>
+            </div>
+        </form>
+        <div class="form-group">
+            <p>
+                <label><b><?php echo lang("affliate::affilitate-link"); ?></b></label>
+            </p>
+            <div class="row">
+                <div class="col-sm-9">
+                    <input id="aff_l" class="form-control auto_l" name="val[aff_l]"  value=""  type="text" />
+                </div>
+                <div class="col-sm-3">
+                    <button data-id="aff_l" class="btn btn-block btn-info clipborad"><?php echo lang("affliate::copy-to-clipboard"); ?></button>
+                </div>
+            </div>
+        </div>
+        <p>
+            <?php echo lang("affliate::you-can-copy-the-reffered-url");?>
+        </p>
+        <p><b><?php echo lang("affliate::suggested-links"); ?></b></p>
+        <hr/>
+            <?php $i = 0; ?>
+            <?php foreach(suggested_links() as $k=>$sg):  ?>
+        <div class="row">
+                <div class="col-sm-12">
+                  <div class="col-sm-3">
+                      <?php echo $k; ?>
+                  </div>
+                  <div class="col-sm-6">
+                      <input id="data-id-<?php echo $i; ?>" class="form-control" value="<?php echo $sg ?>" />
+                  </div>
+                <div class="col-sm-3">
+                    <button data-id="data-id-<?php echo $i; ?>" class="btn btn-secondary clipborad"> <?php echo lang("affliate::copy-to-clipboard"); ?></button>
+                </div>
+              </div>
+        </div>
+                <br/>
+            <?php $i++; endforeach; ?>
+
+    </div>
+</div>

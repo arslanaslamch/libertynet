@@ -1,0 +1,17 @@
+<?php if(count($settings)): ?>
+	<li class="heading"><?php echo lang('settings') ?></li>
+	<?php foreach($settings as $key => $setting): ?>
+		<li>
+			<div class="body-col">
+				<div>
+					<a href="<?php echo url_to_pager('admin-settings-search').'?setting='.perfectSerialize($setting) ?>" class="notification-item">
+						<span class="accent"><?php echo lang($setting['title']) ?></span>
+					</a>
+				</div>
+				<div>
+					<span style="font-size: 10px"><?php echo ($setting['description']) ?></span>
+				</div>
+			</div>
+		</li>
+	<?php endforeach; ?>
+<?php endif; ?>

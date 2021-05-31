@@ -1,0 +1,187 @@
+<div id="" class="business business-content box">
+	<div class="row">
+		<div class="col-md-12" id="content">
+			<div class="_block_error">
+				<script type="text/javascript">$Behavior.pageSectionMenuRequest = function () {
+                    }</script>
+			</div>
+			<div class="public_message" id="public_message"></div>
+			<div id="pem">
+				<a href="#"></a>
+			</div>
+			<div id="core_js_messages">
+			</div>
+			<div class="_block_content">
+				<div class="_block location_2" data-location="2"></div>
+				<div id="prbusiness_comparebusiness">
+					<div class="prbusiness-hiddenblock">
+						<input type="hidden" value="comparebusiness" id="prbusiness_pagename" name="prbusiness_pagename">
+					</div>
+					<div class="prbusiness-comparebusiness-title">
+						Compare
+					</div>
+					<div class="prbusiness-comparebusiness-choose">
+						<div class="prbusiness-comparebusiness-choose-content">
+						</div>
+					</div>
+					<div class="prbusiness-compare-content">
+						<div class="prbusiness-compare-header">
+							<div style="height: 250px;">&nbsp;</div>
+							<div style="height: 31px;">Ratings</div>
+							<div style="height: 31px;">Members</div>
+							<div style="height: 31px;">Followers</div>
+							<div style="height: 31px;">Reviews</div>
+							<div class="prbusiness-compare-item-row-contact" style="height: 93px;">Contact Detail</div>
+							<div style="height: 100px;">Address</div>
+							<div style="height: 100px;">Operating Hours</div>
+							<div style="height: 151px;">Short Description</div>
+						</div>
+						<div class="prbusiness-compare-list-content">
+							<ul class="prbusiness-compare-list" style="width: 800px;">
+								<?php $business_ids = (explode(",", $businesses));
+								$number = count($business_ids);
+								?>
+								<?php for($i = 0; $i < $number; $i++) { ?>
+									<?php $business = business_get_claim_business($business_ids[$i]); ?>
+									<?php $business_image = $business['company_logo'] ? url_img($business['company_logo'], 920) : img('business::images/no_image.jpg', 920) ?>
+									<?php $description = trim($business['description']) == '' ? '<em>'.lang('business::no-description').'</em>' : $business['description'] ?>
+									<?php $price = is_numeric($business['price']) ? config('currency', '$').$business['price'] : $business['price']; ?>
+									<?php $price = !trim($business['price']) ? lang('business::free') : $price; ?>
+									<li id="prbusiness_compare_page_item_99">
+
+										<div class="prbusiness-compare-item-top-content" style="height: 250px;">
+											<div class="prbusiness-compare-item-image">
+												<a ajax="" href="<?php echo url_to_pager('business-page', array('slug' => $business['slug'])) ?>" style="background-image:url(<?php echo $business_image ?>);"></a>
+											</div>
+											<div class="prbusiness-compare-item-title">
+												<a ajax="" href="<?php echo url_to_pager('business-page', array('slug' => $business['slug'])) ?>"><?php echo ($business['business_name']) ? $business['business_name'] : lang('business::untitled-business') ?></a>
+											</div>
+											<div class="prbusiness-compare-item-close" onclick="prbusiness.removeItemOutCompareDashboardOnComparePage(99);">
+												<i class="fa fa-times"></i>
+											</div>
+										</div>
+
+										<div style="height: 31px;">
+
+											<div class="business-item-rating-review">
+												<?php echo lang('business::rating') ?>:
+												<?php $trate = get_business_rating($business['id']); ?>
+												<i class="ion-ios-star" style="color: <?php if($trate >= 1) {
+													echo 'gold';
+												} ?>"></i>
+												<i class="ion-ios-star" style="color: <?php if($trate >= 2) {
+													echo 'gold';
+												} ?>"></i>
+												<i class="ion-ios-star" style="color: <?php if($trate >= 3) {
+													echo 'gold';
+												} ?>"></i>
+												<i class="ion-ios-star" style="color: <?php if($trate >= 4) {
+													echo 'gold';
+												} ?>"></i>
+												<i class="ion-ios-star" style="color: <?php if($trate >= 5) {
+													echo 'gold';
+												} ?>"></i>(<?php echo ratingCounts($business['id']); ?>)
+											</div>
+										</div>
+
+										<div style="height: 31px;">
+											<span class="prbusiness-compare-item-stats"><a href="#" class="" data-id="6"><i class="ion-android-people"> </i> <span class="badge "><?php echo rowscount('business_member', $business['id']) ?></span></a></span> Member(s)
+										</div>
+
+										<div style="height: 31px;">
+											<span class="prbusiness-compare-item-stats"> <?php echo rowscount('business_member', $business['id']) ?></span> follower(s)
+										</div>
+
+										<div style="height: 31px;">
+											<span class="prbusiness-compare-item-stats"><a href="#" class="" data-id="6"> <i class="ion-android-create"> </i> <span class="badge "><?php echo reviewcounts($business['id']) ?></span></a></span> Review(s)
+										</div>
+
+										<div class="prbusiness-compare-item-row-contact" style="height: 93px;">
+											<div>
+												<a href="#" data-action="phone" data-id=<?php echo $business['slug'] ?> onclick=" return businessShowContact(this)">
+												<i class="ion-iphone"></i>
+												<span>Phone number</span>
+												</a>
+											</div>
+											<div>
+												<a href="mailto:<?php echo $business['company_email']; ?>">
+													<i class="ion-email"></i>
+													<span>Email</span>
+												</a>
+											</div>
+											<div>
+												<a href="#" data-action="website" data-id=<?php echo $business['slug'] ?> onclick=" return businessShowContact(this)">
+												<i class="ion-link"></i>
+												<span>Website</span>
+												</a>
+											</div>
+										</div>
+
+										<div style="height: 100px;"> <?php echo $business['company_address']; ?></div>
+
+										<div style="height: 100px;">
+											<ul>
+												<?php $hours = get_business_hour($business['id']); ?>
+												<?php if(count($hours->results()) > 0): ?>
+													<?php foreach($hours->results() as $hour): ?>
+														<li>
+															<?php echo $hour['day']; ?>|<?php echo $hour['open_time']; ?>-<?php echo $hour['close_time']; ?></li>
+													<?php endforeach ?>
+												<?php else: ?>
+													<li> Always opened</li>
+												<?php endif; ?>
+											</ul>
+										</div>
+
+
+										<div><?php echo trim($description); ?></div>
+									</li>
+								<?php } ?>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<script type="text/javascript">
+                    $Behavior.prbusiness_compareitem_more_script = function () {
+
+                        $('.prbusiness-compare-list').css('width', 200 * $('.prbusiness-compare-list > li').length);
+                        $(document).on('ready', function () {
+                            $('.prbusiness-compare-header > div').each(function () {
+                                var div_index = $(this).index();
+                                var max_height = $(this).outerHeight();
+
+                                $('.prbusiness-compare-list > li').each(function () {
+                                    if (max_height < $(this).children('div').eq(div_index).outerHeight()) {
+                                        max_height = $(this).children('div').eq(div_index).outerHeight();
+                                    }
+                                });
+
+                                $(this).css('height', max_height);
+                                $('.prbusiness-compare-list > li').each(function () {
+                                    $(this).children('div').eq(div_index).css('height', max_height);
+                                });
+                            });
+                        });
+                    };
+				</script>
+				<div class="_block location_4" data-location="4"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade modal-sm modal-business" tabindex="-1" role="dialog" id="contact-modal" aria-hidden="true" aria-labelledby="contact">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="modal-title">Contact</h4>
+				</div>
+				<div class="modal-body">
+					<span id="contact-body"></span>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+</div>

@@ -1,0 +1,84 @@
+<div class="n-product-box store-product-list-img" id="product-id-<?php echo $p['id']; ?>">
+    <div class="store-product-img" style="background-image:url(<?php echo getProductMainImage($p); ?>)">
+        <?php if($ds = product_has_discount($p)): ?>
+        <div class="discount-off"> <?php echo strtoupper(lang("store::save").' '.$ds);  ?> </div>
+        <?php endif; ?>
+        
+        <?php if ($p['featured']): ?>
+            <span class="featured-tag"><?php echo strtoupper(lang('featured')); ?></span>
+        <?php endif; ?>
+		
+		<?php if(isOutofStock($p)): ?>
+		<span class="box-out-of-stock"><?php echo lang("store::out-of-stock"); ?></span>
+		<?php endif;?>
+		<?php if($p['aff_link']): ?>
+            <a class="cover-pop-link" target="_blank"
+               href="<?php echo urldecode($p['aff_link']); ?>" >
+                <i class="ion-eye"></i>
+            </a>
+        <?php else: ?>
+            <a class="cover-pop-link product-quick-view" data-id="<?php echo $p['id']; ?>" data-name="<?php echo ucwords($p['name']) ?>"
+               href="#" >
+                <i class="ion-eye"></i>
+            </a>
+        <?php endif; ?>
+    </div>
+    <div class="hold-name">
+        <a <?php echo ($p['aff_link']) ? 'target="_blank"' : 'ajax="true"' ; ?>  href="<?php echo ($p['aff_link']) ? urldecode($p['aff_link']) :  url('store/product/' . $p['slug']); ?>">
+            <?php echo str_limit(ucwords($p['name']),100); ?>
+        </a>
+    </div>
+    <div class="hold-price">
+        <?php if((int)getProductPrice($p) != 0): ?>
+        <span class="is-a-price"><b>
+                <?php echo config('currency-sign', '$') .
+                    number_format((float)getProductPrice($p), '2', '.', ',');
+                ?>
+            </b>
+        </span>
+        <span class="is-a-store-owner">
+            <a ajax="true"
+               href="<?php echo url_to_pager('store-profile', array('slug' => $user['slug'])); ?>">
+                <?php echo $user['name']; ?>
+            </a>
+        </span>
+        <?php endif; ?>
+    </div>
+    <div class="hold-icons-store">
+        <a href=""
+           data-toggle="tooltip" title="<?php echo lang("store::add-to-wishlist") ?>"
+           data-id="<?php echo $p['id']; ?>" class="save-to-wishlist"
+           data-list="yes"
+        >
+            <i class="ion-heart"></i>
+        </a>
+		<?php if(isOutofStock($p)): ?>
+		<span title="<?php echo lang("store::out-of-stock"); ?>"><i class="ion-ios-cart"></i></span>
+		<?php else: ?>
+        <?php if(!$p['aff_link']): ?>
+		<a
+                href=""
+                class="add-to-cart"
+                data-list="yes"
+                data-sm="<?php echo lang('store::success-added-cart'); ?>"
+                data-toggle="tooltip" title="<?php echo lang("store::add-to-cart") ?>"
+                data-id="<?php echo $p['id']; ?>"
+        ><i class="ion-ios-cart"></i></a>
+
+		<?php endif; ?>
+		<?php endif; ?>
+
+		
+        <!--<a href="" title="<?php /*echo lang("store::compare"); */?>"
+           data-id="<?php /*echo $p['id']; */?>"
+           data-status="<?php /*echo (is_been_compared($p['id'])) ? '1' : '0' */?>"
+           class="compare-add-me <?php /*echo (is_been_compared($p['id'])) ? 'active' : '' */?>"
+        ><i class="ion-arrow-swap"></i></a>-->
+		<?php
+        if (plugin_loaded('booster') && config('allow-members-to-boost-product', true) && is_store_owner($p)) {
+            echo view('booster::marketplacebtn', array('type' => 'Product', 'product' => $p));
+        }
+        ?>
+        
+    </div>
+</div>

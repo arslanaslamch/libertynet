@@ -1,0 +1,27 @@
+<?php $current_page = Pager::getCurrentPage(); ?>
+<div class="box">
+	<div class="box-content">
+		<a href="<?php echo url_to_pager('business-create', array('appends' => '')) ?>" class="btn btn-info btn-block">
+			<?php echo lang('business::add-business') ?>
+		</a>
+	</div>
+	<ul class="menu">
+		<li class="<?php echo $current_page == 'all-business' && segment(1) != 'my-businesses' ? 'active' : '' ?>">
+			<a href="<?php echo url_to_pager('all-business', array('appends' => '')) ?>" ajax="true"><?php echo lang('business::businesses') ?></a>
+		</li>
+		<?php if(is_loggedIn()): ?>
+			<li class="<?php echo $current_page == 'all-business' && segment(1) == 'my-businesses' ? 'active' : '' ?>">
+				<a href="<?php echo url_to_pager('all-business', array('appends' => '/my-businesses')) ?>" ajax="true"><?php echo lang('business::my-business') ?></a>
+			</li>
+			<li class="<?php echo $current_page == 'business-followed' ? 'active' : '' ?>">
+				<a href="<?php echo url_to_pager('business-followed'); ?>" ajax="true"><?php echo lang('business::followed-businesses') ?></a>
+			</li>
+			<li class="<?php echo $current_page == 'business-favoured' ? 'active' : '' ?>">
+				<a href="<?php echo url_to_pager('business-favoured') ?>" ajax="true"><?php echo lang('business::favourite-businesses') ?></a>
+			</li>
+		<?php endif ?>
+		<li class="<?php echo $current_page == 'business-claim' ? 'active' : '' ?>">
+			<a href="<?php echo url_to_pager('business-claim') ?>" ajax="true"><?php echo lang('business::claimed-businesses') ?></a>
+		</li>
+	</ul>
+</div>

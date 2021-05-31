@@ -1,0 +1,227 @@
+<div class="box">
+    <div class="video-list">
+        <div class="head">
+            <div class="cover" style="background-image: url(<?php echo url_img(config('video-list-cover', 'plugins/video/images/cover.jpg'), 920); ?>)">
+                <div class="title"><?php echo lang('video::videos') ?></div>
+                <div class="actions">
+                    <?php if(user_has_permission('can-add-video')): ?>
+                        <a class="btn btn-block btn-info action-button" href="<?php url_to_pager('video-create') ?>" data-toggle="modal" data-target="#video-create-modal"><i class="ion-ios-plus-empty"></i> <?php echo lang('video::add-new-video') ?></a>
+                        <div id="video-create-modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog modal-lg1">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <form action="<?php echo url_to_pager('video-create') ?>" method="post" class="ajax-form" enctype="multipart/form-data">
+                                        <div class="modal-form-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <p class="modal-title pull-left"><?php echo lang('add-video') ?></p>
+                                        </div>
+                                        <div class="modal-body">
+                                            <?php $current = (config('video-upload', false) and config('video-encoder', 'none') != 'none') ? 'upload' : 'external'; ?>
+                                            <?php CSRFProtection::embed() ?>
+                                            <?php if(fire_hook('video.custom.display', true)): ?>
+                                                <div class="field">
+                                                    <div class="top">
+                                                        <label class="control-label"><?php echo lang('video::source') ?></label>
+                                                    </div>
+                                                    <div class="bottom">
+                                                        <div class="magic-select" data-name="val[source]" data-width="200px">
+                                                            <div class="magic-select-toggle">
+                                                                <?php if(config('video-upload', false) and config('video-encoder', 'none') != 'none'): ?>
+                                                                    <?php echo lang('video::upload-from-computer') ?>
+                                                                <?php else: ?>
+                                                                    <?php echo lang('video::external-link') ?>
+                                                                <?php endif ?>
+                                                            </div>
+                                                            <div class="magic-select-content">
+                                                                <?php if(config('video-upload', false) and config('video-encoder', 'none') != 'none'): ?>
+                                                                    <div class="magic-select-option video-source-option" data-value="upload">
+                                                                        <?php echo lang('video::upload-from-computer') ?>
+                                                                    </div>
+                                                                <?php endif ?>
+                                                                <div class="magic-select-option video-source-option" data-value="external">
+                                                                    <?php echo lang('video::external-link') ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="video-source-selector" style="margin-top: 20px">
+                                                            <?php if(config('video-upload', false)): ?>
+                                                                <div class=" source upload <?php echo ($current == 'external') ? 'video-hide-field' : null ?>">
+                                                                    <input type="file" id="file" name="video_file" class="vfile-input">
+                                                                </div>
+																 <input type="hidden" name="val[generated_thumbnail]" id="gfile-input" value="">
+                                                            <?php endif ?>
+                                                            <div class="source external <?php echo ($current == 'upload') ? 'video-hide-field' : null ?>">
+                                                                <div class="form-group ">
+                                                                    <input value="<?php echo input('val.link') ?>" name="val[link]" type="text" class="form-control">
+                                                                    <span class="help-block"><?php echo lang('video::external-url-info') ?></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="top">
+                                                        <label class="control-label"><?php echo lang('category') ?></label><br/>
+                                                    </div>
+                                                    <div class="bottom">
+                                                        <div class="magic-select" data-name="val[category_id]" data-width="200px">
+                                                            <?php $categories = get_video_categories(); ?>
+                                                            <div class="magic-select-toggle">
+                                                                <?php echo lang('select-category') ?>
+                                                            </div>
+                                                            <div class="magic-select-content">
+                                                                <?php foreach($categories as $category): ?>
+                                                                    <?php $sub_categories = get_video_parent_categories($category['id']) ?>
+                                                                    <?php if($sub_categories): ?>
+                                                                        <div class="magic-select-label"><?php echo lang($category['title']) ?></div>
+                                                                        <?php foreach($sub_categories as $cat): ?>
+                                                                            <div class="magic-select-option" data-value="<?php echo $cat['id'] ?>">
+                                                                                <?php echo lang($cat['title']) ?>
+                                                                            </div>
+                                                                        <?php endforeach ?>
+                                                                    <?php else: ?>
+                                                                        <div class="magic-select-option" data-value="<?php echo $category['id'] ?>">
+                                                                            <?php echo lang($category['title']) ?>
+                                                                        </div>
+                                                                    <?php endif ?>
+                                                                <?php endforeach ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="video-details-container <?php echo ($current == 'external') ? "video-hide-field" : null ?>">
+                                                    <div class="field">
+                                                        <div class="top">
+                                                            <label class="control-label"><?php echo lang('video::title') ?></label>
+                                                        </div>
+                                                        <div class="bottom">
+                                                            <input value="<?php echo input('val.title') ?>" type="text" name="val[title]" class="form-control"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="field">
+                                                        <div class="top">
+                                                            <label class="control-label"><?php echo lang('video::description') ?></label>
+                                                        </div>
+                                                        <div class="bottom">
+                                                            <textarea name="val[description]" class="form-control"><?php echo input('val.description') ?></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endif ?>
+                                            <?php $sql = fire_hook('video.create.extend'); ?>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('host') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <div class="magic-select" data-name="val[entity]" data-width="300px">
+                                                        <div class="magic-select-toggle">
+                                                            <img src="<?php echo get_avatar(75) ?>" class="thumb"/>
+                                                            <?php echo get_user_name(); ?>
+                                                        </div>
+                                                        <div class="magic-select-content slimscroll" data-height="200px">
+                                                            <div class="magic-select-option" data-value="user-<?php echo get_userid() ?>">
+                                                                <img src="<?php echo get_avatar(75) ?>" class="thumb"/>
+                                                                <?php echo get_user_name(); ?>
+                                                            </div>
+                                                            <?php fire_hook('entity.select.list') ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('privacy') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <?php fire_hook('privacy.select'); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="submit">
+                                                <button class="btn btn-info action-button"><?php echo lang('video::add-video') ?></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif ?>
+                </div>
+                <div class="links">
+                    <div class="link <?php echo input('type') ? '' : 'active' ?>">
+                        <a ajax="true" href="<?php echo url('videos') ?>"><?php echo lang('video::videos') ?></a>
+                    </div>
+                    <?php if(is_loggedIn()): ?>
+                        <div class="link <?php echo input('type') === 'mine' ? 'active' : '' ?>">
+                            <a ajax="true" href="<?php echo url('videos?type=mine') ?>"><?php echo lang('video::my-videos') ?></a>
+                        </div>
+                    <?php endif; ?>
+                    <?php foreach(get_menus('videos-menu') as $menu): ?>
+                        <li>
+                            <a ajax="true" href="<?php echo $menu->link ?>"><?php echo lang($menu->title) ?></a>
+                        </li>
+                    <?php endforeach ?>
+                </div>
+            </div>
+            <div class="filters global-filter-container filter-pane" data-url="<?php echo url('videos') ?>">
+                <div class="left">
+                    <i class="icon ion-android-options"></i>
+                    <select id="video-category-list" onchange="return run_global_filter()" data-name="category" class="c-select filter-input">
+                        <option <?php echo (input('category', 'all') == 'all') ? 'selected' : null ?> value="all"><?php echo lang('video::all-categories') ?></option>
+                        <?php foreach(get_video_categories() as $category): ?>
+                            <?php $subCategories = get_video_parent_categories($category['id']) ?>
+                            <?php if($subCategories): ?>
+                                <optgroup label="<?php echo lang($category['title']) ?>">
+                                    <?php foreach($subCategories as $cat): ?>
+                                        <option <?php echo (input('category', 'all') == $cat['id']) ? 'selected' : null ?> value="<?php echo $cat['id'] ?>"><?php echo lang($cat['title']) ?></option>
+                                    <?php endforeach ?>
+                                </optgroup>
+                            <?php else: ?>
+                                <option <?php echo (input('category', 'all') == $category['id']) ? 'selected' : null ?> value="<?php echo $category['id'] ?>"><?php echo lang($category['title']) ?></option>
+                            <?php endif ?>
+                        <?php endforeach ?>
+                    </select>
+                    <select id="video-filter-select" onchange="return run_global_filter()" data-name="filter" class="c-select filter-input">
+                        <option value="all"><?php echo lang('all') ?></option>
+                        <option <?php echo (input('filter') == 'top') ? 'selected' : null ?> value="top"><?php echo lang('video::top') ?></option>
+                        <option <?php echo (input('filter') == 'featured') ? 'selected' : null ?> value="featured"><?php echo lang('video::featured') ?></option>
+                    </select>
+                </div>
+                <div class="right">
+                    <form id="video-list-search" method="post" onsubmit="return run_global_filter()" action="" class="search form-inline list-search">
+                        <?php CSRFProtection::embed() ?>
+                        <input type="hidden" class="filter-input form-control" data-name="type" value="<?php echo input('type', 'browse') ?>"/>
+                        <input type="search" value="<?php echo input('term') ?>" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>" />
+                        <button type="submit">
+                            <i class="search-icon icon ion-ios-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="listings">
+                <div class="listing row">
+                    <?php foreach($videos->results() as $video): ?>
+                        <div class="col-md-6">
+                            <?php echo view('video::video', array('video' => $video)) ?>
+                        </div>
+                    <?php endforeach ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-content">
+        <?php if($videos->total): ?>
+            <?php $appends = array(); ?>
+            <?php if(input('category')) $appends['category'] = input('category'); ?>
+            <?php if(input('term')) $appends['term'] = input('term'); ?>
+            <?php if(input('type')) $appends['type'] = input('type'); ?>
+            <?php echo $videos->append($appends)->links(); ?>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang('video::no-videos-found-here') ?></div>
+        <?php endif ?>
+    </div>
+</div>

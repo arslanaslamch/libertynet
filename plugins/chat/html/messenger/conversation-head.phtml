@@ -1,0 +1,36 @@
+<div id="message-to-lists" class="create toggle-target <?php echo $cid == 'new' ? 'toggle-target-active' : '' ?> message-to-container">
+    <span class="users-list">
+        <?php if ($user): ?>
+            <div class="user" id="message-user-<?php echo $user['id'] ?>"><?php echo get_user_name($user) ?>
+                <input type="hidden" name="val[user][]" value="<?php echo $user['id'] ?>" />
+                <a href="#!"><i class="ion-close"></i></a>
+            </div>
+        <?php endif ?>
+    </span>
+    <label class="search-label"><?php echo lang('chat::to') ?>:</label>
+    <input type="text" class="search-input user-tag-input" placeholder="<?php echo lang('chat::type-name-person') ?>" data-target="#message-user-suggestion" <?php echo config('relationship-method', 3) == 1 ? '' : 'data-friend-only="true"' ?> />
+    <div class="user-suggestion-list" id="message-user-suggestion"></div>
+</div>
+<div class="dashboard">
+    <?php if ($conversation): ?>
+        <a href="#!" class="conversations-list-toggle-button toggle-button" data-toggle-target-selector=".conversations-list">
+            <i class="ion-android-menu"></i>
+        </a>
+        <div class="name messages-pane-title"><?php echo $conversation['title'] ?></div>
+        <?php if ($conversation['type'] == 'single'): ?>
+            <?php $user_id = $conversation['user1'] == get_userid() ? $conversation['user2'] : $conversation['user1']; $user = find_user($user_id) ?>
+            <div class="time timeago user-online-time <?php echo time() - $user['online_time'] < 2000 ? 'active' : '' ?>" data-user-id="<?php echo $user_id ?>" title="<?php echo date('c', $user['online_time']) ?>" data-active-text="<?php echo lang('active-now') ?>"><?php echo date('c', $user['online_time']) ?></div>
+        <?php else: ?>
+            <div class="time chat-conversation-last-update-time" data-cid="<?php echo $conversation['cid'] ?>"><?php echo str_time($conversation['last_update_time']) ?></div>
+        <?php endif ?>
+        <div class="actions">
+            <?php $user_id = $conversation['user1'] == get_userid() ? $conversation['user2'] : $conversation['user1']; ?>
+            <?php if ($conversation['type'] == 'single'): ?>
+                <?php echo fire_hook('mediachat.button.call', null, array($user_id)); ?>
+            <?php endif ?>
+            <a href="#!" class="toggle-button action info-button" data-toggle-target-selector=".conversation > form > .messaging">
+                <i class="ion-ios-information"></i>
+            </a>
+        </div>
+    <?php endif ?>
+</div>

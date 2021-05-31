@@ -1,0 +1,79 @@
+<div class="livestream-edit">
+    <?php if($message): ?>
+        <div class="alert alert-danger"><?php echo $message ?></div>
+    <?php endif ?>
+    <form action="" method="post" enctype="multipart/form-data" class="ajax-form">
+        <?php CSRFProtection::embed() ?>
+        <div class="field">
+            <div class="left">
+                <label class="control-label"><?php echo lang('category') ?></label>
+            </div>
+            <div class="right">
+                <div class="magic-select" data-name="livestream[category_id]" data-width="200px">
+                    <input type="hidden" name="livestream[category_id]" value="<?php echo $livestream['category_id'] ?>" class="magic-select-value" />
+                    <?php $categories = Livestream::getCategories(); ?>
+                    <?php $category = Livestream::getCategory($livestream['category_id']); ?>
+                    <div class="magic-select-toggle">
+                        <?php echo lang($category['title']) ?>
+                    </div>
+                    <div class="magic-select-content">
+                        <?php foreach($categories as $category): ?>
+                            <?php $sub_categories = Livestream::getCategories($category['id']) ?>
+                            <?php if($sub_categories): ?>
+                                <div class="magic-select-label"><?php echo lang($category['title']) ?></div>
+                                <?php foreach($sub_categories as $cat): ?>
+                                    <div class="magic-select-option" data-value="<?php echo $cat['id'] ?>">
+                                        <?php echo lang($cat['title']) ?>
+                                    </div>
+                                <?php endforeach ?>
+                            <?php else: ?>
+                                <div class="magic-select-option" data-value="<?php echo $category['id'] ?>">
+                                    <?php echo lang($category['title']) ?>
+                                </div>
+                            <?php endif ?>
+                        <?php endforeach ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <div class="left">
+                <label class="control-label"><?php echo lang('livestream::title') ?></label>
+            </div>
+            <div class="right">
+                <input value="<?php echo $livestream['title'] ?>" type="text" name="livestream[title]" class="form-control"/>
+            </div>
+        </div>
+        <div class="field">
+            <div class="left">
+                <label class="control-label"><?php echo lang('livestream::description') ?></label>
+            </div>
+            <div class="right">
+                <textarea name="livestream[description]" class="form-control auto-grow-input"><?php echo $livestream['description'] ?></textarea>
+            </div>
+        </div>
+        <div class="field">
+            <div class="left">
+                <label for="livestream[image]" class="control-label"><?php echo lang('livestream::image') ?></label>
+            </div>
+            <div class="right">
+                <div class="magic-input-image-preview" <?php echo $livestream['image'] ? 'data-image="'.url_img($livestream['image'], 200).'"' : '' ?> data-name="image">
+                    <span class="dimension"></span>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <div class="left">
+                <label class="control-label"><?php echo lang('privacy') ?></label>
+            </div>
+            <div class="right">
+                <?php $default = $livestream['privacy']; ?>
+                <?php fire_hook('privacy.select', 'relationship', array($default)); ?>
+            </div>
+        </div>
+        <div class="submit">
+            <input type="hidden" name="livestream[id]" value="<?php echo $livestream['id'] ?>" />
+            <button class="btn btn-info"><?php echo lang('livestream::save-livestream') ?></button>
+        </div>
+    </form>
+</div>

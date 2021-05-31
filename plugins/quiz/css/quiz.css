@@ -1,0 +1,450 @@
+.quiz-list > .head .cover {
+    position: relative;
+    height: 300px;
+    border-radius: 10px 10px 0 0;
+    background-size: cover;
+    background-position: center;
+}
+.quiz-list > .head .cover > .title {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, .5);
+    font-size: 40px;
+    color: #FFFFFF;
+}
+.quiz-list > .head > .filters {
+    padding: 10px;
+    background-color: #F5F5F5;
+    font-size: 0;
+}
+.quiz-list > .head > .filters > * {
+    font-size: initial;
+    vertical-align: middle;
+    display: inline-block;
+}
+.quiz-list > .head > .filters > .left {
+    width: calc(100% - 300px);
+}
+.quiz-list > .head > .filters > .left .icon {
+    padding: 0 10px;
+    font-size: 25px;
+}
+.quiz-list > .head > .filters > .left select {
+    margin: 0 10px;
+    border: solid 1px rgba(0, 0, 0, 0.31);
+    border-radius: 4px;
+    padding: 5px 32px 5px 10px;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 15px;
+    vertical-align: 3px;
+}
+.quiz-list > .head > .filters > .right {
+    width: 300px;
+    text-align: right;
+}
+.quiz-list > .head > .filters > .right .search {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    padding: 0;
+    background-color: transparent;
+    display: inline-block;
+}
+.quiz-list > .head > .filters > .right .search input[type="search"] {
+	width: 100%;
+    height: 39px;
+    border: none;
+    border-radius: 10px;
+    background-color: #FFFFFF !important;
+    padding-right: 50px;
+}
+.quiz-list > .head > .filters > .right .search button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    border-radius: 0 10px 10px 0;
+    padding: 4px 14px;
+    background-color: #EEEEEE;
+    font-size: 20px;
+    color: var(--color-primary);
+    line-height: 30px;
+}
+.quiz-list > .body {
+    font-size: 0;
+}
+.quiz-list > .body > * {
+    padding: 20px 10px;
+    font-size: initial;
+    vertical-align: top;
+    display: inline-block;
+}
+.quiz-list > .body > .listings .listing > .title {
+    font-weight: bold;
+}
+.quiz-list > .body > .listings .listing .item {
+    position: relative;
+    margin: 20px 0;
+    border-radius: 0px;
+    padding: 0 10px 10px 10px;
+    font-size: 0;
+    box-shadow:  0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    transition: box-shadow .2s linear;
+}
+.quiz-list > .body > .listings .listing .item > * {
+    font-size: initial;
+    vertical-align: top;
+}
+.quiz-list > .body > .listings .listing .item .top .time {
+    width: 100%;
+    padding: 4px 8px 0px 8px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+.quiz-list > .body > .listings .listing .item .thumb {
+    position: relative;
+    width: 300px;
+    max-width: calc(100% - 400px);
+    height: 200px;
+    display: inline-block;
+}
+.quiz-list > .body > .listings .listing .item .thumb .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.quiz-list > .body > .listings .listing .item .thumb .featured {
+    position: absolute;
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+    font-size: 18px;
+    top: -7px;
+    right: 15px;
+    width: 33px;
+    height: 33px;
+    line-height: 35px;
+    text-align: center;
+    z-index: 999;
+}
+.quiz-list > .body > .listings .listing .item .thumb .featured:after,
+.quiz-list > .body > .listings .listing .item .thumb .featured:before {
+    content: '';
+    border: 20px solid transparent;
+    position: absolute;
+    z-index: -1;
+    top: 12px;
+}
+.quiz-list > .body > .listings .listing .item .thumb .featured:before {
+    left: 0;
+    border-left-color: var(--color-primary);
+}
+.quiz-list > .body > .listings .listing .item .thumb .featured:after {
+    right: 0;
+    border-right-color: var(--color-primary);
+}
+.quiz-list > .body > .listings .listing .item .thumb .featured i:after {
+    content: '';
+    position: absolute;
+    border-left: 5px solid #b75a5a;
+    border-top: 8px solid transparent;
+    top: 0px;
+    right: -5px;
+}
+.quiz-list > .body > .listings .listing .item .details {
+    position: relative;
+    width: calc(100% - 300px);
+    min-width: 400px;
+    height: 200px;
+    padding: 0 10px;
+    overflow: hidden;
+    display: inline-block;
+}
+.quiz-list > .body > .listings .listing .item .details .title {
+    font-weight: bold;
+    font-size: 24px;
+}
+.quiz-list > .body > .listings .listing .item .details .description {
+    border-radius: 0 0 4px 4px;
+    margin: 0;
+    padding: 4px 0;
+    font-size: 18px;
+}
+.quiz-list > .body > .listings .listing .item .details .stat {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    border-top: solid 1px #CCC;
+    padding: 10px 0 0 10px;
+    font-size: 0
+}
+.quiz-list > .body > .listings .listing .item .details .stat > *,
+.quiz-list > .body > .listings .listing .item .details .stat > * > * {
+    color: #888888;
+    font-size: 14px;
+    line-height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+}
+.quiz-list > .body > .listings .listing .item .details .stat > .left > * {
+    margin-left: 4px;
+    float: none;
+}
+.quiz-list > .body > .listings .listing .item .details .stat > .left {
+    width: 65%;
+}
+
+.quiz-list > .body > .listings .listing .item .details .stat .user .avatar {
+    margin-left: 0;
+    margin-right: 6px;
+}
+.quiz-list > .body > .listings .listing .item .details .stat .user .avatar {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.quiz-list > .body > .listings .listing .item .details .stat .user .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.quiz-list > .body > .listings .listing .item .details .stat .user .name {
+    color: #000000;
+    display: inline-block;
+}
+
+.quiz-list > .body > .listings .listing .item .details .stat > .right {
+    width: 35%;
+    text-align: right;
+}
+.quiz-list > .body > .listings .listing .item .details .stat .actions .view {
+    border: solid 1px #CCCCCC;
+    border-radius: 2px;
+    padding: 1px 3px;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--color-header-bg);
+}
+@media (max-width: 1570px) {
+    .quiz-list > .head > .filters > .left {
+        width: 100%;
+    }
+
+    .quiz-list > .head > .filters > .left .icon {
+        display: none;
+    }
+
+    .quiz-list > .head > .filters > .left select {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .quiz-list > .head > .filters > .right {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 10px;
+    }
+
+    .quiz-list > .head > .filters > .right .search {
+        max-width: 100%;
+    }
+
+    .quiz-list > .body > .listings .listing .item .thumb {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .quiz-list > .body > .listings .listing .item .details {
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+    }
+
+    .quiz-list > .body > .listings .listing .item .details .stat {
+        position: static;
+    }
+
+    .quiz-list > .body > .listings .listing .item .details .stat > * {
+        width: 100% !important;
+        text-align: center;
+    }
+
+    .quiz-list > .body > .listings .listing .item .details .stat > .right {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .quiz-list > .body > .listings .listing .item .details .stat .actions .view {
+        padding: 6px 10px;
+        font-size: 16px;
+    }
+}
+.right-answer-b {
+	padding: 10px 10px 0px 10px;
+}
+.right-answer-b label {
+	color: #656363;
+    font-weight: normal;
+    padding: 5px 5px 0px 5px;
+}
+.remove-answer {
+	float: right;
+    color: #3ba8b3;
+    font-size: 13px;
+}
+.remove-answer:hover {
+	color: #3ba8b3;
+}
+.question-box .title {
+	padding: 20px 15px;
+    background: transparent;
+	margin: 0;
+    border-right: none;
+	border-bottom: 1px solid #F1F1F1;
+    border-left: none;
+	font-size: 14px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.add-new-answer {
+    color: #3ba8b3;
+    font-size: 13px;
+}
+.remove-answer:hover {
+	color: #3ba8b3;
+}
+.question-c {
+	padding-top: 9px;
+}
+.each-quiz-question-c {
+	border-top: 1px solid #F1F1F1;
+}
+.e-qz-answers {
+	padding: 10px 4rem 10px 4rem;
+}
+.e-qz-answers .title {
+	font-size: 16px;
+	padding: 5px 0px;
+    font-weight: 600;
+}
+.e-qz-answer {
+	border: 2px solid #F1F1F1;
+	padding: 6px;
+	margin-bottom: 6px;
+}
+.e-qz-answer i {
+	float: right;
+    padding: 5px;
+	color: green;
+}
+.quiz-disabled {
+	cursor: no-drop;
+}
+.quiz-answer-field {
+    text-align: left;
+	padding: 7px 0;
+}
+.quiz-a-container {
+    display: inline-block;
+}
+.quiz-a-container span {
+    display: block;
+}
+.quiz-q-title {
+    color: dimgrey;
+    font-weight: bold;
+    font-size: 13px;
+}
+.quiz-a-input {
+    margin-right: 0.4rem;
+}
+.quiz-a-container b {
+	padding-right: 12px;
+}
+.each-quiz-answer {
+	padding: 3px 0;
+}
+.quiz-result {
+	text-align: center;
+}
+.quiz-score-score {
+	font-size: 15px;
+}
+.admincp-add-questions {
+	text-align: center;
+}
+.admincp-add-questions .action {
+	padding: 15px;
+}
+.wrapper .question-c {
+	padding: 20px;
+}
+.quiz-result {
+	text-align: center!important;
+}
+.quiz-pass {
+	color: green;
+	font-weight: 500;
+}
+.quiz-fail {
+	color: red;
+	font-weight: 500;
+}
+.question-c .submit {
+	padding-top: 9px;
+}
+@media (max-width: 768px) {
+    .quiz-wrap {
+        text-align: center;
+    }
+  
+}
+.quiz-desc-c textarea {
+	width: 100%;
+    border: 1px solid #e5e5e5;
+}
+.view-r-b {
+	padding: 3px 16px;
+	font-weight: bold;
+	display: inline-block;
+	border-radius: 7px !important;
+}
+.quiz-partcp .action {
+	top: 25px;
+}
+.quiz-p-lst .quiz-q-title b {
+	padding-right: 5px;
+}
+.participant-count {
+	color: grey
+}
+.participant-count strong {
+	padding-right: 5px;
+}
+.count-participants b {
+	padding-left: 5px;
+}
+@media (max-width: 425px) {
+    .quiz .action-button {
+        padding: 5px 5px!important;
+		font-size: 11px!important;
+    }
+  
+}
+@media (max-width: 320px) {
+    .quiz .action-button {
+        padding: 5px 4px!important;
+		font-size: 10px!important;
+    }
+	.answers-q-t {
+		font-size: 11px;
+	}
+  
+}

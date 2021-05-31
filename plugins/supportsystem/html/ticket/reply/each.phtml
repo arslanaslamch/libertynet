@@ -1,0 +1,46 @@
+<?php
+$user = find_user($reply['user_id']);
+$title = $reply['user_id'] == get_userid() ? lang("supportsystem::you") : get_user_name($user);
+$url = profile_url(null,$user);
+$avatar = get_avatar(200, $user);
+$time = $reply['time'];
+$files= ($reply['files']) ? perfectUnserialize($reply['files']) : '';
+$sub_title = isset($start) ? lang("supportsystem::started-conversation") : lang("supportsystem::replied");
+$content_type = isset($start) ? 'ticket' : 'reply';
+?>
+<div class="media-widget  border-bottom ss-ticket-reply">
+    <div class="item">
+        <div class="left">
+            <a ajax="true" href="<?php echo $url; ?>">
+                <div class="thumb"
+                     style="background: url('<?php echo $avatar; ?>') center; background-size: cover;"></div>
+            </a>
+        </div>
+        <div class="right">
+            <span class="ss-time-created"><?php echo date('F d, G:i',$time) ?></span>
+            <span class="h6 mb-2 d-block"><?php echo ucfirst($title) ?> <span class="text-secondary"><?php echo $sub_title ?></span></span>
+            <span class=""><?php ss_print($reply["content"]); ?></span>
+
+            <?php if ($files) : ?>
+                <div class="ss-attached-files">
+                    <?php foreach ($files as $id => $file) : ?>
+                        <?php if (isset($file['extension'])) : ?>
+                        <a href="<?php echo url_to_pager('supportsystem-download-page') ?>?ctype=<?php echo $content_type; ?>&rid=<?php echo $reply['id'] ?>&file_id=<?php echo $id ?>">
+                            <div class="media media-sm">
+                                <div class="media-left">
+                                    <div>
+                                        <img src="<?php echo img('images/file-icons/' . $file['extension'] . '.png') ?>" />
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h6 class="media-heading"><?php echo sanitizeText($file['name']) ?></h6>
+                                </div>
+                            </div>
+                        </a>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                </div>
+            <?php endif ?>
+        </div>
+    </div>
+</div>

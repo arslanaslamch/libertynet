@@ -1,0 +1,218 @@
+.sharer.share {
+    width: 500px;
+    padding: 8px;
+}
+
+.sharer.share .post {
+    border: 1px solid #EEEEEE;
+    border-bottom: none;
+}
+
+.sharer.share .post .media-object {
+    max-width: 50px;
+}
+
+.sharer.share .post .media-heading {
+    font-size: 1em;
+}
+
+.sharer.share .post textarea {
+    width: 100%;
+    height: 29px;
+    border: none;
+    background-color: transparent;
+}
+
+.sharer.share .dashboard {
+    border: 1px solid #EEEEEE;
+    border-top: none;
+    padding: 8px;
+}
+
+.sharer.share-site {
+    position: fixed;
+    top: 25%;
+    left: 0px;
+    z-index: 999;
+}
+
+.sharer.share-site.medium .share-button {
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 24px;
+}
+
+.sharer.share-site.large .share-button {
+    min-width: 80px;
+    min-height: 80px;
+    font-size: 32px;
+}
+
+.sharer.share-site .share-button {
+    min-width: 40px;
+    min-height: 40px;
+    border: none;
+    color: #FFFFFF;
+    font-size: 24px;
+    display: block;
+}
+
+@media (max-width: 700px) {
+    .sharer.share-site {
+        display: none;
+    }
+}
+
+.sharer.share-site .ion-social-facebook {
+    background-color: #2274B9;
+}
+
+.sharer.share-site .ion-social-twitter {
+    background-color: #4D9ED8;
+}
+
+.sharer.share-site .fa.fa-google {
+    background-color: #D73D32;
+}
+
+.sharer.share-site .ion-social-linkedin {
+    background-color: #2274B9;
+}
+
+.sharer.share-site .ion-social-whatsapp {
+    background-color: #00E676;
+}
+
+.sharer.share-site .ion-social-pinterest {
+    background-color: #BC0D1E;
+}
+
+.sharer.share-site .fa-paper-plane {
+    background-color: #27A7E5;
+}
+
+.sharer.share-site .ion-email {
+    background-color: #146428;
+}
+
+.sharer.share-site .ion-share {
+    background-color: #2274B9;
+}
+
+.sharer.share-link {
+    display: inline-block;
+}
+
+.sharer.share-link a {
+    width: 33px;
+    display: inline-block !important;
+    border-radius: 2px;
+    margin: 2px;
+    padding: 0px 6px !important;
+    background-color: #CCCCCC;
+    font-size: 24px !important;
+    line-height: 24px !important;
+    color: inherit !important;
+}
+
+.sharer.share-link a:hover {
+    border-radius: 2px !important;
+}
+
+.sharer.share-link .ion-social-facebook:hover {
+    color: #FFFFFF !important;
+    background-color: #2274B9 !important;
+}
+
+.sharer.share-link .ion-social-twitter:hover {
+    color: #FFFFFF !important;
+    background-color: #19B5FE !important;
+}
+
+.sharer.share-link .fa.fa-google:hover {
+    color: #FFFFFF !important;
+    background-color: #D91E18 !important;
+}
+
+.sharer.share-link .ion-social-linkedin:hover {
+    color: #FFFFFF !important;
+    background-color: #19B5FE !important;
+}
+
+.sharer.share-link .ion-social-whatsapp:hover {
+    color: #FFFFFF !important;
+    background-color: #00E676 !important;
+}
+
+.sharer.share-link .ion-social-pinterest:hover {
+    color: #FFFFFF !important;
+    background-color: #BC0D1E !important;
+}
+
+.sharer.share-link .ion-android-send:hover {
+    color: #FFFFFF !important;
+    background-color: #27A7E5 !important;
+}
+
+.sharer.share-link .ion-email:hover {
+    color: #FFFFFF !important;
+    background-color: #146428 !important;
+}
+
+.sharer.share-link .ion-share:hover {
+    color: #FFFFFF !important;
+    background-color: #2274B9 !important;
+}
+
+.sharer.share-link .dropdown-toggle {
+    padding: 0px 8px 2px 8px;
+}
+
+.sharer.share-link .dropdown-menu {
+    min-width: auto;
+    width: 128px;
+    padding: 4px;
+    text-align: center;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+.sharer.share-link .dropdown-toggle:after {
+    display: none;
+}
+
+.sharer.share-link-list .ion-social-facebook:before {
+    color: #2274B9 !important;
+}
+
+.sharer.share-link-list .ion-social-twitter:before {
+    color: #19B5FE !important;
+}
+
+.sharer.share-link-list .fa.fa-google:before {
+    color: #D91E18 !important;
+}
+
+.sharer.share-link-list .ion-social-linkedin:before {
+    color: #19B5FE !important;
+}
+
+.sharer.share-link-list .ion-social-whatsapp:before {
+    color: #00E676 !important;
+}
+
+.sharer.share-link-list .ion-social-pinterest:before {
+    color: #BC0D1E !important;
+}
+
+.sharer.share-link-list .ion-android-send:before {
+    color: #27A7E5 !important;
+}
+
+.sharer.share-link-list .ion-email:before {
+    color: #146428 !important;
+}
+
+.sharer.share-link-list .ion-share:before {
+    color: #2274B9 !important;
+}

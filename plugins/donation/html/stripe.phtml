@@ -1,0 +1,38 @@
+<!--<div class="box" style="text-align:center">
+    <div class="box-content">
+    <div class="title"><?php /*echo lang("donation::donate-with-stripe"); */?></div>
+        <div id="donation-stripe" style="">
+            <form action="<?php /*echo url_to_pager("donate-stripe-verify"); */?>" method="POST">
+                <?php /*CSRFProtection::embed() */?>
+                <input type="hidden" name="amt" id="samt" value="<?php /*echo $amount */?>" />
+                <input type="hidden" name="did" id="samt" value="<?php /*echo $donation['id']; */?>" />
+                <script
+                    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-label="<?php /*echo lang("donation::donate");*/?>"
+                    data-key="<?php /*echo $settings['publishable_key']*/?>"
+                    data-name="<?php /*echo $donation['title']; */?>"
+                    data-description="<?php /*echo $donation['description']; */?>"
+                    data-currency="<?php /*echo config('default-currency') */?>"
+                    data-amount="<?php /*echo (int) $amount * 100; */?>">
+                </script>
+            </form>
+        </div>
+    </div>
+</div>-->
+
+<form action="<?php echo url_to_pager("donate-stripe-verify"); ?>" method="POST">
+    <?php CSRFProtection::embed() ?>
+    <input type="hidden" name="amt" id="samt" value="<?php echo $amount ?>"/>
+    <input type="hidden" name="did" value="<?php echo $donation['id']; ?>"/>
+    <script
+        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+        data-label="<?php echo lang("donation::donate"); ?>"
+        data-key="<?php echo $settings['publishable_key'] ?>"
+        data-name="<?php echo $donation['title']; ?>"
+        data-description="<?php echo $donation['description']; ?>"
+        data-currency="<?php echo config('default-currency') ?>"
+        data-amount="<?php echo (int)$amount * 100; ?>">
+    </script>
+</form>
+
+

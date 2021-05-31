@@ -1,0 +1,38 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo "import content"; ?>
+
+    </div>
+    <div class="wrapper-content">
+        <?php if($message): ?>
+        <div class="alert alert-info">
+            <?php echo $message; ?>
+        </div>
+        <?php endif; ?>
+        <div class="row">
+            <div class="col-sm-4">
+                <a href="<?php echo url_to_pager("imports-demos") . '?action=categories&type=add'; ?>"
+                   class="btn btn-lg btn-block btn-info">Import Categories</a>
+            </div>
+            <div class="col-4"></div>
+            <div class="col-sm-4">
+                <a href="<?php echo url_to_pager("imports-demos") . '?action=categories&type=delete'; ?>"
+                   class="admin-confirm btn btn-lg btn-block btn-danger">Delete Imported Categories</a>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-sm-4">
+                <a href="<?php echo url_to_pager("imports-demos") . '?action=slides&type=add'; ?>"
+                   class="btn btn-lg btn-block btn-secondary">Import Slides</a>
+            </div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                <a href="<?php echo url_to_pager("imports-demos") . '?action=slides&type=delete'; ?>"
+                   class="admin-confirm btn btn-lg btn-block btn-danger">Delete Import Slides</a>
+            </div>
+        </div>
+        <br/>
+
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="box">
+    <div class="title"><?php echo lang("onlinetv::pay-for-tv") ?></div>
+    <div class="box-content">
+        <p><b> <?php echo lang("onlinetv::tv-name"); ?> </b></p>
+        <p><?php echo ucfirst($tv['name']); ?></p>
+        <p><b> <?php echo lang("course::description"); ?> </b></p>
+        <p><?php echo ucfirst($tv['description']); ?></p>
+        <p><em><?php echo lang('onlinetv::pay-using-your-emoney-balance') ?></em></p>
+        <p><a class="btn btn-danger btn-lg" href="<?php echo url_to_pager("purchase-tv").'?action=proceed&id='.$tv['id']; ?>"><?php echo lang("onlinetv::proceed-to-pay").' '.$tv['price'].' '.config('default-currency','USD'); ?></a></p>
+    </div>
+</div>

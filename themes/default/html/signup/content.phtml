@@ -1,0 +1,169 @@
+<div class="panel-container signup">
+    <div class="pane-title">
+        <?php $logo = config('site-logo'); $logo_url = !$logo ? img('images/logo.png') : url_img($logo); ?>
+        <a href="<?php echo url() ?>"><img class="logo" src="<?php echo $logo_url ?>" /></a>
+    </div>
+    <div class="title">
+        <span style="margin: 0 40px"><?php echo lang('signup-for-account') ?></span>
+    </div>
+    <div class="center-col clearfix card-block">
+        <?php if ($message): ?>
+            <div class="alert alert-danger">
+                <?php echo $message ?>
+            </div>
+        <?php endif ?>
+        <div class="center-col">
+            <form id="regform" name="regform" action="<?php echo url_to_pager('signup') ?>" method="post" class="signup-form">
+                <?php CSRFProtection::embed() ?>
+                <div class="form-group">
+                    <input class="form-control form-control-lg" value="<?php echo input('val.first_name') ?>" type="text" name="val[first_name]" placeholder="<?php echo lang('your-first-name') ?>" />
+                </div>
+                <div class="form-group">
+                    <input class="form-control form-control-lg" value="<?php echo input('val.last_name') ?>" type="text" name="val[last_name]" placeholder="<?php echo lang('your-last-name') ?>" />
+                </div>
+                <div class="form-group">
+                    <input class="form-control form-control-lg " value="<?php echo input('val.username') ?>" type="text" name="val[username]" placeholder="<?php echo lang('choose-username') ?>" />
+                </div>
+                <?php if(config('signup-merge-email-phone') && config('enable-phone-no', false) && !config('signup-hide-phone-no') && !config('signup-hide-phone-no')): ?>
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" value="<?php echo input('val.email_phone') ?>" type="text" name="val[email_phone]" placeholder="<?php echo lang('your-email-phone') ?>" />
+                    </div>
+                <?php else: ?>
+                    <?php if(!config('signup-hide-email-address')): ?>
+                        <div class="form-group">
+                            <input class="form-control form-control-lg" value="<?php echo input('val.email_address') ?>" type="text" name="val[email_address]" placeholder="<?php echo lang('your-email-address') ?>" />
+                        </div>
+                    <?php endif; ?>
+                    <?php if(config('enable-phone-no', false) && !config('signup-hide-phone-no')): ?>
+                        <?php if(config('enable-phone-no', false) && !config('signup-hide-phone-no')): ?>
+                            <div class="form-group phone-no">
+                                <div class="input-group mb-3 phone-number-input">
+                                    <?php $iso_country_calling_codes = get_iso_country_calling_codes(); ?>
+                                    <?php $phone_number = get_phone_number_country_code(get_user_data('phone_no')) ?>
+                                    <div class="input-group-prepend">
+                                        <div class="magic-select iso-country_calling-codes search-dropdown" data-name="val[code]" data-width="300px">
+                                            <input type="hidden" name="val[code]" value="<?php echo $phone_number['code'] ?>" class="magic-select-value code" />
+                                            <div class="magic-select-toggle">
+                                                <?php echo strtoupper($phone_number['iso']) ?> +<?php echo $phone_number['code'] ?>
+                                            </div>
+                                            <div class="magic-select-content slimscroll" data-height="200px">
+                                                <?php foreach($iso_country_calling_codes as $iso_country_calling_code): ?>
+                                                    <div class="magic-select-option" data-value="<?php echo $iso_country_calling_code['code'] ?>" data-title="<?php echo strtoupper($iso_country_calling_code['iso']) ?> +<?php echo $iso_country_calling_code['code'] ?>">
+                                                        <div class="flag">
+                                                            <?php if($iso_country_calling_code['country_flag']): ?>
+                                                                <img src="<?php echo $iso_country_calling_code['country_flag'] ?>" alt="<?php echo $iso_country_calling_code['iso'] ?>" />
+                                                            <?php else: ?>
+                                                                <span class="icon"><?php echo strtoupper($iso_country_calling_code['iso']) ?></span>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                        <div class="country-name"><?php echo $iso_country_calling_code['country_name'] ?></div>
+                                                        <div class="code">+<?php echo $iso_country_calling_code['code'] ?></div>
+                                                    </div>
+                                                <?php endforeach ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="text" name="val[number]" class="form-control number" value="<?php echo $phone_number['number'] ? $phone_number['number'] : '' ?>" placeholder="<?php echo lang('your-phone-number') ?>">
+                                    <input class="form-control phone-no" type="hidden" name="val[phone_no]" value="<?php echo input('val.number') ?>" />
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <div class="form-group">
+                    <input class="form-control form-control-lg" value="<?php echo input('val.password') ?>" type="password" name="val[password]" placeholder="<?php echo lang('choose-password') ?>" />
+                </div>
+                <div class="form-group">
+                    <input class="form-control form-control-lg" value="<?php echo input('val.cpassword') ?>" type="password" name="val[cpassword]" placeholder="<?php echo lang('confirm-password') ?>" />
+                </div>
+                <div class="form-group">
+                    <div class="magic-select search-dropdown" data-name="val[country]" data-width="100%">
+                        <?php load_functions('country') ?>
+                        <?php $countries = get_countries() ?>
+                        <?php $country_name = input('val.country') ?>
+                        <input type="hidden" name="val[country]" value="<?php echo $country_name ?>" class="magic-select-value" />
+                        <div class="magic-select-toggle">
+                            <?php if (in_array($country_name, $countries)): ?>
+                                <?php echo ucwords($country_name) ?>
+                            <?php else: ?>
+                                <?php echo lang('select-country') ?>
+                            <?php endif; ?>
+                        </div>
+                        <div class="magic-select-content slimscroll" data-height="200px">
+                            <?php foreach ($countries as $country => $name): ?>
+                                <div class="magic-select-option" data-value="<?php echo $name ?>">
+                                    <?php echo ucwords($name) ?>
+                                </div>
+                            <?php endforeach ?>
+                        </div>
+                    </div>
+                </div>
+                <?php if (config('enable-gender', true)): ?>
+                    <div class="form-group">
+                        <div class="magic-select" data-name="val[gender]" data-width="100%">
+                            <?php $genders = get_genders() ?>
+                            <?php $value = input('val.gender') ?>
+                            <input type="hidden" name="val[gender]" value="<?php echo $value ?>" class="magic-select-value" />
+                            <div class="magic-select-toggle">
+                                <?php echo in_array($value, $genders) ? lang($value) : lang('select-gender') ?>
+                            </div>
+                            <div class="magic-select-content">
+                                <?php foreach ($genders as $gender): ?>
+                                    <div class="magic-select-option" data-value="<?php echo $gender ?>">
+                                        <?php echo lang($gender) ?>
+                                    </div>
+                                <?php endforeach ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <?php fire_hook('enable.gender.exception'); ?>
+                <?php endif ?>
+                <?php if (config('enable-birthdate', true)): ?>
+                    <?php echo view('birthdate/form', array('day' => input('val.birth_day'), 'month' => input('val.birth_month'), 'year' => input('val.birth_year'), 'type' => 0)) ?>
+                <?php endif ?>
+                <?php fire_hook('signup.form.extend', null, array(false)) ?>
+                <?php if(config('signup-show-avatar', false)): ?>
+                    <div class="form-group avatar">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="return file_chooser('#signup-image-input .awesome-cropper .dropbox')">
+                            <div id="signup-image-input" class="avatar-preview-box" style="background-image: url(<?php echo get_avatar(75) ?>)">
+                                <input id="user-avatar-input" type="hidden" name="val[avatar]" />
+                            </div>
+                            <?php echo lang('choose-photo') ?>
+                        </button>
+                    </div>
+                <?php endif; ?>
+                <?php fire_hook('signup.form.extend', null, array(false)) ?>
+                <div class="dropdown-divider"></div>
+                <?php foreach (get_form_custom_fields('user') as $field): ?>
+                    <?php echo view("custom-field/display", array('field' => $field, 'offDescription' => true, 'type' => 0)) ?>
+                <?php endforeach ?>
+                <div class="signup-tc"><input id="signup-tos" type="checkbox" name="val[tos]" value="1" />
+                    <label for="signup-tos"><?php echo lang('signup-tos') ?></label></div>
+                <?php if (get_setting("enable-captcha")): ?>
+                    <?php if (get_setting("enable-captcha") == '1'): ?>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input class="form-control" type="text" placeholder="<?php echo lang('enter-text-below') ?>" name="captcha" id="captcha-input" />
+                            </div>
+                            <div class="col s6">
+                                <img id="captcha-image" src="<?php echo url("captcha.php") ?>" />
+                                <a href="#" onclick="document.getElementById('captcha-image').src='<?php echo url('captcha.php') ?>?' + Math.random(); document.getElementById('captcha-input').focus();">
+                                    <i class="ion-ios-reload"></i>
+                                </a>
+                                <br />
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <div class="g-recaptcha" data-sitekey="<?php echo config('recaptcha-key'); ?>"></div>
+                        <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=en"></script>
+                    <?php endif ?>
+                <?php endif ?>
+                <?php fire_hook('signup.footer'); ?>
+                <div class="form-group">
+                    <button id="register" class="btn btn-submit"><?php echo lang('signup') ?> </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

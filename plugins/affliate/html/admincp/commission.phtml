@@ -1,0 +1,42 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php _lang('affliate::manage-commission-rules')?>
+    </div>
+    <div class="wrapper-content">
+        <?php if($message): ?>
+            <div class="alert alert-info"><?php echo $message; ?></div>
+        <?php endif; ?>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th><?php _lang('title')?></th>
+                <th><?php _lang('actions')?></th>
+            </tr>
+            </thead>
+            <tbody data-url="<?php echo url_to_pager('admincp-commission-rules').'?action=order'?>" class="admincp-sortable" style="position: relative">
+            <input type="hidden" value="<?php echo config('number-of-commision-levels',5); ?>" id="limit" />
+            <?php foreach($commisions as $k=>$c):
+                $slug = toAscii($c);
+                $points = get_points_array($slug);
+                ?>
+                <tr style="" class="item" id="<?php echo $k; ?>">
+                    <td style="width: 10%"><?php echo $k; ?></td>
+                    <td style="width: 30%"><?php echo $c;  ?></td>
+                    <td style="width: 20%">
+                        <a
+                            class="btn btn-sm btn-success"
+                            data-arr='<?php echo json_encode($points); ?>'
+                            data-key="<?php echo $slug; ?>"
+                            data-id="<?php echo $k; ?>"
+                            id="manage-commission"
+                            href=""><?php echo lang('affliate::manage')?></a>
+                    </td>
+                </tr>
+            <?php endforeach?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<?php echo view("affliate::admincp/commision-modal"); ?>

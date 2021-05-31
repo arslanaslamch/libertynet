@@ -1,0 +1,55 @@
+
+<?php $sellers = lp_get_stores('featured'); ?>
+
+<?php if($sellers->total):?>
+
+    <div class="box">
+        <div class="title">
+            <?php echo lang("store::featured-sellers")?>
+            <a ajax="true" href="<?php echo url('products')?>"><i class="ion-ios-arrow-forward pull-right"></i></a>
+        </div>
+        <div class="box-content">
+    <div class="container">
+
+    <div class="col-md-12">
+    <div id="products-slider" class="jcarousel-wrapper">
+        <div id="each-slider-product" class="jcarousel">
+            <ul class="product-wrapper">
+            <?php foreach($sellers->results() as $s):
+                 $user = find_user($s['user_id']);
+                ?>
+                <li>
+                    <a ajax="true" title=""  href="<?php echo url('store/'.$s['slug'])?>" style="display:block;background-image: url(<?php echo getStoreLogo($s);?>)"></a>
+                    <h5 style="color : <?php echo config('store-spotlight-text-color','#000'); ?>">
+                        <a ajax="true" href="<?php echo url('store/'.$s['slug'])?>"><?php echo $s['name'];?></a>
+                    </h5>
+                        <span class="help-block" style="display: block;font-size:12px; "> <?php echo lang("store::store-owner") ?> :
+                                <a style="color:#555 !important; font-weight: bold" href="<?php echo profile_url(null,$user) ?>" ajax="true">  <?php echo get_user_name($user); ?></a>
+                                </span>
+                </li>
+
+                <!--<div  class="media media-lg">
+                    <div class="media-left">
+                        <div class="media-object">
+                            <img src="<?php /*echo getStoreLogo($s);*/?>"/>
+                        </div>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading" style="margin-top:0"><a ajax="true" href="<?php /*echo url('store/'.$s['slug'])*/?>"><?php /*echo $s['name']*/?></a></h4>
+                                <span class="help-block" style="display: block;font-size:12px; "> <?php /*echo lang("store::store-owner") */?> :
+                                <a style="color:#555 !important; font-weight: bold" href="<?php /*echo profile_url(null,$user) */?>" ajax="true">  <?php /*echo get_user_name($user); */?></a>
+                                </span>
+                    </div>
+                </div>-->
+            <?php endforeach?>
+                </ul>
+            </div>
+        <a href="#" class="jcarousel-control-prev">&lsaquo;</a>
+        <a href="#" class="jcarousel-control-next">&rsaquo;</a>
+
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+<?php endif?>

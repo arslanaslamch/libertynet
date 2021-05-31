@@ -1,0 +1,14 @@
+<div class="box">
+    <div class="title"><?php echo ucwords(lang("sms::sms-invite")); ?></div>
+    <div class="box-content sms-invite">
+        <div class="input-group">
+            <div class="indicator"><img src="<?php echo img('images/loading.gif')?>"/></div>
+            <input type="tel" onkeyup="numbersOnly(this)" class="form-control" id="InviteFriendSMS">
+            <input id="hidden" type="hidden" name="val[phone_num]">
+            <input id="invalidError" type="hidden" value="<?php echo lang("sms::invalid-error") ?>" ">
+                  <span class="input-group-btn">
+                     <button class="btn btn-info btn-info btn-sm" id="SubmitInviteFriends" type="button"><?php echo lang('sms::invite') ?></button>
+                  </span>
+        </div>
+    </div>
+</div>

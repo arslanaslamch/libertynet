@@ -1,0 +1,39 @@
+.contact.box {
+    text-align: center;
+    background-size: cover !important;
+    background-position: center !important;;
+}
+
+.contact.box > .title {
+    text-align: center;
+    font-size: 40px !important;
+    color: #FFFFFF !important;
+    font-weight: 900;
+}
+
+.contact.box > .box-content {
+    padding: 0 50px !important;
+}
+
+.contact img.image {
+    margin: 50px auto;
+    display: block;
+}
+
+@media (max-width: 768px) {
+	.contact.box form .field {
+		padding: 0px 10px 10px 10px;
+	}
+
+	.contact.box > .box-content {
+		padding: 0 !important;
+	}
+}
+
+@media (min-width: 768px) {
+    .contact img.image {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+}

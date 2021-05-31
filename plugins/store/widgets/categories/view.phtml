@@ -1,0 +1,20 @@
+<div class="box" id="store-categories-menu">
+    <ul class="menu">
+        <?php
+        $categories = lp_store_categories('get_categories');
+        foreach ($categories as $category): ?>
+            <li class="parent">
+                <a ajax="true" href="<?php echo url_to_pager('products-categories-home', array('slugs' => $category['id'] . '_' . toAscii(lang($category['title']))));?>"><?php echo lang($category['title']); ?><i style="float: right; margin-right: 5px" class="ion-plus"></i></a>
+                <?php
+                $subcategories = get_store_subcategories($category['id']);
+                if ($subcategories): ?>
+                    <ul class="<?php echo (input('category') == $category) ? 'add-slide-transition' : 'remove-slide-transition'; ?>">
+                        <?php foreach ($subcategories as $sb): ?>
+                            <li><a class="<?php echo (input('category') == lang($sb['title'])) ? 'active' : ''; ?>" ajax="true" href="<?php echo url_to_pager('products-categories-home', array('slugs' => $sb['id'] .'_'.toAscii(lang($category['title'])).'_' . toAscii(lang($sb['title'])))); ?>"><?php _lang($sb['title']); ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </li>
+        <?php endforeach ?>
+    </ul>
+</div>

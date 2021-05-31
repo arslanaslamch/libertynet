@@ -1,0 +1,56 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("birthday::birthday-post-template"); ?><br/>
+        <small><?php echo lang("birthday::birthday-post-template-desc") ?></small>
+    </div>
+    <div class="wrapper-content">
+        <div class="birthday-form-wrapper">
+            <?php if($saved): ?>
+                <div class="alert alert-success alert-dismissable">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <?php echo $saved ?>
+                </div>
+            <?php endif; ?>
+            <form class="form" action="" method="post" enctype="multipart/form-data">
+                <fieldset>
+                    <label><b>Post Content</b></label>
+                    <textarea class="form-control wish-content"
+                              name="val[content]"
+                              placeholder="<?php echo lang("birthday::write-something-here") ?>"><?php echo $template['content']; ?></textarea>
+                </fieldset>
+                <br/>
+                <fieldset>
+                    <label class="control-label"><?php echo lang('birthday::attach-image'); ?></label>
+                    <?php if($template['image']): ?>
+                        <br/>
+                        <img src="<?php echo url_img($template['image']) ?>" style="height: 50px;width : 50px" />
+                        <br/>
+                        <br/>
+                    <?php endif; ?>
+                    <input type="file" name="image" class="form-control" accept="image/*"/>
+                    <input type="hidden" name="val[image]" value="<?php echo $template['image']; ?>" />
+                </fieldset>
+
+                <br/>
+
+                <fieldset>
+                    <label class="control-label"><?php echo lang("birthday::choose-admin-account"); ?></label>
+                    <select name="val[admin]" class="form-control">
+                        <?php foreach(Birthday::getAdminAccounts()->results() as $a): ?>
+                        <option <?php echo ($template['admin'] == $a['id']) ? 'selected' : null; ?> value="<?php echo $a['id'] ?>"><?php echo get_user_name($a); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </fieldset>
+                <br/>
+
+                <button class="btn btn-info btn-sm"><?php echo lang("birthday::save-template") ?></button>
+                <br/>
+                <br/>
+                <h6><?php echo "Placeholders"; ?></h6>
+                <p><b>[first_name]</b> : Birthday Celebrant First Name </p>
+                <p><b>[last_name]</b> : Birthday Celebrant Last Name </p>
+                <p><b>[username]</b> : Birthday Celebrant Username </p>
+            </form>
+        </div>
+    </div>
+</div>

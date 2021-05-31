@@ -1,0 +1,304 @@
+<?php $refId = $id;
+$refName = 'auction'; ?>
+<div class="auction box">
+	<div class="box-content">
+		<?php if(isset($_GET['status']) && $_GET['status'] == 'update') { ?>
+			<div class="alert alert-success"><?php echo lang('auction::successful'); ?></div>
+		<?php } ?>
+		<?php if(isset($_GET['success']) && $_GET['success'] == 1) { ?><?php $type = $_GET['type']; ?>
+			<div class="alert alert-success"><?php echo lang('auction::success') ?><?php $x = $type == 'bid' ? 'a Bid' : 'an Offer';
+				echo $x; ?><?php echo lang('auction::for-this-auction') ?></div> <?php } ?>
+		<?php if(isset($_GET['sucess']) && $_GET['sucess'] == 1 && $_GET['type'] == 'update') {
+			$update_type = $_GET['type'];
+			if($update_type == 'update') { ?>
+				<div class="alert alert-success"><?php echo lang('auction::succes') ?></div>
+			<?php }
+		} ?>
+		<?php if(isset($_GET['success']) && $_GET['success'] == 0) { ?><?php $type = $_GET['type']; ?>
+			<div class="alert alert-danger"><?php echo lang('auction::danger') ?><?php $x = $type == 'bid' ? 'a Bid' : 'an Offer';
+				echo $x; ?>
+			</div> <?php } ?>
+		<?php if(isset($_GET['status']) && $_GET['status'] == 'OK') {
+			$tmp_type = $_GET['type'];
+			if($tmp_type == 'approve') {
+				echo "<div class='alert alert-success'>".lang('auction::approve')."</div>";
+			} elseif($tmp_type == 'cancel') {
+				echo "<div class='alert alert-success'>".lang('auction::cancel')."</div>";
+			}
+		} ?>
+		<?php if($id): ?>
+		<?php $auction = get_auction($id) ?>
+		<?php $cat = get_auction_category($auction['category_id']); ?>
+		<div class="title" id="auction-title-details" style="margin-bottom: -10px; pull-right">
+			<div class="auction-header">
+				<span>Auction&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<?php echo lang($cat['title']); ?></span>
+				<?php if($auction['user_id'] == get_userid()): ?>
+					<span id="edit-auction-btn">
+                            <a href="<?php echo url_to_pager('auction-edit').'?id='.$auction['id']; ?>" class="btn btn-info"><?php echo lang('auction::auction-edit') ?></a>
+                            <a href="<?php echo url_to_pager('auction-edit').'?id='.$auction['id'].'&delete=1'; ?>" class="btn btn-danger"><?php echo lang('auction::danger') ?></a>
+                        </span>
+				<?php elseif(is_loggedIn() and plugin_loaded('report')): ?>
+					<a href="" data-type="auction" data-link="<?php echo url_to_pager('auction-details') ?>" class="report-btn btn btn-secondary pull-right"><i class="ion-flag"></i></a>
+				<?php endif ?>
+			</div>
+		</div>
+		<div class="">
+			<span class="" id="auction-title"><?php echo $auction['title']; ?></span>
+			<span class="pull-right"></span>
+		</div>
+		<div class="media">
+			<div class="media-left" style="width: 40%">
+				<a href=""><img src="<?php echo url_img($auction['picture']) ?>" style="max-width: 100%"></a>
+			</div>
+			<div class="media-body">
+				<div id="timer">
+					<div class="time">
+						<div class="days-cover">
+							<label id="days"></label>
+							<div class="label"><?php echo lang('auction::days') ?></div>
+						</div>
+						<div class="hours-cover">
+							<label id="hours"></label>
+							<div class="label"><?php echo lang('auction::hours') ?></div>
+						</div>
+						<div class="mins-cover">
+							<label id="mins"></label>
+							<div class="label"><?php echo lang('auction::minutes') ?></div>
+						</div>
+						<div class="secs-cover">
+							<label id="secs"></label>
+							<div class="label"><?php echo lang('auction::seconds') ?></div>
+						</div>
+					</div>
+					<div class="timer-label"></div>
+				</div>
+				<?php $show_bid = get_auction_bid_by_id(get_userid(), $auction['id']); ?>
+				<div class="clearfix"></div>
+				<p>
+				<h6 class="bid-label">
+					<strong><?php echo lang('auction::price-reserve') ?></strong><strong class="current-bid"><?php echo lang('auction::current-bid') ?></strong>
+					<strong class="my-bid"><?php echo lang('aucrion::my-bid') ?><?php if($show_bid) { ?>
+						<a href="<?php echo url_to_pager('auction-details').'?id='.$auction['id'].'&edit-bid=1'; ?>" data-toggle="tooltip" data-placement="top" title="Edit Bid Price">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</a><?php } ?>
+					</strong>
+				</h6>
+				</p>
+				<p>
+					<span class="auction-price">$<?php echo $auction['reserved_price']; ?>.00</span><span class="auction-price" id="auction-current-bid">$<?php $cur_bid = get_max_bid($auction['id']);
+						echo $cur_bid['bid'] ?>.00</span>
+					<span class="auction-price" id="auction-my-bid"><?php if(!$show_bid) {
+							echo "$0.00";
+						}
+						echo "$".$show_bid['price'].".00"; ?></span>
+				</p>
+				<input type="hidden" id="auction-id" name="auc_id" value="<?php echo $auction['id']; ?>"/>
+				<input type="hidden" id="auction-date" value="<?php echo $auction['end_date']; ?>"/>
+				<input type="hidden" id="auction-month" value="<?php echo getMonth($auction['end_date']); ?>"/>
+				<input type="hidden" id="auction-day" value="<?php echo getDay($auction['end_date']); ?>"/>
+				<input type="hidden" id="auction-year" value="<?php echo getYear($auction['end_date']); ?>"/>
+				<?php $auct_bid = get_auction_bid_by_id(get_userid(), $id); ?>
+				<div class="form-group">
+					<?php if($auction['user_id'] != get_userid()): ?>
+						<?php if($auct_bid <= 0): ?>
+							<form action="<?php echo url('auction/bid') ?>" method="post">
+								<p>
+									<input type="text" id="bidval" class="col-md-5 auction-input" name="bid" data-toggle="tooltip" data-placement="top" title="Enter <?php echo $auction['current_bid'] + 1; ?>.00 or More"/>
+									<input type="hidden" value="bid" name="type">
+									<button class="btn btn-info" type="button" id="auction-btn" onclick="validate_bid(<?php echo $auction['current_bid']; ?>);">Place Bid</button>
+									<!-- <input type="button" class="btn btn-info" id="auction-btn" onclick="validate_bid();" value="Place Bid" />-->
+								</p>
+							</form>
+						<?php endif; ?>
+						<?php if(isset($_GET['edit-bid']) && $_GET['edit-bid'] == 1): ?>
+							<form action="" method="post">
+								<?php $bid_update = input('bid_update'); ?>
+								<p>
+									<input type="text" id="updateBid" class="col-md-5 auction-input" name="bid_update" data-toggle="tooltip" data-placement="top" title="Enter <?php echo $auction['current_bid'] + 1; ?>.00 or More"/>
+									<!--   <a href="<?php echo url_to_pager("auction-bid").'?id='.$auction['id'].'&price='.$bid_update.'&status=update'; ?>" class="btn btn-info" id="auction-btn">Update Bid</a>-->
+									<button type="button" name="update" id="auction-btn" class="btn btn-info" onclick="update_my_bid(<?php echo $auction['reserved_price']; ?>)">Update Bid</button>
+									<!-- <input type="button" class="btn btn-info" id="auction-btn" onclick="validate_bid();" value="Place Bid" />-->
+								</p>
+							</form>
+						<?php endif; ?>
+						<?php $auct_offer = get_auction_offer_by_id(get_userid(), $id); ?><?php if($auct_offer <= 0): ?>
+							<form action="" method="post">
+								<p>
+									<input type="text" id="offer-price" class="col-md-5 auction-input" name="val[bid]" data-toggle="tooltip" data-placement="top" title="Enter <?php echo $auction['reserved_price']; ?>.00 or More"/>
+									<button type="button" class="btn btn-success" id="auction-btn" onclick="validate_offer(<?php echo $auction['reserved_price']; ?>)"><?php echo lang('auction::reserved_price') ?>
+									</button>
+								</p>
+							</form>
+						<?php endif; ?>
+						<?php if(!buy_auction_bid($auction['id'], get_userid())): ?>
+							<form action="cart" method="post">
+								<div class="buy-now-details">
+									<div class="buy-now-title"><?php echo lang('auction::buy-now-price') ?></div>
+									<div class="buy-now-price">$<?php echo $auction['buy_price']; ?>.00</div>
+									<input type="hidden" name="type" value="buy">
+									<input type="hidden" name="price" value="<?php echo $auction['buy_price']; ?>">
+									<input type="hidden" name="id" value="<?php echo $auction['id']; ?>">
+									<button class="btn btn-sm btn-danger"><?php echo lang('auction::buy-now') ?></button>
+								</div>
+							</form>
+						<?php endif; ?>
+					<?php endif; ?>
+				</div>
+				<div class="bids-view">
+					<strong><i class="fa fa-gavel" aria-hidden="true"></i><?php echo lang('auction::bid(s)') ?>
+					</strong><strong id="auction-views"><i class="fa fa-eye" aria-hidden="true"></i><?php echo lang('auction::view') ?>
+					</strong>
+					<div class="auction-info">
+						<span id="count-bid"><?php echo count_auction_bid($auction['id']); ?></span>
+						<span id="count-view"><?php echo $auction['view_count']; ?></span>
+					</div>
+				</div>
+				<?php if($auction['user_id'] == get_userid()): ?>
+					<?php if($auction['status'] != 1): ?>
+						<div class="sell" align='center'>
+							<button class="btn btn-success" data-toggle="modal" data-target="#sellModal"><?php echo lang('auction::sell-item') ?></button>
+						</div>
+					<?php elseif($auction['status'] == 1): ?>
+						<div class="sell" align='center'>
+							<button class="btn btn-danger"><?php echo lang('auction::sold-item') ?></button>
+						</div>
+					<?php endif; ?>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+	<!-- Sell Item Modal -->
+	<div id="sellModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"><?php echo lang('auction::sell') ?><?php echo $auction['title']; ?><?php echo lang('auction::bid(s)') ?></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<table border="1" class="table table-responsive" id="auction-table">
+						<tr>
+							<!--<td width="">#</td>-->
+							<td width=""><?php echo lang('auction::username') ?></td>
+							<td width=""><?php echo lang('auction::price') ?></td>
+							<td width=""><?php echo lang('auction::option') ?></td>
+						</tr>
+						<?php $get_approved = auction_select_approve($auction['id'], 1); $count = count($get_approved); if(!$count) { ?>
+							<?php foreach(get_auction_bid_all($auction['id']) as $bid) { ?>
+								<tr>
+									<td><?php echo get_user_name($bid['user_id']); ?></td>
+									<td>$<?php echo $bid['price']; ?>.00</td>
+									<td>
+										<a href="<?php echo url_to_pager('auction-approve').'?auction-id='.$auction['id'].'&user_id='.$bid['user_id'].'&type=approve'; ?>" class="btn btn-primary"><?php echo lang('auction::approve') ?></a>&nbsp;|&nbsp;<!--<a href="" class="btn btn-danger">Decline</a>-->
+									</td>
+								</tr>
+							<?php } ?>
+						<?php } else { ?>
+							<tr>
+								<td><?php echo get_user_name($get_approved['user_id']); ?></td>
+								<td>$<?php echo $get_approved['price']; ?>.00</td>
+								<td colspan="3">
+									<a href="<?php echo url_to_pager('auction-approve').'?auction-id='.$auction['id'].'&user_id='.$get_approved['user_id'].'&price='.$get_approved['price'].'&type=cancel'; ?>" class="btn btn-danger"><?php echo lang('auction::cancel') ?></a><!--<a href="" class="btn btn-danger">Decline</a>-->
+									<a data-bid_type="bid" data-bid="<?php echo $get_approved['id'] ?>" data-process="oneTime" data-user="<?php echo $get_approved['user_id'] ?>" data-auction="<?php echo $auction['id']; ?>" data-type="sold" href="#" class="btn btn-success" onclick="return auction_sold(this)"><?php echo lang('auction::mark-sold') ?></a>
+									<div id="auction-sold-quantity"></div>
+								</td>
+							</tr>
+
+						<?php } ?>
+						<?php if((count(buy_auction_bid($auction['id']))) > 0): ?>
+							<tr>
+								<td colspan="3"> BUY NOW BID(s)</td>
+							</tr>
+							<?php $buyOffers = buy_auction_bid($auction['id']); ?>
+							<?php foreach($buyOffers as $buyOffer) ?>
+								<tr>
+								<td><?php echo get_user_name($buyOffer['user_id']); ?></td>
+							<td>$<?php echo $buyOffer['price']; ?>.00</td>
+							<td colspan="3">
+								<a href="<?php echo url_to_pager('auction-approve').'?auction-id='.$auction['id'].'&user_id='.$buyOffer['user_id'].'&price='.$buyOffer['price'].'&type=cancel'; ?>" class="btn btn-danger"><?php echo lang('auction::cancel') ?></a><!--<a href="" class="btn btn-danger">Decline</a>-->
+								<a data-bid_type="buy" data-bid="<?php echo $buyOffer['id'] ?>" data-process="oneTime" data-user="<?php echo $buyOffer['user_id'] ?>" data-auction="<?php echo $auction['id']; ?>" data-type="sold" href="#" class="btn btn-success" onclick="return auction_sold(this)"><?php echo lang('auction::mark-sold') ?></a>
+								<div id="auction-sold-quantity"></div>
+							</td>
+							</tr>
+						<?php endif; ?>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo lang('auction::close') ?></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="" id="auction-description">
+		<div class="desc-box">
+			<div class="auction-desc-title">
+				<i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp;&nbsp;<strong><?php echo lang('auction::auction-desciption') ?></strong></span>
+			</div>
+			<div class="auction-desc"><?php echo $auction['description']; ?></div>
+		</div>
+		<div class="desc-box">
+			<strong class="auction-desc-title"><i class="fa fa-ship" aria-hidden="true"></i>&nbsp;<?php echo lang('auction::shipment-details') ?>
+			</strong>
+			<div class="content auction-desc"><?php echo $auction['ship_details']; ?></div>
+		</div>
+		<div class="desc-box">
+			<strong class="auction-desc-title"><i class="ion-ios-location">&nbsp;</i><?php echo lang('auction::location') ?>
+			</strong>
+			<div class="content auction-desc"><?php echo ucfirst($auction['country']); ?>-><?php echo ucfirst($auction['state']); ?>-><?php echo ucfirst($auction['city']); ?></div>
+		</div>
+	</div>
+	<div class="feed-footer">
+		<ul class=" feed-footer-menu clearfix">
+			<?php if(plugin_loaded('like')): ?><?php load_functions('like::like'); ?>
+				<li>
+					<a onclick="return like_item('<?php echo $refName ?>', '<?php echo $refId ?>')" data-status="<?php echo (has_liked($refName, $refId)) ? '1' : 0 ?>" class=" like-button-<?php echo $refName ?>-<?php echo $refId ?> like-button <?php echo (has_liked($refName, $refId)) ? 'liked' : null ?>" href=""><i class="fa fa-thumbs-o-up"></i> <?php echo lang('like::like') ?>
+					</a>
+				</li>
+				<?php if(config('enable-dislike', false)): ?>
+					<li>
+						<a id="" onclick="return dislike_item('<?php echo $refName ?>', '<?php echo $refId ?>')" data-status="<?php echo (has_disliked($refName, $refId)) ? '1' : 0 ?>" class="dislike-button-<?php echo $refName ?>-<?php echo $refId ?> like-button <?php echo (has_disliked($refName, $refId)) ? 'disliked' : null ?>" href=""><i class="ion-thumbsdown"></i> <?php echo lang('like::dislike') ?>
+						</a>
+					</li>
+				<?php endif ?><?php endif ?>
+			<li class="blog-social-share"><?php if(plugin_loaded('sharer')) echo view('sharer::share_link', array('link' => url(''))) ?></li>
+			<?php fire_hook('more-feed-footer', null, array($refName, $refId)); ?>
+			<li class="pull-right">
+				<ul class="feed-statistics">
+					<?php if(plugin_loaded('like')): ?>
+						<li>
+							<a onclick="return show_likes('<?php echo $refName ?>', '<?php echo $refId ?>')" href=""><i class="fa fa-thumbs-o-up"></i><span class="like-count-<?php echo $refName ?>-<?php echo $refId ?>"><?php echo count_likes($refName, $refId) ?></span></a>
+						</li>
+						<?php if(config('enable-dislike', false)): ?>
+							<li>
+								<a onclick="return show_dislikes('<?php echo $refName ?>', '<?php echo $refId ?>')" href=""><i class="ion-thumbsdown"></i><span class="dislike-count-<?php echo $refName ?>-<?php echo $refId ?>"><?php echo count_dislikes($refName, $refId) ?></span></a>
+							</li>
+						<?php endif ?><?php endif ?>
+					<?php if(plugin_loaded('comment')): ?><?php load_functions('comment::comment') ?><?php $countComments = count_comments($refName, $refId); ?>
+						<li>
+							<i class="ion-chatbubbles"></i><span class="comment-count-<?php echo $refName ?>-<?php echo $refId ?>"><?php echo ($countComments) ? $countComments : null ?></span>
+						</li>
+					<?php endif ?>
+					<?php fire_hook('more-feed-footer-count', null, array($refName, $refId)); ?>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="box">
+	<div class="box-content feed-footer">
+		<?php if(plugin_loaded('comment')): ?>
+			<div class="feed-comment-container">
+				<?php if($countComments > config('feed-comment-limit', 3)): ?>
+					<a id="comment-view-more-button-<?php echo $refName ?>-<?php echo $refId ?>" class="comment-view-more-button comment-view-more-button-<?php echo $refName ?>-<?php echo $refId ?>" onclick="return show_more_comment('<?php echo $refName ?>', '<?php echo $refId ?>', 'comment-view-more-indicator-<?php echo $refId ?>')" href=""><?php echo lang('view-previous-comments') ?></a>
+					<img class="comment-view-more-indicator" id="comment-view-more-indicator-<?php echo $refId ?>" src="<?php echo img('images/loading.gif') ?>"/>
+				<?php endif ?>
+				<div data-offset="<?php echo config('feed-comment-limit', 3) ?>" data-limit="<?php echo config('feed-comment-limit', 3) ?>" class="comment-lists comment-lists-<?php echo $refName ?>-<?php echo $refId ?>" id="">
+					<?php foreach(get_comments($refName, $refId, config('feed-comment-limit', 3), 0) as $comment): ?><?php echo view('comment::display', array('comment' => $comment)) ?><?php endforeach; ?>
+				</div>
+				<?php echo view('comment::editor', array('typeId' => $refId, 'type' => $refName, 'textLimit' => (config('enable-feed-text-limit', false)) ? config('maximum-feed-text-limit', 150) : false)) ?>
+			</div>
+		<?php endif ?>
+	</div>
+	<?php endif; ?>
+</div>

@@ -1,0 +1,108 @@
+<div class="wrapper">
+    <div class="wrapper-title"><?php echo lang("store::store-details") ?></div>
+    <div class="wrapper-content row" style="border: 1px solid #ccc;margin-bottom: 50px">
+        <div class="container">
+            <h2 class="admin-store-name"><?php echo $seller['name']; ?></h2><br/><br/>
+            <div class="col-sm-12" id="board">
+                <?php
+                $store_id = $seller['s_id'];
+                ?>
+                <div class="col-sm-4 each-board green">
+                    <span class="board-title"><?php echo lang("store::store-total-products") ?></span><br/>
+                    <span class="board-content"><?php echo countStoreTotalProducts($store_id) ?></span>
+                </div>
+                <div class="col-sm-4 each-board purple">
+                    <span><?php echo lang("store::available-balance") ?></span><br/>
+                    <span
+                        class="board-content"><?php echo config('currency-sign', '$') . number_format((float)getUserAvailableBalance($seller['user_id']),'2','.',','); ?></span>
+                </div>
+                <div class="col-sm-4 each-board red">
+                    <span><?php echo lang("store::total-sales") ?></span><br/>
+                    <span class="board-content"><?php echo countStoreTotalSales($store_id); ?></span>
+                </div>
+            </div>
+        </div><br/><br/>
+        <div class="container">
+            <?php if(getStoreLogo($seller)): ?>
+                <div class="col-sm-6">
+                    <img src="<?php echo getStoreLogo($seller); ?>" alt="Store Cover image" class="img img-responsive"/>
+                </div>
+            <?php endif; ?>
+            <div class="col-sm-6">
+                <div class="panel">
+                    <div class="panel-header"><h5><?php echo lang("store::contact-information") ?></h5></div><br/>
+                    <div class="panel-content">
+                        <p><strong><?php echo lang('store::cname');?> : </strong> <?php echo $seller['cname']?> </p>
+                        <p><strong><?php echo lang('store::email');?> : </strong> <?php echo $seller['email']?> </p>
+                        <p><strong><?php echo lang('store::phone');?> : </strong> <?php echo $seller['phone']?> </p>
+                        <p><strong><?php echo lang('store::address');?> : </strong> <?php echo $seller['address']?> </p>
+                        <p><strong><?php echo lang('store::location');?> : </strong> <?php echo $seller['location']?> </p>
+                        <p><strong><?php echo lang('store::desc');?> : </strong> <?php echo strip_tags(html_entity_decode($seller['describ'])); ?> </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+
+
+            <h4 style="display: block" class="order-subtitle-header"><?php echo lang('store::store-sales') ?></h4>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th><?php echo lang("store::product-name"); ?></th>
+                    <th><?php echo lang("store::quantity"); ?></th>
+                    <th><?php echo lang("store::price"); ?></th>
+                    <th><?php echo ucwords(lang("store::total")); ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                $owner = $seller['user_id'];
+                $order = getStoreOrders(10, 's',$owner);
+                $i = 1;
+                $total = array(0);
+                if ($order->total):
+                    foreach ($order->results() as $o):
+                        $product = getSingleProduct($o['product_id']);
+                        $product_price = $o['price'];
+                        $sub_total = $o['sub_total'];
+                        /*print_r($o);
+                        die();*/
+                        ?>
+                        <tr>
+                            <td><?php echo $i; ?></td>
+                            <td><?php echo $product['name']; ?></td>
+                            <td><?php echo $o['quantity']; ?></td>
+                            <td><?php echo formatPriceNumber($product_price) ?></td>
+                            <td><?php echo formatPriceNumber($sub_total); ?></td>
+                            <?php
+                           $total[] = $sub_total;
+                            ?>
+                        </tr>
+                        <?php $i++; endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="6">
+                            <div class="alert alert-info"><?php echo lang("store::empty-sales") ?></div>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                    <td><span style="float: right;font-size: 16px"><?php echo lang("store::total") ?></span></td>
+                    <td>
+                            <span
+                                style="font-weight: bold;font-size: 16px"><?php echo formatPriceNumber(array_sum($total)); ?></span>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+    </div>
+            </div>
+</div>

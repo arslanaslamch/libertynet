@@ -1,0 +1,104 @@
+<div class="box forum forum-content">
+    <div class="forum-list">
+        <div class="head">
+            <div class="cover" style="background-image: url(<?php echo url_img(config('forum-list-cover', 'plugins/forum/images/cover.jpg'), 920); ?>)">
+                <div class="title"><?php echo lang('forum::forum') ?></div>
+                <div class="actions">
+                    <a class="btn btn-info btn-outline action-button" href="<?php echo url_to_pager('forum-create-thread') ?>" ajax="true"><?php echo lang('forum::start-thread') ?></a>
+                </div>
+            </div>
+            <div class="filters filter-pane global-filter-container" data-url="<?php echo url_to_pager('threads') ?>">
+                <div class="top">
+                    <form id="forum-list-search" method="post" onsubmit="return run_global_filter()" action="" class="search form-inline list-search">
+                        <?php CSRFProtection::embed() ?>
+                        <input id="forum-filter-search" type="search" value="<?php echo $search ?>" class="form-control search-box filter-input" data-name="s" placeholder="<?php echo lang('forum::search-topics') ?>" />
+                        <button type="submit">
+                            <i class="search-icon icon ion-ios-search"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="bottom">
+                    <i class="icon ion-android-options"></i>
+                    <select id="forum-filter-category" onchange="return loadPage(this.value)" class="c-select forum-c-select filter-input" name="c">
+                        <option value="<?php echo forum_get_forum_slug_link(forum_remove_get_var(forum_remove_get_var($url, 's'), 'c')) ?>"><?php echo lang('forum::all-categories') ?></option>
+                        <?php foreach(forum_get_categories() as $category): ?>
+                            <option <?php echo input('c') == $category['id'] ? 'selected' : '' ?> value="<?php echo forum_get_forum_slug_link(forum_assign_get_var(forum_remove_get_var($url, 's'), 'c', $category['id'])) ?>"><?php echo lang($category['title']) ?></option>
+                        <?php endforeach ?>
+                    </select>
+                    <select id="forum-filter-tag" onchange="return loadPage(this.value)" class="c-select forum-c-select filter-input" name="t">
+                        <option value="<?php echo forum_get_forum_slug_link(forum_remove_get_var(forum_remove_get_var($url, 's'), 't')) ?>"><?php echo lang('forum::all-tags') ?></option>
+                        <?php foreach(forum_get_tags() as $tag): ?>
+                            <option <?php echo input('t') == $tag['id'] ? 'selected' : '' ?> value="<?php echo forum_get_forum_slug_link(forum_assign_get_var(forum_remove_get_var($url, 's'), 't', $tag['id'])) ?>"><?php echo lang($tag['title']) ?></option>
+                        <?php endforeach ?>
+                    </select>
+                    <select id="forum-filter-tag" onchange="return loadPage(this.value)" class="c-select forum-c-select filter-input" name="o">
+                        <option <?php echo input('o') == 'l' ? 'selected' : '' ?> value="<?php echo forum_get_forum_slug_link(forum_assign_get_var(forum_remove_get_var($url, 's'), 'o', 'l')) ?>"><?php echo lang('forum::latest') ?></option>
+                        <option <?php echo input('o') == 'n' ? 'selected' : '' ?> value="<?php echo forum_get_forum_slug_link(forum_assign_get_var(forum_remove_get_var($url, 's'), 'o', 'n')) ?>"><?php echo lang('forum::new') ?></option>
+                        <option <?php echo input('o') == 't' ? 'selected' : '' ?> value="<?php echo forum_get_forum_slug_link(forum_assign_get_var(forum_remove_get_var($url, 's'), 'o', 't')) ?>"><?php echo lang('forum::top') ?></option>
+                        <option <?php echo input('o') == 'ft' ? 'selected' : '' ?> value="<?php echo forum_get_forum_slug_link(forum_assign_get_var(forum_remove_get_var($url, 's'), 'o', 'ft')) ?>"><?php echo lang('forum::featured') ?></option>
+                        <?php if(is_loggedIn()): ?>
+                            <option <?php echo input('o') == 'f' ? 'selected' : '' ?> value="<?php echo forum_get_forum_slug_link(forum_assign_get_var(forum_remove_get_var($url, 's'), 'o', 'f')) ?>"><?php echo lang('forum::followed').forum_followed_count() ?></option>
+                        <?php endif ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="listings">
+                <div class="listing">
+                    <?php fire_hook('forum.topics.list.before', $threads) ?>
+                    <?php
+                    $threads_results = $threads->results();
+                    $pinned_threads = array();
+                    for($i = 0; $i < count($threads_results); $i++) {
+                        if($threads_results[$i]['pinned'] == 1 && input('c') && input('page') <= 1) {
+                            $pinned_threads[$i] = $threads_results[$i];
+                        }
+                    }
+                    foreach($pinned_threads as $key => $value) {
+                        unset($threads_results[$key]);
+                        array_unshift($threads_results, $value);
+                    }
+                    ?>
+                    <?php foreach($threads_results as $thread): ?>
+                        <div class="item">
+                            <a ajax="true" href="<?php echo forum_get_thread_slug_link($thread['id']) ?>" class="thumb">
+                                <img class="image" src="<?php echo forum_get_avatar(0, 200, $thread['op_username']) ?>" alt="<?php echo $thread['title'] ?> " />
+                                <?php if(isset($thread['featured']) && $thread['featured']): ?>
+                                    <div class="featured">
+                                        <i class="ion-ios-star-outline"></i>
+                                    </div>
+                                <?php endif ?>
+                            </a>
+                            <div class="details">
+                                <a ajax="true" href="<?php echo forum_get_thread_slug_link($thread['id']) ?>" class="title"><?php echo $thread['subject'] ?></a>
+                                <a ajax="true" href="<?php echo forum_get_forum_slug_link(url_to_pager('forum-slug', array('appends' => '')).'?c='.$thread['category_id']) ?>" class="category"><?php echo lang($thread['title']) ?></a>
+                                <p class="content"><?php echo str_limit(strip_tags(forum_get_replies($thread['id'], 1)->results()[0]['post']), 100) ?></p>
+                                <div class="stat">
+                                    <small class="time muted"><?php echo lang('forum::last-activity') ?> <?php echo date('M j , y  h:i A', strtotime($thread['last_replied'])) ?></small>
+                                    <div class="count view">
+                                        <?php echo $thread['nov'] ?>
+                                        <?php echo $thread['nov'] > 1 ? lang('forum::views') : lang('forum::view'); ?>
+                                    </div>
+                                    <div class="count like">
+                                        <?php echo $thread['nor'] ?>
+                                        <?php echo $thread['nor'] > 1 ? lang('forum::replies') : lang('forum::reply'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-content">
+        <?php if($threads->total): ?>
+            <?php if($threads->total > config('pagination-length-forum', 20)): ?>
+                <?php echo $threads->links(true) ?>
+            <?php endif ?>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang('forum::no-topic-found-here') ?></div>
+        <?php endif ?>
+    </div>
+</div>

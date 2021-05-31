@@ -1,0 +1,9 @@
+<?php foreach($data->results() as $item): ?>
+	<a data-name="<?php echo $item[$field] ?>" href="">
+		<div class="media media-sm">
+			<div class="media-body">
+				<h6 class="media-heading"><?php echo $item[$field] ?></h6>
+			</div>
+		</div>
+	</a>
+<?php endforeach ?>

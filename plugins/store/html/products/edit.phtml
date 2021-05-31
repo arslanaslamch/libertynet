@@ -1,0 +1,265 @@
+<div class="box store-container">
+    <div class="title">
+        <?php _lang('edit'); ?>
+    </div>
+    <div class="box-content" style="">
+
+        <?php if($message): ?>
+            <div class="alert alert-danger"><?php echo $message ?></div>
+        <?php endif; ?>
+        <form method="post" class="product-form" action="" enctype="multipart/form-data">
+        <?php CSRFProtection::embed()?>
+            <div class="form-group row">
+                <label for="productName" class="col-sm-3">
+                    <?php echo lang("store::productName") ?>
+                </label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="text" value="<?php echo ($product['name'])? $product['name']: input("val.product_name"); ?>" name="val[product_name]" placeholder="<?php echo lang("store::productName") ?>"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="productName" class="col-sm-3">
+                    <?php echo lang("store::type") ?>
+                </label>
+                <div class="col-sm-9">
+                    <select class="c-select" name="val[type]">
+                        <option <?php echo ($product['type']=='tangible') ? 'selected' : '';?> value="tangible"><?php echo lang("store::tangible") ?></option>
+                        <option <?php echo ($product['type']=='intangible') ? 'selected' : '';?>  value="intangible"><?php echo lang("store::intangible") ?></option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <label for="product" class="col-sm-3">
+                    <?php echo  lang("store::product") ?>
+                </label>
+                <div class="col-sm-9">
+                    <input class="form-control" placeholder="change Product" type="file" name="product_file" />
+                    <span class="form-help"><?php echo lang('store::for-downloadable-product') ?></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="productQuantity" class="col-sm-3">
+                    <?php echo lang("store::quantity") ?>
+                </label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="number" min="0" name="val[quantity]" value="<?php echo ($product['quantity']) ? $product['quantity'] :input("val.quantity") ?>"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="productPrice" class="col-sm-3">
+                    <?php echo lang("store::price") ?>
+                </label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="text" name="val[price]" placeholder="<?php echo config('currency-sign','$') ?>" value="<?php echo($product['price']) ? $product['price'] : input("val.price") ?>"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="productDiscountPrice" class="col-sm-3">
+                    <?php echo lang("store::discount-price") ?>
+                </label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="text" name="val[d_price]" placeholder="<?php echo config('currency-sign','$') ?>" value="<?php echo ($product['discount_price']) ? $product['discount_price'] : input("val.d_price") ?>"/>
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label class="control-label"><?php echo lang('store::discount-expiry-date')?></label>
+                </div>
+                <div class="col-sm-9">
+                    <input id="datetimepicker_dark" value="<?php echo ($product['e_date']) ? date('Y/n/j H:i',$product['e_date']) : ''; ?>" type="text" class="form-control" name="val[discount_duration]" style="max-width: 250px" />
+
+                </div>
+               <!-- <div class="col-sm-9">
+                    <select class="c-select"  name="val[end_day]">
+                        <option value=""><?php /*_lang('day')*/?></option>
+                        <?php /*for($i=1;$i<=31;$i++):*/?>
+                            <option <?php /*echo (date('j',$product['e_date']) == $i) ? 'selected' : ''; */?> value="<?php /*echo $i*/?>"><?php /*echo $i*/?></option>
+                        <?php /*endfor*/?>
+                    </select>
+                    <select class="c-select"  name="val[end_month]">
+                        <option value=""><?php /*_lang('month')*/?></option>
+                        <?php /*$i=1;foreach(config('months') as $name => $month):*/?>
+                            <option <?php /*echo (date('n',$product['e_date']) == $i) ? 'selected' : ''; */?>  value="<?php /*echo $i*/?>"><?php /*echo $month*/?></option>
+                            <?php /*$i++;endforeach*/?>
+                    </select>
+                    <select class="c-select" name="val[end_year]">
+                        <option value=""><?php /*_lang('year')*/?></option>
+                        <?php /*for($i=date('Y');$i <= date('Y') + 5; $i++  ):*/?>
+                            <option <?php /*echo (date('Y',$product['e_date']) == $i) ? 'selected' : ''; */?> value="<?php /*echo $i*/?>"><?php /*echo $i*/?></option>
+                        <?php /*endfor*/?>
+                    </select>
+
+                    <select class="c-select" name="val[end_hour]">
+                        <option value="00">00</option>
+                        <?php /*for($i=1;$i<=12;$i++):*/?>
+                            <option <?php /*echo (date('g',$product['e_date']) == $i) ? 'selected' : ''; */?> value="<?php /*echo $i*/?>"><?php /*echo $i*/?></option>
+                        <?php /*endfor*/?>
+                    </select>
+
+                    <select class="c-select"  name="val[end_minute]">
+                        <option value="00">00</option>
+                        <?php /*for($i=1;$i<=60;$i++):*/?>
+                            <option <?php /*echo (date('i',$product['e_date']) == $i) ? 'selected' : ''; */?> value="<?php /*echo $i*/?>"><?php /*echo $i*/?></option>
+                        <?php /*endfor*/?>
+                    </select>
+
+                    <select class="c-select" name="val[end_time_type]">
+                        <option <?php /*echo (date('a',$product['e_date']) == 'am') ? 'selected' : ''; */?> value="am"><?php /*_lang('event::time-am')*/?></option>
+                        <option <?php /*echo (date('a',$product['e_date']) == 'pm') ? 'selected' : ''; */?> value="pm"><?php /*_lang('event::time-pm')*/?></option>
+
+                    </select>
+                </div>-->
+            </div>
+
+            <div class="form-group row">
+                <label for="productPrice" class="col-sm-3">
+                    <?php echo lang("store::description") ?>
+                </label>
+                <div class="col-sm-9">
+                    <textarea name="val[description]" class="ckeditor"><?php echo ($product['description']) ? $product['description'] : input('val.description')?></textarea>
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <label for="category" class="col-sm-3"><?php echo lang("store::category") ?></label>
+                <div class="col-sm-9">
+                    <select class="c-select" name="val[category]">
+                        <?php
+                        $categories = lp_store_categories('get_categories');
+                        ?>
+                        <?php foreach ($categories as $category): ?>
+                            <option <?php echo (($product['category_parent_id'] == $category['id']) || ($product['category_id'] == $category['id'])) ? 'selected' : ''; ?>  value="<?php echo $category['id'].'::'.lang($category['title']); ?>"> <?php echo lang($category['title']); ?></option>
+                            <?php
+                            $subcategories = get_store_subcategories($category['id']);
+                            if ($subcategories):
+                                ?>
+                                <?php foreach ($subcategories as $sb): ?>
+                                <option  <?php echo ($product['category_id'] == $sb['id'] ) ? 'selected' : ''; ?> value="<?php echo $sb['id'].'::'.lang($category['title']).'::'.lang($sb['title']);  ?>"> <?php echo " -- ".lang($sb['title']); ?></option>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
+
+                        <?php endforeach ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="product" class="col-sm-3">
+                    <?php echo lang("store::main_photo") ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php if($product['main_photo']): ?>
+                        <img src="<?php echo url_img($product['main_photo']) ?>" alt="product main photo" style="height: 40px;width: 40px" />
+                    <?php endif; ?>
+                    <span class="file-input"><input type="file"  accept="image/*" name="main_image" id="store-main-image" /></span>
+                    <button onclick="return file_chooser('#store-main-image')" type="button" class="btn btn-secondary"><?php echo lang('store::select-image')?></button>
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <label for="product" class="col-sm-3">
+                    <?php echo lang("store::additional-images") ?>
+                </label>
+                <div class="col-sm-9">
+                    <span class="file-input"><input type="file" accept="image/*" onchange="return additionalImagesCount()" multiple name="add_images[]" id="store-add-images" /></span>
+                    <button onclick="return file_chooser('#store-add-images')" type="button" class="btn btn-secondary"><?php echo lang('store::select-images')?></button>
+                    <span class="additional-image-count" style="display: none; font-size:14px;padding: 5px; color: #fff; background: #b289ff; "></span>
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <label for="productName" class="col-sm-3">
+                    <?php echo  lang("store::producer") ?>
+                </label>
+                <div class="col-sm-9">
+                    <select name="val[producer]" class="form-control">
+                        <option value="none"><?php echo lang("store::none");?></option>
+                        <?php $producers = get_store_producer(get_userid(),'all'); ?>
+                        <?php if($producers): ?>
+                            <?php foreach($producers as $p): ?>
+                                <option value="<?php echo $p['name'] ?>"><?php echo ucfirst($p['name']); ?></option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="productName" class="col-sm-3">
+                    <?php echo  lang("store::tags") ?>
+                </label>
+                <div class="col-sm-9">
+                    <input class="form-control" value="<?php echo $product['tags'] ?>" type="text" name="val[tags]" placeholder="<?php echo lang("store::tags-separate-with-coma") ?>"/>
+                </div>
+            </div>
+        <?php if(config('allow-pay-store-on-delivery',1)): ?>
+            <div class="form-group row">
+                <label for="productName" class="col-sm-3">
+                    <?php echo  lang("store::allow-pay-on-delivery") ?>
+                </label>
+                <div class="col-sm-9">
+                    <div class="form-group" style="display: block">
+                        <label class="c-input c-radio">
+                            <input class="paymentMethod" id="radioStacked1" <?php echo ($product['pay_on_delivery']) ? 'checked' : ''; ?> name="val[pay_on_delivery]" value="1" type="radio">
+                            <span class="c-indicator"></span>
+                        </label>
+                        <span><?php echo lang("store::yes"); ?></span>
+                    </div>
+
+                    <div class="form-group" style="display: block">
+                        <label class="c-input c-radio">
+                            <input class="paymentMethod" id="radioStacked1" <?php echo (!$product['pay_on_delivery']) ? 'checked' : ''; ?>  name="val[pay_on_delivery]" value="0" type="radio">
+                            <span class="c-indicator"></span>
+                        </label>
+                        <span><?php echo lang("store::no"); ?></span>
+                    </div>
+                </div>
+            </div>
+        <?php else: ?>
+            <input type="hidden" name="val[pay_on_delivery]" value="0" />
+        <?php endif; ?>
+            <div class="form-group row">
+                <label for="product" class="col-sm-3">
+                    <?php echo lang("store::product-attr") ?>
+                </label>
+                <span class="form-help"><?php echo lang('store::attr-desc') ?></span>
+                <div class="col-sm-9">
+                    <div class="attr-container">
+                        <div class="">
+                            <?php $labels=  perfectUnserialize($product['labels']); ?>
+                            <?php if(is_array($labels )): ?>
+                                <?php foreach($labels as $k=>$v): ?>
+                                    <?php if(empty($k) || empty($v)) continue; ?><?php if(empty($k) || empty($v)) continue; ?>
+                            <input class="form-control form-inline input-attr" value="<?php echo $k ?>" type="text" name="val[label][]" placeholder=" e.g color" />
+                            <input class="form-control form-inline input-attr" value="<?php echo $v; ?>" type="text" name="val[values][]" placeholder="red,blue,white" /><br/><br/>
+                                 <?php  endforeach;?>
+                                <?php endif; ?>
+                            <input class="form-control form-inline input-attr" type="text" name="val[label][]" placeholder=" e.g color" />
+                            <input class="form-control form-inline input-attr" type="text" name="val[values][]" placeholder="red,blue,white" /><br/><br/>
+                        </div>
+                    </div>
+
+                    <span class="form-help"><a href="" data-number="0" class="add-more-attr"><i class="ion-plus"></i><?php echo lang("store::add-more") ?> </a> </span><br/>
+                </div>
+            </div>
+
+            <?php fire_hook("affliate.link.field",$product['aff_link'],array()); ?>
+
+            <div class="form-group">
+                <input type="hidden" name="val[id]" value="<?php echo $product['id']; ?>" />
+                <div class="col-sm-offset-6">
+                    <button type="submit" class="btn btn-info btn-sm"><?php echo lang("store::save-product"); ?></button>
+                </div>
+            </div>
+
+
+        </form>
+
+    </div>
+</div>

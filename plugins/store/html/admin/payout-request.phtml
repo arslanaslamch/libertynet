@@ -1,0 +1,72 @@
+<div class="box" id="withdrawn">
+    <div class="title">
+        <h4><?php echo lang("store::store-owners-eligible-for-withdrawal") ?></h4>
+    </div>
+    <div class="wrapper-content">
+        <div class="container" style="margin:20px">
+            <!--<div class="menu">
+                <ul style="margin: 20px">
+                    <li role="presentation" class="btn <?php /*echo(!input('type') ) ? 'btn-primary' : ''; */?>"><a href="<?php /*echo url_to_pager("admin-manage-payouts-request"); */?>"><?php /*echo lang("store::all");*/?></a></li>
+                    <li role="presentation" class="btn <?php /*echo(input('type') == 'successful') ? 'btn-primary' : ''; */?>"><a href="<?php /*echo url_to_pager("admin-manage-payouts-request").'?type=successful'; */?>"><?php /*echo lang("store::successful");*/?></a></li>
+                    <li role="presentation" class="btn <?php /*echo(input('type') == 'pending') ? 'btn-primary' : ''; */?>"><a href="<?php /*echo url_to_pager("admin-manage-payouts-request").'?type=pending'; */?>"><?php /*echo lang("store::pending");*/?></a></li>
+                </ul>
+            </div>-->
+
+            <div class="col-sm-12">
+                <table class="table table-borderd storeTable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><?php echo lang("store::name"); ?></th>
+                        <th><?php echo lang("store::store-owner");?></th>
+                        <th><?php echo lang("store::amount"); ?></th>
+                       <!-- <th><?php /*echo lang("store::status") */?></th>-->
+                        <!--<th><?php /*echo lang("store::time") */?></th>-->
+                        <th><?php _lang("actions"); ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+
+                        $i = 1;
+                        if($request):
+                            foreach($request as $r):
+                                $store = lpGetStoreById($r['store_id']);
+                                $user = find_user($store['user_id']);
+                                $amount = $r['balance'];
+                                $account_settings = getMyStoreAccountSettings($store['user_id']);
+                                ?>
+                                <tr id="store_<?php echo $r['store_id'] ?>">
+                                    <td><?php echo $i;?></td>
+                                    <td><?php echo $store['name'] ?></td>
+                                    <td><a href="<?php echo profile_url(null,$user); ?>"> <?php echo get_user_name($user) ?></a></td>
+                                    <td><?php echo config('currency-sign','$').number_format((float)$amount,'2','.',','); ?></td>
+                                    <!--<td>
+                                        <select id="withdrawalStatus" class="c-select" onchange="return updateWithdrawStatus(<?php /*echo $r['w_id']; */?>,'#withdrawalStatus')">
+                                            <option <?php /*echo ($r['status']) ? '' : 'selected'; */?> value="0"><?php /*echo ucwords(lang("store::pending")); */?></option>
+                                            <option <?php /*echo ($r['status']) ? 'selected' : ''; */?> value="1"><?php /*echo ucwords(lang('store::successful')); */?></option>
+                                        </select>
+                                    </td>-->
+                                    <!--<td><?php /*echo date('M j , y  h:i A',$r['time'])*/?></td>-->
+                                    <td>
+                                        <?php if($account_settings): ?>
+                                            <a href="<?php echo url_to_pager("admincp-seller-setup-account").'?id='.$store['s_id']; ?>" class="btn btn-sm btn-secondary"><?php echo lang("store::account") ?></a>
+                                            <a onclick="return adminHasPaid(<?php echo $store['s_id'] ?>,<?php echo $amount; ?>)" href="" class="btn btn-sm btn-success"><?php echo lang("store::mark-as-paid") ?></a>
+                                         <?php else: ?>
+                                         <span><?php echo lang("store::store-has-not-setup-withdrawal-account") ?></span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr><td colspan="5"><div class="alert alert-info"><?php echo lang("store::no-member-is-eligible-for-withdraw-yet") ?></div> </td> </tr>
+                        <?php endif; ?>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</div>

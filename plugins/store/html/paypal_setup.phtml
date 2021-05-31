@@ -1,0 +1,29 @@
+<div class="box">
+    <div class="title"><?php echo lang("store::paypal-account-setup") ?></div>
+    <div class="box-content" id="skrill">
+        <?php if($message): ?>
+        <div class="alert alert-danger"><?php echo $message; ?></div>
+        <?php endif;?>
+        <form action="" method="post">
+            <fieldset>
+                <div class="col-sm-4">
+                    <label><?php echo lang("store::paypal_email_address") ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" value="<?php echo ($settings['paypal_email']) ? $settings['paypal_email'] : input('val.paypal_email') ?>" name="val[paypal_email]"/>
+                </div>
+            </fieldset>
+            <div class="alert alert-warning">
+                <?php echo lang("store::saving-this-will-overwrite-exiting-active-payment-method") ?>
+            </div>
+
+            <fieldset>
+                <div class="col-sm-offset-4" style="margin-bottom: 20px">
+                    <button class="btn btn-info"><?php echo lang('save')?></button>
+                    <a ajax="true" href="<?php echo url_to_pager("manager-settings"); ?>" class="btn btn-secondary"><?php echo lang('cancel')?></a>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+</div>

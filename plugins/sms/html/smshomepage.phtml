@@ -1,0 +1,69 @@
+<div class="panel-container card" id="sms-overall">
+    <?php if(isset($_SESSION['update_phone_number'])): ?>
+        <div class="title"><?php echo lang('sms::update-phone-number'); ?></div>
+    <?php else: ?>
+        <div class="title"><?php echo lang('sms::verify-your-account'); ?></div>
+    <?php endif; ?>
+    <div class="card-block">
+        <div class="sms-container">
+            <div>
+                <p id="sms-desc"><?php echo lang('sms::validation-desc') ?></p>
+                <?php if ($message): ?>
+                    <div class="alert-info alert"><?php echo $message; ?></div>
+                <?php endif; ?>
+                <form id="sms-form" action="" method="post">
+                    <?php if (isset($_SESSION['from_sign_in'])): ?>
+                        <fieldset>
+                            <label for="input-number"><?php echo lang('sms::username') . ' : ' ?></label>
+                            <input id="username" name="username" type="text" class="form-control inline-form"
+                                   placeholder="<?php _lang('username-email-address') ?>"/>
+                            <br/>
+                        </fieldset>
+                    <?php endif; ?>
+
+                    <fieldset>
+                        <label for="input-number"><?php echo lang('sms::mobile-number') ?></label>
+                        <input id="error_message" type="hidden" value="<?php echo lang('sms::error-msg') ?>">
+                        <input id="hidden" type="hidden" name="val[phone_num]">
+                        <input id="location" value="after_sign_up" type="hidden" />
+                        <input id="translatedcode" type="hidden" value="<?php echo lang('sms::send-code');?>">
+                        <input onkeyup="numbersOnly(this)" id="input-number" name="full" type="tel"
+                               class="form-control inline-form"/>
+                        <span style="display: none" id="change_number" class="form-help"><a href="#" onclick="return change_number()"><?php echo lang('sms::change-number') ?></a></span>
+                        <br/><br/>
+                        <input data-sending="<?php echo lang('sms::sending'); ?>" type="button" id="submit_sms"
+                               onclick="return send_code()" value="<?php echo lang('sms::send-code') ?>"
+                               class="btn btn-block btn-sm btn-info inline-form">
+                    </fieldset>
+                    <div id="confirm" style="display: none">
+                        <fieldset>
+                            <label for="input-number"><?php echo lang('sms::confirmation-code') ?></label>
+
+                            <input id="code" type="text" class="form-control inline-form" placeholder="e.g 5A5EP"/>
+                            <br/>
+                            <input type="button" onclick="return verify_code()"
+                                   value="<?php echo lang('sms::confirm') ?>"
+                                   class="btn btn-block btn-sm btn-info inline-form">
+                        </fieldset>
+                        <br/>
+                        <p>
+                            <?php echo lang('sms::didnt-get-code') ?><span><a data-state="no" id="resend" href="#"
+                                                                             onclick="return resend_sms()"><?php echo lang('sms::resend-code'); ?></a> </span>
+                        </p>
+
+                    </div><br/>
+
+                    <?php if(config('Allow-new-users-to-skip-process',1) == 1 && !isset($_SESSION['update_phone_number'])): ?>
+                    <div>
+                        <?php if(config('enable-getstarted', true)): ?>
+                        <a ajax="true" href="<?php echo url_to_pager('signup-welcome') ?>" class="btn btn-block btn-sm btn-info inline-form"><?php echo lang('skip') ?></a>
+                        <?php else: ?>
+                            <a ajax="true" href="<?php echo url_to_pager('sms-goto-home'); ?>" class="btn btn-block btn-sm btn-info inline-form"><?php echo lang('skip') ?></a>
+                        <?php endif; ?>
+                    </div>
+                    <?php endif; ?>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<div class="box">
+    <div class="title"><?php echo lang('creditgift::payment-status') ?></div>
+    <div class="box-content">
+        <div class="alert alert-danger">
+            <?php echo lang('business::business-payment-cancel') ?>
+        </div>
+        <a href="<?php echo url_to_pager('business-page', array('slug' => $business['slug'])) ?>" ajax="true" class="btn btn-info btn-block action-button"><?php echo lang('business::manage-business') ?></a>
+    </div>
+</div>

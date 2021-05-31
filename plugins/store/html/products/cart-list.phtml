@@ -1,0 +1,49 @@
+<?php if ($cart):
+    $t = array();
+    ?>
+    <div class="product-list-cart-modal">
+        <?php foreach ($cart as $k => $v): ?>
+            <?php
+            $product_id = $k;
+            $p = getSingleProduct($k);
+            $current_time = time();
+            $discount_expire_time = $p['e_date'];
+            //ac represent apply coupon
+            $actual_price = getProductPrice($p, 'ac');
+            $store = lpGetStoreById($p['store_id']);
+            if (!$p) continue;
+            ?>
+            <div class="media media-sm product_<?php echo $p['id']; ?>">
+                <div class="media-left">
+                    <div class="media-object">
+                        <img src="<?php echo ($p['main_photo']) ? url_img($p['main_photo']) : img("store::images/comingsoon.png"); ?>"/>
+                    </div>
+                </div>
+                <div class="media-body">
+                    <h6 class="media-heading" style="margin-top:0">
+                        <?php echo $v['quantity']; ?> X <?php echo $p['name']; ?>
+
+                        <span class="pull-right each-product-rhs-cart">
+                                                        <span><?php echo config('currency-sign', '$'); ?><?php echo number_format((float)($v['quantity'] * $actual_price), '2', '.', ','); ?></span>
+                                                        <a href=""
+                                                           onclick="return removeFromCart(<?php echo $p['id']; ?>)"><b><i
+                                                                        class="ion-android-cancel"></i></b></a>
+                                                    </span>
+                    </h6>
+                </div>
+                <input type="hidden" class="quantity-cart" value="<?php echo $v['quantity'] ?>" name="val[quantity][]"/>
+                <input type="hidden" class="price"
+                       value="<?php echo number_format((float)($actual_price), '2', '.', ','); ?>"/>
+                <?php $t[] = $v['quantity'] * $actual_price; ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <br/>
+    <p>
+        <?php echo strtoupper(lang("store::sub-total")); ?>
+        <span class="pull-right subtotal-dd-price"><?php echo config('currency-sign', '$'); ?><span
+                    class="cart-total">  <?php echo number_format((float)array_sum($t), '2', '.', ','); ?></span></span>
+    </p>
+<?php else: ?>
+<div class="alert alert-info"><?php echo lang("store::cart-is-empty"); ?></div>
+<?php endif; ?>

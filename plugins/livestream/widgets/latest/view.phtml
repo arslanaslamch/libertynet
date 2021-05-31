@@ -1,0 +1,4 @@
+<?php $livestreams = Livestream::getLivestreams(array('status' => 3), $limit); ?>
+<div class="livestream-content livestream-widget livestream-latest">
+    <?php echo view('livestream::livestream/widget_list', array('title' => lang('livestream::latest-livestreams'), 'livestreams' => $livestreams)) ?>
+</div>

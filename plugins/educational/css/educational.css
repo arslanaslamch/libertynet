@@ -1,0 +1,159 @@
+.single-book .tab-content{
+    overflow: initial !important;
+}
+
+.book-lhs-one{
+    display: inline-block;
+    max-width: 220px;
+    float: left;
+    padding: 0;
+    margin-right: 10px;
+
+}
+.bokk-upper{
+    display:block;
+    min-height:420px;
+}
+.book-image-holder{
+    height:280px;
+    width:200px;
+    background-position:center;
+    background-size:cover;
+    padding:5px;
+    display:block;
+    margin-bottom:10px;
+}
+
+.books-lhs{
+    height:250px;
+    width:200px;
+    display:inline-block;
+}
+
+@media( max-width :  768px){
+    .book-lhs-one{
+        display: block;
+        max-width: 100%;
+        float: none;
+        padding: 0;
+        margin-right: 10px;
+
+    }
+    .bokk-upper{
+        display:block;
+        min-height:100%;
+    }
+
+    .rhs-book h4{
+        font-size:18px;
+        margin-top:10px;
+    }
+
+    .feed-view-book .rhs-book {
+        padding-top:20px;
+    }
+}
+.form-roller-donation label{
+    font-weight:bold;
+}
+.form-roller-donation .form-group{
+    display:block;
+    margin-bottom: 15px;
+}
+
+.rhs-book{
+    padding-top:5px;
+}
+
+.feed-view-book{
+    padding:20px;
+    display:block;
+    margin:5px;
+    min-height:300px;
+}
+
+.rhs-book h4{
+    color: #000;
+}
+.book-image-holder a{
+    margin-top:5px;
+}
+ /*** Rating**/
+.background-rating {
+    transition: 50ms !important;
+    color: #FFD700 !important;
+}
+
+.star-holder {
+    position: relative;
+    margin: 0 auto;
+}
+
+.star-holder i {
+    font-size: 70px;
+    color: #FFD700 !important;
+}
+
+.background-star-color {
+    background: #FFD700;
+    border: #FFD700;
+    height: 7px;
+    width: 150px;
+    display: inline-block;
+}
+
+.background-default-color {
+    background: #ccc;
+    border: #ccc;
+    height: 7px;
+    width: 150px;
+    display: inline-block;
+}
+
+.star-holder span {
+    font-size: 14px;
+    color: #fff;
+    position: absolute;
+    top: 40px;
+    right: 49%;
+
+}
+
+/*.grid-listing-container .product-each-item .product-rating-container i{
+    font-size:16px;
+}*/
+
+.books-des{
+    font-size:14px;
+}
+.books-rating-container {
+    margin-bottom: 5px;
+}
+
+.books-rating-container i {
+    font-size: 25px;
+    color: #ccc;
+    cursor: pointer;
+    transition: 50ms;
+}
+
+/** Rating End**/
+
+/** from **/
+
+#books-list-container.list-listing-container .each-item{
+    height:300px;
+}
+
+#books-list-container.list-listing-container .item-title{
+    background: #ccc;
+    display: block;
+    padding: 5px;
+}
+#books-list-container.grid-listing-container .each-item{
+    height:360px;
+}
+#books-list-container .left{
+    height:280px;
+}
+

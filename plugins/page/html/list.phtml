@@ -1,0 +1,140 @@
+<div class="box">
+    <div class="page-list">
+        <div class="head">
+            <div class="cover" style="background-image: url(<?php echo url_img(config('page-list-cover', 'plugins/page/images/cover.jpg'), 920); ?>)">
+                <div class="title"><?php echo lang('page::pages') ?></div>
+                <div class="actions">
+                    <?php if(user_has_permission('can-create-page')): ?>
+                        <a href="<?php echo url_to_pager('page-create') ?>" class="btn btn-block btn-info action-button" data-toggle="modal" data-target="#page-create-modal">
+                            <i class="ion-plus"></i>
+                            <?php echo lang('page::create-page') ?>
+                        </a>
+                        <div id="page-create-modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog modal-lg1">
+                                <div class="modal-content">
+                                    <form action="<?php echo url('page/create') ?>" method="post" class="ajax-form">
+                                        <div class="modal-form-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <p class="modal-title pull-left"><?php echo lang('create-a-page') ?></p>
+                                        </div>
+                                        <div class="modal-body">
+                                            <?php CSRFProtection::embed() ?>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('page::select-category') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <div class="magic-select" data-name="val[category]" data-width="200px">
+                                                        <div class="magic-select-toggle">
+                                                            <?php echo lang('select-category') ?>
+                                                        </div>
+                                                        <div class="magic-select-content">
+                                                            <?php $categories = get_page_categories(); ?>
+                                                            <?php foreach($categories as $category): ?>
+                                                                <div class="magic-select-option" data-value="<?php echo $category['category_id'] ?>">
+                                                                    <?php echo lang($category['category_title']) ?>
+                                                                </div>
+                                                            <?php endforeach ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('page-title') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <input value="<?php echo input('val.name') ?>" type="text" name="val[name]" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('page::description') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <textarea name="val[description]" data-height="50px" class="form-control auto-grow-input"><?php echo input('val.description') ?></textarea>
+                                                </div>
+                                            </div>
+                                            <?php fire_hook('page.create.view')?>
+                                            <?php $customsField = get_form_custom_fields('page'); ?>
+                                            <?php if(count($customsField) > 0): ?>
+                                                <div class="field">
+                                                    <div class="top">
+                                                        <label class="control-label col-sm-4">Custom</label>
+                                                    </div>
+                                                    <div class="bottom">
+                                                        <?php foreach($customsField as $field): ?>
+                                                            <?php echo view("custom-field/display", array('field' => $field, 'offDescription' => true)) ?>
+                                                        <?php endforeach ?>
+                                                    </div>
+                                                </div>
+                                            <?php endif ?>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="submit">
+                                                <button class="btn btn-info pull-right"><?php echo lang('page::create-page') ?></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif ?>
+                </div>
+            </div>
+            <div class="links">
+                <div class="link <?php echo isset(app()->pageType) && app()->pageType == 'browse' ? 'active' : null ?>">
+                    <a ajax="true" href="<?php echo url('pages') ?>"><?php echo lang('page::pages') ?></a>
+                </div>
+                <?php if(is_loggedIn()): ?>
+                    <div class="link <?php echo isset(app()->pageType) && app()->pageType == 'mine' ? 'active' : null ?>">
+                        <a ajax="true" href="<?php echo url('pages?type=mine') ?>"><?php echo lang('page::my-pages') ?></a>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="filters global-filter-container filter-pane" data-url="<?php echo url('pages') ?>">
+                <div class="left">
+                    <i class="icon ion-android-options"></i>
+                    <select id="page-category-list" onchange="return run_global_filter()" data-name="category" class="c-select filter-input">
+                        <option <?php echo (input('category', 'all') == 'all') ? 'selected' : null ?> value="all"><?php echo lang('page::all-categories') ?></option>
+                        <?php foreach(get_page_categories() as $category): ?>
+                            <option <?php echo (input('category', 'all') == $category['category_id']) ? 'selected' : null ?> value="<?php echo $category['category_id'] ?>"><?php echo lang($category['category_title']) ?></option>
+                        <?php endforeach ?>
+                    </select>
+                    <select id="page-filter-select" onchange="return run_global_filter()" data-name="filter" class="c-select filter-input">
+                        <option value="all"><?php echo lang('all') ?></option>
+                        <option <?php echo (input('filter') == 'featured') ? 'selected' : null ?> value="featured"><?php echo lang('featured') ?></option>
+                    </select>
+                </div>
+                <div class="right">
+                    <form id="page-list-search" method="post" onsubmit="return run_global_filter()" action="" class="search form-inline list-search">
+                        <?php CSRFProtection::embed() ?>
+                        <input type="hidden" class="filter-input form-control" data-name="type" value="<?php echo input('type', 'browse') ?>"/>
+                        <input type="search" value="<?php echo input('term') ?>" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>" />
+                        <button type="submit">
+                            <i class="search-icon icon ion-ios-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="listings">
+                <div class="listing row">
+                    <?php foreach($pages->results() as $page): ?>
+                        <div class="col-md-6">
+                            <?php echo view('page::display', array('page' => $page)) ?>
+                        </div>
+                    <?php endforeach ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-content">
+        <?php if(!$pages->total): ?>
+            <?php echo lang('page::no-page-found') ?>
+        <?php else: ?>
+            <?php echo $pages->append(array('term' => input('term'), 'type' => input('type', 'browse'), 'filter' => input('filter')))->links(true) ?>
+        <?php endif ?>
+    </div>
+</div>

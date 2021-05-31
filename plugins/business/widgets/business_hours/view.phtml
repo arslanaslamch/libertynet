@@ -1,0 +1,33 @@
+<?php $hours = get_business_hour($_SESSION['business_id']);
+$business = business_get_claim_business($_SESSION['business_id']);
+?>
+<?php if(count($hours->results()) > 0): ?>
+	<div class="business box businesses-box">
+		<div class="title"><?php echo lang('business::hour-businesses') ?>
+			<a ajax="true" href="" class="more-link pull-right"><i class="ion-ios-arrow-forward"></i></a>
+		</div>
+		<div class="containe">
+			<h6>Business Timezone <?php echo lang($business['timezone']); ?></h6>
+			<div class="table-respnsive">
+				<table class="table">
+					<thead>
+					<tr>
+						<th>Days</th>
+						<th>Open Time</th>
+						<th>Close Time</th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php foreach($hours->results() as $hour): ?>
+						<tr>
+							<td><?php echo $hour['day']; ?></td>
+							<td><?php echo $hour['open_time']; ?></td>
+							<td><?php echo $hour['close_time']; ?></td>
+						</tr>
+					<?php endforeach ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+<?php endif ?>

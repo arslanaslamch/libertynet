@@ -1,0 +1,91 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("contest::manage-contest-annoucement"); ?>
+    </div>
+    <div class="wrapper-content">
+        <div class="list-table-container">
+            <?php if($message): ?>
+            <?php echo view("contest::alert",array('message'=>$message)); ?>
+            <?php endif; ?>
+            <div class="table-responsive">
+                <table class="table table-striped list-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th><?php echo lang('contest::headline') ?></th>
+                        <th><?php echo lang('contest::contest') ?></th>
+                        <th style="width: 30%"><?php echo lang("contest::excerpt") ?></th>
+                        <th style="width : 20%;"><?php echo lang('actions') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach($ann->results() as $a): ?>
+                        <?php $user = find_user($a['user_id']);
+                        $contest = get_contest($a['contest_id']);
+                        ?>
+                        <tr class="item" id="<?php echo $contest['id'] ?>">
+                            <td><?php echo $a['id'] ?></td>
+                            <td><?php echo $a['title'] ?></td>
+                            <td><a href="<?php echo contestUrl($contest); ?>"> <img src="<?php echo get_contest_image($contest); ?>" style="height: 50px;width: 50px; border-radius: 100%" title="<?php echo $contest['name'] ?>" /></a></td>
+                            <td><?php echo str_limit($a['content'],200) ?></td>
+                            <td>
+                                <a href=""
+                                   style="color: #fff; text-decoration: none"
+                                   class="edit-contest-annoucement btn btn-secondary btn-sm"
+                                   data-acid="<?php echo $contest['id']; ?>"
+                                   data-aid="<?php echo $a['id']; ?>"
+                                   data-atype="<?php echo 'update'; ?>"
+                                   data-alink="<?php echo urldecode($a['link']); ?>"
+                                   data-acontent="<?php echo $a['content']; ?>"
+                                   data-atitle="<?php echo $a['title']; ?>"
+                                ><i class="ion-edit"></i> <?php echo lang("edit") ?> </a>
+                                <a style="color : #fff;text-decoration: none" class="admin-confirm btn btn-sm btn-danger" href="<?php echo url_to_pager("admincp-contests-ann-manage").'?aid='.$a['id'].'&cid='.$contest['id'].'&action=delete';?>"><i class="ion-android-delete"></i> <?php echo lang("delete"); ?></a>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <?php echo $ann->links() ?>
+    </div>
+</div>
+
+<div id="annModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><?php echo lang('contest::announcement') ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php echo lang('close') ?></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo url_to_pager("admincp-contests-ann-manage") ?>" method="post" enctype="multipart/form-data" class="ajax-form">
+                    <?php CSRFProtection::embed() ?>
+                    <div class="form-group">
+                        <input type="hidden" id="acid" name="val[contest_id]" value="<?php echo $contest['id'] ?>"/>
+                        <input type="hidden" id="atype" name="val[atype]" value="new"/>
+                        <input type="hidden" id="aid" name="val[aid]" value="0"/>
+                        <label><?php echo lang("contest::news-headline") ?> * </label>
+                        <input autocomplete="off" type="text" id="atitle" name="val[headline]" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label><?php echo lang("contest::link"); ?></label>
+                        <input autocomplete="off" type="text" id="alink" name="val[link]" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label><?php echo lang("contest::content"); ?> * </label>
+                        <textarea id="acontent" name="val[content]" id="acontent" class="form-control"></textarea>
+                    </div>
+
+                    <div class="submit">
+                        <button class="btn btn-info"><?php echo lang("save"); ?></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

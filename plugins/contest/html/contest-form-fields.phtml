@@ -1,0 +1,344 @@
+<?php if(!isset($admin)): ?>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang('contest::category') ?></label>
+    </div>
+    <div class="right">
+        <div class="magic-select" data-name="val[category]" data-width="200px">
+            <?php if(isset($contest)): ?>
+            <input type="hidden" name="val[category]" value="<?php echo $contest['category_id'] ?>" class="magic-select-value"/>
+            <?php endif; ?>
+            <?php $categories = get_contest_categories(); ?>
+            <div class="magic-select-toggle">
+                <?php echo (isset($contest)) ? lang(get_contest_category($contest['category_id'])['title']) : lang('select-category') ?>
+            </div>
+            <div class="magic-select-content">
+                <?php foreach ($categories as $category): ?>
+                    <?php $sub_categories = get_contest_parent_categories($category['id']) ?>
+                    <?php if ($sub_categories): ?>
+                        <div class="magic-select-label"><?php echo lang($category['title']) ?></div>
+                        <?php foreach ($sub_categories as $cat): ?>
+                            <div class="magic-select-option" data-value="<?php echo $cat['id'] ?>">
+                                <?php echo lang($cat['title']) ?>
+                            </div>
+                        <?php endforeach ?>
+                    <?php else: ?>
+                        <div class="magic-select-option" data-value="<?php echo $category['id'] ?>">
+                            <?php echo lang($category['title']) ?>
+                        </div>
+                    <?php endif ?>
+                <?php endforeach ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php else: ?>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang('contest::category') ?></label>
+    </div>
+    <div class="right">
+    <select name="val[category]" class="c-select">
+        <?php $default_cat = null;
+        if(isset($contest)){
+            $default_cat = $contest['category_id'];
+        }
+        ?>
+        <?php foreach(get_contest_categories() as $category): ?>
+            <?php $subCategories = get_contest_parent_categories($category['id']) ?>
+            <?php if($subCategories): ?>
+                <optgroup label="<?php echo lang($category['title']) ?>">
+                    <?php foreach($subCategories as $cat): ?>
+                        <option <?php echo ($default_cat == $cat['id']) ? 'selected' : null ?> value="<?php echo $cat['id'] ?>"><?php echo lang($cat['title']) ?></option>
+                    <?php endforeach ?>
+                </optgroup>
+            <?php else: ?>
+                <option <?php echo ($default_cat == $category['id']) ? 'selected' : null ?> value="<?php echo $category['id'] ?>"><?php echo lang($category['title']) ?></option>
+            <?php endif ?>
+        <?php endforeach ?>
+    </select>
+</div>
+</div>
+<?php endif; ?>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang('contest::contest-name') ?>*</label>
+    </div>
+    <div class="right">
+        <input value="<?php echo (isset($contest)) ? $contest['name'] : input('val.name') ?>" type="text" class="form-control" name="val[name]"
+               placeholder="<?php echo lang('contest::contest-name') ?>"/>
+    </div>
+</div>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang('contest::contest-type') ?>*</label>
+    </div>
+    <?php $default_type = 'blog'; ?>
+    <?php if(isset($contest)){
+        $default_type = $contest['type'];
+    } ?>
+
+    <?php if(!isset($contest)): ?>
+    <div class="right contest-type-right-wrapper">
+                        <?php if(config('contest-enable-blog-type',true)) :  ?>
+                        <span><label class="c-input c-radio">
+										<input <?php echo ($default_type == 'blog') ? 'checked' : ''; ?> value="blog" name="val[type]" type="radio">
+										<span class="c-indicator"></span>
+                                <?php echo lang('contest::blog') ?>
+									</label>
+                        </span>
+                        <?php endif; ?>
+
+<?php if(config('contest-enable-photo-type',true)) :  ?>
+        <span><label class="c-input c-radio">
+										<input <?php echo ($default_type == 'photo') ? 'checked' : ''; ?> value="photo" name="val[type]" type="radio">
+										<span class="c-indicator"></span>
+                                <?php echo lang('contest::photo') ?>
+									</label>
+                        </span>
+                        <?php endif; ?>
+                        <?php if(config('contest-enable-video-type',true)) :  ?>
+        <span><label class="c-input c-radio">
+										<input <?php echo ($default_type == 'video') ? 'checked' : ''; ?> value="video" name="val[type]" type="radio">
+										<span class="c-indicator"></span>
+                                <?php echo lang('contest::video') ?>
+									</label>
+                        </span>
+                        <?php endif; ?>
+                        <?php if(config('contest-enable-music-type',true)) :  ?>
+        <span><label class="c-input c-radio">
+										<input <?php echo ($default_type == 'music') ? 'checked' : ''; ?> value="music" name="val[type]" type="radio">
+										<span class="c-indicator"></span>
+                                <?php echo lang('contest::music') ?>
+									</label>
+                        </span>
+                        <?php endif; ?>
+    </div>
+    <?php else: ?>
+    <div class="right contest-type-right-wrapper">
+                        <span><label class="c-input c-radio">
+										<input checked value="<?php echo $default_type; ?>" name="val[type]" type="radio">
+										<span class="c-indicator"></span>
+                                <?php echo lang('contest::'.$default_type); ?>
+									</label>
+                        </span>
+    <?php endif; ?>
+</div>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang('contest::main-description') ?> * </label>
+    </div>
+    <div class="right">
+                        <textarea name="val[description]" class="ckeditor"
+                                  placeholder="<?php echo lang('contest::main-description') ?>"><?php echo (isset($contest)) ? $contest['description']  : input('val.description') ?></textarea>
+    </div>
+</div>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang('contest::award') ?> * </label>
+    </div>
+    <div class="right">
+                        <textarea name="val[award]" class="form-control textarea"
+                                  placeholder="<?php echo lang('contest::award') ?>"><?php echo isset($contest) ? $contest['award'] : input('val.award') ?></textarea>
+    </div>
+</div>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang('contest::terms-and-condition') ?> * </label>
+    </div>
+    <div class="right">
+        <textarea name="val[terms]" class="form-control textarea"><?php echo (isset($contest)) ? $contest['terms'] :  input('val.terms') ?></textarea>
+    </div>
+</div>
+
+<?php if(!isset($admin)): ?>
+
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang('contest::photo') ?></label>
+    </div>
+    <div class="right">
+        <div class="magic-input-image-preview" data-name="image">
+            <span class="dimension"></span>
+        </div>
+        <?php if(isset($contest)): ?>
+        <br/>
+            <img src="<?php echo get_contest_image($contest) ?>" style="height: 50px;width: 50px;display: block" />
+        <?php endif; ?>
+    </div>
+</div>
+<?php else: ?>
+    <div class="field">
+        <div class="left">
+            <label class="control-label"><?php echo lang('contest::photo') ?></label>
+        </div>
+        <div class="right">
+            <input type="file" name="image" class="form-control"/>
+            <?php if(isset($contest)): ?>
+                <br/>
+                <img src="<?php echo get_contest_image($contest) ?>" style="height: 50px;width: 50px;display: block" />
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang('contest::contest-duration') ?> * </label>
+    </div>
+    <div class="right" id="date-container-contest">
+        <div class="contest-date-wrapper contest-start-date-wrapper">
+            <label><em><?php echo lang('contest::start'); ?></em></label>
+            <input
+                   value="<?php echo (isset($contest)) ? date('Y-m-d  h:i A',$contest['contest_start']) : ''; ?>" autocomplete="off" type="text" name="val[contest_start]" placeholder="<?php echo lang("contest::start-date") ?>"
+                   id="start-c-date" class="form-control limit-contest-range-picker <?php echo isset($contest) ? 'start-c-date-update' : 'start-c-date' ?>"/>
+            <div class="c-start-date-container"></div>
+        </div>
+        <div class="contest-date-wrapper contest-end-date-wrapper">
+            <label><em><?php echo lang('contest::end') ?></em></label>
+            <input value="<?php echo (isset($contest)) ? date('Y-m-d  h:i A',$contest['contest_end']) : ''; ?>" autocomplete="off" type="text" name="val[contest_end]" placeholder="<?php echo lang("contest::end-date") ?>"
+                   class="form-control limit-contest-range-picker <?php echo isset($contest) ? 'end-c-date-update' : 'end-c-date' ?> " />
+            <div class="c-end-date-container"></div>
+        </div>
+
+
+    </div>
+</div>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang('contest::submit-entries-duration') ?> * </label>
+    </div>
+    <div class="right" id="date-container-contest">
+        <div class="contest-date-wrapper contest-start-date-wrapper">
+            <label><em><?php echo lang('contest::start') ?></em></label>
+            <input value="<?php echo (isset($contest)) ? date('Y-m-d  h:i A',$contest['entries_start']) : ''; ?>" autocomplete="off" type="text" name="val[entries_start]" placeholder="<?php echo lang("contest::start-date") ?>"
+                   class="form-control limit-contest-range-picker <?php echo isset($contest) ? 'start-se-date-update' : 'start-se-date' ?> "/>
+            <div class="se-start-date-container"></div>
+        </div>
+        <div class="contest-date-wrapper contest-end-date-wrapper">
+            <label><em><?php echo lang('contest::end') ?></em></label>
+            <input value="<?php echo (isset($contest)) ? date('Y-m-d  h:i A',$contest['entries_end']) : ''; ?>" autocomplete="off" type="text" name="val[entries_end]" placeholder="<?php echo lang("contest::end-date") ?>"
+                   class="form-control limit-contest-range-picker <?php echo isset($contest) ? 'end-se-date-update' : 'end-se-date' ?>" />
+            <div class="se-end-date-container"></div>
+        </div>
+    </div>
+</div>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang('contest::voting-duration') ?> * </label>
+    </div>
+    <div class="right" id="date-container-contest">
+        <div class="contest-date-wrapper contest-start-date-wrapper">
+            <label><em><?php echo lang('contest::start') ?></em></label>
+            <input value="<?php echo (isset($contest)) ? date('Y-m-d  h:i A',$contest['voting_start']) : ''; ?>" autocomplete="off" type="text" name="val[voting_start]" placeholder="<?php echo lang("contest::start-date") ?>"
+                   class="form-control limit-contest-range-picker <?php echo isset($contest) ? 'start-v-date-update' : 'start-v-date' ?>"/>
+            <div class="v-start-date-container"></div>
+        </div>
+        <div class="contest-date-wrapper contest-end-date-wrapper">
+            <label><em><?php echo lang('contest::end') ?></em></label>
+            <input value="<?php echo (isset($contest)) ? date('Y-m-d  h:i A',$contest['voting_end']) : ''; ?>" autocomplete="off" type="text" name="val[voting_end]" placeholder="<?php echo lang("contest::end-date") ?>"
+                   class="form-control limit-contest-range-picker <?php echo isset($contest) ? 'end-v-date-update' : 'end-v-date' ?>" />
+            <div class="v-end-date-container"></div>
+        </div>
+    </div>
+</div>
+<div class="field">
+    <div class="left">
+        <label class="control-label"></label>
+    </div>
+    <div class="right">
+        <p><b><input type="checkbox" name="val[who_vote]" checked value="1"/><?php echo lang("contest::allow-other-members-to-vote-without-joining"); ?></b></p>
+    </div>
+</div>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang("contest::maximum-entry-a-pariticipant-can-submit") ?> * </label>
+    </div>
+    <div class="right">
+        <input type="number" class="form-control" name="val[max_entries]" value="<?php echo isset($contest) ? $contest['max_entries'] : '1' ?>" />
+        <span class="form-help"><?php echo lang("contest::zero-means-unlimited") ?></span>
+    </div>
+</div>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang("contest::number-of-winining-entries") ?> * </label>
+    </div>
+    <div class="right">
+        <input type="number" value="<?php echo isset($contest) ? $contest['winners'] : '1' ?>" class="form-control" name="val[winners]" min="1" />
+        <span class="help-block"><?php echo lang("contest::value-greater-than") ?></span>
+    </div>
+</div>
+<?php if(config('enable-premium-contest',true) and plugin_loaded('emoney')): ?>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang("contest::fee-to-join-contest") ?>  </label>
+    </div>
+    <div class="right">
+        <input type="number" value="<?php echo isset($contest) ? $contest['join_fee'] : '0' ?>" class="form-control" name="val[join_fee]" min="0" />
+        <span class="help-block"><?php echo lang("contest::fee-to-join-contest-desc") ?></span>
+    </div>
+</div>
+<?php endif; ?>
+<!--<div class="field">
+    <div class="left">
+        <label class="control-label"><?php /*echo lang("contest::automatically-approve-entries") */?> * </label>
+    </div>
+    <div class="right">
+                        <span><label class="c-input c-radio">
+										<input checked value="1" name="val[auto_approve]" type="radio">
+										<span class="c-indicator"></span>
+                                <?php /*echo lang('yes') */?>
+									</label>
+                        </span><br/>
+        <span><label class="c-input c-radio">
+										<input value="0" name="val[auto_approve]" type="radio">
+										<span class="c-indicator"></span>
+                                <?php /*echo lang('no') */?>
+									</label>
+                        </span>
+    </div>
+</div>-->
+
+<?php if(!isset($admin)): ?>
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang('publisher') ?></label>
+    </div>
+    <div class="right">
+        <div class="magic-select" data-name="val[entity]" data-width="300px">
+            <div class="magic-select-toggle">
+                <img src="<?php echo get_avatar(75) ?>" class="thumb"/>
+                <?php echo get_user_name(); ?>
+            </div>
+            <div class="magic-select-content slimscroll" data-height="200px">
+                <div class="magic-select-option" data-value="user-<?php echo get_userid() ?>">
+                    <img src="<?php echo get_avatar(75) ?>" class="thumb"/>
+                    <?php echo get_user_name(); ?>
+                </div>
+                <?php fire_hook('entity.select.list') ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="field">
+    <div class="left">
+        <label class="control-label"><?php echo lang('privacy') ?></label>
+    </div>
+    <div class="right">
+        <?php fire_hook('privacy.select'); ?>
+    </div>
+</div>
+<?php else: ?>
+    <div class="field">
+        <div class="left">
+            <label class="control-label"><?php echo lang('privacy') ?></label>
+        </div>
+        <div class="right">
+            <select class="form-control" name="val[privacy]">
+                <option value="1"><?php echo lang('public') ?></option>
+                <option value="2"><?php echo lang('relationship::friends-followers\'') ?></option>
+                <option value="3"><?php echo lang('only-me') ?></option>
+            </select>
+        </div>
+    </div>
+<?php endif; ?>

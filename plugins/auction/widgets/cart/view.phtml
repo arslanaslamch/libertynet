@@ -1,0 +1,10 @@
+<?php if(is_loggedIn()): ?>
+	<?php $bid = count(get_bid_user()); $offer = count(get_offer_user()); $my_cart = count(get_auction_cart()); ?>
+	<div class="auction-widget box">
+		<ul class="menu">
+			<li><a ajax="true" href="<?php echo url_to_pager('auction-my-bids'); ?>"><?php echo lang('auction::my-bids') ?><span class="badge warning pull-right"><?php echo $bid; ?></span></a></li>
+			<li><a ajax="true" href="<?php echo url_to_pager('auction-my-offer'); ?>"><?php echo lang('auction::my-offer') ?><span class="badge warning pull-right"><?php echo $offer; ?></span></a></li>
+			<li><a ajax="true" href="<?php echo url_to_pager('auction-approved-bids'); ?>"><?php echo lang('auction::approved-bids') ?><span class="badge warning pull-right"><?php echo count(approved_auction_bid(get_userid())); ?></span></a></li>
+		</ul>
+	</div>
+<?php endif ?>

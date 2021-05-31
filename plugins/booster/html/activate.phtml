@@ -1,0 +1,77 @@
+<div class="box">
+    <div class="box-content" style="margin: 5% 15%">
+        <h6><?php _lang('ads::transaction-details')?></h6>
+        <?php
+        $plan = get_plan($bp['plan_id']);
+        $type = input('type','post');
+		 
+        $coupon = "";
+        if (config('promotion-coupon',0)) {
+            $coupon = input('coupon');
+            $data = array('price' => $plan['price'], 'status' => 0);
+            if ($coupon) {
+                $data = fire_hook('promotion.coupon.calculate', $data, array($coupon));
+                if ($data['status'] == "1") {
+                    $plan['price'] = $data['price'];
+                }
+            }
+        }
+        ?>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th><?php echo lang('booster::ads_type') ?></th>
+                <?php if($type == 'feed'): ?>
+                <th><?php echo lang('booster::boost-post') ?></th>
+                <?php elseif($type == 'Listing'): ?>
+                    <th><?php echo lang('booster::boost-listing') ?></th>
+                <?php elseif($type == 'Product'): ?>
+                    <th><?php echo lang('booster::boost-product') ?></th>
+                <?php endif; ?>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><?php _lang('ads::campaign-name')?></td>
+                <td><?php echo $bp['name']?></td>
+            </tr>
+            <tr>
+                <td><?php _lang('ads::bid-type')?></td>
+                <td><?php echo ($bp['plan_type'] == 1) ? lang('ads::cost-per-click') : lang('ads::cost-per-impression')?></td>
+            </tr>
+            <tr>
+                <td><?php _lang('ads::bid-plan')?></td>
+                <td><?php _lang($plan['name'])?></td>
+            </tr>
+            <tr>
+                <td><?php _lang('ads::plan-description')?></td>
+                <td><?php _lang($plan['description'])?></td>
+            </tr>
+            <tr>
+                <td><?php _lang('ads::amount')?></td>
+                <td><?php echo $plan['price']?> (<?php echo config('default-currency')?>)</td>
+            </tr>
+            </tbody>
+        </table>
+        <?php
+            if (config('promotion-coupon',0)) {
+                if (!$coupon || $data['status'] == 0) {
+                    fire_hook('promotion.coupon.field', $coupon);
+                    ?>
+                    <?php if ($coupon) {
+                        if ($data['status'] == "0"): ?>
+                            <span class="alert-danger"> <?php _lang('membership::coupon-error') ?></span> <?php endif;
+                    }
+                }
+            }?>
+        <h6><?php _lang('ads::select-payment-method')?></h6>
+        <img src="<?php echo img('images/payment-options.png')?>"/>
+        <ul class="nav ads-payment-method">
+           
+
+            <?php fire_hook("creditgift.plugin.activated",null , array($plan['price'],$bp['pb_id'],'booster')); ;?>
+            <?php fire_hook('payment.buttons.extend', null, array('ads-booster', $bp['pb_id'], lang($plan['name']), lang($plan['description']), $plan['price'], url_to_pager('booster-payment-success').'?id='.$bp['pb_id'].'&csrf_token='.CSRFProtection::getToken(), url_to_pager('booster-payment-cancel').'?id='.$bp['pb_id'], $coupon)); ?>
+            <?php fire_hook('more.payment.options.booster',null,array($plan,$bp['pb_id'])) ?>
+        </ul>
+    </div>
+</div>

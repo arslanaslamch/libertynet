@@ -1,0 +1,67 @@
+<div class="box">
+    <div class="global-filter-container" data-url="<?php echo url_to_pager('contests-my-entries') ?>">
+        <form id="blog-list-search" method="post" onsubmit="return run_global_filter()" action="" class="form-inline list-search">
+            <?php CSRFProtection::embed() ?>
+            <input type="hidden" class="filter-input form-control" data-name="method" value="<?php echo input('method', 'mine') ?>"/>
+            <i class="search-icon ion-ios-search"></i>
+            <input value="<?php echo input('term') ?>" type="text" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>"/>
+        </form>
+        <div class="list-head">
+            <h3 class="heading"><?php echo $title; ?></h3>
+        </div>
+        <div class="filter-pane">
+            <select id="video-filter-select" onchange="return run_global_filter()" data-name="ctype" class="c-select filter-input">
+                <option <?php echo (input('ctype') == 'blog') ? 'selected' : null ?> value="blog"><?php echo lang('contest::blog') ?></option>
+                <option <?php echo (input('ctype') == 'photo') ? 'selected' : null ?> value="photo"><?php echo lang('video::photo') ?></option>
+                <option <?php echo (input('ctype') == 'video') ? 'selected' : null ?> value="video"><?php echo lang('video::video') ?></option>
+                <option <?php echo (input('ctype') == 'music') ? 'selected' : null ?> value="music"><?php echo lang('video::music') ?></option>
+            </select>
+        </div>
+    </div>
+    <div class="box-content">
+        <?php if($entries->total): ?>
+            <?php foreach ($entries->results() as $e):
+                $contest = get_contest($e['contest_id']);
+                $e['title'] = ($e['title']) ? $e['title'] : lang('contest::untitled');
+                ?>
+                <div class="group-wrapper">
+                    <ul class="group-wrapper-ul">
+                        <li id="">
+                            <div class="group-main">
+                                <div class="group-4-jm">
+                                    <div class="group-4-jy">
+                                        <img class="group-ihtk img" src="<?php echo get_contest_image($contest) ?>"
+                                             alt="<?php echo ucwords($e['title']) ?>"
+                                             aria-label="<?php echo $e['title'] ?>" role="img" style="width:80px;height:80px">
+                                        <div class="group-4-jk">
+                                            <div class="group-266w">
+                                                <a href="<?php echo getEntryContestUrl($contest, $e) ?>" ajax="true">
+                                                    <h5><?php echo ucwords($e['title']) ?></h5>
+                                                </a>
+                                            </div>
+                                            <div class="group-266x">
+                                                <div class="group-2aka group-fsm group-fwn group-fcg">
+                                                    <?php echo contestEntryVoteCount($e['ref_name'],$e['id']); ?><?php echo lang("contest::votes-with-c") ?>
+                                                </div>
+                                            </div>
+                                            <div class="group-266-">
+                                                <div class="group-43qc">
+                                                   <?php echo date('M j , Y  h:i A', $e['time']) ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+           <div class="alert alert-info"><?php echo lang("contest::entries-list-is-empty"); ?></div>
+        <?php endif; ?>
+    </div>
+    <?php if($entries->total > 1): ?>
+    <div class="box-content"><?php echo $entries->links(); ?></div>
+    <?php endif; ?>
+</div>

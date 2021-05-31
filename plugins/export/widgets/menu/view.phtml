@@ -1,0 +1,13 @@
+<div class="box ">
+	<div class="title"><?php echo lang('menu') ?></div>
+	<ul class="menu">
+        <?php foreach(get_menus("export-data-menu") as $menu): ?>
+            <li class="<?php echo ($menu->isActive() == 1) ? 'active' : null ?>">
+                <?php $colors = array('#7f8fbb','#2e2e2e','#e0624b','#673ab7','#f9bd54') ?>
+                <?php $icons = array('fa fa-forumbee','fa fa-flickr','fa fa-dribbble','fa fa-dashcube','fa fa-list-alt') ?>
+                <?php $rand = array_rand($colors) ?>
+                <a  data-toggle="tooltip" data-original-title="<?php echo lang($menu->title) ?>" ajax="true" href="<?php echo $menu->link ?>"><i style="font-size: 20px; margin-right: 4px; color: <?php echo $menu->icon?$menu->icon['color']:$colors[$rand]?>" class="<?php echo $menu->icon?$menu->icon['class']:$icons[$rand]?>"></i> <?php echo $menu->title ?></a>
+            </li>
+        <?php endforeach ?>
+	</ul>
+</div>

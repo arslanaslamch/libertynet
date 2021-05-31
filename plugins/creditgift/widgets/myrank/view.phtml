@@ -1,0 +1,20 @@
+<?php $cr = creditgift_myrank();
+$rank = get_creditgift_rankid($cr); ?>
+<?php if(is_loggedIn() && $rank): ?>
+	<?php $crank = $rank[0]; ?>
+	<div id="feedback-menu-widget" class="box">
+		<div class="title"><?php echo lang('creditgift::my-rank') ?></div>
+		<div class="box-content">
+			<?php $r_image = url_img($crank['rank_image']); ?>
+			<div class="media media-lg user">
+				<div class="media-left">
+					<div class="media-object" style="background-image: url(<?php echo $r_image ?>); background-position: center; background-size: cover;"></div>
+				</div>
+				<div class="media-body">
+					<h6 class="media-heading" style="font-weight: normal"><?php echo $crank['rank']; ?></h6></a>
+					<p class="help-block"><?php echo lang('credit') ?><?php echo ": ".$crank['credit']; ?></p>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php endif; ?>

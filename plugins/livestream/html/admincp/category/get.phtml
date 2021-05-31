@@ -1,0 +1,23 @@
+<?php
+/**
+ * @var array $category
+ */
+?>
+<tr class="item" id="<?php echo $category['id'] ?>">
+    <td>
+        <div class="list-table-select" data-group="users" data-id="<?php echo $category['id'] ?>"></div>
+    </td>
+    <td><?php echo $category['id'] ?></td>
+    <td><?php echo lang($category['title']) ?></td>
+    <td>
+        <div class="dropdown actions">
+            <a href="#" data-toggle="dropdown">
+                <i class="ion-android-settings"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a ajax="true" class="ion-edit" href="<?php echo url_to_pager('admin-livestream-category-edit').'?id='.$category['id'] ?>" data-toggle="modal" data-target="#livestream-modal" data-title="<?php echo lang('livestream::category-edit', array('title' => $category['title'])) ?>"></a>
+                <a ajax="true" class="ion-android-delete" href="<?php echo url_to_pager('admin-livestream-category-delete').'?id='.$category['id'] ?>" data-toggle="modal" data-target="#livestream-modal" data-title="<?php echo lang('livestream::category-delete', array('title' => $category['title'])) ?>"></a>
+            </div>
+        </div>
+    </td>
+</tr>

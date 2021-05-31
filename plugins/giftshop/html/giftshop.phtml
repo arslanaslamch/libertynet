@@ -1,0 +1,59 @@
+<div class="box giftshop">
+    <div class="giftshop-list">
+        <div class="head">
+            <div class="cover" style="background-image: url(<?php echo url_img(config('giftshop-list-cover', 'plugins/giftshop/images/cover.jpg'), 920); ?>)">
+                <div class="title"><?php echo lang('giftshop::giftshop') ?></div>
+            </div> 
+        </div>
+        <div class="box-content row">
+            <?php foreach ($gifts->results() as $gift): ?>
+                <div style="margin-bottom: 20px;" class="col-md-4">
+                    <div style="border: solid 1px #4C4C4C;">
+                        <?php $avatar = url_img($gift['image']); ?>
+                        <div style="background-color: rgba(0, 0, 0, 0.7);overflow: hidden;text-align: center;color: gold;">
+                            <h5 style="padding: 10px; margin: 0; white-space: nowrap !important; overflow: hidden; text-overflow: ellipsis;"><?php echo $gift['name']; ?></h5>
+                        </div>
+                        <?php $buyButton = "hh"; $credit = get_giftshop_userbalance(); $user_credit = $credit[0]['credit_balance']; ?>
+                        <div>
+                            <a class="modal-caller" href="#gift-modal" data-image="<?php echo url_img($gift['image']); ?>"
+                            onclick="return show_modal('<?php echo url_img($gift['image']) ?>', <?php echo $gift['id'] ?>,'<?php echo $gift['name'] ?>',<?php echo $gift['price'] ?>,'<?php echo $user_credit ?>','<?php echo $buyButton ?>')">
+                                <?php $img = $gift['price']; ?>
+                                <div style="height:200px;background-image:url(<?php echo $avatar ?>);background-position:center;background-size:cover"></div>
+                            </a>
+                        </div>
+                        <div style="background-color: rgba(0, 0, 0, 0.7);overflow: hidden;text-align: center;color: gold; padding: 0 10px;">
+                            <div class="pull-left"><?php echo lang('giftshop::category') ?>: <?php echo $gift['category']; ?></div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <div class="box-content">
+        <?php echo $gifts->links() ?>
+    </div>
+</div>
+<div id="gift-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="max-width:500px">
+            <div class="modal-header">
+                <div type="button" class="pull-right btn btn-info" id="giftPrice"></div>
+                <h4 class="modal-title" id="giftTitle" style="margin: 0px; padding: 0px 10px;"></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <a id="eazyzoom-a" href="">
+                    <img src="image" id="image" data-zoom-image="" class="img-responsive"
+                         style="width:100%; height:350px;">
+                </a>
+            </div>
+            <div class="modal-footer">
+                <form method="post" action="">
+                    <input type="hidden" name="giftId" id="giftId" value=""/>
+                    <a href="#giftshop-show-friends" onclick="return gifthop_show_friends(this, event)"
+                       class="btn btn-success show_gf" id="submit"><?php echo lang('giftshop::buy') ?></a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

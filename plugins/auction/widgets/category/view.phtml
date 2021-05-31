@@ -1,0 +1,13 @@
+<?php $categories = get_auction_categories() ?>
+<?php if($categories): ?>
+	<div class="auction-widget box">
+		<div class="title"><?php echo lang('auction::categories') ?></div>
+		<ul class="menu">
+			<?php foreach($categories as $category): ?>
+				<li>
+					<a ajax="true" href="<?php echo url_to_pager('auction-list').'?category='.$category['id']; ?>"><?php echo lang($category['title']); ?></a>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+<?php endif ?>

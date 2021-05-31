@@ -1,0 +1,10 @@
+
+        <?php echo $c; ?>
+        <div class="row" style="padding:10px">
+            <button data-ex="<?php echo $ex ?>" data-location="<?php echo $loc; ?>" class="pull-left tips-skip btn btn-secondary"><?php echo lang('tips::skip') ?></button>
+            <?php if(!$last): ?>
+                <button data-place="<?php echo $place ?>" data-next="<?php echo $next; ?>" data-ex="<?php echo $ex ?>" class="btn btn-info tips-next pull-right"><?php echo lang('tips::next') ?></button>
+            <?php else: ?>
+                <button data-location="<?php echo $loc; ?>" data-ex="<?php echo $ex ?>" class="btn btn-info tips-finish pull-right"><?php echo lang('tips::finish') ?></button>
+            <?php endif; ?>
+        </div>

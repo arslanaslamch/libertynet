@@ -1,0 +1,14 @@
+
+    <?php $user = find_user($userid)?>
+        <?php $isOn = is_turnedOn($userid) ?>
+        <a
+        data-on="<i class='fa fa-bell'></i> <?php echo lang('feed::turn-on-post-notification') ?>"
+        data-off="<i class='fa fa-bell'></i> <?php echo lang('feed::turn-off-post-notification') ?>"
+        id="on-button-<?php echo $userid ?>"
+        onclick="return process_on('<?php echo $userid ?>')"
+        data-status="<?php echo ($isOn) ? 1 : 0 ?>"
+        data-toggle="tooltip" data-original-title="<?php echo lang('feed::toggle-notification-from-user') ?>"
+        class="btn btn-secondary z-depth-0 follow-button <?php echo ($isOn) ? 'turned' : null ?>" href=""><i class='fa fa-bell'></i> <?php echo ($isOn) ? lang('feed::turn-off-post-notification') : lang('feed::turn-on-notification') ?>
+        </a>
+
+

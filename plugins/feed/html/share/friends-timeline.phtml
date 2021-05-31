@@ -1,0 +1,30 @@
+<?php if(count($users) > 0): ?>
+    <?php foreach($users as $user): ?>
+        <div class="row" id="feed-share-to-timeline-<?php echo $user['id']?>">
+            <div class="col-md-8">
+                <a onclick="return feedShareToTimeline('<?php echo $feed['feed_id']?>', '<?php echo $user['id']?>')" href="">
+                    <div class="media media-sm">
+                        <div class="media-left">
+                            <div class="media-object">
+                                <img src="<?php echo get_avatar(75, $user) ?>"/>
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <h6 class="media-heading"><?php echo get_user_name($user) ?></h6>
+                            <?php if($user['online_time'] < time() - 50): ?>
+                                <span class="action"><?php echo timeAgoMin($user['online_time']) ?></span>
+                            <?php else: ?>
+                                <span class="online-status <?php echo get_online_status_icon($user) ?>"></span>
+                            <?php endif ?>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-primary btn-sm" onclick="return feedShareToTimeline('<?php echo $feed['feed_id']?>', '<?php echo $user['id']?>')" href=""><?php echo lang('share')?></a>
+            </div>
+        </div>
+    <?php endforeach; ?>
+<?php else: ?>
+    <div><?php echo lang('chat::no-friends-online') ?></div>
+<?php endif ?>

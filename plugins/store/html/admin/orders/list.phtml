@@ -1,0 +1,61 @@
+<div class="wrapper">
+    <div class="wrapper-title"><?php echo lang("store::orders") ?></div>
+    <div class="wrapper-content">
+        <?php if($orders->total) : ?>
+            <table class="table table-bordered storeTable">
+                <thead>
+                <tr>
+                    <th><?php echo lang("store::order-id") ?></th>
+                    <th><?php echo lang("store::order-code") ?></th>
+                    <th><?php echo lang("store::buyer");?></th>
+                    <th><?php echo lang("store::payment-type") ?></th>
+                    <th><?php  echo lang("store::status")?></th>
+                    <th><?php echo ucwords(lang("store::commission")); ?></th>
+                    <th><?php  echo lang('shipping');?></th>
+                    <th><?php echo lang("store::seller-earnings"); ?></th>
+                    <th><?php echo ucwords(lang("store::total")); ?></th>
+                    <td><?php  echo lang("store::date")?></td>
+                    <th><?php _lang("action")?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach($orders->results() as $o):
+                     $user = find_user($o['user_id']);
+                     $seller_earnings = $o['total_price'] - $o['overall_commision'];
+                    ?>
+
+                    <tr>
+                        <td><?php echo $o['id']; ?></td>
+                        <td><?php echo "ORDER-".$o['id']; ?></td>
+                        <td><a href="<?php echo profile_url(null,$user) ?>"><img style="height: 30px;width: 30px" src="<?php echo get_avatar(200,$user) ?>" /> <?php echo get_user_name($user); ?></a> </td>
+                        <td><?php echo $o['payment_type']; ?></td>
+                        <td>
+                            <?php if($o['status'] == 1 and $o['payment_type'] == 'EMONEY'): ?>
+                            <?php echo strtoupper(lang("store::successful")); ?>
+                            <?php else: ?>
+                                <select id="orderStatus" class="c-select" onchange="return updateOrderStatus(<?php echo $o['id']; ?>,'#orderStatus')">
+                                    <option <?php echo ($o['status']) ? '' : 'selected'; ?> value="0"><?php echo ucwords(lang("store::pending")); ?></option>
+                                    <option <?php echo ($o['status']) ? 'selected' : ''; ?> value="1"><?php echo ucwords(lang('store::successful')); ?></option>
+                                </select>
+                            <?php endif; ?>
+
+                        </td>
+                        <td><?php echo formatPriceNumber($o['overall_commision']); ?></td>
+                        <td><?php echo formatPriceNumber($o['shipping_price'])?></td>
+                        <td><?php echo formatPriceNumber($seller_earnings + $o['shipping_price']); ?></td>
+
+                        <td><?php echo formatPriceNumber($o['total_price'] + $o['shipping_price']) ?></td>
+                        <td><?php echo date('d F, Y',$o['time']) ?></td>
+                        <td><a href="<?php echo url_to_pager("admin-manage-orders").'?id='.$o['id']; ?>" class="btn btn-sm btn-primary"> <?php echo lang("store::view"); ?></a></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <div class="box-content">
+                <?php echo  $orders->links() ?>
+            </div>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang("store::no-order-available") ?></div>
+        <?php endif; ?>
+    </div>
+</div>

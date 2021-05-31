@@ -1,0 +1,112 @@
+<div id="delete-business" class="business business-content box">
+
+	<div class="panel panel-primary">
+		<div class="panel-body">
+			<article class="">
+				<div class="business-head">
+					<div class="business-title business-detail">
+						<h1><?php echo $business['business_name'] ?></h1>
+					</div>
+					<div class="business-address business-detail">
+						<i class="ion-ios-location"></i> <?php echo $business['company_address']; ?>
+					</div>
+					<?php if(trim($business['tags'], ',') != ""): ?>
+						<div id="business-tags" class="business-tags business-detail"><?php foreach(explode(',', trim($business['tags'], ',')) as $tag): ?> #<?php echo trim($tag) ?><?php endforeach ?></div><?php endif ?>
+					<div class="business-links business-detail"><?php if($business['user_id'] == get_userid()): ?>
+							<a href="<?php echo url_to_pager('business-edit-business') ?>?id=<?php echo $business['id'] ?>" class=" ajax="" ><?php echo lang('business::edit') ?></a> · 
+							<a href="<?php echo url_to_pager('business-delete-business') ?>?id=<?php echo $business['id'] ?>" class="" ajax="true"><?php echo lang('business::remove') ?></a> · 
+							<?php if(filter_var($business['website'], FILTER_VALIDATE_URL)): ?>
+								<a href="<?php echo $business['website'] ?>" class=""><?php echo lang('business::link') ?></a> · 
+							<?php endif ?>
+							<?php if(plugin_loaded('sharer')) echo view('sharer::share_link') ?>
+						<?php endif ?>
+						<?php if(is_loggedIn() and plugin_loaded('report')): ?>
+							<a data-type="group" data-link="<?php echo url_to_pager('business-page', array('slug' => $business['slug'])) ?>" class="report-btn" style="font-size:10.8px !important;" href=""><i class="ion-flag"></i></a> · 
+						<?php endif ?>
+						<?php if($business['paid'] != 0): ?>
+							<?php $check_f = check_business_followers($business['id']); ?>
+							<?php if($check_f == '1'): ?>
+								<a href="#" data-action="unfollow" data-id="<?php echo $business['slug'] ?>" onclick="return businessFollow(this)"><?php echo lang('business::unfollow') ?></a>
+							<?php else: ?>
+								<a href="#" data-action="follow" data-id="<?php echo $business['slug'] ?>" onclick="return businessFollow(this)"><?php echo lang('business::follow') ?></a>
+							<?php endif; ?>
+							<span class="badge" id="fcount"><?php echo rowscount('business_member', $business['id']) ?></span>
+						<?php endif; ?> · 
+						<?php if($business['paid'] != 0): ?>
+							<?php $check_fa = check_business_favourite($business['id']); ?>
+							<?php if($check_fa == '1'): ?>
+								<a title="Favourite" href="#" data-id=<?php echo $business['slug'] ?> data-action="unfavourite" onclick="return businessFavourite(this)">
+									<i id="faicon" class="ion-android-star business-favourite"></i></a>
+							<?php else: ?>
+								<a href="#" title="Favourite" data-id=<?php echo $business['slug'] ?> data-action="favourite" onclick="return businessFavourite(this)">
+									<i id="faicon" class="ion-android-star business-unfavourite"></i></a>
+							<?php endif; ?>
+						<?php endif; ?>
+						<span class="badge" id="facount"> <?php echo rowscount('business_favourite', $business['id']) ?></span>
+
+					</div>
+				</div>
+			</article>
+		</div>
+	</div>
+	<div class="panel panel-success">
+		<div class="panel-body">
+			<div class="containe">
+				<h2>Members</h2>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+						<tr>
+							<th>#</th>
+							<th>Name</th>
+							<th>Email</th>
+							<th>Phone</th>
+							<th>City</th>
+							<th>Country</th>
+							<?php if($business['user_id'] == get_userid() || (check_admin_role(get_userid()) == 1)): ?>
+								<th>Roles</th>
+								<th>Action</th>
+							<?php endif ?>
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						$n = 0;
+						foreach($members->results() as $member): ?>
+							<?php $n++;;
+
+							$user_id = (get_user_email($member['user_id'])); ?>
+							<tr>
+								<td><?php echo $n; ?></td>
+								<td>
+									<a href="<?php echo url($user_id['username']) ?>" class="view-profile" ajax="true"> <?php echo $user_id['first_name']." ".$user_id['last_name']; ?> </a>
+								</td>
+								<td><?php echo $user_id['email_address']; ?></td>
+								<td><?php echo $user_id['first_name']; ?></td>
+								<td><?php echo $user_id['city']; ?></td>
+								<td><?php echo $user_id['country']; ?></td>
+								<?php if($business['user_id'] == get_userid() || (check_admin_role(get_userid()) == 1)): ?>
+									<td><?php $role = $member['role'];
+										if($role == 0) { ?>
+											<a title="Click to change member Roles" data-business="<?php echo $business['slug']; ?>" href="#" data-action="admin" data-id="<?php echo $member['id'] ?>" onclick="return businessAdminMember(this)"><?php echo lang('business::admin-make') ?></a>
+										<?php } elseif($role == 1) { ?>
+											<a title="Click to change member Roles" data-business="<?php echo $business['slug']; ?>" href="#" data-action="adminr" data-id="<?php echo $member['id'] ?>" onclick="return businessAdminMember(this)"><?php echo lang('business::admin-remove') ?></a>
+										<?php } else {
+											echo "not member";
+										} ?>
+									</td>
+									<td>
+										<a ajax="true" title="Click to delete the member" class="btn btn-danger" href="<?php echo url_to_pager('business-member') ?>?business_id=<?php echo $business['slug'] ?>&delete=<?php echo $member['id'] ?>" data-action="admin" data-id="<?php echo $member['id'] ?>"><?php echo lang('business::admin-delete-member') ?></a>
+									</td>
+								<?php endif ?>
+							</tr>
+						<?php endforeach; ?>
+						</tbody>
+					</table>
+					<?php echo $members->links(true) ?>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

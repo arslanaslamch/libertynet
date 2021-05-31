@@ -1,0 +1,27 @@
+<div class="panel-container card" id="sms-overall">
+    <div class="title"><?php _lang('reset-password') ?></div>
+    <div class="card-block">
+        <?php if ($message): ?>
+            <div class="alert <?php echo ($messageType == 0) ? 'alert-danger' : 'alert-success' ?>">
+                <?php echo $message ?><br/>
+            </div>
+        <?php endif ?>
+        <div class="row">
+            <div class="col-md-6">
+              <div class="forgotby"><a href="<?php echo url_to_pager('forgot-password_sms') ?>"> <?php echo lang('sms::by-sms') ?></a></div>
+            </div>
+            <div class="col-md-6">
+                <div class="forgotby"><a ajax="true" href="<?php echo url_to_pager('forgot-password_email') ?>"> <?php echo lang('sms::by-email') ?></a></div>
+            </div>
+        </div>
+        <!--
+        <form action=""  class="col s12" method="post">
+            <fieldset class="form-group">
+                <label class="control-label"><?php _lang('your-email-address') ?></label>
+                <input type="text" class="form-control form-control-lg" name="email"  >
+            </fieldset>
+            <button  class="btn btn-info btn-block"><?php _lang('request-new-password') ?> </button>
+        </form>
+        -->
+    </div>
+</div>

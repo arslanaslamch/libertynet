@@ -1,0 +1,28 @@
+<div class="wrapper">
+	<div class="wrapper-title">
+		<?php echo lang('contest::edit-contest') ?>
+
+	</div>
+	<div class="wrapper-content">
+
+		<form class="wrapper-form wrapper-admin-form-admincp" action="" enctype="multipart/form-data" method="post">
+			<?php CSRFProtection::embed() ?>
+            <?php if($message): ?>
+                <div class="alert alert-danger"><?php echo $message ?></div>
+            <?php endif ?>
+            <input type="hidden" name="val[entity]" value="user-<?php echo get_userid() ?>" />
+            <?php echo view("contest::contest-form-fields",array('admin'=>'yes','contest'=>$contest)); ?>
+
+			<button class="btn btn-info" style="margin-top: 20px"><?php echo lang("save") ?></button>
+			<a href="<?php echo url_to_pager('admincp-contest-manage').'?action=delete&id='.$contest['id'] ?>"
+               class="btn btn-danger admin-confirm " style="margin-top: 20px"><?php echo lang("delete") ?></a>
+
+            <div class="wrapper-content" style="font-size: 14px">
+                <div class="alert alert-warning">
+                    <?php echo lang("contest::contest-delete-warning"); ?>
+                </div>
+            </div>
+		</form>
+
+	</div>
+</div>

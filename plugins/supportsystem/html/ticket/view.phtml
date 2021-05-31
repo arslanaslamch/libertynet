@@ -1,0 +1,53 @@
+<?php echo view("supportsystem::top-menu",array('create'=>1)) ?>
+<div class="box">
+    <?php if($ticket['status'] != 2): ?>
+    <div class="title">&nbsp;
+        <span class="pull-right">
+            <a href="#" class="btn btn-sm btn-success"
+               data-tid="<?php echo $ticket['id'] ?>"
+               data-from="<?php echo 'member' ?>"
+               onclick="return ss_close_ticket(this)">
+                <i class="ion-checkmark-round"></i> <?php echo lang("supportsystem::mark-as-solved") ?></a>
+        </span>
+    </div>
+    <?php endif; ?>
+    <div class="p-3 border-bottom">
+        <span class="h5"><?php echo $ticket['subject'] ?></span>
+        <?php if($ticket['category_id']):
+            $category = get_ss_category($ticket['category_id']);
+            if($category):
+            ?>
+        <span class="ml-2 ss-category-badge"> <?php echo lang($category['title']); ?> </span>
+        <?php endif; ?>
+        <?php endif; ?>
+        <span class="pull-right">
+             <span class="font-12">
+                 <span class="timeago" title="<?php echo date('c', $ticket['time']) ?>">
+                     <?php echo date('c', $ticket['time']) ?>
+                 </span>
+                  (<?php echo date('F d',$ticket['time']) ?>)
+             </span>
+        </span>
+    </div>
+    <div class="box-content ss-reply-box-content">
+        <?php
+        $reply['user_id'] = $ticket['user_id'];
+        $reply['content'] = $ticket['content'];
+        $reply['time'] = $ticket['time'];
+        $reply['files'] = $ticket['files'];
+        $reply['id'] = $ticket['id'];
+        ?>
+        <?php echo view("supportsystem::ticket/reply/each",array('reply'=>$reply,'start'=>1)); ?>
+        <?php if($replies): ?>
+        <?php foreach($replies as $rp): ?>
+            <?php echo view("supportsystem::ticket/reply/each",array('reply'=>$rp)); ?>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+    <div class="title">
+        <?php echo lang("supportsystem::reply") ?>
+    </div>
+    <div class="box-content">
+        <?php echo view("supportsystem::ticket/reply/editor",array('ticket'=>$ticket)); ?>
+    </div>
+</div>

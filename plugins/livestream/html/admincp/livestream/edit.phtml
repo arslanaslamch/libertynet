@@ -1,0 +1,75 @@
+<?php
+/**
+ * @var array $livestream
+ */
+$livestream = (array)$livestream;
+?>
+<form method="post" action="<?php echo url_to_pager('admin-livestream-edit') ?>?id=<?php echo $livestream['id'] ?>" enctype="multipart/form-data" class="livestream-form wrapper-form">
+    <?php CSRFProtection::embed() ?>
+    <div class="form-group row">
+        <div class="col-md-4">
+            <label class="form-control-label"><?php echo lang('livestream::type') ?></label>
+        </div>
+        <div class="col-md-8">
+            <select name="livestream[type]" title="<?php echo lang('livestream::livestream-type') ?>" class="form-control livestream-input-type" required>
+                <option value="video" <?php echo isset($livestream['type']) && $livestream['type'] == 'video' ? 'selected' : '' ?>><?php echo lang('livestream::video') ?></option>
+                <option value="audio" <?php echo isset($livestream['type']) && $livestream['type'] == 'audio' ? 'selected' : '' ?>><?php echo lang('livestream::audio') ?></option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            <label class="form-control-label"><?php echo lang('livestream::category') ?></label>
+        </div>
+        <div class="col-md-8">
+            <select name="livestream[category_id]" title="<?php echo lang('livestream::livestream-category') ?>" class="form-control livestream-input-category" required>
+                <option <?php echo ($livestream['category_id'] == 'all') ? 'selected' : null ?> value="all"><?php _lang('livestreaming::all-categories') ?></option>
+                <?php foreach (Livestream::getCategories() as $category): ?>
+                    <?php $sub_categories = Livestream::getCategories($category['id']) ?>
+                    <?php if ($sub_categories): ?>
+                        <optgroup label="<?php _lang($category['title']) ?>">
+                            <?php foreach ($sub_categories as $cat): ?>
+                                <option value="<?php echo $cat['id'] ?> <?php echo ($livestream['category_id'] == $cat['id']) ? 'selected' : null ?>"><?php echo lang($cat['title']) ?></option>
+                            <?php endforeach ?>
+                        </optgroup>
+                    <?php else: ?>
+                        <option value="<?php echo $category['id'] ?>" <?php echo ($livestream['category_id'] == $category['id']) ? 'selected' : null ?>><?php echo lang($category['title']) ?></option>
+                    <?php endif ?>
+                <?php endforeach ?>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            <label class="form-control-label"><?php echo lang('livestream::title') ?></label>
+        </div>
+        <div class="col-md-8">
+            <input type="text" name="livestream[title]" value="<?php echo isset($livestream['title']) ? $livestream['title'] : '' ?>" placeholder="<?php echo lang('livestream::livestream-title') ?>" class="form-control" required />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            <label class="form-control-label"><?php echo lang('livestream::description') ?></label>
+        </div>
+        <div class="col-md-8">
+            <input type="text" name="livestream[description]" value="<?php echo isset($livestream['description']) ? $livestream['description'] : '' ?>" placeholder="<?php echo lang('livestream::livestream-description') ?>" class="form-control" required />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            <label class="form-control-label"><?php echo lang('livestream::featured') ?></label>
+        </div>
+        <div class="col-md-8">
+            <select name="livestream[featured]" title="<?php echo lang('livestream::livestream-status') ?>" class="form-control">
+                <option value="1" <?php echo isset($livestream['featured']) && $livestream['featured'] ? 'selected' : '' ?>><?php echo lang('livestream::featured') ?></option>
+                <option value="0" <?php echo isset($livestream['featured']) && !$livestream['featured'] ? 'selected' : '' ?>><?php echo lang('livestream::not-featured') ?></option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row submit">
+        <div class="col-md-12">
+            <input type="hidden" name="livestream[id]" value="<?php echo $livestream['id'] ?>" />
+            <input type="submit" value="<?php echo lang('livestream::save') ?>" class="btn btn-lg btn-info" />
+        </div>
+    </div>
+</form>

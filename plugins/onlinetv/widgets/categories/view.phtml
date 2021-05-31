@@ -1,0 +1,14 @@
+<?php $cats = get_onlinetv_categories(); ?>
+<div class="box">
+	<div class="title">
+		<?php echo lang('onlinetv::tv-categories') ?>
+	</div>
+	<ul class="menu">
+		<?php foreach($cats as $cat): ?>
+			<li class="<?php echo ($cat['id'] == input('category')) ? 'active' : ''; ?>">
+				<a href="<?php echo url('onlinetvs') ?>?category=<?php echo $cat['id']; ?>"
+				   ajax="true"><?php echo lang($cat['title']) ?> <span class="pull-right"><?php echo countTvCategoryUse($cat['id']); ?></span></a>
+			</li>
+		<?php endforeach ?>
+	</ul>
+</div>

@@ -1,0 +1,32 @@
+<div class="box quiz">
+	<div class="title">
+		<div style="width:80%">
+			<?php echo lang('quiz::quiz-participants') ?>
+			<div class="action">
+					<a href="<?php echo url_to_pager('quiz-page',array('slug' => $quiz['slug'])) ?>" class="btn btn-secondary btn-sm action-button" ajax="true"><?php echo lang('quiz::view-quiz') ?></a>
+			</div>
+		</div>
+	</div>
+	<div class="box-content two-line-media clearfix quiz-partcp">
+		<?php if($participants): ?>
+			<?php foreach($participants as $users): ?>
+				<?php $user = find_user($users['user_id']); ?>
+				
+				<div class="media <?php echo (isset($type)) ? $type : 'media-lg' ?> user">
+					<div class="media-left">
+						<a ajax="true" href="<?php echo profile_url(null, $user) ?>" class="media-object"><img class="responsive-img" src="<?php echo get_avatar(75, $user) ?>"/></a>
+					</div>
+					<div class="media-body">
+						<a ajax="true" href="<?php echo profile_url(null, $user) ?>"><?php echo get_user_name($user) ?></a>
+						<div class="action">
+							<a href="" class="btn btn-secondary btn-sm action-button" data-toggle="modal" data-target="#view-result-modal-<?php echo $user['id'] ?>"><?php echo lang('quiz::view-result') ?></a>
+							<?php fire_hook('view.result.load', null, array('quiz' => $quiz, 'user' => $user['id'])); ?>
+						</div>
+					</div>
+				</div>
+			<?php endforeach ?>
+		<?php else: ?>
+			<div class="alert alert-info"><?php echo lang('quiz::participants-list-empty') ?></div>
+		<?php endif ?>
+	</div>
+</div>

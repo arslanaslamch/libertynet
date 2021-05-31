@@ -1,0 +1,169 @@
+<?php $owner = find_user($business['user_id']);
+$business_image = $business['company_logo'] ? url_img($business['company_logo'], 920) : img('business::images/no_image.jpg', 920);
+$price = is_numeric($business['price']) ? config('currency', '$').$business['price'] : $business['price'];
+$price = !trim($business['price']) ? lang('business::free') : $price;
+$type = 'business';
+$type_id = $business['id'] ?>
+<div class="box">
+    <div class="business-details" data-id="<?php echo $business['id'] ?>">
+        <div class="head">
+            <div class="image-upload-indicator display-none">
+                <img src="<?php echo img('images/loading.gif') ?>" />
+            </div>
+            <div class="top-left">
+                <div class="user">
+                    <img src="<?php echo get_avatar(200, $owner) ?>" class="avatar" />
+                    <a ajax="true" href="<?php echo profile_url(null, $owner) ?>" class="name"><?php echo get_user_name($owner) ?></a>
+                </div>
+            </div>
+            <div class="top-right">
+                <a ajax="true" href="<?php echo url_to_pager('business-edit-business') ?>?id=<?php echo $business['id'] ?>">
+                    <i class="ion-edit edit-icon icon"></i>
+                </a>
+                <input accept="image/*" type="file" name="image" class="business-upload-image-input display-none" />
+                <a href="#!" class="business-upload-image-input-button">
+                    <i class="ion-camera upload-image-icon icon"></i>
+                </a>
+                <?php if (plugin_loaded('sharer')): ?>
+                    <?php echo view('sharer::share_link', array('link' => url('business/'.$business['slug']), 'button_class' => 'share-icon icon', 'disable_text' => true)) ?>
+                <?php endif; ?>
+            </div>
+            <img src="<?php echo $business['company_logo'] ? url_img($business['company_logo'], 920) : img('business::images/no_image.jpg', 920); ?>" class="image" />
+            <div class="title"><?php echo $business['business_name'] ?></div>
+        </div>
+        <div class="body">
+            <?php $rating = get_ratings($type, $type_id); ?>
+            <div class="rating user-<?php echo $type ?>-<?php echo $type_id ?>">
+                <button value="1" class="ion-ios-star star <?php echo $rating >= 1 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></button>
+                <button value="2" class="ion-ios-star star <?php echo $rating >= 2 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></button>
+                <button value="3" class="ion-ios-star star <?php echo $rating >= 3 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></button>
+                <button value="4" class="ion-ios-star star <?php echo $rating >= 4 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></button>
+                <button value="5" class="ion-ios-star star <?php echo $rating >= 5 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $type_id ?>')"></button>
+            </div>
+            <div class="details">
+                <div class="detail">
+                    <i class="icon ion-briefcase"></i>
+                    <div class="name"><?php echo lang('business::type') ?></div>
+                    <div class="value"><?php echo $business['business_type_id'] == 1 ? lang('business::personal-business') : lang('business::claim-business') ?></div>
+                </div>
+                <div class="detail">
+                    <i class="icon ion-folder"></i>
+                    <div class="name"><?php echo lang('business::category') ?></div>
+                    <div class="value">
+                        <a href="<?php echo url_to_pager('all-business', array('appends' => '')) ?>?c=<?php echo $business['category_id'] ?>" ajax="true"><?php echo lang($business['category_title']) ?></a>
+                    </div>
+                </div>
+                <div class="detail">
+                    <i class="icon ion-email"></i>
+                    <div class="name"><?php echo lang('business::company-email') ?></div>
+                    <div class="value"><?php echo $business['company_email'] ?></div>
+                </div>
+                <div class="detail">
+                    <i class="icon ion-android-call"></i>
+                    <div class="name"><?php echo lang('business::company-phone-number') ?></div>
+                    <div class="value"><?php echo $business['company_phone'] ?></div>
+                </div>
+                <div class="detail">
+                    <i class="icon ion-android-print"></i>
+                    <div class="name"><?php echo lang('business::company-fax-number') ?></div>
+                    <div class="value"><?php echo $business['fax'] ?></div>
+                </div>
+                <div class="detail">
+                    <i class="icon ion-ios-timer"></i>
+                    <div class="name"><?php echo lang('business::timezone') ?></div>
+                    <div class="value"><?php echo $business['timezone'] ?></div>
+                </div>
+                <div class="detail">
+                    <i class="icon ion-link"></i>
+                    <div class="name"><?php echo lang('business::website') ?></div>
+                    <div class="value">
+                        <a href="<?php echo $business['website'] ?>" target="_blank"><?php echo $business['website'] ?></a>
+                    </div>
+                </div>
+            </div>
+            <p class="description">
+                <?php echo $description ?>
+            </p>
+            <div class="location">
+                <i class="icon ion-ios-location"></i>
+                <span><?php echo $business['company_address'] ?><span>
+            </div>
+            <div class="map" data-address="<?php echo $business['company_address'] ?>">
+            </div>
+            <div class="hours">
+                <?php $hours = get_business_hour($business['id']); ?>
+                <?php if (count($hours->results()) > 0): ?>
+                    <div class="title"><?php echo lang('business::business-hours'); ?> (<?php echo lang($business['timezone']); ?>)</div>
+                    <div class="head">
+                        <div><?php echo lang('business::weekday') ?></div>
+                        <div><?php echo lang('business::opening-time') ?></div>
+                        <div><?php echo lang('business::closing-time') ?></div>
+                    </div>
+                    <div class="body">
+                        <?php foreach ($hours->results() as $hour): ?>
+                            <div class="row">
+                                <div><?php echo $hour['day']; ?></div>
+                                <div><?php echo $hour['open_time']; ?></div>
+                                <div><?php echo $hour['close_time']; ?></div>
+                            </div>
+                        <?php endforeach ?>
+                    </div>
+                <?php else: ?>
+                    <p><?php echo lang('business::business-open-247') ?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="foot">
+            <?php if (is_loggedIn()): ?>
+                <?php if ($business['paid'] != 0): ?>
+                    <?php $check_f = check_business_followers($business['id']); ?>
+                    <?php if ($check_f == '1'): ?>
+                        <a href="#!" data-action="unfollow" data-id="<?php echo $business['slug'] ?>" onclick="return businessFollow(this)">
+                            <?php echo lang('business::unfollow') ?>
+                        </a>
+                        <span class="badge" id="fcount"><?php echo rowscount('business_member', $business['id']) ?></span>
+                    <?php else: ?>
+                        <a href="#!" data-action="follow" data-id="<?php echo $business['slug'] ?>" onclick="return businessFollow(this)">
+                            <?php echo lang('business::follow') ?>
+                        </a>
+                        <span class="badge" id="fcount"><?php echo rowscount('business_member', $business['id']) ?></span>
+                    <?php endif; ?> ·
+                <?php endif; ?>
+                <?php if ($business['paid'] != 0): ?>
+                    <?php $check_fa = check_business_favourite($business['id']); ?>
+                    <?php if ($check_fa == '1'): ?>
+                        <a title="Favourite" href="#" data-id=<?php echo $business['slug'] ?> data-action="unfavourite" onclick="return businessFavourite(this)">
+                            <i id="faicon" class="ion-android-star business-favourite"></i>
+                            <?php echo lang('business::favourite') ?>
+                        </a>
+                        <span class="badge" id="facount"><?php echo rowscount('business_favourite', $business['id']) ?></span>
+                    <?php else: ?>
+                        <a href="#" title="Favourite" data-id=<?php echo $business['slug'] ?> data-action="favourite" onclick="return businessFavourite(this)">
+                            <i id="faicon" class="ion-android-star business-unfavourite"></i>
+                            <?php echo lang('business::favourite') ?>
+                        </a>
+                        <span class="badge" id="facount"><?php echo rowscount('business_favourite', $business['id']) ?></span>
+                    <?php endif; ?> ·
+                <?php endif; ?>
+                <a href="<?php echo url_to_pager('business-reviews'); ?>?business_id=<?php echo $business['slug']; ?>">
+                    <i class="ion-android-create"></i>
+                    <?php echo lang('business::reviews') ?>
+                </a> ·
+                <a href="<?php echo url_to_pager('business-member'); ?>?business_id=<?php echo $business['slug']; ?>">
+                    <i class="ion-android-person"></i>
+                    <?php echo lang('business::members') ?>
+                </a> ·
+                <?php if (is_loggedIn() and plugin_loaded('report')): ?>
+                    <a data-type="business" data-link="<?php echo url('business/'.$business['slug']) ?>" class="report-btn" href="#!">
+                        <i class="ion-flag"></i>
+                        <?php echo lang('report::report') ?>
+                    </a> ·
+                <?php endif ?>
+                <a onclick="return process_user_save(this, 'business', '<?php echo $business['id'] ?>')" href="#!" class="user-save" data-status="<?php echo (user_saved('business', $business['id'])) ? 1 : 0 ?>">
+                    <i class="ion-android-bookmark"></i>
+                    <?php echo user_saved('business', $business['id']) ? lang('unsave-post') : lang('save-post') ?>
+                </a>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

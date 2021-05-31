@@ -1,0 +1,9 @@
+<div class="box">
+    <div class="title"><?php echo lang('payment-status') ?></div>
+    <div class="box-content">
+        <div class="alert alert-danger">
+            <?php echo lang('auction::auction-payment-cancel') ?>
+        </div>
+        <a href="<?php echo url_to_pager('auction-details').'?id='.$id; ?>" ajax="true" class="btn btn-info btn-block action-button"><?php echo lang('auction::auction-details') ?></a>
+    </div>
+</div>

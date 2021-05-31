@@ -1,0 +1,275 @@
+<?php $id = app()->profileUser['id']; $workplaces = getWorkExperience('work', '', $id); ?>
+<div class="box">
+    <div class="title"><?php echo lang('works') ?></div>
+	<div class="box-content">
+        <ul class="eList profileExperience" id="workProfileExperience">
+            <?php if ($id == get_userid()): ?>
+                <li class="eListAdd">
+                    <div class="eListAddButton">
+                        <div class="clearfix">
+                            <div class="eListAddIcon"><i class="la la-plus"></i></div>
+                            <div class="eListAddText"><?php echo lang('add-work-place') ?></div>
+                        </div>
+                    </div>
+                    <div class="box workplaceForm">
+                        <div class="box-content">
+                            <form id="workplaceForm" method="post" action="<?php echo url_to_pager('education-list') ?>" class="form-horizontal ajax-form">
+                                <div class="eCancelBody">
+                                    <i class="la la-remove"></i>
+                                    <span class="eCancel">Cancel</span>
+                                </div>
+                                <input type="hidden" value="work" name="val[type]">
+                                <input type="hidden" value="add" name="action">
+                                <div class="row form-group">
+                                    <label class="label col-md-3"> <?php echo lang('company')?> </label>
+                                    <div class="col-md-9">
+                                        <input id="work-company" data-type-name="work" autocomplete="off" required data-target="#company-suggestion" data-table-f="company" class="form-control user-education-input" type="text" placeholder="<?php echo lang('where-have-you-worked')?>" name="val[company]" />
+                                    </div>
+                                    <div class="user-suggestion-list edu-search box" id="company-suggestion"></div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="label col-md-3"> <?php echo lang('position')?> </label>
+                                    <div class="col-md-9"> <input data-type-name="work" data-target="#position-suggestion" data-table-f="position" id="work-position" autocomplete="off" required class="form-control user-education-input" type="text" placeholder="<?php echo lang('what-is-your-job-title')?>" name="val[position]" /> </div>
+                                    <div style="position:relative"><div class="user-suggestion-list edu-search box" id="position-suggestion"></div></div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="label col-md-3"> <?php echo lang('city')?> </label>
+                                    <div class="col-md-9"> <input required class="form-control" type="text" placeholder="<?php echo lang('city')?>" name="val[city]"> </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="label col-md-3"> <?php echo lang('description')?> </label>
+                                    <div class="col-md-9"> <textarea required class="form-control" name="val[description]"></textarea> </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="label col-md-3"> <?php echo lang('time-period')?> </label>
+                                    <input value="1" name="val[present]" checked class="checkboxEdu" style="margin-top: 5px;" type="checkbox" /><span style="margin-left: 5px;cursor: text;"><?php echo lang('i-currently-work-here')?></span>
+                                    <div class="col-md-9 not-present-container" style="position:relative; margin-left: 108px">
+                                        <div class="">
+                                            <?php $type = isset($type) ? $type : 1 ?>
+                                            <?php $day =  isset($day) ? $day : 1 ?>
+                                            <?php $months = config('months') ?>
+                                            <?php $month =  isset($month) ? $month : 'january' ?>
+                                            <?php $current_year = date('Y'); ?>
+                                            <?php $year =  isset($year) ? $year: $current_year ?>
+                                            <div class="magic-select" data-name="val[start_day]" data-width="60px">
+                                                <input type="hidden" name="val[start_day]" value="<?php echo $day ?>" class="magic-select-value" />
+                                                <div class="magic-select-toggle">
+                                                    <?php echo $day ? $day : lang('day') ?>
+                                                </div>
+                                                <div class="magic-select-content slimscroll" data-height="200px">
+                                                    <?php for($i = 1; $i <= 31; $i++): ?>
+                                                        <div class="magic-select-option" data-value="<?php echo $i ?>">
+                                                            <?php echo $i ?>
+                                                        </div>
+                                                    <?php endfor ?>
+                                                </div>
+                                            </div>
+                                            <div class="magic-select" data-name="val[start_month]" data-width="120px">
+                                                <input type="hidden" name="val[start_month]" value="<?php echo $month ?>" class="magic-select-value" />
+                                                <div class="magic-select-toggle">
+                                                    <?php echo $month && isset($months[$month]) ? $months[$month] : lang('month') ?>
+                                                </div>
+                                                <div class="magic-select-content slimscroll" data-height="200px">
+                                                    <?php foreach($months as $n => $k): ?>
+                                                        <div class="magic-select-option" data-value="<?php echo $n ?>">
+                                                            <?php echo $k ?>
+                                                        </div>
+                                                    <?php endforeach ?>
+                                                </div>
+                                            </div>
+                                            <div class="magic-select" data-name="val[start_year]" data-width="80px">
+                                                <input type="hidden" name="val[start_year]" value="<?php echo $year ?>" class="magic-select-value" />
+                                                <div class="magic-select-toggle">
+                                                    <?php echo $year ? $year : lang('year') ?>
+                                                </div>
+                                                <div class="magic-select-content slimscroll" data-height="200px">
+                                                    <?php for($i = $current_year; $i >= 1940; $i--): ?>
+                                                        <div class="magic-select-option" data-value="<?php echo $i ?>">
+                                                            <?php echo $i ?>
+                                                        </div>
+                                                    <?php endfor ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="margin-top:5px" class="not-present">
+                                            <?php $type = isset($type) ? $type : 1 ?>
+                                            <?php $day =  isset($day) ? $day : 1 ?>
+                                            <?php $months = config('months') ?>
+                                            <?php $month =  isset($month) ? $month : 'january' ?>
+                                            <?php $current_year = date('Y'); ?>
+                                            <?php $year =  isset($year) ? $year: $current_year ?>
+                                            <div class="magic-select" data-name="val[end_day]" data-width="60px">
+                                                <input type="hidden" name="val[end_day]" value="<?php echo $day ?>" class="magic-select-value" />
+                                                <div class="magic-select-toggle">
+                                                    <?php echo $day ? $day : lang('day') ?>
+                                                </div>
+                                                <div class="magic-select-content slimscroll" data-height="200px">
+                                                    <?php for($i = 1; $i <= 31; $i++): ?>
+                                                        <div class="magic-select-option" data-value="<?php echo $i ?>">
+                                                            <?php echo $i ?>
+                                                        </div>
+                                                    <?php endfor ?>
+                                                </div>
+                                            </div>
+                                            <div class="magic-select" data-name="val[end_month]" data-width="120px">
+                                                <input type="hidden" name="val[end_month]" value="<?php echo $month ?>" class="magic-select-value" />
+                                                <div class="magic-select-toggle">
+                                                    <?php echo $month && isset($months[$month]) ? $months[$month] : lang('month') ?>
+                                                </div>
+                                                <div class="magic-select-content slimscroll" data-height="200px">
+                                                    <?php foreach($months as $n => $k): ?>
+                                                        <div class="magic-select-option" data-value="<?php echo $n ?>">
+                                                            <?php echo $k ?>
+                                                        </div>
+                                                    <?php endforeach ?>
+                                                </div>
+                                            </div>
+                                            <div class="magic-select" data-name="val[end_year]" data-width="80px">
+                                                <input type="hidden" name="val[end_year]" value="<?php echo $year ?>" class="magic-select-value" />
+                                                <div class="magic-select-toggle">
+                                                    <?php echo $year ? $year : lang('year') ?>
+                                                </div>
+                                                <div class="magic-select-content slimscroll" data-height="200px">
+                                                    <?php for($i = $current_year; $i >= 1940; $i--): ?>
+                                                        <div class="magic-select-option" data-value="<?php echo $i ?>">
+                                                            <?php echo $i ?>
+                                                        </div>
+                                                    <?php endfor ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div style="text-align: center" class="col-md-12">
+                                        <button type="button" class="btn btn-sm" id="add-workplace-cancel"><?php echo lang('cancel') ?></button>
+                                        <button type="submit" class="btn btn-primary btn-sm" id="add-workplace-button"><?php echo lang('save'); ?></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            <?php endif;?>
+            <?php foreach ($workplaces as $workplace): ?>
+                <li id="work-<?php echo $workplace['id']?>" class="experience work">
+                    <div class="workExperience">
+                        <div class="clearfix">
+                            <a style="    margin-right: 12px;    float: left;display: block;"> <i style="font-size: 30px;   color: #3967ff;  border-radius: 50%;    overflow: hidden;    display: block;" class="la la-industry"></i></a>
+                            <div style="    overflow: hidden;" class="textare">
+                                <div style="display: inline-block;" class="texthd">
+                                    <div style="    vertical-align: middle;    display: inline-block;">
+                                        <div style="    max-width: 412px;    font-weight: 600;     font-size: 16px; line-height: 20px;    color: #385898;" class="jobtitle"><?php echo $workplace['company']?></div>
+                                        <div style="    color: #90949c; font-size: 12px;line-height: 16px;">
+                                            <?php echo $workplace['position']?> -
+                                            <?php echo $workplace['start_day'].' '.$workplace['start_month'].' '.$workplace['start_year'].' '.lang('to')?>
+                                            <?php if ($workplace['present'] == '1'): ?>
+                                                <?php echo lang('present')?>
+                                            <?php else: ?>
+                                                <?php echo $workplace['end_day'].' '.$workplace['end_month'].' '.$workplace['end_year']?>
+                                            <?php endif;?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php if ($id == get_userid()):?>
+                                <div class="experienceActions">
+                                    <a data-type="work" data-id="<?php echo $workplace['id'] ?>" class="experienceEdit" style="margin-right: 5px" href=""><i class="la la-edit"></i></a>
+                                    <a data-type="work" data-id="<?php echo $workplace['id'] ?>" class="experienceDelete" href=""><i class="la la-trash"></i></a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        </div>
+</div>
+<?php echo view('user/education/college')?>
+<?php echo view('user/education/high')?>
+
+<style>
+    .eList>li:first-child {
+        border-width: 0 ;
+    }
+    .eList>li {
+        border-color: #ebedf0;
+        border-style: solid;
+        border-width: 1px 0 0 0;
+        margin: 0 0 15px 0px;
+    }
+    .profileExperience{
+        padding:0;
+    }
+    .eListAdd{
+        cursor: pointer;
+        padding-top: 12px;
+    }
+    .eListAddButton{
+        margin-bottom: 12px;
+    }
+    .eListAddButton .clearfix .eListAddIcon{
+        border: 1px dashed #3578e5;
+        height: 34px;
+        line-height: 37px;
+        text-align: center;
+        width: 34px;
+        margin-right: 12px;
+        float: left;
+        display: block;
+    }
+    .eListAddButton .clearfix .eListAddIcon i{
+        border-radius: 50%;
+        overflow: hidden;
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        background-position: 0 -153px;
+        color: #3578e5;
+    }
+    .eListAddButton .clearfix .eListAddText{
+        overflow: hidden;
+        color: #3578e5;
+        display: inline-block;
+        font-size: 16px;
+        line-height: 20px;
+        margin-top: 7px;
+    }
+
+    .profileExperience .experience{
+        max-width: none;
+        word-wrap: break-word;
+    }
+    .profileExperience .work{
+        position: relative;
+    }
+    .workExperience .experienceActions{
+        opacity: 1;
+        position: absolute;
+        right: 0;
+        top: 8px;
+    }
+    .not-present{
+        display: none;
+    }
+    .workplaceForm{
+        display: none;
+    }
+    .eCancel{
+        font-size: 12px;
+        line-height: 16px;
+        color: #90949c;
+    }
+    .eCancelBody{
+        cursor: pointer;
+        position: absolute;
+        right: -5px;
+        top: -30px;
+        background: #f1f2f3;
+    }
+	.edu-search{
+		right:1px;
+		top: 20px;
+		width: 277px;
+	}
+</style>

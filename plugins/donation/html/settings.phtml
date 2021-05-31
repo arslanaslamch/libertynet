@@ -1,0 +1,47 @@
+<div class="box">
+    <div class="title"><?php echo lang("donation::settings"); ?></div>
+    <div class="box-content">
+        <div class="container">
+            <div class="form-roller-donation">
+                <?php if ($message): ?>
+                    <?php echo view("donation::alert", array('message' => $message)) ?>
+                <?php endif; ?>
+                <form class="form" action="" method="post" enctype="multipart/form-data">
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="title"><b><?php echo lang("donation::paypal-email") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input id="title" type="text" name="val[pe]" value="<?php echo $s['paypal_email'] ?>"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="title"><b><?php echo lang("donation::stripe-publishable-key") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input id="title" type="text" name="val[pk]" value="<?php echo $s['publishable_key'] ?>"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="title"><b><?php echo lang("donation::stripe-secret-key") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input id="title" type="text" name="val[sk]" value="<?php echo $s['secret_key']; ?>"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <button type="submit" class="btn btn-info"><?php echo lang("save"); ?></button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

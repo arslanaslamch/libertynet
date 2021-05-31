@@ -1,0 +1,187 @@
+.game-header {
+    position: relative;
+    height: 220px;
+    width: 100%;
+    background-image: url(../images/game-cover.png);
+    background-position: center;
+    background-size: cover;
+}
+
+.game-header .game-header-title {
+    position: absolute;
+    bottom: 20px;
+    font-size: 30px;
+    left: 20px;
+    color: #ffffff;
+    text-shadow: 0 2px 0 black;
+}
+
+.game {
+    width: 31.2%;
+    float: left;
+    height: 200px;
+    border: solid 1px #d3d3d3;
+    margin: 1%;
+}
+
+.game .game-logo {
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    height: 120px;
+}
+
+.game .info {
+    padding: 10px;
+}
+
+.game .game-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.game-list > .head {
+
+}
+
+.game-list > .head .cover {
+    position: relative;
+    height: 300px;
+    border-radius: 10px 10px 0 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.game-list > .head .cover > .title {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, .5);
+    line-height: 50px;
+    font-size: 40px;
+    color: #FFFFFF;
+}
+
+.game-list > .head .cover > .actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 20px;
+}
+
+.game-list > .body {
+    font-size: 0;
+}
+
+.game-list > .body > * {
+    max-width: 100%;
+    padding: 20px 10px;
+    font-size: initial;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.game-list > .body > .listings {
+    width: 100%;
+}
+
+.game-list > .body > .listings .listing > .title {
+    font-weight: bold;
+}
+
+.game-list > .body > .listings .listing .item {
+    border-top: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 0;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.game-list > .body > .listings .listing .item > * {
+    font-size: initial;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.game-list > .body > .listings .listing .item .thumb {
+    border-radius: 10px;
+    width: 100px !important;
+    height: 100px !important;
+}
+
+.game-list > .body > .listings .listing .item .thumb img {
+    border-radius: 10px;
+    width: 100%;
+}
+
+.game-list > .body > .listings .listing .item .details {
+    width: calc(100% - 100px);
+    padding: 0 10px;
+}
+
+.game-list > .body > .listings .listing .item .details .title {
+    width: 100%;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #000000;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap !important;
+    display: inline-block;
+}
+
+.game-list > .body > .listings .listing .item .details .friend-count {
+    font-size: 12px;
+    color: #888;
+    line-height: 19px;
+}
+
+.game-list > .body > .listings .listing .item .details .member-count {
+    font-weight: bold;
+    font-size: 12px;
+    color: #888;
+    line-height: 13px;
+}
+
+.game-list > .body > .listings .listing .item .details .actions {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    text-align: right;
+    width: 100%;
+    padding: 10px 25px;
+}
+
+@media (max-width: 500px) {
+    .game-list > .head > .links .link,
+    .game-list > .head > .links .link a {
+        display: block;
+    }
+}
+
+@media (max-width: 1570px) {
+    .game-list > .head > .filters > .left {
+        width: 100%;
+    }
+
+    .game-list > .head > .filters > .left .icon {
+        display: none;
+    }
+
+    .game-list > .head > .filters > .left select {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .game-list > .head > .filters > .right {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 10px;
+    }
+
+    .game-list > .head > .filters > .right .search {
+        max-width: 100%;
+    }
+}

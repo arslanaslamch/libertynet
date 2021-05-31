@@ -1,0 +1,44 @@
+<div id="dashboard-filter-menu" class="box clearfix">
+    <ul class="pull-left left">
+        <li class="<?php echo input('rsvp') == '1'? 'active' : '' ?>">
+            <a ajax="true" href="<?php echo url_to_pager('event-audience',array('slug' => $event['event_id'])) ?>?rsvp=1"><?php echo lang('event::going') ?></a>
+        </li>
+        <?php if(is_loggedIn()): ?>
+            <li class="<?php echo input('rsvp') == '2' ? 'active' : '' ?>">
+                <a ajax="true" href="<?php echo url_to_pager('event-audience',array('slug' => $event['event_id'])) ?>?rsvp=2"><?php echo lang('event::maybe') ?></a>
+            </li>
+        <?php endif ?>
+        <li class="<?php echo input('rsvp') == '3' ? 'active' : '' ?>">
+            <a ajax="true" href="<?php echo url_to_pager('event-audience',array('slug' => $event['event_id'])) ?>?rsvp=3"><?php echo lang('event::invited') ?></a>
+        </li>
+    </ul>
+    <a ajax="true" href="<?php echo event_url('', $event)?>" class="pull-right event-home"> <?php echo lang('home')?></a>
+</div>
+<div class="box">
+    <?php $rsvp = input('rsvp', 1) ?>
+    <div class="title">
+        <?php echo count($users)?>
+        <?php if (count($users) <= 1 and $rsvp < 2){
+            echo lang('event::member')." ".lang('event::is');
+        } elseif (count($users) > 1) {
+            echo lang('event::members')." ".lang('event::are');
+        } else{
+            echo lang('event::member');
+        }
+
+        if ($rsvp == 1){
+            echo " ".lang('event::going-');
+        } elseif ($rsvp == 2){
+        echo " ".lang('event::might-be-going-');
+        } elseif ($rsvp == 3){
+        echo " ".lang('event::invited');
+        }
+        ?>
+
+    </div>
+    <div class="box-content">
+        <?php foreach ($users as $user): ?>
+        <?php echo view('user/display',array('user' => find_user($user)))?>
+        <?php endforeach ?>
+    </div>
+</div>

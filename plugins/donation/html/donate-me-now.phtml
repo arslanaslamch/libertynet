@@ -1,0 +1,148 @@
+<div class="box">
+    <div class="title"><?php echo $donation['title']; ?></div>
+    <div class="box-content">
+        <div class="container zero-padding clearfix">
+            <h5><?php echo lang("donation::thank-you-for-helping-out") ?></h5>
+
+            <div class="col-sm-12 zero-padding">
+                <div class="col-sm-6 zero-padding">
+                    <img class="img img-responsive" src="<?php echo url_img($donation['image'], 700) ?>"/>
+                </div>
+                <div class="col-sm-6">
+                    <p><b><?php echo $donation['title']; ?></b></p>
+                    <p><?php echo $donation['description']; ?></p>
+                </div>
+            </div>
+        </div>
+        <br/>
+
+        <form id="donation-final-form" method="post" action="<?php echo url_to_pager("donate-now") . '?type=request'; ?>" class="">
+            <?php if ($donation['predefined']): ?>
+                <?php $predefined = perfectUnserialize($donation['predefined']); ?>
+                <div class="form-group">
+                    <?php foreach ($predefined as $pred):
+                        if(!$pred) continue;
+                        ?>
+                        <a href=""
+                           style="font-size : 16px; background : <?php echo config("donate-button-background-color", '#297fc6'); ?>"
+                           data-amt="<?php echo $pred; ?>" class="predefined-button-modal"><?php echo $pred; ?></a>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+            <div class="form-group">
+                <input type="hidden" id="did" name="val[did]" value="<?php echo $donation['id']; ?>"/>
+                <input type="hidden" id="sp_token" name="val[token]" value=""/>
+                <input type="hidden" id="sp_email" name="val[sp_email]" value=""/>
+
+                <p><label><b><?php echo lang("donation::your-donation"); ?> : </b></label>
+                    <input id="damt" type="number" class="form-control form-inline" name="val[amount]"
+                        /> <span><?php echo $donation['cur']; ?></span>
+            </div>
+            <?php if($donation['anonymous']): ?>
+            <div class="form-group">
+                <input type="checkbox" value="1"
+                       name="val[anonymous]"/> <?php echo lang("donation::tick-to-make-ano"); ?>
+            </div>
+            <?php endif; ?>
+            <?php if (is_loggedIn()): ?>
+                <div class="form-group">
+                    <input type="checkbox" value="1"
+                           name="val[show_feed]"/> <?php echo lang("donation::show-on-feed"); ?>
+                </div>
+            <?php else: ?>
+                <div class="form-group">
+                    <label><b><?php echo lang("donation::full-name");  ?></b></label>
+                    <input type="text" name="val[full_name]" value="" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label><b><?php echo lang("donation::email-address");  ?></b></label>
+                    <input type="text" name="val[email]" value="" class="form-control" />
+                </div>
+            <?php endif; ?>
+            <div class="form-group">
+                <label><b><?php echo lang("donation::leave-your-message"); ?></b></label>
+                <textarea name="val[msg]" style="max-width : 400px; height:70px" class="form-control"></textarea>
+                <span class="form-help"><?php echo lang("donation::why-you-donated"); ?></span>
+            </div>
+            <div class="form-group">
+                <p><input type="checkbox" name="val[condition]" id="tmca"/>
+                    <?php echo lang("donation::read-and-accept-terms"); ?>
+                    <a href="" id="donate-now-tc"><em><b><?php echo lang("donation::tandc"); ?></b></em></a>
+                </p>
+            </div>
+            <input type="hidden" id="mini-donation" value="<?php echo $donation['donation_min'] ?>"/>
+
+            <!--<div class="form-group">
+                <button type="submit"
+                        data-empty="<?php /*echo lang("donation::please-specify-the-amount-to-donate"); */?>"
+                        data-tce="<?php /*echo lang("donation::kindly-accept-terms-and-condition"); */?>"
+                        data-mne="<?php /*echo lang("donation::the-minimum-you-can-donate-is"); */?>"
+                        class="btn btn-sm btn-info is-a-donate-donate-btn"><?php /*echo lang('donation::donate'); */?></button>
+            </div>-->
+        </form>
+
+        <div class="donate-now-stripe-paypal">
+            <?php fire_hook("donation.with.emoney"); ?>
+            <?php if ($donation['publishable_key'] && $donation['secret_key'] && !dCommissionEnabled()): ?>
+              <?php $logo = url_img($donation['image'], 200); ?>
+                <div class="stripe-donate" style="">
+                    <a class="media is-a-donate-donate-btn"
+                       data-empty="<?php echo lang("donation::please-specify-the-amount-to-donate"); ?>"
+                       data-tce="<?php echo lang("donation::kindly-accept-terms-and-condition"); ?>"
+                       data-mne="<?php echo lang("donation::the-minimum-you-can-donate-is"); ?>"
+                       data-t="stripe"
+
+                       data-pk="<?php echo $donation['publishable_key'] ?>"
+                       data-name="<?php echo get_setting("site_title", "crea8socialPRO") ?>"
+                       data-logo="<?php echo $logo ?>"
+                       data-desc="<?php echo $donation['description']; ?>"
+                       data-cur="<?php echo $donation['cur']; ?>"
+                       data-did="<?php echo $donation['id']; ?>"
+
+
+                       href="">
+                        <img style="height:80px" src="<?php echo img('donation::images/sp.png')?>"/>
+                    </a>
+                </div>
+            <?php endif; ?>
+
+            <?php if($donation['paypal_email']): ?>
+            <div class="paypal-donate" style="">
+                <a
+                   class="media is-a-donate-donate-btn"
+                   data-empty="<?php echo lang("donation::please-specify-the-amount-to-donate"); ?>"
+                   data-tce="<?php echo lang("donation::kindly-accept-terms-and-condition"); ?>"
+                   data-mne="<?php echo lang("donation::the-minimum-you-can-donate-is"); ?>"
+                   data-t="paypal"
+                   href="">
+                    <img style="max-height:80px;" src="<?php echo img('donation::images/dp.jpg')?>"/>
+                </a>
+            </div>
+            <?php endif; ?>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="donateModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php _lang('close') ?></span>
+                </button>
+                <h6 class="modal-title"><?php echo lang("donation::terms-and-condition"); ?></h6>
+            </div>
+            <div class="modal-body">
+                <?php echo $donation['terms']; ?>
+
+                <?php if(dCommissionEnabled()): ?>
+                    <?php echo lang("donation::commission-msg-donater",array('com'=>dCommissionEnabled().'% ')); ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>

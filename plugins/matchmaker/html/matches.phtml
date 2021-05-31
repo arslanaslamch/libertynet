@@ -1,0 +1,55 @@
+<div class="box matchmaker">
+    <div id="encounters">
+        <h4 class="box-title"><?= lang("matchmaker::matches"); ?></h4>
+        <div class="px-3 py-2 matches">
+            <?php if (!$matches->total || empty($matches->results())) : ?>
+                <?= view("matchmaker::none", ['text' => lang('matchmaker::no-matches')]); ?>
+            <?php else : ?>
+                <div class="row no-gutters">
+                    <?php foreach ($matches->results() as $match) : ?>
+                        <?php $user = $match['user']; ?>
+                        <?php $gender = (isset($user['gender']) and $user['gender']) ? $user['gender'] : null ?>
+                        <?php $gender_image = ($gender) ? img("images/avatar/{$gender}.png") : img("images/avatar.png") ?>
+                        <?php $user_image = $user['avatar'] ? url_img($user['avatar'], 200) : $gender_image ?>
+                        <?php $user_name = trim($user['first_name'] . $user['last_name']) == '' ? $user['username'] : $user['first_name'] . ' ' . $user['last_name'] ?>
+                        <?php $online_status = $user['online_time'] > (time() - 50) ? 'enc-online' : 'enc-offline' ?>
+                        <?php $cid = get_conversation_id([$user['id']], true, 'user', ''); ?>
+                        <div class="col-lg-4 box encounter mb-1">
+                            <div class="flex-center encounter-body">
+                                <div class="enc-img-con">
+                                    <img class="image" src="<?php echo $user_image ?>" alt="<?php echo $user_name ?> " />
+                                </div>
+                                <div class="details">
+                                    <h6 class="title my-2 d-flex align-items-center">
+                                        <div class="text-center mr-1"><?php echo $user_name ?></div>
+                                        <div class="<?= $online_status; ?>"></div>
+                                    </h6>
+                                    <div class="distance text-center">
+                                        <?php if ($user['distance'] >= 0) : ?>
+                                            <?= round($user['distance'], 2) . " " . lang("matchmaker::" . config('default-unit')) . " " . lang("matchmaker::away"); ?>
+                                        <?php else : ?>
+                                            <?php echo lang("matchmaker::no-location-specified"); ?>
+                                        <?php endif; ?>
+                                        <div><?php echo lang("matchmaker::matched-d-ago", ['d' => timeAgoMin(strtotime($match['matched_at']))]); ?></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="flex-bottom py-2 px-2 w-100 encounter-footer flex-center">
+                                <a href="<?= url('messages?cid=' . $cid); ?>" class="round-box mx-3 text-lg text-secondary">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+
+                </div>
+                <?php if ($matches->total > 12) {
+                    echo $matches->links();
+                } ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

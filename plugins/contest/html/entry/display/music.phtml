@@ -1,0 +1,9 @@
+<div class="box-content">
+    <div class="title"><?php echo $entry['title']; ?></div>
+    <div class="box-content post contest-music-template-wrapper">
+        <?php echo view("contest::music-template",array('entry'=>$entry)) ?>
+        <br/>
+        <?php echo $entry['description'] ?>
+    </div>
+</div>
+<?php echo view("contest::footer-like",array('refName'=>$entry['ref_name'],'refId'=>$entry['id'])); ?>

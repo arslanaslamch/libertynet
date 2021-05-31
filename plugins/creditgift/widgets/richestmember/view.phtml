@@ -1,0 +1,25 @@
+<div class="box">
+	<div class="title">
+		<?php echo lang('creditgift::richest-member') ?>
+	</div>
+	<div class="box-content slider-side-idget">
+		<?php $richests = creditgift_richest($limit) ?>
+		<?php foreach($richests as $richest): ?>
+			<?php $avatar = get_avatar(75, $richest) ?>
+			<div class="media media-lg user">
+				<div class="media-left">
+					<a ajax="true" href="<?php echo url($richest['id']) ?>">
+						<div class="media-object" style="background-image: url(<?php echo $avatar ?>); background-position: center; background-size: cover;"></div>
+					</a>
+				</div>
+				<div class="media-body">
+
+					<a ajax="true" href="<?php echo url($richest['id']) ?>">
+						<h6 class="media-heading" style="font-weight: normal"><?php echo get_user_name($richest['id']); ?></h6>
+					</a>
+					<p class="help-block"><?php echo lang('credit') ?><?php echo ": ".$richest['credit_balance'] ?></p>
+				</div>
+			</div>
+		<?php endforeach; ?>
+	</div>
+</div>

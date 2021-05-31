@@ -1,0 +1,26 @@
+<?php $qz = get_quiz($quiz_id);
+$mark = calculate_mark($quiz_id);
+ ?>
+<div class="box quiz-result">
+	<div class="title">
+		<div>
+			<?php echo lang('quiz::thank-you-for-taking-my-quiz'); ?>	
+		</div>
+	</div>
+	<div class="box-content">
+		<div class="quiz-score-score" style=" padding:2% 0 0 0; border-top:1px solid #F1F1F1;">
+			<?php echo lang('quiz::your-score') ?>: <span><?php echo $mark; ?>%</span>
+			<?php if($qz['pass_mark'] > $mark): ?>
+				<div class="quiz-fail"><?php echo lang('quiz::fail'); ?></div>
+			<?php else: ?>
+				<div class="quiz-pass"><?php echo lang('quiz::pass'); ?></div>
+			<?php endif; ?>
+			<?php echo lang('quiz::pass-mark') ?>: <span style="color: green"><?php echo $qz['pass_mark']; ?>%</span>
+		</div>
+		<br/>
+		<div style=" padding:2% 0 2% 0; border-top:1px solid #F1F1F1">
+			<a href="<?php echo url_to_pager('quiz-page',array('slug' => $quiz_id)) ?>" class="btn btn-secondary btn-sm action-button" ajax="true"><?php echo lang('quiz::confirm') ?></a>
+			
+		</div>
+	</div>
+</div>

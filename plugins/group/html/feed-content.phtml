@@ -1,0 +1,31 @@
+<div id="group-list-container" class="box-content clearfix list-listing-container group-feed-content">
+    <div class="item">
+        <div class="thumb">
+            <?php if(isset($group['featured']) && $group['featured']): ?>
+                <span class="featured"></span>
+            <?php endif ?>
+            <img class="group-ihtk img" src="<?php echo get_group_logo(200, $group) ?>" alt="<?php echo ucwords($group['group_title']) ?>" aria-label="<?php echo $group['group_title'] ?>" role="img" />
+        </div>
+        <div class="details">
+            <div class="cover" style="background-image:url(<?php echo get_group_cover($group, false) ?>)"></div>
+            <a href="<?php echo group_url(null, $group) ?>" ajax="true" class="title">
+                <?php echo ucwords($group['group_title']) ?>
+            </a>
+            <div class="member-count">
+                <?php echo count(get_group_members_id($group['group_id'])).' '.lang('group::members') ?>
+            </div>
+            <?php $friend_count = count(get_group_firends($group['group_id'])); ?>
+            <?php if ($friend_count): ?>
+                <div class="friend-count">
+                    <?php echo $friend_count.' '.lang('friends') ?>
+                </div>
+            <?php endif; ?>
+            <div class="actions">
+                <?php if (is_loggedIn() && !is_group_admin($group, null, false)): ?>
+                    <?php $status = is_group_member($group['group_id']) ? 1 : 0; $leave = fire_hook('group.join.button.extension', lang('group::leave-group'), array($group)); ?>
+                    <a onclick="return join_group(this)" data-id="<?php echo $group['group_id'] ?>" role="button" href="#" data-status="<?php echo $status ?>" data-join="<?php echo lang('group::group-join') ?>" data-leave="<?php echo lang('group::joined-group') ?>" class="btn btn-info action-button"><?php echo $status ? $leave : lang('group::join-group') ?> </a>
+                <?php endif ?>
+            </div>
+        </div>
+    </div>
+</div>

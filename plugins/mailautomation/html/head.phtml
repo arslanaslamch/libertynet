@@ -1,0 +1,7 @@
+<a href="" class="btn btn-secondary" onclick="return show_other_languages('.form-mailautomation')" ><i class="ion-search"></i> <?php echo lang("mailautomation::search-automation"); ?></a>
+<a href="" class="btn btn-secondary" onclick="return show_other_languages('#cron-url')" ><i class="ion-eye"></i> <?php echo lang("mailautomation::show-cron-job-url"); ?></a>
+<a href="<?php echo url_to_pager("admincp-mail-automations-stats"); ?>" class="btn btn-secondary" ><i class="ion-pie-graph"></i> <?php echo lang("mailautomation::stats"); ?></a>
+<a href="<?php echo url_to_pager('admincp-mail-automations-manage').'?action=send-high'; ?>"
+   title="<?php echo lang("mailautomation::send-hightlight-to").' : '.get_user_data('email_address'); ?>"
+   class="btn btn-secondary" ><i class="ion-android-send"></i> <?php echo lang("mailautomation::send-me-highlights-now"); ?></a>
+<a href="<?php echo url_to_pager("admincp-mail-automations-add"); ?>" class="btn btn-danger" ><i class="ion-plus"></i> <?php echo lang("add"); ?></a>

@@ -1,0 +1,113 @@
+<?php $week = array('SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI', 'SAT') ?>
+<?php $weather_info = weather_get_weather_info(); ?>
+<?php if ($weather_info): ?>
+    <?php $weather_info = json_decode($weather_info, true); ?>
+    <?php if (is_array($weather_info) && !isset($weather_info['error']) && (!isset($weather_info['cod']) || (isset($weather_info['cod']) && $weather_info['cod'] == 200))): ?>
+        <div class="weather-cover">
+            <div class="weather-location">
+                <h6><?php echo $weather_info['city']['name'].", ".$weather_info['city']['country'] ?></h6>
+                <hr style="border-top: 1px solid rgb(233, 235, 238);">
+            </div>
+            <?php
+            $lists = $weather_info['list'];
+            $current_weather = $lists[0];
+            ?>
+            <div class="weather-condition row clearfix">
+                <div class="col-md-8">
+                    <div class="weather-condition-icon">
+                        <img src="https://openweathermap.org/img/w/<?php echo $current_weather['weather'][0]['icon'] ?>.png" alt="Weather is <?php echo $current_weather['weather'][0]['description'] ?>" title="Weather is <?php echo $current_weather['weather'][0]['description'] ?>">
+                    </div>
+                    <span class="weather-condition-description"><?php echo $current_weather['weather'][0]['description'] ?></span>
+                </div>
+                <div class="col-md-4">
+                    <?php $current_date = explode(' ', $current_weather['dt_txt']); ?>
+                    <div class="current-date-container">
+                        <div class="inner-box-date">
+                            <span class="weather-date">
+                                <span class="weather-month"> <?php echo get_weather_week_day(strtotime($current_date[0]), 'month', 'M', 'start') ?>  </span>
+                                <span class="weather-in-date"> <?php echo get_weather_week_day(strtotime($current_date[0]), 'day', 'd', 'start') ?> </span>
+                            </span>
+                        </div>
+                        <div class="weather-week-day">
+                            <?php echo $week[get_weather_week_day(strtotime($current_date[0]), 'day', 'w', 'start')]; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="weather-stats">
+                <div class="weather-temperature"><?php echo weather_get_temp($current_weather['main']['temp']) ?></div>
+                <div class="weather-conditions">
+                    <div class="weather-wind"><?php echo lang('weather::wind') ?>
+                        : <?php echo $current_weather['wind']['speed'] ?> mph
+                    </div>
+                    <?php if (isset($current_weather['rain'])): ?>
+                        <div class="weather-precipitation"><?php echo lang('weather::precipitation') ?>
+                        : <?php echo $current_weather['rain']['3h'] ?> mm</div> <?php endif; ?>
+                    <div class="weather-pressure"><?php echo lang('weather::pressure') ?>
+                        : <?php echo $current_weather['main']['pressure'] ?> hPa
+                    </div>
+                    <div class="weather-humidity"><?php echo lang('weather::humidity') ?>
+                        : <?php echo $current_weather['main']['humidity'] ?>%
+                    </div>
+                </div>
+            </div>
+            <div class="weather-forecasts">
+                <?php $date = date('Y-m-d'); ?>
+                <?php $forecasts = array();
+                foreach ($lists as $list) {
+                    $weather_date = explode(' ', $list['dt_txt']);
+                    if ($weather_date[0] != $date) {
+                        $list_date = explode(' ', $list['dt_txt']);
+                        if (!isset($forecasts[$list_date[0]])) {
+                            $forecasts[$list_date[0]] = $list;
+                            ?>
+                            <div class="weather-forecast">
+                                <div class="weather-forecast-weekday"><?php echo $week[get_weather_week_day(strtotime($list_date[0]), 'day', 'w', 'start')]; ?></div>
+                                <div class="weather-forecast-icon">
+                                    <img src="https://openweathermap.org/img/w/<?php echo $list['weather'][0]['icon'] ?>.png"
+                                         alt="<?php echo $list['weather'][0]['description'] ?>"
+                                         title="<?php echo $list['weather'][0]['description'] ?>">
+                                </div>
+                                <div class="weather-forecast-temperature"><?php echo weather_get_temp($list['main']['temp']) ?></div>
+                            </div>
+                            <?php
+                        }
+                    }
+                }
+                ?>
+            </div>
+        </div>
+        <?php if (config('weather-enable-background', true)): ?>
+            <style>
+                .weather-cover {
+                    background-image: url(<?php echo img('weather::images/background.png') ?>);
+                    background-position: center;
+                    background-size: cover;
+                    color: #FFFFFF;
+                    border: none;
+                    box-shadow: 0px 0px 1px 0px #000000;
+                }
+            </style>
+        <?php endif; ?>
+        <?php if (config('weather-animate-background', true)): ?>
+            <style>
+                @-webkit-keyframes WEATHER-COVER-BACKGROUND-IMAGE-MOVE {
+                    from {
+                        background-position: 0%;
+                    }
+                    to {
+                        background-position: 100%;
+                    }
+                }
+
+                .weather-cover {
+                    animation-name: WEATHER-COVER-BACKGROUND-IMAGE-MOVE;
+                    animation-direction: alternate-reverse;
+                    animation-duration: 24s;
+                    animation-timing-function: ease-in-out;
+                    animation-iteration-count: infinite;
+                }
+            </style>
+        <?php endif; ?>
+    <?php endif; ?>
+<?php endif ?>

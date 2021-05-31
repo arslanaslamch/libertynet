@@ -1,0 +1,24 @@
+<div class="box">
+    <div class="box-content" id="checkoutSuccess">
+        <?php if(input('t','success') == 'success'): ?>
+        <div class="text-success"><h4><i
+                        class="ion-checkmark-circled"></i> <?php echo lang("store::checkout-success") ?></h4></div>
+        <span style="display: block"><?php echo lang("store::you-have-successfully-order") ?></span>
+        <span style="display: block"><?php echo lang("store::thank-you-for-your-order"); ?></span>
+        <?php elseif(input('t') == 'info' && session_get('em')): ?>
+            <div class="text-danger"><h4><i
+                            class="ion-info"></i> <?php echo lang("store::check-out-incomplete") ?></h4></div>
+            <span style="display: block"><?php echo session_get('em'); ?></span>
+        <?php endif; ?>
+        <div class="actions">
+            <ul>
+                <li><< <a href="<?php echo url_to_pager("products-home") ?>"
+                          ajax="true"><?php echo lang("store::continue-shopping"); ?> </a></li>
+                <li><< <a href="<?php echo url_to_pager("product-cart") ?>"
+                          ajax="true"> <?php echo lang("store::back-to-cart"); ?></a></li>
+                <li><< <a href="<?php echo url_to_pager("my_orders") ?>"
+                          ajax="true"><?php echo lang("store::go-to-your-orders"); ?></a></li>
+            </ul>
+        </div>
+    </div>
+</div>

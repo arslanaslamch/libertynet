@@ -1,0 +1,100 @@
+
+
+<div class="col-sm-4 contest-view-lhs">
+    <div class="box">
+        <div class="box-content">
+            <a href="<?php echo contestUrl($contest) ?>" ajax="true"><div class="contest-lhs-image"
+                            style="background-image: url(<?php echo get_contest_image($contest) ?>)"></div></a>
+        </div>
+        <ul class="menu contest-lhs-menu">
+            <li>
+                <a href="" id="invite-contest-friends" data-cid="<?php echo $contest['id']; ?>" ><i class="ion-ios-people"></i> <?php echo lang('contest::invite'); ?></a>
+            </li>
+            <li>
+                <a href=""
+                   data-id="<?php echo $contest['id'] ?>"
+                   data-status="<?php echo contestIsFollowing($contest['id']) ? 1 : 0; ?>"
+                   data-unfollow="<?php echo lang('contest::unfollow') ?>"
+                   data-follow="<?php echo lang('contest::follow') ?>"
+                   data-following="<?php echo lang('contest::following') ?>"
+                   class="follow-contest">
+                    <?php if(!contestIsFollowing($contest['id'])): ?>
+                        <i class="ion-android-checkbox-blank"></i> <span><?php echo lang('contest::follow'); ?></span>
+                    <?php else: ?>
+                        <i class="ion-android-checkbox"></i> <span><?php echo lang('contest::unfollow'); ?></span>
+                    <?php endif; ?>
+
+                </a>
+            </li>
+            <?php if(plugin_loaded('favorite')): ?>
+                <li>
+                    <a href=""
+                       data-action="<?php echo (has_favorite('contest', $contest['id'])) ? 1 : 0; ?>"
+                       data-type="<?php echo 'contest'; ?>"
+                       data-typeid="<?php echo $contest['id']; ?>"
+                       data-slang="<?php echo lang('favorite::you-have-success-fully-favorite',array('type'=>lang('contest::contest'))) ?>"
+                       data-unlang="<?php echo lang('favorite::you-have-success-fully-unfavorite',array('type'=>lang('contest::contest'))) ?>"
+                       class="favorite-item fav <?php echo (has_favorite('contest',$contest['id'])) ? 'has-favorite' : 'not-favorite' ?>" >
+                        <i style="position: relative;bottom: -3px;" class="ion-android-favorite"></i> <?php echo lang('contest::favorite'); ?></a>
+                </li>
+            <?php endif; ?>
+            <?php if(isContestParticipant($contest) && canJoinContest($contest)): ?>
+                <li>
+                    <a href="<?php echo url_to_pager('contest-submit-entry',array('slugs'=>$contest['slug'])) ?>" ajax="true" ><i class="ion-upload"></i> <?php echo lang('contest::submit-an-entry'); ?></a>
+                </li>
+            <?php endif; ?>
+            <?php if(canJoinContest($contest) and !isContestParticipant($contest)): ?>
+                <li>
+                    <a href="" id="join-contest" ><i class="ion-arrow-right-c"></i> <?php echo lang('contest::join'); ?></a>
+                </li>
+            <?php endif; ?>
+            <li>
+                <a href="" id="promote-contest" data-cid="<?php echo $contest['id']; ?>"><i class="ion-speakerphone"></i> <?php echo lang('contest::promote'); ?></a>
+            </li>
+        </ul>
+    </div>
+    <div class="contest-duration-box box">
+        <div class="contest-duration-title"><?php echo lang("contest::contest-duration") ?>
+            <span class="pull-right"> <?php echo contestBadgeStatus($contest,'contest'); ?> </span></div>
+        <div class="contest-duration-box-body" style="background-color: #2572b2;color : #fff">
+            <p><b><?php echo lang("contest::start-date") ?> : </b> <?php echo date('M j , Y  h:i A', $contest['contest_start']) ?></p>
+            <p><b><?php echo lang("contest::end-date") ?> : </b> <?php echo date('M j , Y  h:i A', $contest['contest_end']) ?></p>
+        </div>
+    </div>
+
+    <div class="contest-duration-box box">
+        <div class="contest-duration-title"><?php echo lang("contest::entries-submission") ?>
+            <span class="pull-right"> <?php echo contestBadgeStatus($contest,'entries'); ?> </span></div>
+        <div class="contest-duration-box-body" style="background: #222f3e;color: #ddd ">
+            <p><b><?php echo lang("contest::start-date") ?> : </b> <?php echo date('M j , Y  h:i A', $contest['entries_start']) ?></p>
+            <p><b><?php echo lang("contest::end-date") ?> : </b> <?php echo date('M j , Y  h:i A', $contest['entries_end']) ?></p>
+        </div>
+    </div>
+
+    <div class="contest-duration-box box">
+        <div class="contest-duration-title"><?php echo lang("contest::voting-duration") ?>
+            <span class="pull-right"> <?php echo contestBadgeStatus($contest,'voting'); ?> </span></div>
+        <div class="contest-duration-box-body" style="">
+            <p><b><?php echo lang("contest::start-date") ?> : </b> <?php echo date('M j , Y  h:i A', $contest['voting_start']) ?></p>
+            <p><b><?php echo lang("contest::end-date") ?> : </b> <?php echo date('M j , Y  h:i A', $contest['voting_end']) ?></p>
+        </div>
+    </div>
+    <div class="box">
+        <div class="title"><?php echo lang("contest::contest-statistics"); ?></div>
+        <div class="">
+            <ul class="menu menu-contest-two">
+                <li><i class="ion-ios-people"></i> <?php echo lang("contest::participants");  ?> : <b><?php echo getContestParticipants($contest)->total; ?></b> </li>
+                <li><i class="ion-ios-bookmarks-outline"></i> <?php echo lang("contest::entries");  ?> : <b><?php echo getContestEntries($contest,'all')->total ?></b> </li>
+                <?php if(plugin_loaded('like')): ?>
+                <li><i class="ion-thumbsup"></i> <?php echo lang("contest::likes");  ?> : <b><?php echo count_likes('contest',$contest['id']); ?></b> </li>
+                <?php endif; ?>
+                <li><i class="ion-eye"></i> <?php echo lang("contest::views");  ?> : <b><?php echo $contest['views']; ?></b> </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <?php echo view("contest::modals",array("contest"=>$contest)); ?>
+
+</div>
+

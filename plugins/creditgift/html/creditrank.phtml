@@ -1,0 +1,23 @@
+<div class="box">
+	<div class="title"><?php echo lang('creditgift::credit-rank') ?></div>
+	<div class="box-content">
+		<?php foreach($ranks as $rank): ?>
+			<div class="row">
+				<div class="col-md-3">
+					<div style="width:100%;height:100px;background-image:url(<?php echo url_img($rank['rank_image']) ?>);background-position:center;background-size:cover"></div>
+				</div>
+				<div class="col-md-8">
+					<p><?php echo $rank['rank']; ?>
+						<br/>
+						Credit:<?php echo $rank['credit']; ?>
+						<br/>
+						<?php echo lang('creditgift::number-of-member') ?>:<?php echo creditgift_rank_num_members($rank['credit']) ?>
+						<br/>
+						<?php echo lang('creditgift::description') ?>:<?php echo $rank['description']; ?>
+					</p>
+				</div>
+			</div>
+		<?php endforeach; ?>
+	</div>
+</div>
+<div id="creditgift-show-friends" class="modal hide fade"></div>

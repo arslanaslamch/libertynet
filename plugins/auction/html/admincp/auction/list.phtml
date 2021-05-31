@@ -1,0 +1,135 @@
+<div class="wrapper auction">
+	<div class="wrapper-title">Manage Auctions</div>
+	<div class="wrapper-content">
+		<div class="list-table-container">
+			<div class="row list-table-select-actions hide" data-group="users">
+				<div class="col-sm-12">
+					<a href="<?php echo url_to_pager('admin-auction-batch-action') ?>?action=delete"
+					   class="action-link list-table-select-action" data-group="users"><?php echo lang('delete') ?></a>
+					<?php fire_hook('admin.user.list.actions'); ?>
+				</div>
+			</div>
+			<div class="table-responsive">
+				<table class="table table-striped list-table">
+					<thead>
+					<tr>
+						<th>
+							<div class="list-table-select" data-group="users" data-id="0"></div>
+						</th>
+						<th>#</th>
+						<th>Title</th>
+						<th>Category</th>
+						<th>Quantity</th>
+						<th>Reserved Price</th>
+						<th>Current Bid</th>
+						<th>End Date</th>
+						<th>Operation</th>
+					</tr>
+					</thead>
+					<?php $cat_title = null;
+					foreach(get_auctions() as $auction): ?><?php $category = get_auction_category($auction['category_id']); ?><?php $cat_title = $category['title']; ?>
+						<tr>
+							<td>
+								<div class="list-table-select" data-group="users"
+								     data-id="<?php echo $auction['id'] ?>"></div>
+							</td>
+							<td><?php echo $auction['id']; ?></td>
+							<td><?php echo lang($auction['title']); ?></td>
+							<td><?php echo lang($cat_title); ?></td>
+							<td><?php echo $auction['quantity']; ?></td>
+							<td>$<?php echo $auction['reserved_price']; ?>.00</td>
+							<td>$<?php echo $auction['current_bid']; ?>.00</td>
+							<td><?php echo $auction['end_date']; ?></td>
+							<td>
+								<div class="dropdown actions">
+									<a href="#" data-toggle="dropdown">
+										<i class="ion-android-settings"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right">
+										<a class="admin-confirm ion-android-delete"
+										   href="<?php echo url_to_pager('admincp-auction-list').'?id='.$auction['id'].'&delete=1'; ?>"></a>
+									</div>
+								</div>
+							</td>
+
+
+						</tr><!-- Auction Offer Modal -->
+						<div id="offerModal<?php echo $auction['id']; ?>" class="modal fade" role="dialog">
+							<div class="modal-dialog">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title"><?php echo $auction['title']; ?> Offer(s)</h4>
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+									</div>
+									<div class="modal-body">
+										<p>
+											<span class="admin-username">Username</span><span
+													class="admin-price">Price</span>
+										</p>
+										<?php foreach(get_auction_offer_all($auction['id']) as $offer): ?>
+											<p>
+												<span class="admin-username-content"><?php echo get_user_name($offer['user_id']); ?></span>
+												<span class="admin-price-content">$<?php echo $offer['price']; ?>.00</span>
+											</p>
+										<?php endforeach; ?>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div><!--  End Modal --><!-- Auction Bid Modal -->
+						<div id="bidModal<?php echo $auction['id']; ?>" class="modal fade" role="dialog">
+							<div class="modal-dialog">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title"><?php echo $auction['title']; ?> Bid(s)</h4>
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+									</div>
+									<div class="modal-body">
+										<p>
+											<span class="admin-username">Username</span><span
+													class="admin-price">Price</span>
+										</p>
+										<?php foreach(get_auction_bid_all($auction['id']) as $bid): ?>
+											<p>
+												<span class="admin-username-content"><?php echo get_user_name($bid['user_id']); ?></span>
+												<span class="admin-price-content">$<?php echo $bid['price']; ?>.00</span>
+											</p>
+										<?php endforeach; ?>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div><!--  End Modal -->
+					<?php endforeach; ?>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</div><!-- Modal -->
+<div class="modal fade" id="cat-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">Delete Confirmation</h4>
+			</div>
+			<div class="modal-body">
+				Are you sure you want to delete <?php //echo $cat_title;  ?>... category
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-miss="modal">Cancel</button>
+				<a href="" class="btn btn-info">Delete</a>
+				<!--<button type="button" class="btn btn-info">Delete</button>-->
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,14 @@
+
+    <div class="box">
+        <?php if(is_loggedIn() and user_has_permission('can-create-books') and config('allow-members-to-create-books', true)):?>
+            <div class="box-content">
+                <a  href="<?php echo url_to_pager("add-books-page"); ?>"  class="btn btn-info btn-block"><?php _lang('educational::create-new-book')?></a>
+            </div>
+        <?php endif?>
+        <ul class="menu" style="padding: 0">
+            <?php if(is_loggedIn()):?>
+                <li><a href="<?php echo url('books'); ?>" ajax="true" ><?php _lang('educational::browse-books')?></a></li>
+                <li><a href="<?php echo url('books?type=mine')?>" ajax="true" ><?php _lang('educational::my-books')?></a></li>
+            <?php endif?>
+        </ul>
+    </div>

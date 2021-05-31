@@ -1,0 +1,9 @@
+<div class="form-group row">
+    <div class="col-sm-8"><?php _lang('notification::enable-store-notification')?></div>
+    <div class="col-sm-4">
+        <select class="c-select" name="val[notify-site-store]">
+            <option <?php echo (get_privacy('notify-site-store', 1) == 1)? 'selected' : null?> value="1"><?php _lang('yes')?></option>
+            <option <?php echo (get_privacy('notify-site-store', 1) == 0)? 'selected' : null?> value="0"><?php _lang('no')?></option>
+        </select>
+    </div>
+</div>

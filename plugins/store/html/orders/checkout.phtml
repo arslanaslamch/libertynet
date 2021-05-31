@@ -1,0 +1,151 @@
+<div class="box">
+    <div class="box-content">
+        <?php echo view("store::stages",array('type'=>'sb')); ?>
+    </div>
+</div>
+<div class="box">
+    <div class="box-content" style="font-size: 14px">
+        <?php load_functions('country'); ?>
+        <?php if(is_loggedIn()): ?>
+        <div class="previdous-address">
+            <?php $billing_address = getBillingOrShippingDetails('lp_billing_details','mumu',get_userid()); ?>
+            <?php $shipping_address = getBillingOrShippingDetails('lp_shipping_details','mumu',get_userid()); ?>
+        </div>
+        <?php endif; ?>
+        <form method="post" onsubmit="return submitCheckout(this)" action="<?php echo url_to_pager("orders-checkout-submit"); ?>">
+            <?php CSRFProtection::embed()?>
+        <div class="container row">
+            <div class="showError" style="display: none">
+                <div class="alert alert-danger"><span id="errorMsg"></span></div>
+            </div>
+            <div class="row nop">
+                  <div class="col-sm-6">
+
+                      <div class="card " >
+                          <div class="card-header"><?php echo lang('store::billing-details') ?></div>
+                          <div class="card-body">
+                      <div class="form-container">
+                          <div class="form-group">
+                              <div class="row" >
+                                  <div class="col-md-6">
+                                      <input class="form-control form-control-lg" id="b_fn"  value="<?php echo (isset($billing_address) && $billing_address['first_name']) ?  $billing_address['first_name'] : input('val.billing_first_name')?>" type="text" name="val[billing_first_name]" placeholder="<?php _lang('your-first-name')?>"/>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <input class="form-control form-control-lg"  id="b_ln" value="<?php echo (isset($billing_address) && $billing_address['last_name']) ?  $billing_address['last_name'] : input('val.billing_last_name')?>" type="text" name="val[billing_last_name]" placeholder="<?php _lang('your-last-name')?>"/>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="form-group" >
+                              <input  class="form-control form-control-lg "  id="b_company" value="<?php echo (isset($billing_address) && $billing_address['company']) ?  $billing_address['company'] : input('val.billing_company')?>" type="text" name="val[billing_company]" placeholder="<?php _lang('store::company-name')?>"/>
+                          </div>
+
+                          <div class="form-group">
+                              <input  class="form-control form-control-lg"  id="b_em" value="<?php echo (isset($billing_address) && $billing_address['email_address']) ?  $billing_address['email_address'] : input('val.billing_email_address')?>" type="text" name="val[billing_email_address]" placeholder="<?php _lang('your-email-address')?>"/>
+                          </div>
+                          <div class="form-group">
+                              <input  class="form-control form-control-lg"  id="b_p" value="<?php echo (isset($billing_address) && $billing_address['phone']) ?  $billing_address['phone'] : input('val.billing_phone')?>" type="text" name="val[billing_phone]" placeholder="<?php _lang('store::phone')?>"/>
+                          </div>
+                          <!--<div class="form-group">
+                              <input  class="form-control form-control-lg"  id="b_country" value="<?php /*echo (isset($billing_address) && $billing_address['country']) ?  $billing_address['country'] :  get_user_data('country')*/?>" type="text" name="val[billing_country]" placeholder="<?php /*_lang('country')*/?>"/>
+                          </div>-->
+                          <div class="form-group">
+                          <select class="chosen-select form-control form-control-lg" id="b_country" name="val[billing_country]">
+                              <option value=""><?php _lang('select-country')?></option>
+                              <?php foreach(get_countries() as $country => $name):?>
+                                  <option <?php echo ((isset($billing_address) && ($billing_address['country']) == $name)) ? "selected" : null?> value="<?php echo $name?>"><?php echo ucwords($name)?></option>
+                              <?php endforeach?>
+                          </select>
+                              </div>
+                          <?php echo fire_hook("more.checkout.fields.b",$billing_address,array()); ?>
+                          <div class="form-group">
+                              <input  class="form-control form-control-lg"  id="b_a" value="<?php echo (isset($billing_address) && $billing_address['address']) ?  $billing_address['address'] : input('val.billing_address')?>" type="text" name="val[billing_address]" placeholder="<?php _lang('store::address')?>"/>
+                          </div>
+                      <div class="form-group">
+                          <div class="row" >
+                              <div class="col-md-6">
+                                  <input class="form-control form-control-lg"  id="b_z" value="<?php echo (isset($billing_address) && $billing_address['zip']) ?  $billing_address['zip'] : input('val.billing_zip')?>" type="text" name="val[billing_zip]" placeholder="<?php _lang('store::postal-zip-code')?>"/>
+                              </div>
+                              <div class="col-md-6">
+                                  <input class="form-control form-control-lg"  id="b_city" value="<?php echo (isset($billing_address) && $billing_address['city']) ?  $billing_address['city'] : get_user_data('city')?>" type="text" name="val[billing_city]" placeholder="<?php _lang('city')?>"/>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                              <p><?php echo lang('store::ship-to-same-address') ?><input style="margin-left: 10px" name="val[shipping]"  type="checkbox" id="toggleShipping"/></p>
+                              </div>
+
+                          </div>
+                      </div>
+                <div class="col-sm-6" id="shipping" >
+                    <div class="card " >
+                        <div class="card-header"><?php echo lang('store::shipping-address') ?></div>
+                        <div class="card-body">
+
+                            <div class="form-container">
+                                <div class="form-group">
+                                    <div class="row" >
+                                        <div class="col-md-6">
+                                            <input class="form-control form-control-lg"  id="s_fn" value="<?php echo (isset($shipping_address) && $shipping_address['first_name']) ?  $shipping_address['first_name'] :input('val.shipping_first_name')?>" type="text" name="val[shipping_first_name]" placeholder="<?php _lang('store::firstname')?>"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input class="form-control form-control-lg"  id="s_ln" value="<?php echo (isset($shipping_address) && $shipping_address['last_name']) ?  $shipping_address['last_name'] : input('val.shipping_last_name')?>" type="text" name="val[shipping_last_name]" placeholder="<?php _lang('store::last-name')?>"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" >
+                                    <input  class="form-control form-control-lg " id="s_company" value="<?php echo (isset($shipping_address) && $shipping_address['company']) ?  $shipping_address['company'] :  input('val.shipping_company')?>" type="text" name="val[shipping_company]" placeholder="<?php _lang('store::company-name')?>"/>
+                                </div>
+
+                                <div class="form-group">
+                                    <input  class="form-control form-control-lg" id="s_em" value="<?php echo (isset($shipping_address) && $shipping_address['email_address']) ?  $shipping_address['email_address'] : input('val.shipping_email_address')?>" type="text" name="val[shipping_email_address]" placeholder="<?php _lang('store::email-address')?>"/>
+                                </div>
+                                <div class="form-group">
+                                    <input  class="form-control form-control-lg" id="s_p" value="<?php echo (isset($shipping_address) && $shipping_address['phone']) ?  $shipping_address['phone'] : input('val.shipping_phone')?>" type="text" name="val[shipping_phone]" placeholder="<?php _lang('store::phone')?>"/>
+                                </div>
+                                <!--<div class="form-group">
+                                    <input  class="form-control form-control-lg" id="s_country" value="<?php /*echo (isset($shipping_address) && $shipping_address['country']) ?  $shipping_address['country'] : get_user_data('country');   */?>" type="text" name="val[shipping_country]" placeholder="<?php /*_lang('country')*/?>"/>
+                                </div>-->
+                                <div class="form-group">
+                                    <select class="chosen-select form-control form-control-lg" id="s_country" name="val[shipping_country]">
+                                        <option value=""><?php _lang('select-country')?></option>
+                                        <?php foreach(get_countries() as $country => $name):?>
+                                            <option <?php echo ( (isset($shipping_address) && ($shipping_address['country']) == $name)) ? "selected" : null?> value="<?php echo $name?>"><?php echo ucwords($name)?></option>
+                                        <?php endforeach?>
+                                    </select>
+                                </div>
+                                <?php echo fire_hook("more.checkout.fields.s",$shipping_address,array()); ?>
+                                <div class="form-group">
+                                    <input  class="form-control form-control-lg" id="s_a" value="<?php echo (isset($shipping_address) && $shipping_address['address']) ?  $shipping_address['address'] : input('val.shipping_address')?>" type="text" name="val[shipping_address]" placeholder="<?php _lang('store::address')?>"/>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="row" >
+                                        <div class="col-md-6">
+                                            <input class="form-control form-control-lg" id="s_z" value="<?php echo (isset($shipping_address) && $shipping_address['zip']) ?  $shipping_address['zip'] : input('val.shipping_zip')?>" type="text" name="val[shipping_zip]" placeholder="<?php _lang('store::postal-zip-code')?>"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input class="form-control form-control-lg" id="s_city" value="<?php echo (isset($shipping_address) && $shipping_address['city']) ?  $shipping_address['city']:  get_user_data('city')?>" type="text" name="val[shipping_city]" placeholder="<?php _lang('city')?>"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="val[pro]" value="<?php print_r($pq) ?>" />
+                            <input id="processing" value="<?php echo lang('store::processing') ?>" type="hidden"/>
+                            <button type="submit" id="submitOrder" class="btn-block btn btn-info btn-lg"><h5><?php echo lang('store::proceed') ?></h5></button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+
+
+            </div>
+        </div>
+        </form>
+    </div>
+</div>

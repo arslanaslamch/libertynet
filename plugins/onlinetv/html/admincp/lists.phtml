@@ -1,0 +1,63 @@
+<div class="wrapper">
+	<div class="wrapper-title">
+		Manage TV
+	</div>
+	<div class="wrapper-content">
+		<form action="" method="get" style="margin: 20px 0">
+			<?php CSRFProtection::embed() ?>
+			<input type="text" class="form-control" name="term" placeholder="<?php echo lang('search') ?>"/>
+
+			<button class="btn btn-sm btn-secondary" style="margin-top: 10px"><?php echo lang('search') ?></button>
+		</form>
+		<div class="list-table-container">
+			<div class="table-responsive">
+				<table class="table table-striped list-table">
+					<thead>
+					<tr>
+
+						<th>ID</th>
+						<th><?php echo lang('onlinetv::tv-name') ?></th>
+						<th><?php echo lang('onlinetv::By') ?></th>
+						<th><?php echo lang('onlinetv::views') ?></th>
+						<th><?php echo lang('onlinetv::featured') ?></th>
+						<th><?php echo lang('actions') ?></th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php foreach($onlinetvs->results() as $onlinetv): ?>
+						<?php $onlinetv = arrange_onlinetv($onlinetv); ?>
+						<tr class="item" id="<?php echo $onlinetv['id'] ?>">
+							<td><?php echo $onlinetv['id'] ?></td>
+							<td>
+								<a href="<?php echo url('onlinetv/'.$onlinetv['slug']) ?>"><?php echo lang($onlinetv['name']) ?></a>
+							</td>
+							<td>
+								<a ajax="true" href="<?php echo url($onlinetv['publisher']['id']) ?>"><?php echo $onlinetv['publisher']['name'] ?></a>
+							</td>
+							<td>
+								<?php echo $onlinetv['views'] ?>
+							</td>
+							<td>
+								<?php echo ($onlinetv['featured']) ? 'Yes' : 'No' ?>
+							</td>
+							<td>
+								<div class="">
+										<a class="btn btn-secondary" style="color:#fff"
+                                           href='<?php echo url('onlinetv/').$onlinetv['slug']; ?>'><i class="ion-eye"></i></a> |
+                                    <a class="btn btn-info" style="color:#fff"
+                                           href='<?php echo url_to_pager('admincp-onlinetv-manage').'?action=edit&id='.$onlinetv['id'] ?>'><i class="ion-edit"></i></a>
+										<a class="admin-confirm btn btn-danger"  style="color:#fff"
+                                           href="<?php echo url_to_pager('admincp-onlinetv-manage').'?action=delete&id='.$onlinetv['id'] ?>"><i class="ion-android-delete"></i></a>
+								</div>
+							</td>
+
+
+						</tr>
+					<?php endforeach ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<?php echo $onlinetvs->links() ?>
+	</div>
+</div>

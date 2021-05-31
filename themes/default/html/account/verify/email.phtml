@@ -1,0 +1,22 @@
+<div class="email-verify">
+    <?php if($status): ?>
+        <p class="message text-success"><?php echo $message ?></p>
+        <form method="post" action="<?php echo is_loggedIn() ? url_to_pager('account-verify-email') : '' ?>" class="email-verify-form wrapper-form <?php echo is_loggedIn() ? 'ajax-form' : '' ?>">
+            <?php CSRFProtection::embed() ?>
+            <div class="field">
+                <div class="top">
+                    <label class="control-label"><?php echo lang('enter-code') ?></label>
+                </div>
+                <div class="bottom">
+                    <input value="<?php echo input('val.code') ?>" type="text" name="val[code]" class="form-control" style="max-width: 200px" />
+                </div>
+            </div>
+            <div class="submit">
+                <button class="btn btn-lg btn-info action-button"><?php echo lang('verify') ?></button>
+            </div>
+        </form>
+    <?php else: ?>
+        <p class="message text-danger"><?php echo $message ?></p>
+    <?php endif ?>
+    <div><a href="" class="btn btn-lg btn-secondary resend-button disabled" data-timeout-original="<?php echo config('email-verification-resend-timeout', 60)?>" data-timeout="<?php echo config('email-verification-resend-timeout', 60)?>"><?php echo lang('resend-code') ?><span class="countdown"><?php echo config('email-verification-resend-timeout', 60)?></span></a></div>
+</div>

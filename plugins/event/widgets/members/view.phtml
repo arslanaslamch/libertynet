@@ -1,0 +1,28 @@
+<?php if(is_loggedIn() && isset($app->profileEvent)): ?>
+    <?php $users = getEventAudience($app->profileEvent['event_id'], 1, false, $limit) ?>
+        <div class="box event-audience">
+    <?php if ($users): ?>
+            <div class="title"><?php echo count($users) ?> <?php if (count($users) == 1){
+                    echo lang('event::member')." ".lang('event::is');
+                } else {
+                    echo lang('event::members')." ".lang('event::are');
+                } ?>
+                <?php echo lang('event::going-')?></div>
+            <div class="box-content event-audience">
+                <div class="users">
+                    <?php foreach ($users as $user): ?>
+                    <?php $user = find_user($user) ?>
+                        <a ajax="true" href="<?php echo profile_url('',$user) ?>" data-toggle="tooltip" title="" data-original-title="<?php echo get_user_name($user)?>">
+                            <img class="img" src="<?php echo get_avatar(75, $user)?>">
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+                <?php if ($app->profileEvent['user_id'] == get_userid()): ?>
+                    <div class="box-footer" style="text-align: center">
+                        <a ajax="true" href="<?php echo event_url('audience',$app->profileEvent)?>"><?php echo lang('event::all-audience')?></a>
+                    </div>
+                <?php endif; ?>
+            </div>
+    <?php endif; ?>
+        </div>
+<?php endif; ?>

@@ -1,0 +1,26 @@
+<?php
+/**
+ * @var array $livestream
+ */
+?>
+<tr class="item" id="<?php echo $livestream['id'] ?>">
+    <td>
+        <div class="list-table-select" data-group="users" data-id="<?php echo $livestream['id'] ?>"></div>
+    </td>
+    <td><?php echo $livestream['id'] ?></td>
+    <td><?php echo ucwords(lang($livestream['type'])) ?></td>
+    <td><?php echo $livestream['title'] ?></td>
+    <td><?php echo get_user_name($livestream['user_id']) ?></td>
+    <td><?php echo $livestream['featured'] ? lang('featured') : lang('not-featured') ?></td>
+    <td>
+        <div class="dropdown actions">
+            <a href="#" data-toggle="dropdown">
+                <i class="ion-android-settings"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a ajax="true" class="ion-edit" href="<?php echo url_to_pager('admin-livestream-edit').'?id='.$livestream['id'] ?>" data-toggle="modal" data-target="#livestream-modal" data-title="<?php echo lang('livestream::livestream-edit', array('title' => $livestream['title'])) ?>"></a>
+                <a ajax="true" class="ion-android-delete" href="<?php echo url_to_pager('admin-livestream-delete').'?id='.$livestream['id'] ?>" data-toggle="modal" data-target="#livestream-modal" data-title="<?php echo lang('livestream::livestream-delete', array('title' => $livestream['title'])) ?>"></a>
+            </div>
+        </div>
+    </td>
+</tr>

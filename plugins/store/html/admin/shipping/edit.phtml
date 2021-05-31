@@ -1,0 +1,63 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("store::modify-shipping-settings"); ?>
+    </div>
+    <div class="wrapper-content">
+        <?php if($message): ?>
+            <div class="alert alert-danger"><?php echo $message; ?></div>
+        <?php endif;?>
+        <form action="" method="post">
+            <fieldset class="form-group">
+                <div class="col-sm-4">
+                    <label> <?php echo lang("store::shipping-zone"); ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <input class="form-control" value="<?php echo ($shipping['zone']) ? $shipping['zone'] :  input('val.zone') ?>" name="val[zone]" type="text" />
+                </div>
+            </fieldset>
+
+
+            <fieldset class="form-group">
+                <div class="col-sm-4">
+                    <label> <?php echo lang("store::regions"); ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <?php load_functions('country'); ?>
+                    <select class="chosen-select form-control" data-placeholder="<?php echo lang("store::select-regions") ?>"   multiple name="val[regions][]">
+                        <option value=""></option>
+                        <?php $regions = unserialize($shipping['regions']); ?>
+                        <?php foreach(get_countries() as $country => $name):?>
+                            <option <?php echo (in_array($name,$regions)) ? "selected" : null?> value="<?php echo $name?>"><?php echo ucwords($name)?></option>
+                        <?php endforeach?>
+                    </select>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <div class="col-sm-4">
+                    <label> <?php echo lang("store::shipping-method"); ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <select name="val[shipping_method]" class="c-select" onchange=" return open_flat_rate_amount(this)">
+                        <option <?php echo ($shipping['shipping_method'] == 'free-shipping') ? 'selected' :  ''; ?>  value="free-shipping"><?php echo lang("store::free-shipping") ?></option>
+                        <option <?php echo ($shipping['shipping_method'] == 'flat-rate') ? 'selected' :  ''; ?> value="flat-rate"><?php echo lang("store::flat-rate") ?></option>
+                    </select>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-group" id="shipping_amount" style="display: <?php echo ($shipping['shipping_method'] == 'flat-rate') ? 'block' :  'none'; ?>">
+                <div class="col-sm-4">
+                    <label> <?php echo lang("store::amount"); ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <input class="form-control" placeholder="0" value="<?php echo ($shipping['amount']) ? $shipping['amount'] :  input('val.amount') ?>" name="val[amount]" type="number" />
+                </div>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <input type="hidden" value="update_shipping" name="val[save_type]" />
+                <button type="submit" class="btn btn-info btn-lg"><?php echo lang("store::save-shipping-settings") ?></button>
+            </fieldset>
+        </form>
+    </div>
+</div>

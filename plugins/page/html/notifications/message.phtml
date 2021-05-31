@@ -1,0 +1,38 @@
+<?php if ($notification['data']):?>
+<?php $cid = unserialize($notification['data'])?>
+<?php $slug = isset($page['page_url']) ? $page['page_url'] : $notification['type_id'] ?>
+<div id="notification-<?php echo $notification['notification_id'] ?>" class="notification media media-md  <?php echo ($notification['mark_read'] == 0) ? 'notification-unread' : null ?>">
+	<div class="media-left">
+		<div class="media-object">
+			<a ajax="true" href="<?php echo page_url('messages', $page) ?>"><img src="<?php echo get_page_logo(200, $page) ?>"/></a>
+		</div>
+	</div>
+	<div class="media-body">
+        <?php if (is_page_admin($page)): ?>
+        <a ajax="true" href="<?php echo page_url('messages', $page) ?>?cid=<?php echo $cid?>">
+            <h6 class="media-heading">
+                <?php $user = find_user($notification['from_userid']); echo get_user_name($user).' '.lang('page::messaged-you').' '.lang($page['page_title']) ?>
+            </h6>
+        </a>
+        <?php else: ?>
+            <a onclick="return Chat.open(null, '<?php echo get_userid() ?>', '<?php echo $page['page_title'] ?>', '<?php echo get_page_logo(200, $page) ?>', null, null, this, 'page', '<?php echo $page['page_id'] ?>')" href="<?php echo page_url('messages', $page) ?>">
+                <h6 class="media-heading">
+                    <?php echo lang($page['page_title']).' '.lang('page::messaged-you')?>
+                </h6>
+            </a>
+        <?php endif; ?>
+        <span class="timeago " title="<?php echo date('c', $notification['time']) ?>"><?php echo date('c', $notification['time']) ?></span>
+		<div class="actions">
+			<a
+					class="mark-button"
+					data-status="<?php echo $notification['mark_read'] ?>"
+					data-read="<?php echo lang('notification::read') ?>"
+					data-mark="<?php echo lang('notification::mark-as-read') ?>"
+					title="<?php echo ($notification['mark_read'] == 1) ? lang('notification::read') : lang('notification::mark-as-read') ?> "
+					onclick="return notification.markRead('<?php echo $notification['notification_id'] ?>')"
+					href="#!"><i class="ion-checkmark-circled"></i></a>
+			<a onclick="return notification.delete('<?php echo $notification['notification_id'] ?>')" href="#!"><i class="ion-close"></i></a>
+		</div>
+	</div>
+</div>
+<?php endif;?>

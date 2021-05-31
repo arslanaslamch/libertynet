@@ -1,0 +1,79 @@
+<div class="wrapper">
+	<div class="wrapper-title">
+		<?php echo lang('quiz::add-new-quiz') ?>
+
+	</div>
+	<div class="wrapper-content">
+
+		<form class="wrapper-form" action="" enctype="multipart/form-data" method="post">
+			<?php CSRFProtection::embed() ?>
+			<?php if($message): ?>
+				<div class="alert alert-danger"><?php echo $message ?></div>
+			<?php endif ?>
+            <input type="hidden" name="val[entity]" value="user-<?php echo get_userid() ?>" />
+			<fieldset class="form-group row">
+				<label class="control-label col-sm-4"><?php echo lang('blog::category') ?></label>
+				<select name="val[category]" class="c-select">
+                    <option <?php echo (input('category', 'all') == 'all') ? 'selected' : null ?> value="all"><?php echo lang('music::all-categories') ?></option>
+                    <?php foreach(get_quiz_categories() as $category): ?>
+                        <?php $subCategories = get_quiz_parent_categories($category['id']) ?>
+                        <?php if($subCategories): ?>
+                            <optgroup label="<?php echo lang($category['title']) ?>">
+                                <?php foreach($subCategories as $cat): ?>
+                                    <option <?php echo (input('category', 'all') == $cat['id']) ? 'selected' : null ?> value="<?php echo $cat['id'] ?>"><?php echo lang($cat['title']) ?></option>
+                                <?php endforeach ?>
+                            </optgroup>
+                        <?php else: ?>
+                            <option <?php echo (input('category', 'all') == $category['id']) ? 'selected' : null ?> value="<?php echo $category['id'] ?>"><?php echo lang($category['title']) ?></option>
+                        <?php endif ?>
+                    <?php endforeach ?>
+				</select>
+			</fieldset>
+            <input type="hidden" name="val[entity]" value="user-<?php echo get_userid() ?>">
+			<fieldset>
+				<label class="control-label"><?php echo lang('quiz::quiz-title') ?></label>
+				<input value="<?php echo input('val.title') ?>" type="text" class="form-control" name="val[title]"/>
+			</fieldset>
+
+
+			<fieldset>
+				<label class="control-label"><?php echo lang('quiz::quiz-desc') ?></label>
+				<textarea name="val[content]" class="ckeditor"><?php echo input('val.content', null, false) ?></textarea>
+			</fieldset>
+
+			<fieldset>
+				<label class="control-label"><?php echo lang('quiz::tags') ?></label>
+				<input type="text" name="val[tags]" class="form-control" placeholder="<?php echo input('val.tags') ?>">
+			</fieldset>
+			<fieldset>
+				<label class="control-label"><?php echo lang('quiz::pass-mark') ?></label>
+				<input type="text" name="val[pass_mark]" class="form-control" placeholder="<?php echo lang('quiz::pass-mark') ?>">
+			</fieldset>
+
+			<fieldset>
+				<label class="control-label"><?php echo lang('quiz::preview-image') ?></label>
+				<input type="file" name="image" class="form-control"/>
+			</fieldset>
+
+			<fieldset class="control-group">
+				<label class="control-label"><?php echo lang('status') ?></label>
+				<select class="form-control" name="val[status]">
+					<option value="0"><?php echo lang('quiz::draft') ?></option>
+				</select>
+			</fieldset>
+
+
+            <fieldset class="control-group">
+                <label class="control-label"><?php echo lang('privacy') ?></label>
+                <select class="form-control" name="val[privacy]">
+                    <option value="1"><?php echo lang('public') ?></option>
+                    <option value="2"><?php echo lang('relationship::friends-followers\'') ?></option>
+                    <option value="3"><?php echo lang('only-me') ?></option>
+                </select>
+            </fieldset>
+
+			<button class="btn btn-info" style="margin-top: 20px"><?php echo lang("quiz::add") ?></button>
+		</form>
+
+	</div>
+</div>

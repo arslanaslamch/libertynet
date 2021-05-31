@@ -1,0 +1,21 @@
+<?php
+$app = app();
+if(isset($app->Book)):
+$bod = $app->Book;
+$ed = Educational::getInstance();
+$books = $ed->getRelated($bod,$limit);
+ if ($books->total): ?>
+    <div class="box">
+        <div class="title">
+            <?php _lang('educational::related-books'); ?>
+        </div>
+        <div class="box-content">
+            <?php foreach ($books->results() as $book):
+                if($book['id'] == $bod['id']) continue;
+                $user = find_user($book['user_id'])?>
+                <?php echo view("educational::widget/gen",array('user'=>$user,'book'=>$book,'ed'=>$ed)); ?>
+            <?php endforeach ?>
+        </div>
+    </div>
+<?php endif ?>
+<?php endif ?>

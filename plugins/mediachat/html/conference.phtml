@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference call</title>
+    <link rel="stylesheet" href="<?php echo url('themes/default/css/ionicons.min.css') ?>">
+    <?php echo render_assets('css') ?>
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo (config('site-favicon')) ? url_img(config('site-favicon')) : img('images/favicon.ico') ?>" />
+    <link rel="stylesheet" href="<?php echo url('themes/default/css/style.css') ?>">
+    <link rel="stylesheet" href="<?php echo url('themes/default/css/bootstrap.min.css') ?>">
+    <style>
+        :root {
+            --rowHeight: 98vh;
+            --colWidth: 98vw;
+        }
+
+        body {
+            background: black;
+        }
+
+        .videos {
+
+            display: grid;
+            grid-gap: 5px;
+            grid-auto-flow: row;
+
+            grid-template-columns: repeat(auto-fit, minmax(var(--colWidth), 1fr));
+        }
+
+        .videoContainer {
+            position: relative;
+            overflow: hidden;
+
+            min-height: var(--rowHeight);
+            min-width: var(--colWidth);
+
+        }
+
+        .videoContainer video {
+
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: auto;
+            width: 100%;
+        }
+
+        .videoLabel {
+            color: white;
+            font: bold 18px Arial, Sans-Serif;
+            line-height: 18px;
+            height: 18px;
+
+            background: rgba(0, 0, 0, 0.55);
+
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            padding: 4px;
+        }
+
+        .conference-container {
+            position: relative;
+        }
+
+        .controls {
+            display: inline-flex;
+            justify-items: center;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+        }
+
+        #conference-end {
+            color: #eee !important;
+            background-color: red !important;
+            margin-bottom: 1rem !important;
+        }
+
+        #conference-end:hover {
+            background-color: darkred !important;
+            color: white !important;
+        }
+
+        #conference-controls-container.controls-container {
+            display: flex;
+            flex-direction: column;
+            justify-items: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .controls .control,
+        .control#conference-end {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px !important;
+            padding: 4px 16px;
+            width: 3rem;
+            height: 3rem;
+            font-size: 16px;
+            color: #CCCCCC;
+            margin: 0 1rem;
+            background-color: rgba(50, 50, 50, 0.5);
+        }
+
+        @media (min-width: 992px) {
+
+            .controls .control,
+            .control#conference-end {
+                font-size: 1.5rem;
+            }
+        }
+
+        .controls .control.active,
+        .controls .control:hover,
+        #conference-end.control.active,
+        .control#conference-end:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .control.ion-android-call#conference-end {
+            transform: rotate(135deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="conference-container">
+        <div id="videos" class="videos">
+            <div id="localVideoContainer" class="videoContainer">
+                <video id="localVideo" autoplay muted></video>
+            </div>
+
+            <!-- Remote videos get appended here -->
+
+        </div>
+        <div id="conference-controls-container" class="controls-container">
+            <button id="conference-end" class="control ion-android-call"></button>
+            <div id="conference-controls" class="controls">
+                <button id="conference-toggle-video" class="control ion-ios-videocam"></button>
+                <button id="conference-toggle-voice" class="control ion-android-microphone"></button>
+                <button id="conference-toggle-fullscreen" class="control ion-arrow-expand"></button>
+                <?php if ($is_caller) : ?>
+                    <button class="control ion-android-person-add" data-toggle="modal" data-target="#conference-modal"></button>
+                    <div id="conference-modal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg1">
+                            <div class="modal-content">
+                                <?php foreach (get_friends() as $friend) : ?>
+                                    <?php $friend = find_user($friend);
+                                    $stream_support = Mediachat::streamSupport($friend['id']);
+                                    if (user_is_online($friend) && $friend['id'] !== $user_id) : ?>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6 class="font-bold text-sm"><?= $friend['username']; ?></h6>
+                                            <button title="<?php echo $stream_support ? lang('mediachat::video-call') : lang('mediachat::user-unavailable-video-call'); ?>" data-user-id="<?= $friend['id']; ?>" class="text-lg icon ion-ios-videocam conference-init-button"></button>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+    <span id="roomDisplayName" data-room-name="<?= get_user_name(); ?>" data-room-id="<?= get_userid(); ?>"></span>
+    <audio id="update-sound"></audio>
+    <?php echo render_assets('js'); ?>
+    <script type="text/javascript">
+        conference.start({
+            userId: <?= $user_id; ?>,
+            isCaller: <?= $is_caller; ?>,
+            userAvatar: '<?= $user_avatar; ?>',
+            chatId: '<?= $chat_id; ?>',
+            otherUsers: '<?= json_encode($other_users); ?>'
+        });
+    </script>
+</body>
+
+</html>

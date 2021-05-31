@@ -1,0 +1,14 @@
+<?php
+$pid = input('pid',0);
+$store_id = 0;
+$product = getSingleProduct($pid);
+if($product){
+    $store_id = $product['store_id'];
+}
+?>
+
+<select class="form-control" name="val[store_id]">
+    <?php foreach(getMyStores()->results() as $c): ?>
+        <option <?php echo ($store_id == $c['s_id']) ? 'selected' : null; ?> value="<?php echo $c['s_id'] ?>"><?php echo $c['name']; ?></option>
+    <?php endforeach; ?>
+</select>

@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * @var int $id
+ * @var string $type
+ * @var int $is_caller
+ * @var string $session_description
+ * @var string $ice_servers
+ * @var string $ice_transport_policy
+ * @var string $user_name
+ * @var string $user_avatar
+ * @var int $status
+ * @var string $message
+ */  if (isMobile()) : ?>
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><?php else : ?>
+    <!DOCTYPE html><?php endif ?>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title><?php echo lang('mediachat::call') ?> - <?php echo $user_name ?></title>
+    <?php echo render_assets('css') ?>
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo (config('site-favicon')) ? url_img(config('site-favicon')) : img('images/favicon.ico') ?>" />
+    <link rel="stylesheet" href="<?php echo url('themes/default/css/style.css') ?>">
+    <link rel="stylesheet" href="<?php echo url('themes/default/css/bootstrap.min.css') ?>">
+    <?php if (app()->langDetails['dir'] == 'rtl' and !isMobile()) : ?>
+        <link rel="stylesheet" href="<?php echo url('themes/default/css/bootstrap-rtl.css') ?>">
+    <?php endif ?>
+    <link rel="stylesheet" href="<?php echo url('themes/default/css/ionicons.min.css') ?>">
+</head>
+
+<body data-type="<?php echo $type ?>">
+    <div id="mediachat-call-container" class="mediachat">
+        <div id="mediachat-centered-avatar">
+            <span></span>
+            <img src="<?= $user_avatar; ?>" alt="avatar">
+        </div>
+        <div id="mediachat-call" class="mediachat">
+            <div id="mediachat-remote" class="id">
+                <div id="mediachat-remote-media" class="media">
+                    <video id="mediachat-remote-video" playsinline></video>
+                    <audio id="mediachat-remote-audio"></audio>
+                    <div id="mediachat-remote-avatar" class="avatar">
+                        <div id="mediachat-remote-info-container" class="info-container">
+                            <span id="mediachat-remote-info" class="info"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="mediachat-local" class="id">
+                <div id="mediachat-local-media" class="media">
+                    <video id="mediachat-local-video" muted playsinline></video>
+                    <audio id="mediachat-local-audio" muted></audio>
+                </div>
+            </div>
+            <div id="mediachat-time-container" class="time-container">
+                <span id="mediachat-time" class="time"></span>
+            </div>
+            <div id="mediachat-controls-container" class="controls-container">
+                <button id="mediachat-end" class="control ion-android-call"></button>
+                <div id="mediachat-controls" class="controls">
+                    <button id="mediachat-toggle-video" class="control ion-ios-videocam"></button>
+                    <button id="mediachat-toggle-voice" class="control ion-android-microphone"></button>
+                    <button id="mediachat-toggle-fullscreen" class="control ion-arrow-expand"></button>
+                    <button class="control ion-android-person-add" data-toggle="modal" data-target="#conference-modal"></button>
+                    <div id="conference-modal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg1">
+                            <div class="modal-content">
+                                <?php if ($is_caller) : ?>
+                                    <?php foreach (get_friends() as $friend) : ?>
+                                        <?php $friend = find_user($friend);
+                                        if (user_is_online($friend)) : ?>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h6 class="font-bold text-sm"><?= $friend['username']; ?></h6>
+                                                <button data-conference-id="<?= $friend['id']; ?>" class="text-lg icon ion-ios-videocam"></button>
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="mediachat-log"></div>
+        </div>
+    </div>
+    <div id="site-wide-notification" class="success">
+        <span class="message"></span>
+        <a href="#" onclick="return closeNotify()" class="close">
+            <i class="ion-close"></i>
+        </a>
+    </div>
+    <?php echo render_assets('js') ?>
+    <script>
+        $(function() {
+            mediaChat.initCall({
+                id: <?php echo $id ?>,
+                session_description: <?php echo $session_description ?>,
+                ice_servers: <?php echo $ice_servers ?>,
+                ice_transport_policy: '<?php echo $ice_transport_policy ?>',
+                type: '<?php echo $type ?>',
+                is_caller: <?php echo $is_caller ?>,
+                user_name: '<?php echo $user_name ?>',
+                user_avatar: '<?php echo $user_avatar ?>',
+                status: <?php echo $status ?>,
+                message: '<?php echo $message ?>'
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+<?php $type = "business"; $typeId = null; ?>
+<div class="box business">
+    <div class="global-filter-container">
+        <div class="list-head">
+            <h3 class="heading"><?php echo isset($title) ? $title : lang('business::businesses') ?></h3>
+        </div>
+    </div>
+    <div id="businesses-list-container" class="box-content clearfix">
+        <?php foreach ($businesses->results() as $business): ?>
+            <?php $typeId = $business['id'] ?>
+            <?php $owner = find_user($business['user_id']); ?>
+            <?php $business_image = $business['company_logo'] ? url_img($business['company_logo'], 200) : img('business::images/no_image.jpg', 75) ?>
+            <?php $description = trim($business['description']) == '' ? '<em>'.lang('business::no-description').'</em>' : $business['description'] ?>
+            <?php $price = is_numeric($business['price']) ? config('currency', '$').$business['price'] : $business['price']; ?>
+            <?php $price = !trim($business['price']) ? lang('business::free') : $price; ?>
+            <div class="col-sm-4">
+                <div class="item green">
+                    <div class="head">
+                        <img class="image" src="<?php echo $business_image ?>" />
+                        <?php if ($business['featured']): ?>
+                            <div class="featured">
+                                <i class="ion-ios-star-outline"></i>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="body">
+                        <?php $rating = get_ratings($type, $typeId); ?>
+                        <div class="rating user-<?php echo $type ?>-<?php echo $typeId ?>">
+                            <i class="ion-ios-star star <?php echo $rating >= 1 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $typeId ?>')"></i>
+                            <i class="ion-ios-star star <?php echo $rating >= 2 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $typeId ?>')"></i>
+                            <i class="ion-ios-star star <?php echo $rating >= 3 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $typeId ?>')"></i>
+                            <i class="ion-ios-star star <?php echo $rating >= 4 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $typeId ?>')"></i>
+                            <i class="ion-ios-star star <?php echo $rating >= 5 ? 'filled' : '' ?>" onclick="return ratings(this,'<?php echo $type ?>', '<?php echo $typeId ?>')"></i>
+                        </div>
+                        <small class="category muted"><?php echo lang($business['category_title']) ?></small>
+                        <p class="description"><?php echo str_limit(sanitizeText($description, null, true), 90) ?></p>
+                    </div>
+                    <div class="overlay">
+                        <a href="#" class="btn btn-outline-info link" ajax="true"><?php echo lang('business::view') ?></a>
+                        <div class="foot">
+                            <div class="stat">
+                                <a target="_blank" href="#!" title="<?php echo lang('business::views') ?>"><i class="ion-eye"></i> <?php echo viewCounts($business['id']) ?>
+                                </a>
+                                <a target="_blank" href="#!" title="<?php echo lang('business::reviews') ?>"><i class="ion-android-create"></i> <?php echo reviewcounts($business['id']) ?>
+                                </a>
+                                <a target="_blank" href="#!" title="<?php echo lang('business::members') ?>"><i class="ion-android-people"></i> <?php echo rowscount('business_member', $business['id']) ?>
+                                </a>
+                            </div>
+                            <div class="tel">
+                                <i class="ion-android-call"></i>
+                                <?php echo $business['business_number'] ?>
+                            </div>
+                            <div class="checkbox compare" title="<?php echo lang('business::compare') ?>">
+                                <label>
+                                    <input type="checkbox" value="<?php echo $business['id'] ?>" name="compare[]" />
+                                    <span class="cr"><i class="cr-icon ion-checkmark-round"></i></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info">
+                        <div class="location"><?php echo $business['company_address'] ?></div>
+                        <div class="title"><?php echo $business['business_name'] ?></div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach ?>
+    </div>
+    <div class="box-content">
+        <?php if ($businesses->total): ?>
+            <?php if ($businesses->total > config('business-list-limit', 20)): ?>
+                <?php echo $businesses->links(true) ?>
+            <?php endif ?>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang('business::no-business-found') ?></div>
+        <?php endif ?>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="error-modal" aria-hidden="true" aria-labelledby="contact">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="modal-title"> Error</h4>
+            </div>
+            <div class="modal-body">
+                <span id="error-body"></span>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

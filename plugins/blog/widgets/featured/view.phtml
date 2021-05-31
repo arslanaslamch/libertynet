@@ -1,0 +1,25 @@
+<?php $blogs = get_blogs(null, null, null, null, $limit, 'featured'); ?>
+<?php if($blogs->total): ?>
+    <div class="box media-widget">
+        <div class="title">
+            <?php echo lang('blog::featured-blogs') ?>
+            <a ajax="true" href="<?php echo url('blogs') ?>"><i class="ion-ios-arrow-forward pull-right"></i></a>
+        </div>
+        <div class="box-content">
+            <?php foreach($blogs->results() as $blog): $blog = arrange_blog($blog); $user = find_user($blog['user_id']) ?>
+                <div class="item">
+                    <div class="left">
+                        <a ajax="true" href="<?php echo url_to_pager('blog-page', array('slugs' => $blog['slug'])) ?>">
+                            <div class="thumb" style="background: url(<?php echo $blog['image'] ? url_img($blog['image'], 700) : get_avatar(200, $user) ?>) center; background-size: cover;"></div>
+                        </a>
+                    </div>
+                    <div class="right">
+                        <a ajax="true" href="<?php echo url_to_pager('blog-page', array('slugs' => $blog['slug'])) ?>" class="media-heading title"><?php echo $blog['title'] ?></a>
+                        <a ajax="true" href="<?php echo url($blog['publisher']['id']) ?>" class="user"><?php echo $blog['publisher']['name'] ?></a>
+                        <div class="info"><?php echo $blog['views'] ?> <?php echo lang('blog::views') ?></div>
+                    </div>
+                </div>
+            <?php endforeach ?>
+        </div>
+    </div>
+<?php endif ?>

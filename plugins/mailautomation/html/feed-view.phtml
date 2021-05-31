@@ -1,0 +1,134 @@
+
+<div style="padding:0px; width:400px;font-family :font-family: Helvetica,Arial,sans-serif;font-size:16px;">
+    <?php $furl =  url_to_pager("view-post", array("id"=>$feed['feed_id'])); ?>
+        <div id="feed-wrapper-<?php echo $feed['feed_id'] ?>" class="feed-wrapper clearfix" style="width: 400px; display: block;
+    clear: both;
+    content: '';">
+            <div style="width : 100%" class="right no-padding">
+                <div class="box" style="background: #FFFFFF;
+    text-align: left;
+    margin-bottom: 15px;
+    border: solid 1px rgba(0, 0, 0, 0.13);
+    border-radius: 5px;
+    margin-top: 15px;">
+                    <div class="feed-header clearfix" style="padding: 10px;
+    position: relative;
+    margin: 0;display: block;
+    clear: both;
+    content: '';">
+                        <div class="left" style="float: left;margin-right: 10px;">
+                            <a style="width: 70px; height: 70px;margin-top: 10px;overflow: hidden;display: block;border: solid 3px #CFCFCF;float: left;border-radius: 5px !important;
+    margin-right: 20px;" ajax="true" href="<?php echo $furl; ?>" class="avatar">
+                                <img style="width: 100%;min-height: 100%;"
+                                        src="<?php echo $feed['publisher']['avatar'] ?>"/>
+                            </a>
+                        </div>
+                        <div class="right" style="position: relative">
+                            <div class="feed-title" style="width: 97%">
+			                   <span class="preview-card" data-type="<?php echo $feed['entity_type'] ?>"
+                                     data-id="<?php echo $feed['entity_id'] ?>">
+			                        <a style="text-decoration: none;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: bold;
+    color: #292f33;
+    padding: 0px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;" ajax="true" href="<?php echo $furl; ?>" class="">
+			                             <?php echo $feed['publisher']['name'] ?>
+                                         <?php echo verify_badge($feed['publisher']) ?>
+			                       </a>
+			                   </span>
+                            </div>
+                            <?php if ($feed['location']): ?>
+                                - <i class="ion-ios-location"></i>
+                                <span style="color:grey;font-size:12px"><?php echo $feed['location'] ?></span>
+                            <?php endif ?>
+                        </div>
+                    </div>
+
+
+                    <?php echo view('mailautomation::feed-content', array('feed' => $feed)) ?>
+
+
+
+
+                    <div class="feed-footer" style="margin-top: 10px;  position: relative;">
+                        <div class="">
+                            <ul class=" feed-footer-menu clearfix" style="padding: 0px 10px;
+    padding-bottom: 0;
+    display: block;display: block;
+    clear: both;
+    content: '';">
+                                <li class="" style="margin: 0;margin: 5px;
+    color: grey;
+    vertical-align: middle;
+    display: inline-block;">
+                                    <ul class="feed-statistics" style="display: block;
+    margin: 0;
+    padding: 0;
+    width: 100%;">
+                                        <?php if (plugin_loaded('like') and config('feed-like-type', 'regular') == 'regular'): ?>
+                                            <li style="margin: 5px;
+    color: grey;
+    vertical-align: middle;
+    display: inline-block;position: relative;
+    top: 5px;
+    vertical-align: top;">
+                                                <a
+                                                   href="<?php echo $furl; ?>">
+                                                    <i style="font-size: 20px;
+    position: relative;font-size: 15px;
+    text-align: right;
+    top: 2px;" class="fa fa-thumbs-o-up font-awesome-ismall"></i>
+                                                    <span class="like-count-feed-<?php echo $feed['feed_id'] ?>"></span>
+                                                </a>
+                                            </li>
+                                            <?php if (config('enable-dislike', false)): ?>
+                                                <li style="margin: 5px;
+    color: grey;
+    vertical-align: middle;
+    display: inline-block;position: relative;
+    top: 5px;
+    vertical-align: top;">
+                                                    <a
+                                                       href="<?php echo $furl; ?>">
+                                                        <i style="font-size: 20px;
+    position: relative;font-size: 15px;
+    text-align: right;
+    top: 2px;" class="fa fa-thumbs-o-down font-awesome-ismall"></i>
+                                                        <span class="dislike-count-feed-<?php echo $feed['feed_id'] ?>"></span>
+                                                    </a>
+                                                </li>
+                                            <?php endif ?>
+                                        <?php endif ?>
+                                        <?php if (plugin_loaded('comment')): ?>
+                                            <?php load_functions('comment::comment') ?>
+                                            <?php $countComments = count_comments('feed', $feed['feed_id']); ?>
+                                            <li style="margin: 5px;
+    color: grey;
+    vertical-align: middle;
+    display: inline-block;position: relative;
+    top: 5px;
+    vertical-align: top;">
+                                                <i style="font-size: 20px;
+    position: relative;
+    top: 2px;font-size: 15px;
+    text-align: right;" class="font-awesome-ismall fa fa-comments-o"></i>
+                                                <span class="comment-count-feed-<?php echo $feed['feed_id'] ?>"></span>
+                                            </li>
+                                        <?php endif ?>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+

@@ -1,0 +1,27 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php _lang('affliate::terms-condition'); ?>
+
+    </div>
+    <div class="wrapper-content">
+        <form class="wrapper-form" action="" enctype="multipart/form-data" method="post">
+            <fieldset class="form-group">
+                <label class="control-label"><b><?php _lang('affliate::terms-condition'); ?></b></label>
+                <br/>
+                <textarea name="val[content]" class="ckeditor"><?php echo $tc['content']; ?></textarea>
+            </fieldset>
+            <fieldset class="form-group">
+                <label class="control-label"><b><?php _lang('affliate::code-banner'); ?></b></label>
+                <br/>
+                <input class="form-group" type="file" name="banner" />
+            </fieldset>
+            <input type="hidden" name="val[banner]" value="<?php echo $image; ?>" />
+
+            <div class="container row">
+                <img src="<?php echo $image ?>" class="img img-responsive" />
+            </div>
+            <br/>
+            <button class="btn btn-primary" type="submit"><?php _lang("save"); ?></button>
+        </form>
+    </div>
+</div>

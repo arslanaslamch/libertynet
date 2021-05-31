@@ -1,0 +1,32 @@
+<div class="box birthday-home">
+    <div class="global-filter-container" data-url="<?php echo url('birthdays') ?>">
+        <?php if(config('enable-birthday-search',false)): ?>
+        <form id="blog-list-search" method="post" onsubmit="return run_global_filter()" action=""
+              class="form-inline list-search">
+            <?php CSRFProtection::embed() ?>
+            <input type="hidden" class="filter-input form-control" data-name="type"
+                   value="<?php echo input('type', 'browse') ?>"/>
+            <i class="search-icon ion-ios-search"></i>
+            <input value="<?php echo input('term') ?>" type="text" class="form-control search-box filter-input"
+                   data-name="term" placeholder="<?php echo lang('birthday::search-users') ?>"/>
+        </form>
+        <?php endif; ?>
+
+        <?php echo view("birthday::today-celebrant"); ?>
+
+        <div class="list-head">
+            <h3 class="heading"><?php echo $title ?></h3>
+        </div>
+    </div>
+    <div id="blogs-list-container" class="box-content clearfix list-listing-container">
+        <?php $img = img("birthday::image/bb.jpg"); ?>
+        <?php if ($users->total): ?>
+            <?php foreach ($users->results() as $user): ?>
+                <?php echo view("birthday::user-row",array('user'=>$user)) ?>
+            <?php endforeach ?>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang("birthday::no-celebrants-this-month"); ?></div>
+        <?php endif; ?>
+    </div>
+
+</div>

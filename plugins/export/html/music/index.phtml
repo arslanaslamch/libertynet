@@ -1,0 +1,14 @@
+<div class="box music">
+    <?php $list_type = 'list' ?>
+	<div id="musics-list-container" class="box-content clearfix <?php echo ($list_type == 'list') ? 'list-listing-container' : 'grid-listing-container' ?>">
+		<?php foreach($musics->results() as $music): ?>
+			<?php echo view('export::music/music', array('music' => $music, 'playlist' => $playlist)) ?>
+		<?php endforeach ?>
+	</div>
+	<div class="box-content">
+		<?php if($musics->total): ?>
+		<?php else: ?>
+			<div class="alert alert-info"><?php echo lang('music::no-music-found-here') ?></div>
+		<?php endif ?>
+	</div>
+</div>

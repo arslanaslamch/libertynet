@@ -1,0 +1,43 @@
+<div class="box">
+    <div class="box-content">
+        <div class="container">
+            <div id="books-list-container" class="box-content clearfix grid-listing-container">
+                <?php foreach($books->results() as $book):$user = find_user($book['user_id'])?>
+                    <div class="each-item clearfix">
+                        <div class="left">
+                            <a ajax="true" href="<?php echo url_to_pager('single-book',array('id'=>$book['id'],'slug'=>$book['slug']));?>" style="background-image:url(<?php echo ($book['image']) ? url_img($book['image'], 700) : get_avatar(200, $user)?>)"></a>
+                        </div>
+
+                        <div class="right">
+                            <span class="item-title"><a ajax="true" href="<?php echo url_to_pager('single-book',array('id'=>$book['id'],'slug'=>$book['slug']));?>"><?php echo $book['title']?></a> </span>
+                            <div style="pointer-events:none">
+
+                                <?php echo view("educational::rating",array('book'=>$book)); ?>
+                            </div>
+                            <div class="item-info">
+
+                            </div>
+                            <p class="item-desc">
+                                <?php echo strip_tags(str_limit($book['description'], 100))?>
+                                <br/>
+                                <br/>
+                        <span class="help-block" style="display: block">
+                                    <?php _lang('educational::posted-by')?> : <a href="<?php echo profile_url(null, $user)?>"><?php echo get_user_name($user)?></a>
+                            <?php _lang('educational::on')?> <?php echo date('M j , Y', $book['time'])?>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                <?php endforeach?>
+            </div>
+            <div class="box-content">
+                <?php if($books->total):?>
+                    <?php echo $books->append(array('category' => input('category'), 'type' => input('type', 'all'),'filter' => input('filter', 'all'), 'term' => input('term')))->links()?>
+                <?php else:?>
+                    <div class="alert alert-info"><?php _lang('educational::book-list-empty')?></div>
+                <?php endif?>
+            </div>
+        </div>
+    </div>
+</div>

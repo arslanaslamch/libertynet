@@ -1,0 +1,50 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("store::coupons") ?>
+    </div>
+    <div class="wrapper-content">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th><?php echo lang('store::store-owner') ?></th>
+                <th><?php echo lang('store::store-name')?></th>
+                <th><?php echo lang("store::coupon-code"); ?></th>
+                <th><?php echo lang("store::coupon-type"); ?></th>
+                <th><?php echo lang("store::coupon-value"); ?></th>
+                <th><?php echo lang("store::expired"); ?></th>
+                <th><?php echo lang("store::status"); ?></th>
+                <th><?php echo lang("store::no-of-products") ?></th>
+                <th><?php echo lang("store::action"); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+                <?php if($coupons): ?>
+                <?php foreach($coupons as $c):
+                        $user = find_user($c['user_id']);
+                        $store= lpGetStoreById($c['store_id']);
+                        ?>
+                <tr>
+                    <td><a href="<?php echo profile_url(null,$user) ?>"><?php echo get_user_name($user); ?></a> </td>
+                    <td><a href="<?php echo url_to_pager('store-profile',array('slug'=>$store['slug'])) ?>"><?php echo $store['name']; ?></a> </td>
+
+                    <td><?php echo $c['code']; ?></td>
+                    <td><?php echo ($c['coupon_type'] == 'percent_off') ? lang("store::percent-off") : lang("store::price-off"); ?></td>
+                    <td><?php echo $c['coupon_value']; ?></td>
+
+                    <td><?php echo get_coupon_expired_status($c); ?></td>
+                    <td><?php echo get_coupon_active_status($c) ?></td>
+                    <td><?php echo count(unserialize($c['products']));?></td>
+                    <td>
+                        <a ajax="true" class="btn btn-secondary" href="<?php echo url_to_pager('admin-coupon-manage').'?id='.$c['id'].'&action=edit';; ?>" ><?php echo lang("edit") ?></a>
+                        <a ajax="true" class="btn btn-danger" href="<?php echo url_to_pager('admin-coupon-manage').'?id='.$c['id'].'&action=edit';; ?>"><?php echo lang('delete'); ?></a>
+                    </td>
+
+                </tr>
+                 <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><div class="alert alert-info"><?php echo lang("store::no-coupons-code-found") ?></div></tr>
+                <?php endif ?>
+            </tbody>
+        </table>
+    </div>
+</div>

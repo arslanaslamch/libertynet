@@ -1,0 +1,10 @@
+<div class="feed-video-player-container">
+    <div class="feed-video-embed-container internal-video" id="feed-video-embed-container-<?php echo $feed['feed_id']; ?>">
+        <iframe class="media" allowfullscreen src="<?php echo url_to_pager('play-video').'?link='.url($livestream['path']) ?>"></iframe>
+    </div>
+    <div class="video-title">
+        <?php Livestream::viewed($livestream['id']); ?>
+        <a ajax="true" href="<?php echo url_to_pager('livestream', array('slug' => $livestream['slug'])) ?>"><?php echo $livestream['title'] ?></a>
+        <span class="views"> <i class="ion-ios-eye"></i> <?php echo $livestream['views'] ?>  <?php echo lang('livestream::views') ?></span>
+    </div>
+</div>

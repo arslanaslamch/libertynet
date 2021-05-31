@@ -1,0 +1,238 @@
+<div class="box">
+    <div class="box-content">
+        <?php echo view("store::stages",array('type'=>'payment')); ?>
+    </div>
+</div>
+<div class="row">
+<div class="col-sm-10 mx-auto">
+<div class="">
+<div class="">
+<div class="col-sm-12 nop">
+
+<div class="card">
+<div class="card-header" style="text-align:center"><?php echo lang('store::your-order') ?></div>
+<div class="card-body">
+
+    <div class="product-billing-container">
+        <table class="table">
+            <thead>
+            <tr style="color:#fff;background-color:<?php echo config('header-bg-color','#3498db')?>!important;">
+                <th style="width: 60%"><?php echo ucwords(lang("store::product")); ?></th>
+                <th style="width: 20%"><?php echo ucwords(lang("store::price")); ?></th>
+                <th style="width: 20%"><?php echo ucwords(lang("store::total")); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            $products_arr = array();
+            ?>
+            <?php $products_quantity = $pq;?>
+            <?php foreach($products_quantity as $p=>$q):
+                $product = getSingleProduct($p);
+                $product_store_id = $product['store_id'];
+                //we are send the whole product now
+                $products_arr[] = $product;
+                $actual_price = getProductPrice($product,'yes');
+                $t[] = ($actual_price * $q);
+                ?>
+                <tr>
+                    <td><?php echo $product['name'] ?></td>
+                    <td><?php echo config('currency-sign','$').number_format((float)$actual_price,'2','.',',')." x ".$q  ?></td>
+                    <td><?php echo config('currency-sign','$').number_format((float)($actual_price * $q),'2','.',','); ?></td>
+                </tr>
+            <?php endforeach; ?>
+            <tr>
+                <td></td>
+                <td><i><?php echo lang("store::sub-total") ?></i></td>
+                <td><?php echo formatPriceNumber(array_sum($t)); ?></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><i><?php echo lang("store::shipping-cost") ?></i></td>
+                <td><?php
+                    $shipping_price = getShippingCostFromThisStores($products_arr);
+                    $checkmeout = false;
+                    if(!is_string($shipping_price)){
+                        //it could be an array or just a number_format
+                        if(is_array($shipping_price)){
+                            $err_info = $shipping_price['html'];
+                        }else{
+                            //it is only the shipping price, carry go
+                            $t[] = $shipping_price;
+                            echo formatPriceNumber($shipping_price);
+                            $checkmeout = true;
+                        }
+                    }else{
+                        $err_info =  $shipping_price;
+                        $checkmeout = true;
+
+                    }
+                    ?></td>
+            </tr>
+            <?php if(!$checkmeout): ?>
+                <tr>
+                    <td></td>
+                    <td colspan="2">
+                        <?php echo $err_info; ?>
+                    </td>
+                </tr>
+            <?php endif; ?>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td><strong>
+                        <?php echo ucwords(lang('store::total')) ?>
+                    </strong> </td>
+                <td>
+                    <span style="font-size: 18px"><b><?php echo config('currency-sign','$').number_format((float)array_sum($t),'2','.',',');  ?></b></span>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<?php if($checkmeout): ?>
+    <div class="select-payment-option">
+        <?php if(config('allow-pay-store-on-delivery',1)): ?>
+            <div class="form-group" style="display: block">
+                <label class="c-input c-radio">
+                    <input onchange="return showPaymentMethod('ondelivery')" class="paymentMethod" id="radioStacked1" checked name="val[type]" value="onD" type="radio">
+                    <span class="c-indicator"></span>
+                </label>
+                <span><?php echo lang("store::pay-on-delivery"); ?></span>
+            </div>
+        <?php endif; ?>
+        <div class="form-group" style="display: <?php echo (config('allow-pay-store-on-delivery',1)) ? 'block' : 'none'; ?>" >
+            <label class="c-input c-radio">
+                <input onchange="return showPaymentMethod('now')" class="paymentMethod" id="radioStacked1" name="val[type]" value="now" type="radio">
+                <span class="c-indicator"></span>
+            </label>
+            <span><?php echo lang("store::pay-now") ?></span>
+        </div>
+
+    </div>
+
+    <div class="payment-method" style="display: <?php echo (!config('allow-pay-store-on-delivery',1)) ? 'block' : 'none'; ?>">
+        <h6><?php _lang('ads::select-payment-method')?></h6>
+
+        <ul class="nav store-payment-method">
+
+
+            <?php if(config('enable-paypal', false) || !config('enable-emoney-payment-on-ecommerce',false)):?>
+                <li>
+                    <a class="media" href="<?php echo url_to_pager('orders-checkout-payment') ?>?action=paypal<?php echo (config('enable-paypal-sandbox', true)) ? '&sandbox=1' : '&sandbox=0'?>">
+                        <img src="<?php echo img('images/paypal-button.png')?>"/>
+                    </a>
+                </li>
+            <?php endif?>
+
+            <?php if(config('enable-stripe', false) || !config('enable-emoney-payment-on-ecommerce',true)):?>
+
+                <li>
+                    <form action="<?php echo url_to_pager('orders-payment-stripe'); ?>" method="POST">
+                        <?php CSRFProtection::embed()?>
+                        <script
+                            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                            data-key="<?php echo config('stripe-publishable-key'); ?>"
+                            data-name="<?php echo config('site-name')?>"
+                            data-description="<?php echo html_entity_decode(lang($product['description']));?>"
+                            data-currency="<?php echo config('default-currency')?>"
+                            data-amount="<?php echo (int) array_sum($t) * 100?>">
+                        </script>
+                    </form>
+                </li>
+
+            <?php endif?>
+            <?php if(plugin_exists('emoney') && plugin_loaded('emoney')): ?>
+            <?php  fire_hook("store.emoney.payment",array_sum($t),array()); ?>
+            <?php endif; ?>
+            <?php if(config('enable-two-checkout',false) || !config('enable-emoney-payment-on-ecommerce',true)): ?>
+
+                <li>
+                    <form id="TwocheckoutForm" action="https://www.2checkout.com/checkout/purchase" method="post">
+                        <!-- <input name="sid" type="hidden" value="1303908">-->
+                        <input name="sid" type="hidden" value="<?php echo config('Two-checkout-seller-ID'); ?>">
+                        <input name="mode" type="hidden" value="2CO">
+                        <input name="return_url" type="hidden" value="<?php echo url_to_pager("orders-payment-2checkout")  ?>">
+                        <?php $products_quantity = $pq;
+                        $i=0;?>
+                        <?php foreach($products_quantity as $p=>$q):
+                            $product = getSingleProduct($p);
+                            $actual_price = getProductPrice($product);
+                            $t[] = ($actual_price * $q);
+                            ?>
+                            <input name="li_<?php echo $i; ?>_name" type="hidden" value="<?php echo $product['name'];?>">
+                            <input name="li_<?php echo $i; ?>_quantity" type="hidden" value="<?php echo $q;?>">
+                            <input name="li_<?php echo $i; ?>_price" type="hidden" value="<?php echo ($actual_price); ?>">
+                            <input name="li_<?php echo $i; ?>_description" type="hidden" value="<?php echo html_entity_decode($product['description']) ?>">
+                            <?php $i++; endforeach; ?>
+                        <!--Shipping price -->
+                        <?php if(!is_string($shipping_price)): ?>
+
+                            <input name="li_<?php echo $i+1; ?>_name" type="hidden" value="<?php echo lang("store::shipping-cost") ;?>">
+                            <input name="li_<?php echo $i+1; ?>_price" type="hidden" value="<?php echo ($shipping_price); ?>">
+                        <?php  endif; ?>
+                        <?php
+                        $bid = session_get('bid'.get_userid());
+                        $sid = session_get('sid'.get_userid());
+
+                        // echo $sid."yes"; die();
+                        $billing_details = getBillingOrShippingDetails('lp_billing_details',$bid);
+                        $shipping_details = getBillingOrShippingDetails('lp_shipping_details',$sid);
+                        //print_r($shipping_details); die();
+                        ?>
+                        <input name="card_holder_name" type="hidden" value="<?php echo $billing_details['first_name'].' '.$billing_details['last_name'] ?>">
+                        <input name="street_address" type="hidden" value="<?php echo $billing_details['address'] ?>">
+                        <input name="city" type="hidden" value="<?php echo $billing_details['city'] ?>">
+                        <input name="state" type="hidden" value="<?php echo get_user_data('state'); ?>">
+                        <input name="zip" type="hidden" value="<?php echo $billing_details['zip'] ?>">
+                        <input name="country" type="hidden" value="<?php echo $billing_details['country'] ?>">
+                        <input name="email" type="hidden" value="<?php echo $billing_details['email_address'] ?>">
+                        <input name="phone" type="hidden" value="<?php echo $billing_details['phone'] ?>">
+                        <input name="ship_name" type="hidden" value="<?php echo $shipping_details['first_name'].' '.$shipping_details['last_name'] ?>">
+                        <input name="ship_street_address" type="hidden" value="<?php echo $shipping_details['address'] ?>">
+                        <!--<input name="ship_street_address2" type="hidden" value="Apartment 123">-->
+                        <input name="ship_city" type="hidden" value="<?php echo $shipping_details['city'] ?>">
+                        <input name="ship_state" type="hidden" value="<?php echo get_user_data('state');?>">
+                        <input name="ship_zip" type="hidden" value="<?php echo $shipping_details['zip'] ?>">
+                        <input name="ship_country" type="hidden" value="<?php echo $shipping_details['country'] ?>">
+                        <input name="paypal_direct" type="hidden" value="Y">
+                        <!--<input name="demo" type="hidden" value="Y"> --><!--Will remove later -->
+                        <input name="merchant_order_id" type="hidden" class="oid" value=""/> <!--will drop it soon -->
+                        <input name="to_id" type="hidden" class="oid" value=""/> <!--will drop it soon -->
+                        <input name="currency_code" type="hidden" value="<?php echo config('default-currency'); ?>" />
+                        <input name="x_receipt_link_url" type="hidden" value="<?php echo url_to_pager("orders-payment-2checkout"); ?>" />
+                        <button id="TwoCheckoutBtn" type="submit" style="border: none;background: #fff">
+                            <img src="<?php echo img('store::images/2checkoutlogo.png')?>"/>
+                        </button>
+
+                    </form>
+
+
+                </li>
+
+            <?php endif; ?>
+            <?php // endif; ?>
+
+            <?php //fire_hook('payment.buttons.extend', null, array('store-order', time(), config('site-name'), html_entity_decode(lang($product['description'])), array_sum($t), url_to_pager('orders-checkout-payment').'?action=razor&type=success&csrf_token='.CSRFProtection::getToken(), url_to_pager('orders-checkout-payment').'?action=razor&type=cancel')) ?>
+            <?php fire_hook('payment.buttons.extend.authorize', null, array('store', 0, 'Product Name', 'description', $t, 'success-url','cancel-url', 'coupon')) ?>
+        </ul><br/><br/>
+    </div>
+    <input type="hidden" name="val[pro]" value="<?php print_r($pq) ?>" />
+    <input id="processing" value="<?php echo lang('store::processing') ?>" type="hidden"/>
+    <?php if(config('allow-pay-store-on-delivery',1)): ?>
+        <button style="display: <?php echo (config('allow-pay-store-on-delivery',1)) ? 'block' : 'none'; ?>" type="submit" id="submitOrder" class="btn-block btn btn-info btn-lg">
+            <h5><?php echo lang('store::checkout') ?></h5>
+        </button>
+    <?php endif;  ?>
+    <?php echo view("store::orders/Twocheckout/modal"); ?>
+<?php endif; ?>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+

@@ -1,0 +1,176 @@
+<?php $user = get_user();
+$user_required_fields = user_required_fields() ?>
+<div id="get-started-title"><?php echo lang('getstarted::getting-started') ?></div>
+<div id="get-started-container" class="box">
+    <form id="get-started-form" enctype="multipart/form-data" action="" method="post" class="ajax-form clearfix">
+        <h3 class="title">
+            <?php echo lang('info') ?>
+        </h3>
+        <section class="getstarted-content info">
+            <?php if ($message) : ?>
+                <div class="alert alert-danger"><?php echo $message ?></div>
+            <?php endif ?>
+            <?php CSRFProtection::embed() ?>
+            <p class="help-block"><?php echo lang('add-picture-note') ?></p>
+            <div id="getstarted-image-input" class="avatar-preview-box" style="background-image: url(<?php echo get_avatar(200) ?>)">
+                <input id="user-avatar-input" type="hidden" name="avatar" <?php echo in_array('avatar', $user_required_fields, true) && !$user['avatar'] ? 'required' : '' ?> class="data-url-to-binary" />
+            </div>
+            <div class="form-group">
+                <button id="hide-upload-button" type="button" class="btn btn-secondary-outline btn-sm" onclick="return file_chooser('#getstarted-image-input .awesome-cropper .dropbox')"><?php echo lang('choose-photo') ?></button>
+            </div>
+            <?php if (!filter_var($user['email_address'], FILTER_VALIDATE_EMAIL) && !$user['phone_no']) : ?>
+                <div class="field">
+                    <div class="top">
+                        <label class="control-label"><?php echo lang('email-address') ?>:</label>
+                    </div>
+                    <div class="bottom">
+                        <input class="form-control" type="text" name="val[email_address]" value="" required />
+                        <span class="help-block"><?php echo lang('getstarted::please-enter-email') ?></span>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <?php if (config('enable-gender', true)) : ?>
+                <div class="field">
+                    <div class="top">
+                        <label class="control-label"><?php echo lang('gender') ?></label>
+                    </div>
+                    <div class="bottom">
+                        <?php $value = get_user_data('gender');
+                        $genders = get_genders(); ?>
+                        <?php foreach ($genders as $gender) : ?>
+                            <label class="c-input c-radio">
+                                <input <?php echo $value === $gender ? 'checked' : '' ?> id="radio1" value="<?php echo $gender ?>" name="val[gender]" type="radio" <?php echo in_array('gender', $user_required_fields, true) ? 'required' : '' ?> />
+                                <span class="c-indicator"></span>
+                                <?php echo lang($gender) ?>
+                            </label>
+                        <?php endforeach; ?>
+                        <?php if (!in_array('gender', $user_required_fields, true)) : ?>
+                            <label class="c-input c-radio">
+                                <input <?php echo !$value ? 'checked' : '' ?> id="radio1" value="" name="val[gender]" type="radio" <?php echo in_array('gender', $user_required_fields, true) ? 'required' : '' ?> />
+                                <span class="c-indicator"></span>
+                                <?php echo lang('prefer-not-to-say') ?>
+                            </label>
+                        <?php endif; ?>
+                        <?php fire_hook('account.gender') ?>
+                    </div>
+                </div>
+            <?php else : ?>
+                <?php fire_hook('enable.gender.exception'); ?>
+            <?php endif; ?>
+            <?php echo view('birthdate/form', array('day' => get_user_data('birth_day'), 'month' => get_user_data('birth_month'), 'year' => get_user_data('birth_year'), 'type' => 0)) ?>
+        </section>
+        <h3 class="title">
+            <?php echo lang('additional-info') ?>
+        </h3>
+        <section class="getstarted-content additional-info">
+            <p class="help-block"><?php echo lang('getstarted::additional-info-note') ?></p>
+            <div class="field">
+                <div class="top">
+                    <label class="control-label"><?php echo lang('what-about-you') ?></label>
+                </div>
+                <div class="bottom">
+                    <textarea placeholder="<?php echo lang('bio') ?>" name="val[bio]" class="auto-grow-input form-control" data-height="70px" <?php echo in_array('bio', $user_required_fields, true) ? 'required' : '' ?>><?php echo get_user_data('bio') ?></textarea>
+                </div>
+            </div>
+            <?php fire_hook("location.filter.field", null, array()); ?>
+            <div class="field">
+                <div class="top">
+                    <label class="control-label"><?php echo lang('city') ?></label>
+                </div>
+                <div class="bottom">
+                    <input type="text" class="form-control" value="<?php echo get_user_data('city') ?>" name="val[city]" <?php echo in_array('city', $user_required_fields, true) ? 'required' : '' ?> />
+                </div>
+            </div>
+            <div class="field">
+                <div class="top">
+                    <label class="control-label"><?php echo lang('state') ?></label>
+                </div>
+                <div class="bottom">
+                    <input type="text" class="form-control" value="<?php echo get_user_data('state') ?>" name="val[state]" <?php echo in_array('state', $user_required_fields, true) ? 'required' : '' ?> />
+                </div>
+            </div>
+            <div class="field">
+                <div class="top">
+                    <label class="control-label"><?php echo lang('country') ?></label>
+                </div>
+                <div class="bottom">
+                    <div class="magic-select search-dropdown" data-name="val[country]" data-width="100%">
+                        <?php load_functions('country') ?>
+                        <?php $countries = get_countries() ?>
+                        <?php $country_name = get_user_data('country') ?>
+                        <input type="hidden" name="val[country]" value="<?php echo $country_name ?>" class="magic-select-value" <?php echo in_array('country', $user_required_fields, true) ? 'required' : '' ?> />
+                        <div class="magic-select-toggle">
+                            <?php echo in_array($country_name, $countries) ? ucwords($country_name) : lang('select-country') ?>
+                        </div>
+                        <div class="magic-select-content slimscroll" data-height="200px">
+                            <?php foreach ($countries as $country => $name) : ?>
+                                <div class="magic-select-option" data-value="<?php echo $name ?>">
+                                    <?php echo ucwords($name) ?>
+                                </div>
+                            <?php endforeach ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php foreach (get_form_custom_fields('user') as $field) : ?>
+                <?php echo get_user_data($field['slug']) ?>
+                <?php $value = get_user_data($field['title'], get_user(true)) ?>
+                <?php echo view("custom-field/display", array('field' => $field, 'value' => $value, 'type' => 0)) ?>
+            <?php endforeach ?>
+        </section>
+        <?php if (plugin_loaded('social')) : ?>
+            <h3 class="title">
+                <?php echo lang('social::import-contacts') ?>
+            </h3>
+            <section class="getstarted-content">
+                <div id="social-import-services-pane">
+                    <p class="help-block"><?php echo lang('social::search-address-for-friends') ?></p>
+                    <p class="help-block"><?php echo lang('social::search-address-for-friends-note') ?></p>
+                    <ul class="services">
+                        <li class="clearfix">
+                            <div class="pull-left">
+                                <img src="<?php echo img('images/social/facebook.png') ?>" /> Facebook
+                            </div>
+                            <div class="pull-right">
+                                <button class="btn btn-secondary facebook-send-dialog " data-url="<?php echo 'https://www.facebook.com/dialog/send?app_id=' . config('facebook-app-id') . '&link=' . url() . '&redirect_uri=' . url_to_pager('social-import-facebook') ?>"><?php echo lang('social::find-friends') ?></button>
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="pull-left">
+                                <img src="<?php echo img('images/social/gmail.png') ?>" /> Gmail
+                            </div>
+                            <div class="pull-right">
+                                <button class="btn btn-secondary facebook-send-dialog " data-url="<?php echo url_to_pager('social-import-gmail') ?>"><?php echo lang('social::find-friends') ?></button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div id="social-imported-contacts-pane">
+
+                </div>
+            </section>
+        <?php endif; ?>
+        <h3 class="title" style="margin: 0px 0px; padding: 16px 0px;">
+            <?php echo lang('add-people') ?>
+        </h3>
+        <section class="getstarted-content" id="people-container">
+            <p class="help-block"><?php echo lang('getstarted::add-people-note') ?></p>
+            <div class="user-lists slimscroll" data-height="430px">
+                <?php $users = relationship_suggest(20, null, true);
+                foreach ($users->results() as $user) : ?>
+                    <div class="media media-md user">
+                        <div class="media-left">
+                            <a href="" class="media-object"><img alt="<?php echo get_user_name($user) ?>" class="responsive-img" src="<?php echo get_avatar(75, $user) ?>" /></a>
+                        </div>
+                        <div class="media-body">
+                            <h6><?php echo get_user_name($user) ?></h6>
+                            <?php if (plugin_loaded('relationship')) : ?>
+                                <?php echo view('relationship::button', array('userid' => $user['id'])) ?>
+                            <?php endif ?>
+                        </div>
+                    </div>
+                <?php endforeach ?>
+            </div>
+        </section>
+    </form>
+</div>

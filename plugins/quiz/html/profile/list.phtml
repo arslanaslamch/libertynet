@@ -1,0 +1,57 @@
+<div class="box">
+    <div class="title"><?php echo fire_hook('profile.quiz.title', lang('quiz::quizes')) ?></div>
+    <div class="quiz-list">
+        <div class="body">
+            <div class="listings">
+                <div class="listing">
+                    <?php foreach($quizes->results() as $quiz): ?>
+                        <?php $quiz = arrange_quiz($quiz); ?>
+                        <?php $user = find_user($quiz['user_id']) ?>
+                        <?php $refId = $quiz['id']; $refName = 'quiz'; ?>
+                        <div class="item">
+                            <div class="top">
+                                <small class="time muted"><?php echo date('M j , y  h:i A', $quiz['time']) ?></small>
+                            </div>
+                            <a ajax="true" href="<?php echo url('quiz/'.$quiz['slug']) ?>" class="thumb">
+                                <img class="image" src="<?php echo $quiz['image'] ? url_img($quiz['image'], 700) : url_img('plugins/quiz/images/quiz.jpeg', 700) ?>" alt="<?php echo $quiz['title'] ?> "/>
+                                <?php if($quiz['featured']): ?>
+                                    <div class="featured">
+                                        <i class="ion-ios-star-outline"></i>
+                                    </div>
+                                <?php endif ?>
+                            </a>
+                            <div class="details">
+                                <a ajax="true" href="<?php echo url('quiz/'.$quiz['slug']) ?>" class="title"><?php echo $quiz['title'] ?></a>
+                                <p class="description"><?php echo str_limit(strip_tags($quiz['content']), 100) ?></p>
+                                <div class="stat">
+                                    <div class="left">
+                                        <div class="user">
+                                            <div class="avatar">
+                                                <img src="<?php echo get_avatar(200, $user) ?>" alt="<?php echo $quiz['publisher']['name'] ?>"/>
+                                            </div>
+                                            <a ajax="true" href="<?php echo url($quiz['publisher']['id']) ?>" class="name"><?php echo $quiz['publisher']['name'] ?></a>
+                                        </div>
+                                        <div class="count view"><?php echo $quiz['views']; ?> <?php echo lang('quiz::views'); ?></div>
+                                        <div class="count like">
+                                            <?php $likes = count_likes($refName, $refId); ?>
+                                            <?php echo $likes; ?>
+                                            <?php echo $likes > 1 ? lang('quiz::likes') : lang('quiz::like'); ?>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-content">
+        <?php if(!$quizes->total): ?>
+            <div class="alert alert-info"><?php echo lang('quiz::no-quiz-found') ?></div>
+        <?php else: ?>
+            <?php echo $quizes->append(array('category' => input('category'), 'term' => input('term'), 'type' => 'user-profile'))->links(); ?>
+        <?php endif ?>
+    </div>
+</div>

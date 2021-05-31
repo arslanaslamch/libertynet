@@ -1,0 +1,54 @@
+<div class="box">
+    <div class="box-content">
+        <h6 class="title"><?php echo lang('ads::transaction-details') ?></h6>
+        <?php $coupon = ""; $business = get_business_details($id); if (config('promotion-coupon', 0)) {
+            $coupon = input('coupon');
+            $data = array('price' => $plan['price'], 'status' => 0);
+            if ($coupon) {
+                $data = fire_hook('promotion.coupon.calculate', $data, array($coupon));
+                if ($data['status'] == "1") {
+                    $plan['price'] = $data['price'];
+                }
+            }
+        }?>
+        <div class="list-table-container">
+            <div class="table-responsive">
+               <table class="table list-table">
+            <tbody>
+                <tr>
+                    <td><?php echo lang('Business  name') ?></td>
+                    <td><?php echo $business['business_name'] ?></td>
+                </tr>
+                <tr>
+                    <td><?php echo lang('Plan Title') ?></td>
+                    <td><?php echo lang($plan['title']) ?></td>
+                </tr>
+                <tr>
+                    <td><?php echo lang('ads::plan-description') ?></td>
+                    <td><?php echo lang($plan['description']) ?></td>
+                </tr>
+                <tr>
+                    <td><?php echo lang('ads::amount') ?></td>
+                    <td><?php echo $plan['price'] ?> (<?php echo config('default-currency') ?>)</td>
+                </tr>
+            </tbody>
+        </table>
+            </div>
+        </div>
+        <?php if (config('promotion-coupon', 0)) {
+            if (!$coupon || $data['status'] == 0) {
+                fire_hook('promotion.coupon.field', $coupon);
+                if ($coupon) { ?>
+                    <?php if ($data['status'] == "0"): ?>
+                        <span class="alert-danger"> <?php echo lang('coupon-error') ?></span>
+                    <?php endif; ?>
+                <?php }
+            }
+        } ?>
+        <h6><?php echo lang('Select payment method') ?></h6>
+        <img style="width:200px" src="<?php echo img('images/payment-options.png') ?>" />
+        <div class="payment-methods">
+            <?php fire_hook('payment.buttons.extend', null, array('business-plan', $id, lang($plan['title']), lang($plan['description']), $plan['price'], url_to_pager('business-payment-success').'?id='.$id.'&csrf_token='.CSRFProtection::getToken(), url_to_pager('business-payment-cancel').'?id='.$id)) ?>
+        </div>
+    </div>
+</div>

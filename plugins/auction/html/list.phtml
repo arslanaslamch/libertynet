@@ -1,0 +1,36 @@
+<div class="auction box">
+	<div class="global-filter-container" data-url="<?php echo url('auction') ?>">
+		<form id="auction-list-search" method="post" onsubmit="return run_global_filter()" action="" class="form-inline list-search">
+			<?php CSRFProtection::embed() ?>
+			<input type="hidden" class="filter-input form-control" data-name="type" value="<?php echo input('type', 'browse') ?>"/>
+			<i class="search-icon ion-ios-search"></i>
+			<input value="<?php echo input('term') ?>" type="text" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>"/>
+		</form>
+		<div class="list-head">
+			<h3 class="heading"><?php echo lang('auction::auctions') ?></h3>
+		</div>
+		<div class="filter-pane">
+			<select id="auction-category-list" onchange="return run_global_filter()" data-name="category" class="c-select filter-input">
+				<option <?php echo (input('category', 'all') == 'all') ? 'selected' : null ?> value="all"><?php echo lang('auction::all-categories') ?></option>
+				<?php foreach(get_auction_categories() as $category): ?>
+					<option <?php echo (input('category', 'all') == $category['id']) ? 'selected' : null ?> value="<?php echo $category['id'] ?>"><?php echo lang($category['title']) ?></option>
+				<?php endforeach ?>
+			</select>
+			<select id="auction-filter-select" onchange="return run_global_filter()" data-name="filter" class="c-select filter-input">
+				<option value="all">Latest</option>
+				<option <?php echo (input('filter') == 'top') ? 'selected' : null ?> value="top"><?php echo lang('auction::top') ?></option>
+				<option <?php echo (input('filter') == 'featured') ? 'selected' : null ?> value="featured"><?php echo lang('auction::featured') ?></option>
+			</select>
+		</div>
+	</div>
+	<div id="auction-list-container" class="box-content clearfix list-listing-container">
+		<?php foreach($auctions->results() as $auction): ?>
+			<?php echo view('auction::auction', array('auction' => $auction)) ?>
+		<?php endforeach; ?>
+	</div>
+	<div class="box-content">
+		<?php if($auctions->total): ?><?php echo $auctions->append(array('category' => input('category'), 'type' => input('type', 'browse'), 'term' => input('term'), 'filter' => input('filter', 'all')))->links() ?><?php else: ?>
+			<div class="alert alert-info"><?php echo lang('auction::auction-list-empty') ?></div>
+		<?php endif ?>
+	</div>
+</div>

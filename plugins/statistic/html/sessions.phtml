@@ -1,0 +1,35 @@
+<div class="box">
+    <div class="title"><?php echo lang('statistic::manage-sessions')?></div>
+    <div class="box-content">
+        <div class="table-responsive">
+            <?php foreach ($sessions as $session): ?>
+                <div class="session_list" id="session-wrapper-<?php echo $session['id'] ?>">
+                    <div class="platform-icon">
+                        <?php if(strpos(strtolower($session['os']),'windows') !== false): ?>
+                            <i style="color:#00adef" class="fa fa-windows"></i>
+                        <?php elseif (strpos(strtolower($session['os']),'mac') !== false): ?>
+                            <i class="fa fa-apple"></i>
+                        <?php elseif (strpos(strtolower($session['os']),'linux') !== false): ?>
+                            <i class="fa fa-linux"></i>
+                        <?php elseif (strpos(strtolower($session['os']),'ubuntu') !== false): ?>
+                            <i class="fa fa-ubuntu"></i>
+                        <?php elseif (strpos(strtolower($session['os']),'iphone') !== false): ?>
+                            <i class="fa fa-apple"></i>
+                        <?php elseif (strpos(strtolower($session['os']),'android') !== false): ?>
+                            <i style="color:#a4c439" class="fa fa-android"></i>
+                        <?php elseif (strpos(strtolower($session['os']),'blackberry') !== false): ?>
+                            <i class="fa fa-blackberry"></i>
+                        <?php endif; ?>
+                    </div>
+                    <a href="#" onClick="return deleteSession('<?php echo $session['id'] ?>')" class="btn btn-danger s-logout"><i class="ion-android-delete"></i></a>
+                    <div class="session_details">
+                        <h4><?php echo $session['os']?></h4>
+                        <p><?php echo lang('statistic::browser')?>: <?php echo $session['browser']?></p>
+                        <p class="timeago"><?php echo lang('statistic::last-seen')?>: <span class="feed-time"> <span class="timeago " title="<?php echo date('c', $session['time']) ?>"><?php echo date('c', $session['time']) ?></span></span></p>
+                        <p><?php echo lang('statistic::ip-address')?>: <?php echo $session['ip']?></p>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>

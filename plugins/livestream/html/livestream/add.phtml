@@ -1,0 +1,157 @@
+<?php /** 
+ * @var string|null $message
+ * @var array $livestream
+ */
+$livestream = (array)$livestream;
+$livestream['type'] = input('livestream.type', 'video');
+?>
+<div class="row livestream-add">
+    <div class="col-md-8 left">
+        <div class="media-container">
+            <img src="<?php echo img('livestream::images/loading.gif') ?>" class="livestream-loading">
+            <video class="livestream-player media" muted playsinline></video>
+            <div class="controls"></div>
+        </div>
+    </div>
+    <div class="col-md-4 right">
+        <form method="post" action="<?php echo url_to_pager('livestream-add') ?>" enctype="multipart/form-data" class="livestream-form wrapper-form ajax-form" data-livestream-type="<?php echo $livestream['type'] ?>">
+            <?php CSRFProtection::embed() ?>
+            <?php if($message): ?>
+                <div class="alert alert-danger"><?php echo $message ?></div>
+            <?php endif ?>
+            <div class="field">
+                <div class="left">
+                    <label class="control-label"><?php echo lang('type') ?></label>
+                </div>
+                <div class="right">
+                    <div class="magic-select livestream-input-type" data-name="livestream[type]" data-width="200px">
+                        <div class="magic-select-toggle">
+                            <?php echo lang('livestream::video') ?>
+                        </div>
+                        <div class="magic-select-content">
+                            <div class="magic-select-option" data-value="video"><?php echo lang('livestream::video') ?></div>
+                            <div class="magic-select-option" data-value="audio"><?php echo lang('livestream::voice') ?></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field livestream-type-audio">
+                <div class="left">
+                    <label class="control-label"><?php echo lang('livestream::preview-image') ?></label>
+                </div>
+                <div class="right">
+                    <div class="magic-input-image-preview livestream-input-image" data-name="image" data-width="200px">
+                        <span class="dimension"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="field livestream-type-video">
+                <div class="left">
+                    <label class="control-label"><i class="ion-videocamera"></i></label>
+                </div>
+                <div class="right">
+                    <div class="magic-select livestream-input-camera" data-name="livestream[camera]" data-width="400px">
+                        <div class="magic-select-toggle">
+                            <?php echo lang('livestream::no-camera-available') ?>
+                        </div>
+                        <div class="magic-select-content">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field livestream-type-video livestream-type-audio">
+                <div class="left">
+                    <label class="control-label"><i class="ion-android-microphone"></i></label>
+                </div>
+                <div class="right">
+                    <div class="magic-select livestream-input-microphone" data-name="livestream[microphone]" data-width="400px">
+                        <div class="magic-select-toggle">
+                            <?php echo lang('livestream::no-microphone-available') ?>
+                        </div>
+                        <div class="magic-select-content">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="top">
+                    <label class="control-label"><?php echo lang('category') ?></label>
+                </div>
+                <div class="bottom">
+                    <div class="magic-select" data-name="livestream[category_id]" data-width="490px">
+                        <?php $categories = Livestream::getCategories(); ?>
+                        <div class="magic-select-toggle">
+                            <?php echo lang('select-category') ?>
+                        </div>
+                        <div class="magic-select-content">
+                            <?php foreach($categories as $category): ?>
+                                <?php $sub_categories = Livestream::getCategories($category['id']) ?>
+                                <?php if($sub_categories): ?>
+                                    <div class="magic-select-label"><?php echo lang($category['title']) ?></div>
+                                    <?php foreach($sub_categories as $cat): ?>
+                                        <div class="magic-select-option" data-value="<?php echo $cat['id'] ?>">
+                                            <?php echo lang($cat['title']) ?>
+                                        </div>
+                                    <?php endforeach ?>
+                                <?php else: ?>
+                                    <div class="magic-select-option" data-value="<?php echo $category['id'] ?>">
+                                        <?php echo lang($category['title']) ?>
+                                    </div>
+                                <?php endif ?>
+                            <?php endforeach ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="top">
+                    <label class="control-label"><?php echo lang('livestream::title') ?></label>
+                </div>
+                <div class="bottom">
+                    <input value="<?php echo input('livestream.title') ?>" type="text" name="livestream[title]" class="form-control" style="max-width: 490px" />
+                </div>
+            </div>
+            <div class="field">
+                <div class="top">
+                    <label class="control-label"><?php echo lang('livestream::description') ?></label>
+                </div>
+                <div class="bottom">
+                    <textarea name="livestream[description]" class="form-control" style="max-width: 490px"><?php echo input('livestream.description') ?></textarea>
+                </div>
+            </div>
+            <div class="field">
+                <div class="top">
+                    <label class="control-label"><?php echo lang('host') ?></label>
+                </div>
+                <div class="bottom">
+                    <div class="magic-select" data-name="livestream[entity]" data-width="200px">
+                        <div class="magic-select-toggle">
+                            <img src="<?php echo get_avatar(75) ?>" class="thumb"/>
+                            <?php echo get_user_name(); ?>
+                        </div>
+                        <div class="magic-select-content slimscroll" data-height="200px">
+                            <div class="magic-select-option" data-value="user-<?php echo get_userid() ?>">
+                                <img src="<?php echo get_avatar(75) ?>" class="thumb"/>
+                                <?php echo get_user_name(); ?>
+                            </div>
+                            <?php fire_hook('entity.select.list') ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="top">
+                    <label class="control-label"><?php echo lang('privacy') ?></label>
+                </div>
+                <div class="bottom">
+                    <?php fire_hook('privacy.select', null, array('relationship', 1, 'livestream[privacy]', '200px')); ?>
+                </div>
+            </div>
+            <div class="submit">
+                <button class="btn btn-info btn-block action-button"><?php echo lang('livestream::start-streaming') ?></button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<?php
+$refId = $product['id'];
+$refName = 'product';
+$user = find_user($product['user_id'])
+?>
+<?php $countComments = count_comments($refName, $refId);?>
+
+
+    <div class="box-content feed-footer" style="margin-top: 0 !important">
+        <?php if(plugin_loaded('comment')):?>
+            <div class="feed-comment-container">
+
+                <?php if($countComments > config('feed-comment-limit', 3)):?>
+                    <a id="comment-view-more-button-<?php echo $refName?>-<?php echo $refId?>" class="comment-view-more-button comment-view-more-button-<?php echo $refName?>-<?php echo $refId?>" onclick="return show_more_comment('<?php echo $refName?>', '<?php echo $refId?>', 'comment-view-more-indicator-<?php echo $refId?>')"  href=""><?php _lang('view-previous-comments')?></a>
+                    <img class="comment-view-more-indicator" id="comment-view-more-indicator-<?php echo $refId?>" src="<?php echo img('images/loading.gif')?>" />
+                <?php endif?>
+                <div data-offset="<?php echo config('feed-comment-limit', 3)?>" data-limit="<?php echo config('feed-comment-limit', 3)?>" class="comment-lists comment-lists-<?php echo $refName?>-<?php echo $refId?>" id="">
+                    <?php foreach(get_comments($refName, $refId, config('feed-comment-limit', 3), 0) as $comment):?>
+                        <?php echo view('comment::display', array('comment' => $comment))?>
+                    <?php endforeach;?>
+                </div>
+                <?php echo view('comment::editor', array(
+                    'typeId' => $product['id'],
+                    'type' => 'product',
+                    'textLimit' => (config('enable-feed-text-limit', false)) ? config('maximum-feed-text-limit', 150) : false))?>
+
+            </div>
+        <?php endif?>
+    </div>

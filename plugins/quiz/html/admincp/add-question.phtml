@@ -1,0 +1,51 @@
+<div class="wrapper">
+	<div class="wrapper-title quiz-wrap">
+		<?php echo lang('quiz::quiz-questions') ?>
+		<div class="action admincp-add-questions">
+		<?php $isPublished = is_published($id); ?>
+				<?php if($isPublished): ?>
+					<a href="<?php echo url_to_pager('admincp-quizes') ?>" class="btn btn-secondary btn-sm action-button" ajax="true"><?php echo lang('quiz::view-quiz') ?></a>
+				<?php endif ?>
+				<?php if($count < $question_limit): ?>
+					<?php if(!quiz_has_answers($id) && !is_published($id)): ?>
+						<a href="<?php echo url_to_pager('admincp-quiz-manage-question').'?action=create&id='.$quiz['id'] ?>" class="btn btn-secondary btn-sm action-button" ajax="true"><?php echo lang('quiz::create-new-question') ?></a>
+					<?php endif ?>
+				<?php endif ?>
+				<?php if($count >= 2 && is_quiz_owner($quiz)): ?>
+					<a href="" 
+					data-on="<?php echo lang('quiz::publish-quiz') ?>"
+					data-off="<?php echo lang('quiz::unpublish-quiz') ?>"
+					id="on-button-<?php echo $id ?>"
+					onclick="return publish_quiz('<?php echo $id ?>')"
+					data-status="<?php echo ($isPublished) ? 1 : 0 ?>"
+					class="btn btn-secondary btn-sm action-button <?php echo ($isPublished) ? 'published' : null ?>"><?php echo ($isPublished) ? lang('quiz::unpublish-quiz') : lang('quiz::publish-quiz') ?></a>
+				<?php endif ?>
+		</div>
+	</div>
+	<?php if($count < 2): ?>
+		<div class="box-content" style="border-top:1px solid #F1F1F1;text-align: center;padding:2% 0 2% 0">
+			<?php echo lang('quiz::quiz-questions-descriptions') ?>
+		</div>
+	<?php endif ?>
+	<?php if(isset($quiz_questions)): ?>
+		<div class="each-quiz-question-c">
+			<?php foreach($quiz_questions as $question): ?>
+				<div class="e-qz-answers">
+					<div class="title"><?php echo $question['question'] ?></div>
+					<?php $answers = explode(',',$question['answers']);
+					$correct_answers = explode(',',$question['correct_answers']);
+					?>
+					<?php foreach($answers as $answer): ?>
+					<?php $correct = if_is_correct_answer($answer,$correct_answers); ?>
+						<div class="e-qz-answer">		
+							<?php echo $answer; ?>
+							<?php if($correct): ?>
+								<i class="ion-ios-checkmark text-success"></i>
+							<?php endif ?>
+						</div>
+					<?php endforeach ?>
+				</div>
+			<?php endforeach ?>
+		</div>
+	<?php endif ?>
+</div>

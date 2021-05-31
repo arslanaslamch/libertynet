@@ -1,0 +1,53 @@
+<div class="wrapper">
+	<div class="wrapper-title">
+		<?php echo lang('manage-members') ?>
+		<span><?php echo lang('manage-members-desc') ?></span>
+	</div>
+	<div class="wrapper-content">
+		<div class="list-table-container">
+			<div class="table-responsive">
+				<table class="table table-striped list-table">
+					<thead>
+					<tr>
+						<th>
+							<div class="list-table-select" data-group="users" data-id="0"></div>
+						</th>
+						<th><?php echo lang('avatar') ?></th>
+						<th><?php echo lang('username') ?></th>
+						<th><?php echo lang('points') ?></th>
+						<th><?php echo lang('Rank') ?></th>
+						<?php //fire_hook('more.members.list.admin.table.header',null,array()); ?>
+					</tr>
+					</thead>
+					<tbody>
+					<?php foreach($users->results() as $user): ?>
+						<tr>
+							<td>
+								<div class="list-table-select" data-group="users" data-id="<?php echo $user['id'] ?>"></div>
+							</td>
+							<td>
+								<a href="<?php echo profile_url(null, $user) ?>"><img src="<?php echo get_avatar(75, $user) ?>" style="width: 30px;height: 30px" class="thumb"/></a>
+							</td>
+							<td>
+								<a href="<?php echo profile_url(null, $user) ?>"><?php echo $user['username'] ?></a>
+							</td>
+							<td>
+								<?php echo get_user_total_points($user['id']); ?>
+							</td>
+							<td>
+								<?php echo get_rank($user['id']); ?>
+							</td>
+						</tr>
+					<?php endforeach ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="row pagination">
+			<div class="col-sm-12">
+				<?php echo $users->links(); ?>
+			</div>
+		</div>
+	</div>
+</div>

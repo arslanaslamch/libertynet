@@ -1,0 +1,18 @@
+<?php if(!isMobile() && false): ?>
+<div style="display: <?php echo (!config("show-sidebar-menu-only-when-product-is-added-to-cart",0)
+    || (session_get('my_product_cart_'.get_userid())) ) ? 'block' : 'none'; ?>; background: <?php echo config('header-bg-color','#3498db')?>;
+<?php echo (config("cart-side-bar-position",2) == 2)? 'right : 0; ' : 'left : 0'; ?>; top :  <?php echo config("cart-side-bar-top",'200px') ?>"
+     class="sidebar-cart <?php echo (config("cart-side-bar-position",2) == 2) ? ' right-cart-sidebar ' : ' left-cart-sidebar '; ?>"
+    >
+    <ul style="padding: 0">
+        <li><a ajax="true" class="tooltips" href="<?php echo url_to_pager("product-cart"); ?>" ><span style="color: #FF6C5C;
+    position: absolute;
+    top: 10px;
+    left: 29px;
+    padding: 2px 7px 2px 2px;
+    background: #fff !important;" class="ProductCount"><?php echo (session_get('my_product_cart_'.get_userid())) ? count(session_get('my_product_cart_'.get_userid())) : 0; ?></span><i class="ion-android-cart"></i> <span class="tooltiptext"><?php echo lang('store::view-your-cart') ?></span></a> </li>
+        <li><a class="tooltips"  ajax="true" href="<?php echo url_to_pager("my-wish-list") ?>"  title="" ><i class="ion-heart"></i><span class="tooltiptext"><?php echo lang('store::see-your-wishlist') ?></span></a> </li>
+        <li><a  class="tooltips" href="<?php echo url_to_pager("compare-products"); ?>"  title=""><i class="ion-arrow-swap"></i> <span class="tooltiptext"><?php echo lang('store::compare-products') ?></span></a> </li>
+    </ul>
+</div>
+<?php endif; ?>

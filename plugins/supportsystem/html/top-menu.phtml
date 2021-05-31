@@ -1,0 +1,26 @@
+<div id="dashboard-filter-menu" class="box  clearfix">
+    <ul class="pull-left left">
+        <li class="<?php echo (segment(1) == 'help-center') ? 'active' : null ?>">
+            <a ajax="true"
+               href="<?php echo url_to_pager('supportsystem-dashboard-page') ?>"><?php echo lang('supportsystem::help-center') ?></a>
+        </li>
+        <li class="<?php echo (segment(1) == 'my-tickets') ? 'active' : null ?>">
+            <a ajax="true"
+               href="<?php echo url_to_pager('supportsystem-my-ticket-page') ?>"><?php echo lang('supportsystem::my-tickets') ?></a>
+        </li>
+        <?php if(ss_can_moderate_ticket()): ?>
+        <li class="<?php echo (segment(1) == 'moderate-tickets') ? 'active' : null ?>">
+            <a ajax="true"
+               href="<?php echo url_to_pager('supportsystem-moderate-ticket-page') ?>"><?php echo lang('supportsystem::manage-members-tickets') ?></a>
+        </li>
+        <?php endif; ?>
+    </ul>
+    <?php if(!isset($create)): ?>
+    <?php if (config('can-add-support-ticket', true) and is_loggedIn()): ?>
+        <div class="pull-right action">
+            <a href="<?php echo url_to_pager("supportsystem-create-page") ?>" ajax="true"
+               class="btn btn-info btn-sm"> <i class="ion-android-add"></i> <?php echo lang('supportsystem::add-new-ticket') ?></a>
+        </div>
+    <?php endif; ?>
+    <?php endif; ?>
+</div>

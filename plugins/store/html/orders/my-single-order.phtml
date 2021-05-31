@@ -1,0 +1,99 @@
+<?php
+
+//$product = getSingleProduct($order['product_id']);
+//$product_price = getProductPrice($product);
+$billing_details = getBillingOrShippingDetails('lp_billing_details',$order['bid']);
+$shipping_details = getBillingOrShippingDetails('lp_shipping_details',$order['sid']);
+$products = perfectUnserialize($order['product']);
+?>
+
+<div class="box" id="store-order-detail">
+    <div class="title"><?php echo lang("store::order-details") ?></div>
+    <div class="box-content">
+        <div class="container row">
+            <div class="col-sm-12 nop">
+                <div class=" bill-top-styling-lhs">
+                    <h4 class="order-subtitle-header"><?php echo lang("store::billing-info"); ?></h4>
+                    <p><strong><?php echo lang("store::name") ?> : </strong> <?php echo ucwords($billing_details['first_name']).' '.ucwords($billing_details['last_name']); ?></p>
+                    <p><strong><?php echo lang("store::email-address") ?> : </strong> <?php echo $billing_details['email_address']; ?></p>
+                    <p><strong><?php echo lang("store::phone-number") ?> : </strong> <?php echo $billing_details['phone']; ?></p>
+                    <p><strong><?php echo lang("store::country") ?> : </strong> <?php echo ucwords($billing_details['country']); ?></p>
+                    <p><strong><?php echo lang("store::city") ?> : </strong> <?php echo ucfirst($billing_details['city']); ?></p>
+                    <p><strong><?php echo lang("store::address") ?> : </strong> <?php echo ucfirst($billing_details['address']); ?></p>
+                </div>
+                <div class=" bill-top-styling-rhs">
+                    <h4 class="order-subtitle-header"><?php echo lang("store::shipping-info"); ?></h4>
+                    <p><strong><?php echo lang("store::name") ?> : </strong> <?php echo ucwords($shipping_details['first_name']).' '.ucwords($billing_details['last_name']) ?></p>
+                    <p><strong><?php echo lang("store::email-address") ?> : </strong> <?php echo $shipping_details['email_address']; ?></p>
+                    <p><strong><?php echo lang("store::phone-number") ?> : </strong> <?php echo $shipping_details['phone']; ?></p>
+                    <p><strong><?php echo lang("store::country") ?> : </strong> <?php echo ucwords($shipping_details['country']); ?></p>
+                    <p><strong><?php echo lang("store::city") ?> : </strong> <?php echo ucfirst($shipping_details['city']); ?></p>
+                    <p><strong><?php echo lang("store::address") ?> : </strong> <?php echo ucfirst($shipping_details['address']); ?></p>
+                </div>
+            </div>
+
+           <div style="display:block;margin-top:20px" class="col-sm-12 nop">
+            <div class="bill-top-styling-lhs">
+                <h4 class="order-subtitle-header"><?php echo lang("store::payment-details"); ?></h4>
+                <p><strong><?php echo lang("store::payment-status") ?></strong> : <?php echo strtoupper(getOrderStatus($order)); ?></p>
+                <p><strong><?php echo lang("store::payment-method") ?></strong> : <?php echo strtoupper($order['payment_type']); ?></p>
+            </div>
+
+            <div class="bill-top-styling-rhs">
+                <h4 class="order-subtitle-header"><?php echo lang("store::order-date"); ?></h4>
+                <p><?php echo date("l jS \of F Y",$order['time']); ?></p>
+            </div>
+           </div>
+            <div class="col-sm-12">
+                <h4 class="order-subtitle-header" style="font-size:16px"><?php echo lang("store::payment-invoice"); ?></h4><span onclick="return printMe()" class="printBtn"><i class="ion-printer"></i> <?php echo lang("store::print"); ?></span>
+                <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th><?php echo lang("store::order-id") ?></th>
+                        <th><?php echo lang("store::product-name"); ?></th>
+                        <th><?php  echo lang("store::quantity");?></th>
+                        <th><?php echo lang("store::price");?></th>
+                        <th><?php echo lang("store::shipping-cost")?></th>
+                        <th><?php echo lang("store::total")?></th>
+                        <th><?php echo lang("store::status")?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+                        <?php foreach($products as $p=>$q):
+                         $product = getSingleProduct($p);
+                            $child_order = getProductPurchasePrice($order['id'],$p,true);
+                            $sub_total = $q * getProductPurchasePrice($order['id'],$p);
+                            $t[] = $sub_total
+                        ?>
+                    <tr>
+                        <td><?php echo "ORDER-".$order['id']; ?></td>
+                        <td><?php echo $product['name']; ?></td>
+                        <td><?php echo $q ?></td>
+                        <td><?php  echo  formatPriceNumber(getProductPurchasePrice($order['id'],$p)); ?></td>
+                        <td><?php echo ($order['shipping_price']) ? formatPriceNumber($order['shipping_price']) : lang("store::free-shipping");?></td>
+                        <td><?php echo formatPriceNumber($sub_total+$order['shipping_price']); ?></td>
+                        <td><?php echo strtoupper(getOrderStatus($child_order));; ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td ><span style="float: right;font-size: 16px"><?php echo ucwords(lang("store::total")); ?></span></td>
+                        <td>
+                            <?php $t[] = $order['shipping_price']; ?>
+                            <span style="font-weight: bold;font-size: 16px"><?php echo formatPriceNumber(array_sum($t))?></span></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</div>

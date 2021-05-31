@@ -1,0 +1,47 @@
+<div class="head">
+    <?php if ($conversation): ?>
+        <div class="image">
+            <?php if ($conversation['type'] == 'single'): ?>
+                <img src="<?php echo $conversation['avatar'] ?>" />
+            <?php else: ?>
+                <img src="<?php echo $conversation['avatars'][0] ?>" />
+                <?php if (isset($conversation['avatars'][1])): ?>
+                    <img src="<?php echo $conversation['avatars'][1] ?>" />
+                <?php else: ?>
+                    <img src="<?php echo get_avatar(75) ?>" />
+                <?php endif ?>
+            <?php endif ?>
+        </div>
+        <a class="name" href="#!"><?php echo $conversation['title'] ?></a>
+        <?php if ($conversation['type'] == 'single'): ?>
+            <?php $user_id = $conversation['user1'] == get_userid() ? $conversation['user2'] : $conversation['user1']; $user = find_user($user_id) ?>
+            <div class="time timeago user-online-time <?php echo time() - $user['online_time'] < 20 ? 'active' : '' ?>" data-user-id="<?php echo $user_id ?>" title="<?php echo date('c', $user['online_time']) ?>" data-active-text="<?php echo lang('active-now') ?>"><?php echo date('c', $user['online_time']) ?></div>
+        <?php else: ?>
+            <div class="time chat-conversation-last-update-time" data-cid="<?php echo $conversation['cid'] ?>"><?php echo str_time($conversation['last_update_time']) ?></div>
+        <?php endif ?>
+    <?php endif ?>
+</div>
+<div class="body">
+    <a class="options-toggle-button toggle-button toggle-button-active" href="#!" data-toggle-target-selector=".conversation > form > .info .options-list">
+        <span><?php echo lang('chat::options') ?></span>
+        <i class="icon toggle-button-icon ion-chevron-left"></i>
+    </a>
+    <div class="options-list toggle-target toggle-target-active">
+        <?php if ($conversation): ?>
+            <div class="options-list-item">
+                <?php if ($conversation['type'] == 'multiple'): ?>
+                    <a href="#!" class="action leave-conversation-button" onclick="return confirm.url('<?php echo url('chat/leave/conversation').'?cid='.$cid ?>')">
+                        <i class="icon mbri-trash"></i>
+                        <span class="label"><?php echo lang('chat::leave-conversation') ?></span>
+                    </a>
+                <?php else: ?>
+                    <a href="#!" class="action delete-conversation-button" onclick="return delete_conversation()">
+                        <i class="icon mbri-trash"></i>
+                        <span class="label"><?php echo lang('chat::delete-conversation') ?></span>
+                    </a>
+                <?php endif ?>
+                <?php echo fire_hook('chat.settings', ' ', array($cid)) ?>
+            </div>
+        <?php endif ?>
+    </div>
+</div>

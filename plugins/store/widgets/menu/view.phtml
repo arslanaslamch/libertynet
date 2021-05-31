@@ -1,0 +1,14 @@
+<div class="box ">
+    <ul class="menu" id="product-sidemenu">
+        <?php if(config('enable-guest-product-purchase',1) || is_loggedIn()): ?>
+            <li><a href="<?php echo url_to_pager('products-home')?>" ajax="true" ><?php _lang('store::all-products')?></a></li>
+            <li><a href="<?php echo url('store/products?type=mine')?>" ajax="true" ><?php _lang('store::my-products')?></a></li>
+            <!--<li><a href="<?php /*echo url_to_pager('add-product')*/?>" ajax="true" ><?php /*_lang('store::add-product')*/?></a></li>-->
+            <li><a href="<?php echo url_to_pager('my_orders')?>" ajax="true" ><?php _lang('store::my-orders')?></a></li>
+            <li><a href="<?php echo url_to_pager('my-wish-list')?>" ajax="true" ><?php _lang('store::my-wishlist')?></a></li>
+            <li><a href="<?php echo url('stores')?>" ajax="true" ><?php echo ucwords(lang('store::stores')); ?></a></li>
+        <?php endif?>
+    </ul>
+
+
+</div>

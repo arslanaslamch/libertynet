@@ -1,0 +1,72 @@
+<div class="wrapper">
+    <div class="wrapper-title"><?php echo lang("store::charge-and-refund-orders") ?></div>
+    <div class="wrapper-content">
+        <?php if($orders->total) : ?>
+            <table class="table table-bordered storeTable">
+                <thead>
+                <tr>
+                    <th><?php echo lang("store::order-id") ?></th>
+                    <th><?php echo lang("store::order-code") ?></th>
+                    <th><?php echo lang("store::buyer");?></th>
+                    <th><?php echo lang("store::store-owner");?></th>
+                    <th><?php echo lang("store::product-name");?></th>
+                    <th><?php echo lang("store::price");?></th>
+                    <th><?php  echo lang("store::date")?></th>
+                    <th style="width : 20%"><?php _lang("action")?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach($orders->results() as $o):
+                     //order_basket
+                    $product = getSingleProduct($o['product_id']);
+                    $price = $o['price'];
+                    $store_owner = find_user($o['store_owner']);
+                    $order_basket = getSingleOrder($o['order_id']);
+                    $buyer = find_user($order_basket['user_id']);
+                    ?>
+                    <tr>
+                        <td><?php echo $o['order_id']; ?></td>
+                        <td><?php echo "ORDER-".$o['order_id']; ?></td>
+                        <?php if($buyer):
+                            $user = $buyer;
+                            ?>
+                        <td><a href="<?php echo profile_url(null,$user) ?>"><img style="height: 30px;width: 30px" src="<?php echo get_avatar(200,$user) ?>" />
+                                <?php echo get_user_name($user); ?></a>
+                        </td>
+                        <?php else: ?>
+                        <td><?php echo lang("store::anonymous"); ?></td>
+                        <?php endif; ?>
+
+                        <td><a href="<?php echo profile_url(null,$store_owner) ?>"><img style="height: 30px;width: 30px" src="<?php echo get_avatar(200,$store_owner) ?>" />
+                                <?php echo get_user_name($store_owner); ?></a>
+                        </td>
+
+                        <td><?php echo $product['name']; ?></td>
+                        <td><?php echo formatPriceNumber($price); ?></td>
+                        <td><?php echo date('d F, Y',$o['time']) ?></td>
+                        <td>
+                            <a href="<?php echo url_to_pager("admin-manage-orders").'?id='.$o['id']; ?>"
+                               class="btn btn-sm btn-primary"> <?php echo lang("store::view"); ?></a>
+
+                            <a href="" data-oid="<?php echo $o['id']; ?>" data-t="refund" style="display : <?php echo ($o['status'] == 1) ? 'inline-block' : 'none'; ?>"
+                               class="btn btn-danger btn-sm refund-charge-btn refund-order-btn-<?php echo $o['id']; ?>">
+                                <?php echo lang("store::refund-order"); ?>
+                            </a>
+
+                            <a href="" data-oid="<?php echo $o['id'] ?>" data-t="charge" style="display : <?php echo ($o['status'] == 0) ? 'inline-block' : 'none'; ?>"
+                               class="btn btn-secondary btn-sm refund-charge-btn charge-order-btn-<?php echo $o['id']; ?>">
+                                <?php echo lang("store::charge-order"); ?>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <div class="box-content">
+                <?php echo  $orders->links() ?>
+            </div>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang("store::no-order-available") ?></div>
+        <?php endif; ?>
+    </div>
+</div>

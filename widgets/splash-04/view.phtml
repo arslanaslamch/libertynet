@@ -1,0 +1,100 @@
+<div id="home-container" class="splash splash-04">
+    <div class="body">
+        <div id="topo">
+            <div id="slides">
+                <div class="slide slide-1">
+                    <div class="overlay"></div>
+                    <h1><?php echo lang('welcome') ?></h1>
+                    <div class="logo">
+                        <?php $logo = config('site-logo'); $logo_url = !$logo ? img('images/logo.png') : url_img($logo); ?>
+                        <img src="<?php echo $logo_url ?>" />
+                    </div>
+                    <div class="highlights">
+                        <div class="highlight">
+                            <i class="mbri-users icon"></i>
+                            <div class="title"><?php echo lang('connect') ?></div>
+                        </div>
+                        <div class="highlight">
+                            <i class="mbri-search icon"></i>
+                            <div class="title"> <?php echo lang('discover') ?></div>
+                        </div>
+                        <div class="highlight">
+                            <i class="mbri-share icon"></i>
+                            <div class="title"><?php echo lang('share') ?></div>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <?php if (config('user-signup', true)): ?>
+                            <a href="#auth-section" class="scroll-animate" data-type="signup"><?php echo lang('signup') ?></a>
+                        <?php endif; ?>
+                        <a href="#auth-section" class="scroll-animate" data-type="login"><?php echo lang('login') ?></a>
+                    </div>
+                </div>
+                <div class="topo-content topo-content-1">
+                    <div class="welcome-note"><?php echo lang('splash-04-welcome-note') ?></div>
+                </div>
+                <?php if($show_latest_members): ?>
+                    <div class="slide slide-2">
+                        <div class="container">
+                            <div class="latest-members">
+                                <?php foreach(get_top_members('latest', 8) as $user): ?>
+                                    <div class="member">
+                                        <a href="<?php echo profile_url(null, $user) ?>" style="background-image: url(<?php echo get_avatar(200, $user) ?>)"></a>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+                <div id="auth-section" class="topo-content topo-content-2">
+                    <div class="auth">
+                        <div class="login-content">
+                            <h4><?php echo lang('login-account'); ?></h4>
+                            <?php echo view('login/portable-login'); ?>
+                            <div class="switch">
+                                <?php if (config('user-signup', true)): ?>
+                                    <a href="#!" onclick="return show_home_content(false)"><?php echo lang('dont-have-account') ?></a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php if (config('user-signup', true)): ?>
+                            <div class="signup-content">
+                                <h4><?php echo lang('join-site', array('site-title' => config('site_title'))); ?></h4>
+                                <?php echo view('signup/portable-signup', array('show_all_signup_fields' => $show_all_signup_fields)); ?>
+                                <div class="switch">
+                                    <a href="#!" onclick="return show_home_content(true)"><?php echo lang('already-have-account') ?></a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="slide slide-3">
+
+                </div>
+                <div class="topo-content topo-content-3">
+                    <div class="footer">
+                        <?php Widget::render('footer') ?>
+                        <div class=" dropdown">
+                            <a class="language-toggle dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <?php foreach (get_all_languages() as $lang): ?>
+                                    <?php if ($lang['language_id'] == $app->lang): ?>
+                                        <img class="flag-img" src="<?php echo url(get_lang_flag($lang['language_id'])) ?>" />
+                                        <?php echo $lang['language_title'] ?>
+                                    <?php endif ?>
+                                <?php endforeach ?>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <?php foreach (get_all_languages() as $lang): ?>
+                                    <a class="dropdown-item" href="<?php echo url_to_pager("change-language", array('lang' => $lang['language_id'])) ?>">
+                                        <?php echo $lang['language_title'] ?>
+                                        <span class="pull-right"><img class="flag-img" src="<?php echo url(get_lang_flag($lang['language_id'])) ?>" /></span>
+                                    </a>
+                                <?php endforeach ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

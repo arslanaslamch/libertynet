@@ -1,0 +1,54 @@
+<div class="form-container">
+    <form method="post" action="<?php echo url_to_pager('login') ?>">
+        <?php CSRFProtection::embed() ?>
+        <div class="form-field">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="auth-form-username-addon">
+                    <i class="fa fa-user-circle"></i>
+                  </span>
+                </div>
+                <input type="text" name="val[username]" value="<?php echo input('val.username') ?>" class="form-control" placeholder="<?php echo lang('username-or-email') ?>" aria-label="Username" aria-describedby="auth-form-username-addon"  autocomplete="off" />
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="auth-form-password-addon"><i class="fa fa-lock"></i></span>
+                </div>
+                <input type="password" name="val[password]" value="<?php echo input('val.password') ?>" class="form-control" placeholder="<?php echo lang('password') ?>" aria-label="Username" aria-describedby="auth-form-password-addon" autocomplete="off" />
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" name="remember" class="custom-control-input" id="auth-form-remember-switch">
+                <label class="custom-control-label" for="auth-form-remember-switch"><?php echo lang('remember-me') ?></label>
+                <a href="<?php echo url_to_pager('forgot-password') ?>" class="forgot-password-link"><?php echo lang('forgot-password') ?></a>
+            </div>
+        </div>
+        <div class="form-field">
+            <input type="submit" value="<?php echo lang('sign-in') ?>" class="btn btn-primary submit-button"/>
+        </div>
+    </form>
+</div>
+<?php if(config('enable-facebook', false) || config('enable-twitter', false) || config('enable-googleplus', false) || config('enable-vk', false)): ?>
+    <div class="social-login">
+        <div class="title" data-content="Login with"></div>
+        <div class="body">
+            <div class="links">
+                <?php if(config('enable-facebook', false)): ?>
+                    <a href="<?php echo url_to_pager('facebook-auth') ?>" class="facebook"><i class="fa fa-facebook"></i></a>
+                <?php endif ?>
+                <?php if(config('enable-twitter', false)): ?>
+                    <a href="<?php echo url_to_pager('twitter-auth') ?>" class="twitter"><i class="fa fa-twitter"></i></a>
+                <?php endif ?>
+                <?php if(config('enable-googleplus', false)): ?>
+                    <a href="<?php echo url_to_pager('googleplus-auth') ?>" class="google"><i class="fa fa-google"></i></a>
+                <?php endif ?>
+                <?php if(config('enable-vk', false)): ?>
+                    <a href="<?php echo url_to_pager('vk-auth') ?>" class="vk"><i class="fa fa-vk"></i></a>
+                <?php endif ?>
+            </div>
+        </div>
+    </div>
+<?php endif ?>

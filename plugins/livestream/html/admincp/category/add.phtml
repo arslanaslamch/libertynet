@@ -1,0 +1,46 @@
+<?php
+/**
+ * @var array $category
+ */
+$category = (array)$category;
+?>
+<form method="post" action="<?php echo url_to_pager('admin-livestream-category-add') ?>" enctype="multipart/form-data" class="livestream-form wrapper-form">
+    <?php CSRFProtection::embed() ?>
+    <div class="form-group row">
+        <div class="col-md-4">
+            <label class="form-control-label"><?php echo lang('livestream::title') ?></label>
+        </div>
+        <div class="col-md-8">
+            <label>(English)</label>
+            <input type="text" name="category[title][english]" class="form-control" placeholder="<?php echo lang('livestream::category-title') ?>" />
+            <a href="" class="other-languages-link" onclick="return show_other_languages('#livestream-category-info-other-languages')"><?php echo lang('edit-other-languages') ?></a>
+            <div class="other-languages" id="livestream-category-info-other-languages">
+                <?php foreach(get_all_languages() as $language): ?>
+                    <?php if($language['language_id'] != 'english'): ?>
+                        <input class="form-control" type="text" name="category[title][<?php echo $language['language_id'] ?>]" placeholder="<?php echo lang('livestream::category-title') ?>" />
+                        <br />
+                        <p class="help-block"><?php echo $language['language_title'] ?></p>
+                    <?php endif ?>
+                <?php endforeach ?>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            <label class="form-control-label"><?php echo lang('livestream::parent-category') ?></label>
+        </div>
+        <div class="col-md-8">
+            <select name="category[parent_id]" title="<?php echo lang('livestream::parent-category') ?>" class="form-control category-input-parent-id" required>
+                <option value="0"><?php echo lang('livestreaming::none') ?></option>
+                <?php foreach(Livestream::getCategories() as $cat): ?>
+                    <option value="<?php echo $cat['id'] ?>"><?php echo lang($cat['title']) ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row submit">
+        <div class="col-md-12">
+            <input type="submit" value="<?php echo lang('livestream::add') ?>" class="btn btn-lg btn-info" />
+        </div>
+    </div>
+</form>

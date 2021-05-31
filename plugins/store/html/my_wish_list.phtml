@@ -1,0 +1,42 @@
+<div class="box">
+    <div class="title"><?php echo lang("store::my-wishlist") ?></div>
+    <div class="box-content">
+        <?php if($wishes->total) :
+            $i=1;
+            ?>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th></th>
+                    <th><?php echo lang("store::product-name") ?></th>
+                    <th><?php echo lang("store::price") ?></th>
+                    <th><?php echo lang("store::stock") ?></th>
+                    <th><?php _lang("action")?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach($wishes->results() as $w):
+                     $product = getSingleProduct($w['product_id']);
+                    ?>
+                    <tr id="product_<?php echo $product['id']; ?>">
+                        <td><?php echo $i; ?></td>
+                        <td><a ajax="true" href="<?php echo url_to_pager("single-product",array('slugs'=>$product['slug'])) ?>">
+                         <img style="height: 30px;width: 30px" src="<?php echo ($product['main_photo']) ? url_img($product['main_photo']) : img("store::images/comingsoon.png"); ?>"
+                                                                                                                                      alt="<?php echo $product['name'] . ' image'; ?>"/> </a></td>
+                        <td><?php echo $product['name']; ?></td>
+                        <td><?php echo config('currency-sign','$').number_format((float)getProductPrice($product),'2','.',',');?></td>
+                        <td><?php echo ($product['quantity']) ? lang("store::in-stock") : lang("store::out-of-stock");?></td>
+                        <td><a href="" id="remove_wish_list" data-pid="<?php echo $product['id'] ?>" class="btn btn-sm btn-danger"> <i class="ion-close"></i> </a></td>
+                    </tr>
+                <?php $i++;endforeach; ?>
+                </tbody>
+            </table>
+            <div class="box-content">
+                <?php echo  $wishes->links() ?>
+            </div>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang("store::no-product-on-wish-list") ?></div>
+        <?php endif; ?>
+    </div>
+</div>

@@ -1,0 +1,123 @@
+<?php echo view("affliate::tm"); ?>
+<div class="box">
+    <div class="title"><?php echo lang("affliate::statistics"); ?></div>
+    <div class="box-content">
+        <div class="container">
+            <div class="col-sm-12">
+                <div class="col-sm-3 single-collection">
+                    <h5 class="col-title"><i class="ion-arrow-shrink"></i> <?php echo lang("affliate::overall"); ?></h5>
+                    <p>
+                        <span><?php echo lang("affliate::total-number") ?> : <?php echo get_statistics_np('overall')['n']; ?></span><br/>
+                        <span><?php echo lang("affliate::total-points") ?> : <?php echo get_statistics_np('overall')['p']; ?></span>
+                    </p>
+                </div>
+                <div class="col-sm-3 single-collection">
+                    <h5 class="col-title success-text"><i class="ion-checkmark-circled"></i> <?php echo lang("affliate::approved"); ?></h5>
+                    <p>
+                        <span><?php echo lang("affliate::total-number") ?> : <?php echo get_statistics_np('approved')['n']; ?></span><br/>
+                        <span><?php echo lang("affliate::total-points") ?> : <?php echo get_statistics_np('approved')['p']; ?></span>
+                    </p>
+                </div>
+                <div class="col-sm-3 single-collection">
+                    <h5 class="col-title waiting-text"><i class="ion-load-a"></i> <?php echo lang("affliate::waiting"); ?></h5>
+                    <p>
+                        <span><?php echo lang("affliate::total-number") ?> : <?php echo get_statistics_np('waiting')['n']; ?></span><br/>
+                        <span><?php echo lang("affliate::total-points") ?> : <?php echo get_statistics_np('waiting')['p']; ?></span>
+                    </p>
+                </div>
+                <div class="col-sm-3 single-collection">
+                    <h5 class="col-title denied-text"><i class="ion-android-cancel"></i> <?php echo lang("affliate::denied"); ?></h5>
+                    <p>
+                        <span><?php echo lang("affliate::total-number") ?> : <?php echo get_statistics_np('denied')['n'];; ?></span><br/>
+                        <span><?php echo lang("affliate::total-points") ?> : <?php echo get_statistics_np('denied')['p'];; ?></span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="search-fields-stats">
+                <div class="col-sm-12">
+                <form class="form" action="" method="post">
+                    <div class="form-group">
+                        <p><b><?php echo lang("affliate::status"); ?></b></p>
+                        <label class="c-input c-radio">
+                            <input checked  value="any" name="status" type="radio">
+                            <span class="c-indicator"></span>
+                            <?php echo lang('affliate::all') ?>
+                        </label>
+                        <label class="c-input c-radio">
+                            <input  value="1" name="status" type="radio">
+                            <span class="c-indicator"></span>
+                            <?php echo lang('affliate::waiting') ?>
+                        </label>
+                        <label class="c-input c-radio">
+                            <input  value="3" name="status" type="radio">
+                            <span class="c-indicator"></span>
+                            <?php echo lang('affliate::approved') ?>
+                        </label>
+                        <label class="c-input c-radio">
+                            <input  value="2" name="status" type="radio">
+                            <span class="c-indicator"></span>
+                            <?php echo lang('affliate::denied'); ?>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <p><b><?php echo lang("affliate::time"); ?></b></p>
+                        <div class="col-sm-3">
+                            <?php $from =  (input('val.from_date')) ? input('val.from_date') : date('m/d/Y',(strtotime('-6 days')));?>
+                            <?php $end =  (input('val.end_date')) ? input('val.end_date') : date('m/d/Y',time());?>
+                            <div class="form-group">
+                                <input autocomplete="off"  class="form-control" id="startDate" name="val[from_date]" value="<?php echo $from ?>" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input autocomplete="off" class="form-control" id="endDate" name="val[end_date]" value="<?php echo $end; ?>" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button class="btn btn-info btn-sm" id="refresh-aff-stat"><?php echo lang("affliate::view-chart"); ?></button>
+                        </div>
+                    </div>
+                </form>
+                </div>
+                <hr/>
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <a id="line-chart-menu" class="btn btn-block btn-info" href="#"><?php echo lang("affliate::line-chart"); ?></a>
+                    </div>
+                    <div class="col-sm-6">
+                        <a id="pie-chart-menu" class="btn btn-block btn-secondary" href="#"><?php echo lang("affliate::pie-chart"); ?></a>
+                    </div>
+                </div>
+
+                <div class="chart-tins">
+                    <div class="indicator" ><img src="<?php echo img('images/loading.gif')?>"/></div>
+                    <div class="linchart">
+                        <canvas id="canvas"></canvas>
+                    </div>
+                    <div class="piechart" style="display:none">
+                        <canvas id="canvasTwo"></canvas>
+                    </div>
+
+                </div>
+                <?php
+                $result = get_array_stat($from,$end);
+                $format = format_stat_data($result['arr'],$result['period']);
+
+                //pie
+                $pr = get_array_stat($from,$end,'any','pie'); //pie result;
+                ?>
+                <input type="hidden" id="json_encode" value='<?php echo json_encode($format); ?>' />
+                <input type="hidden" id="label-encode" value='<?php echo get_lable_encoded(); ?>' />
+                <input type="hidden" id="p-data" value='<?php echo get_pie_data_encoded($pr['arr']); ?>' />
+                <input type="hidden" id="p-color" value='<?php echo get_color_encoded(); ?>' />
+                <input type="hidden" id="json_encode_date" value='<?php echo json_encode($result['period']); ?>' />
+                <input type="hidden" id="chartTitle" value='<?php echo lang("affliate::earning-statistics") ?>' />
+                <input type="hidden" id="chartTime" value='<?php echo lang("affliate::time"); ?>' />
+                <input type="hidden" id="pointEarned" value='<?php echo lang("affliate::points-earned"); ?>' />
+            </div>
+        </div>
+    </div>
+</div>

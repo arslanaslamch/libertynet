@@ -1,0 +1,16 @@
+<?php
+/**
+ * @var array $livestream
+ */
+?>
+<div>
+    <form method="post" action="<?php echo url_to_pager('admin-livestream-delete') ?>?id=<?php echo $livestream['id'] ?>" class="livestream-form wrapper-form">
+        <div class="alert-warning"><?php echo lang('livestream::livestream-delete-confirm', array('title' => $livestream['title'])) ?></div>
+        <input type="hidden" name="confirm" value="1" />
+        <div class="form-group row submit">
+            <div class="col-md-12">
+                <input type="submit" value="<?php echo lang('livestream::delete') ?>" class="btn btn-lg btn-info" />
+            </div>
+        </div>
+    </form>
+</div>

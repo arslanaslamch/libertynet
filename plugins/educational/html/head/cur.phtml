@@ -1,0 +1,24 @@
+<form id="book-list-search" method="post" onsubmit="return run_global_filter()" action="" class="form-inline list-search">
+    <?php CSRFProtection::embed() ?>
+    <input type="hidden" class="filter-input form-control" data-name="type" value="<?php echo input('type', 'all') ?>"/>
+    <i class="search-icon ion-ios-search"></i>
+    <input value="<?php echo input('term') ?>" type="text" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>"/>
+</form>
+<div class="list-head">
+    <h3 class="heading"><?php echo lang('educational::books'); ?></h3>
+</div>
+<div class="filter-pane">
+    <select id="video-category-list" onchange="return run_global_filter()" data-name="category" class="c-select filter-input" >
+        <option <?php echo (input('category', 'all') == 'all') ? 'selected'  : null?>  value="all"><?php _lang('educational::all-categories')?></option>
+        <?php foreach($edu->get_categories() as $category):?>
+            <option <?php echo (input('category', 'all') == $category['id']) ? 'selected'  : null?> value="<?php echo $category['id']?>"><?php _lang($category['title'])?></option>
+        <?php endforeach?>
+
+    </select>
+    <select id="video-filter-select" onchange="return run_global_filter()" data-name="filter" class="c-select filter-input">
+        <option value="all"><?php _lang('all')?></option>
+        <option <?php echo (input('filter') == 'featured') ? 'selected' : null?> value="featured"><?php _lang('featured')?></option>
+        <option <?php echo (input('filter') == 'top') ? 'selected' : null?> value="top"><?php _lang('educational::top-views')?></option>
+        <option <?php echo (input('filter') == 'downloads') ? 'selected' : null?> value="featured"><?php _lang('educational::top-downloads')?></option>
+    </select>
+</div>

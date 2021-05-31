@@ -1,0 +1,51 @@
+<?php $week = array('SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI', 'SAT') ?>
+<?php if($event): ?>
+    <?php $event = arrange_event($event); ?>
+    <div class="event-feed-content">
+        <div class="item">
+            <div class="thumb">
+                <img class="image" src="<?php echo get_event_logo($event) ?>" alt="<?php echo $event['event_title'] ?> "/>
+                <?php if(isset($event['featured']) && $event['featured']): ?>
+                    <div class="featured">
+                        <i class="ion-ios-star-outline"></i>
+                    </div>
+                <?php endif ?>
+                <div class="top">
+                    <div class="left">
+                        <div class="date"><?php echo get_event_date($event)." ".get_event_date($event, 'day', 'd') ?></div>
+                        <div class="weekday"><?php echo $week[get_event_date($event, 'day', 'w')]; ?></div>
+                    </div>
+                    <div class="right">
+                        <div class="time"><?php echo date('h A', $event['start_time']) ?></div>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <a href="<?php echo event_url(null, $event) ?>" ajax="true" class="title"><?php echo $event['event_title'] ?></a>
+                    <div class="location">
+                        <i class="ion-ios-location"></i>
+                        <?php echo $event['address'].', '.$event['location'] ?>
+                    </div>
+                </div>
+            </div>
+            <div class="details">
+                <div class="top row">
+                    <div class="going col-sm-6"><?php echo manage_interested(count_event_going($event['event_id'])) ?></div>
+                    <?php if(is_loggedIn() && $event['user_id'] != get_userid()): ?>
+                        <div class="rsvp col-sm-6">
+                            <label><?php echo lang('event::rsvp') ?>:</label>
+                            <select onchange="event_rsvp(this, '<?php echo $event['event_id'] ?>')" data-id="" class="c-select">
+                                <?php $value = get_event_my_rsvp($event['event_id']) ?>
+                                <option <?php echo ($value == 0) ? 'selected' : null ?> value="0"><?php echo lang('event::not-going') ?></option>
+                                <option <?php echo ($value == 1) ? 'selected' : null ?> value="1"><?php echo lang('event::going') ?></option>
+                                <option <?php echo ($value == 2) ? 'selected' : null ?> value="2"><?php echo lang('event::maybe') ?></option>
+                            </select>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="actions">
+                    <span class="event-social-share"><?php if(plugin_loaded('sharer')) echo view('sharer::share_link', array('link' => url('event/'.$event['event_id']))) ?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

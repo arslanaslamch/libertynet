@@ -1,0 +1,219 @@
+<?php if (isset($app->profileUser)): ?>
+	<div class="box ">
+        <?php $id = $app->profileUser['id']; ?>
+        <div class="box-content">
+			<div class='profile-title'>
+				<i class="profile-background-icons"></i>
+				<div class="intro">
+					<span> <?php echo lang('intro') ?> </span>
+				</div>
+			</div>
+			<div id="container-id">
+			<?php if ($app->profileUser['bio'] && $app->profileUser['bio']): ?>
+				<div class="profile-bio">
+					<span> <?php echo output_text($app->profileUser['bio']) ?> </span>
+				</div>
+			<?php endif ?>
+				<div class='profile-m'>
+					<div class="profile-info-container">
+						<ul class="profile-list">
+						<?php $workplaces = getWorkExperience('work', 2, $id);  ?>
+						<?php foreach ($workplaces as $workplace): ?>
+							<li class="work">
+								<div class="clearfix">
+									<i class="profile-background-icons profile-widget-i"></i>
+									<div class="profile-list-content">
+										<span> <?php echo $workplace['position']?> at <?php echo $workplace['company']?> </span>
+									</div>
+								</div>
+							</li>
+						<?php endforeach ?>
+						<?php $colleges = getWorkExperience('college', 2, $id); ?>
+						<?php foreach ($colleges as $college): ?>
+							<li class="college">
+								<div class="clearfix">
+									<i class="profile-background-icons profile-widget-i"></i>
+									<div class="profile-list-content">
+										<span> <?php echo $college['graduated']?lang('graduated'): 'studying'?> <?php echo $college['concentrations']?> in <?php echo $college['school']?></span>
+									</div>
+								</div>
+							</li>
+						<?php endforeach ?>
+						<?php $colleges = getWorkExperience('high', 2, $id); ?>
+						<?php foreach ($colleges as $college): ?>
+							<li class="college">
+								<div class="clearfix">
+									<i class="profile-background-icons profile-widget-i"></i>
+									<div class="profile-list-content">
+										<span> <?php echo $college['present']?'': 'Went to'?>  <?php echo $college['school']?></span>
+									</div>
+								</div>
+							</li>
+						<?php endforeach ?>
+                            <li class="live">
+                                <div class="clearfix">
+                                    <i class="profile-background-icons profile-widget-i"></i>
+                                    <div class="profile-list-content">
+                                        <span> <?php echo lang('lives-in-city-country', array('city' => $app->profileUser['city'], 'country' => ucwords($app->profileUser['country']))) ?></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="from">
+                                <div class="clearfix">
+                                    <i class="profile-background-icons profile-widget-i"></i>
+                                    <div class="profile-list-content">
+                                        <span> <?php echo lang('from-city', array('city' => $app->profileUser['city'])) ?></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="joined">
+                                <div class="clearfix">
+                                    <i class="profile-background-icons profile-widget-i"></i>
+                                    <div class="profile-list-content">
+                                        <span> <?php echo lang('joined-on-date-of', array('weekday' => lang(strtolower(strftime('%A', strtotime($app->profileUser['join_date'])))), 'monthday' => strftime('%e', strtotime($app->profileUser['join_date'])), 'suffixmonthday' => date('S', strtotime($app->profileUser['join_date'])), 'month' => lang(strtolower(strftime('%B', strtotime($app->profileUser['join_date'])))), 'year' => strftime('%G', strtotime($app->profileUser['join_date'])), 'hour' => strftime('%I', strtotime($app->profileUser['join_date'])), 'minute' => strftime('%M', strtotime($app->profileUser['join_date'])), 'second' => strftime('%S', strtotime($app->profileUser['join_date'])), 'meridiem' => strftime('%p', strtotime($app->profileUser['join_date'])))); ?></span>
+                                    </div>
+                                </div>
+                            </li>
+							 <?php if (config('enable-last-seen', true) && $app->profileUser['online_time']): ?>
+							<li class="joined">
+								<div class="clearfix">
+									<i class="profile-background-icons profile-widget-i"></i>
+									<div class="profile-list-content">
+										<span> <?php echo lang('last-seen'); ?> <span style="margin-left:10px;color:grey !important"><span style="color:#ABACAD !important;font-weight:normal !important" class="timeago " title="<?php echo date('c', $app->profileUser['online_time']) ?>"><?php echo date('c', $app->profileUser['online_time']) ?></span></span><span class="online-status <?php echo get_online_status_icon($app->profileUser) ?>" style="margin: 0 0 0 5px !important;"> </span></span>
+									</div>
+								</div>
+							</li>
+							 <?php endif ?>
+							<li class="friend">
+								<div class="clearfix">
+									<i class="profile-background-icons profile-widget-i"></i>
+									<div class="profile-list-content">
+										<span> <?php $count = count(get_friends($app->profileUser['id'])); echo lang($count > 1 ? 'x-friends' : 'x-friend', array('count' => $count)) ?></span>
+									</div>
+								</div>
+							</li>
+							<li class="">
+								<div class="clearfix">
+									<i class=""></i>
+									<div class="profile-list-content">
+										<a class="btn" href="<?php echo profile_url('about', $app->profileUser) ?>" ajax="true"> <?php echo lang('more'); ?> </a>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<style>
+		.profile-list-content {
+			overflow: hidden;
+			font-size: 12px;
+			line-height: 16px;
+		}
+
+		.profile-widget-i {
+			background-size: auto;
+			background-repeat: no-repeat;
+			display: inline-block;
+			height: 16px;
+			width: 16px;
+			margin-right: 8px;
+			float: left;
+		}
+
+		.work .clearfix i {
+			background-position: 0 -145px;
+		}
+
+		.college .clearfix i {
+			background-position: 0 -230px;
+		}
+
+		.live .clearfix i {
+			background-position: 0 -213px;
+		}
+
+		.from .clearfix i {
+			background-position: 0 -247px;
+		}
+
+		.joined .clearfix i {
+			background-position: 0 -162px;
+		}
+
+		.friend .clearfix i {
+			background-position: -16px -193px;
+		}
+
+		.profile-list > li:first-child {
+			border-width: 0;
+		}
+
+		.profile-list > li {
+			position: relative;
+			display: block;
+			opacity: 1;
+			color: #1D2129;
+			padding: 8px 0px;
+			border-width: 1px 0 0 0;
+			transition: background-color 75ms ease-in-out, opacity .4s ease-in-out;
+		}
+
+		.profile-info-container .profile-list {
+			padding-top: 4px;
+			margin-top: 8px;
+		}
+
+		.profile-m {
+			margin-left: 12px;
+			margin-right: 12px;
+		}
+
+		.profile-title {
+			padding: 8px;
+		}
+
+		.profile-title i {
+			width: 24px;
+			height: 24px;
+			background-position: 0 -58px;
+			background-size: auto;
+			background-repeat: no-repeat;
+			display: inline-block;
+		}
+
+		.profile-background-icons {
+			background-image: url(<?php echo url_img('themes/default/images/icon_s.png') ?>);
+		}
+
+		.profile-title .intro {
+			display: inline-block;
+			margin-left: 4px;
+			vertical-align: text-bottom;
+		}
+
+		.profile-title .intro span {
+			font-size: 16px;
+			line-height: 20px;
+			font-weight: 500;
+		}
+
+		#container-id .profile-bio {
+			position: relative;
+			color: #1d2129;
+			font-size: 12px;
+			line-height: 16px;
+			padding: 8px;
+			white-space: pre-wrap;
+		}
+
+		#container-id .profile-m .profile-info-container {
+			position: relative;
+			border-top: 1px solid #ebedf0;
+			margin-bottom: 8px;
+			margin-top: 4px;
+		}
+	</style>
+<?php endif ?>

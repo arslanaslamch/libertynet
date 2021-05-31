@@ -1,0 +1,23 @@
+<div class="box">
+    <div class="title"><?php echo fire_hook('profile.video.title', lang('video::videos')) ?></div>
+    <div class="video-list">
+        <div class="body">
+            <div class="listings">
+                <div class="listing row">
+                    <?php foreach($videos->results() as $video): ?>
+                        <div class="col-md-6">
+                            <?php echo view('video::video', array('video' => $video)) ?>
+                        </div>
+                    <?php endforeach ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-content">
+        <?php if(!$videos->total): ?>
+            <div class="alert alert-info"><?php echo lang('video::no-video-found') ?></div>
+        <?php else: ?>
+            <?php echo $videos->append(array('category' => input('category'), 'term' => input('term'), 'type' => 'user-profile'))->links(); ?>
+        <?php endif ?>
+    </div>
+</div>

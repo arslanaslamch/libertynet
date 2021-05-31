@@ -1,0 +1,29 @@
+<div class="wrapper">
+	<div class="wrapper-title"><?php echo lang('feed::manage-lists') ?>  </div>
+	<div class="wrapper-content">
+		<form method="post" action="" enctype="multipart/form-data" class="wrapper-form">
+			<?php CSRFProtection::embed() ?>
+			<?php if($message): ?>
+				<div class="alert alert-danger"><?php echo $message ?></div>
+			<?php endif ?>
+			<div class="form-group row">
+				<label class="col-sm-3 form-control-label"><?php echo lang('title') ?></label>
+				<div class="col-sm-9">
+					<?php foreach(get_all_languages() as $language): ?>
+						<input value="<?php echo get_phrase($language['language_id'], $list['title']) ?>" class="form-control" type="text" name="val[title][<?php echo $language['language_id'] ?>]" placeholder="<?php echo lang('title') ?>"/>
+						<br>
+						<p class="help-block"><?php echo $language['language_title'] ?></p>
+					<?php endforeach ?>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-3 form-control-label"><?php echo lang('Icon') ?></label>
+				<div class="col-sm-9">
+					<input type="text" name="val[icon]" class="form-control" placeholder="Icon (awesome/ionicon icons only)" value="<?php echo $list['icon']; ?>" />
+					<p class="form-description"><?php echo lang('feed::create-list-icon-desc') ?> </p>
+				</div>
+			</div>
+			<button class="btn btn-info"><?php echo lang('save') ?></button>
+		</form>
+	</div>
+</div>

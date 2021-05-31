@@ -1,0 +1,154 @@
+<div class="wrapper">
+    <div class="wrapper-title"><?php echo lang("edit"); ?>
+    <p><a class="btn btn-secondary" href="<?php echo url_to_pager("admincp-books"); ?>"> <i class="ion-android-arrow-back"></i> Go Back</a></p>
+    </div>
+    <div class="wrapper-content">
+        <div class="container">
+            <div class="form-roller-donation">
+                <?php if($message): ?>
+                    <?php echo view("donation::alert",array('message'=>$message)); ?>
+                <?php endif; ?>
+                <form class="form" action="" method="post" enctype="multipart/form-data">
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="title"><b><?php echo lang("educational::title") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input id="title" type="text" name="val[title]" value="<?php echo input('val.title') ? input('val.title') : $book['title'];  ?>"  class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label><b><?php echo lang("educational::description") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <textarea class="form-control" name="val[description]"><?php echo input('val.description') ? input('val.description') : $book['description']; ?></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="don-category"><b><?php echo lang("educational::category") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <?php $don = Educational::getInstance(); ?>
+                            <select id="don-category" name="val[category]" class="form-control">
+                                <?php foreach($don->get_categories() as $category): ?>
+                                    <option <?php echo ($category['id'] == $book['category']) ? 'selected' : '' ; ?> value="<?php echo $category['id']; ?>"><?php echo lang($category['title']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <?php /*if(config('enable-book-purchase',0)): */?><!--
+                        <div class="form-group row">
+                            <div class="col-sm-5">
+                                <label><b><?php /*echo lang("educational::do-you-want-to-sell-your-book"); */?></b></label>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="c-inputs-stacked">
+                                    <label class="c-input c-radio">
+                                        <input checked name="val[type]" value="1" type="radio">
+                                        <span class="c-indicator"></span>
+                                        <?php /*_lang('yes')*/?>
+                                    </label>
+                                    <label class="c-input c-radio">
+                                        <input name="val[type]" value="0" type="radio">
+                                        <span class="c-indicator"></span>
+                                        <?php /*_lang('no')*/?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-5">
+                                <label><b><?php /*echo lang("educational::price"); */?></b></label>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" name="val[price]" value="<?php /*echo input('val.price') */?>"  class="form-control" />
+                            </div>
+                        </div>
+                    --><?php /*endif; */?>
+
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="photo"><b><?php echo lang("donation::photo") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input id="photo" accept="image/*" type="file" name="photo" class="form-control" />
+                            <br/>
+                            <img src="<?php echo url_img($book['image'],600); ?>" style="height : 50px;width:50px" />
+                            <input type="hidden" name="val[photo]" value="<?php echo $book['image'] ?>" />
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label><b><?php echo lang("educational::change-book"); ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input  type="file" name="book" class="form-control" />
+                            <input type="hidden" name="val[book]" value="<?php echo $book['book']; ?>" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label><b><?php echo lang("educational::genre"); ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input type="text" name="val[genre]" value="<?php echo input('val.genre') ? input('val.genre') : $book['genre']; ?>"  class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label><b><?php echo lang("educational::author"); ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input type="text" name="val[author]" value="<?php echo input('val.author') ? input('val.author') : $book['author']; ?>"  class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label><b><?php echo lang("educational::book-privacy"); ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <select name="val[privacy]" class="form-control">
+                                <option <?php echo ($book['privacy'] == 1) ? 'selected' : ''; ?> value="1"><?php echo lang("educational::everyone") ?></option>
+                                <option <?php echo ($book['privacy'] == 2) ? 'selected' : ''; ?> value="2"><?php echo lang("educational::friends-and-followers") ?></option>
+                                <option <?php echo ($book['privacy'] == 3) ? 'selected' : ''; ?> value="3"><?php echo lang("educational::only-me") ?></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label><b><?php echo lang("educational::who-can-comment"); ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <select name="val[comment]" class="form-control">
+                                <option <?php echo ($book['comment'] == 1) ? 'selected' : ''; ?> value="1"><?php echo lang("educational::everyone") ?></option>
+                                <option <?php echo ($book['comment'] == 2) ? 'selected' : ''; ?> value="2"><?php echo lang("educational::friends-and-followers") ?></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label><b><?php echo lang("featured"); ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <select name="val[featured]" class="form-control">
+                                <option <?php echo ($book['featured'] == 1) ? 'selected' : ''; ?> value="1"><?php echo lang("yes") ?></option>
+                                <option <?php echo ($book['featured'] == 0) ? 'selected' : ''; ?> value="0"><?php echo lang("no") ?></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <button type="submit" class="btn btn-info"><?php echo lang("save"); ?></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

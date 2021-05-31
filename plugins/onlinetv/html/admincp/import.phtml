@@ -1,0 +1,27 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo "Import Tv "; ?>
+
+    </div>
+    <div class="wrapper-content">
+        <?php if($message): ?>
+        <div class="alert alert-info">
+            <?php echo $message; ?>
+        </div>
+        <?php endif; ?>
+        <div class="row">
+            <div class="col-sm-4">
+                <a href="<?php echo url_to_pager("import-tv") . '?action=radios&type=add'; ?>"
+                   class="btn btn-lg btn-block btn-info">Import Tv</a>
+            </div>
+            <div class="col-4"></div>
+            <div class="col-sm-4">
+                <a href="<?php echo url_to_pager("import-tv") . '?action=radios&type=delete'; ?>"
+                   class="admin-confirm btn btn-lg btn-block btn-danger">Delete Imported Tv</a>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+    </div>
+</div>

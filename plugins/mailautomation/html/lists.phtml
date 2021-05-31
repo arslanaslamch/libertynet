@@ -1,0 +1,88 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+
+        <a href="" class="btn btn-secondary" onclick="return show_other_languages('.form-mailautomation')" ><i class="ion-search"></i> <?php echo lang("mailautomation::search-automation"); ?></a>
+        <a href="" class="btn btn-secondary" onclick="return show_other_languages('#cron-url')" ><i class="ion-eye"></i> <?php echo lang("mailautomation::show-cron-job-url"); ?></a>
+        <a href="<?php echo url_to_pager("admincp-mail-automations-stats"); ?>" class="btn btn-secondary" ><i class="ion-pie-graph"></i> <?php echo lang("mailautomation::stats"); ?></a>
+        <a href="<?php echo url_to_pager('admincp-mail-automations-manage').'?action=send-high'; ?>"
+           title="<?php echo lang("mailautomation::send-hightlight-to").' : '.get_user_data('email_address'); ?>"
+           class="btn btn-secondary" ><i class="ion-android-send"></i> <?php echo lang("mailautomation::send-me-highlights-now"); ?></a>
+        <a href="<?php echo url_to_pager("admincp-mail-automations-add"); ?>" class="btn btn-danger" ><i class="ion-plus"></i> <?php echo lang("add"); ?></a>
+        <span class="pull-right"><b><?php echo lang("mailautomation::manage-all-mail-automations"); ?></b></span>
+    </div>
+    <div class="wrapper-content">
+        <?php if(input('type') == 'preview-success'): ?>
+        <div class="alert alert-info"><?php echo lang("mailautomation::mail-sent-successfully-to").' : <b>'.get_user_data('email_address').'</b>'; ?></div>
+        <?php endif; ?>
+
+        <?php if(input('type') == 'hight-success'): ?>
+        <div class="alert alert-info"><?php echo lang("mailautomation::highlight-sent-successfully-to").' : <b>'.get_user_data('email_address').'</b>'; ?></div>
+        <?php endif; ?>
+        <form class="form-mailautomation" action="" method="get" style="margin: 20px 0; display:none">
+            <?php CSRFProtection::embed() ?>
+            <input autocomplete="off" type="text" class="form-control" name="term" placeholder="<?php echo lang('search') ?>"/>
+
+            <button class="btn btn-sm btn-secondary" style="margin-top: 10px"><?php echo lang('search') ?></button>
+        </form>
+        <div style="display:none" id="cron-url">
+            <p><b> HighLights CRON JOB URL : </b> <span><?php echo url_to_pager("mail-automation-service") ?></span></p>
+            <p><b> Mail Automation CRON JOB URL : </b> <span><?php echo url_to_pager("mail-automation-service-auto") ?></span></p>
+            <p>
+                <b> RECOMMENDATION </b><br/>
+                <?php echo lang("mailautomation::recommended-cron-job"); ?>
+            </p>
+            <span> Need Help ? Contact LightedPHP Suport at <em> support@lightedphp.com </em> or open a support ticket on your <em><a target="_blank" href="<?php echo "https://lightedphp.com/dashboard"; ?>">Dashboard</a></em></span>
+        </div>
+        <div class="list-table-container">
+            <div class="table-responsive">
+                <table class="table table-striped list-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th style="width: 30%"><?php echo lang('title') ?></th>
+                        <th style="width: 30%"><?php echo lang('mailautomation::number-of-inactive-days-to-send-mail') ?></th>
+                        <th style="width: 35%"><?php echo lang('actions') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php if($autos->total): ?>
+                    <?php foreach($autos->results() as $a): ?>
+                        <tr class="item">
+
+                            <td><?php echo $a['id']; ?></td>
+                            <td>
+                                <?php echo $a['title'] ?>
+                            </td>
+
+                            <td>
+                                <?php echo $a['na_count'] ?>
+                            </td>
+
+                            <td>
+                                <a href="<?php echo url_to_pager('admincp-mail-automations-manage').'?action=send-preview&id='.$a['id']; ?>"
+                                   class="btn-sm btn btn-primary"
+                                   style="color:#fff;text-decoration: none"
+                                   title="<?php echo lang("mailautomation::send-preview-mail").' : '.get_user_data('email_address'); ?>">
+                                    <?php echo lang("mailautomation::send-preview-mail"); ?> <i class="ion-android-send"></i></a>
+                                        <a  style="color:#fff;text-decoration: none" class="btn btn-sm btn-secondary ion-edit" href='<?php echo url_to_pager('admincp-mail-automations-manage').'?action=edit&id='.$a['id'] ?>'> Edit  </a>
+                                        <a style="color:#fff;text-decoration: none" class=" btn btn-sm btn-danger admin-confirm ion-android-delete" href="<?php echo url_to_pager('admincp-mail-automations-manage').'?action=delete&id='.$a['id'] ?>"> Delete </a>
+
+                                </div>
+                            </td>
+
+
+                        </tr>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                    <tr>
+                        <td colspan="7"><span class="text-info"><?php echo lang("mailautomation::no-automation-found"); ?></span></td>
+                    </tr>
+                    <?php endif; ?>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <?php echo $autos->links() ?>
+    </div>
+</div>

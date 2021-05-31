@@ -1,0 +1,23 @@
+<div class="wrapper">
+	<div class="wrapper-title"><?php echo lang('ranker::manage-ranks') ?>  </div>
+	<div class="wrapper-content">
+		<form method="post" action="" enctype="multipart/form-data" class="wrapper-form">
+			<?php CSRFProtection::embed() ?>
+			<?php if($message): ?>
+				<div class="alert alert-danger"><?php echo $message ?></div>
+			<?php endif ?>
+			<div class="form-group row">
+				<label class="col-sm-3 form-control-label"><?php echo $range['range'] ?></label>
+				
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-3 form-control-label"><?php echo lang('Caption') ?></label>
+				<div class="col-sm-9">
+					<input value="<?php echo $range['caption'] ?>" type="text" class="form-control" name="val[caption]" placeholder="<?php echo lang('Caption') ?>"/>
+				</div>
+			</div>
+
+			<button class="btn btn-info"><?php echo lang('ranker::save') ?></button>
+		</form>
+	</div>
+</div>

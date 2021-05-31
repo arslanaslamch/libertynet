@@ -1,0 +1,36 @@
+<?php echo view("affliate::tm"); ?>
+<div class="box">
+    <div class="title"><?php echo lang("affliate::commision-rules"); ?></div>
+    <div class="box-content">
+        <div class="container" id="table-comission-rule">
+            <div class="form-group">
+                <label><b><?php echo lang("affliate::user-roles"); ?> : </b></label>
+                <select class="form-control" onchange="return change_user_commsion_rules(this)">
+                    <?php $userRole = 2;?>
+                    <?php foreach(list_user_roles() as $role):?>
+                        <option <?php echo ($role['role_id'] == $userRole) ? 'selected' : null?> value="<?php echo $role['role_id']?>"><?php echo $role['role_title']?></option>
+                    <?php endforeach?>
+                </select>
+            </div>
+            <div class="form-group">
+
+                <table class="table table-bordered" >
+                    <thead>
+                        <tr>
+                            <th style="width:20%"><?php echo lang('affliate::payment-types'); ?></th>
+                            <?php $levels = config('number-of-commision-levels',5); ?>
+                            <?php for($i =1; $i <= $levels; $i++): ?>
+                            <th><?php echo lang('affliate::level').' '.$i; ?></th>
+                            <?php endfor; ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    <?php echo view("affliate::commission-row"); ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="indicator" ><img src="<?php echo img('images/loading.gif')?>"/></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,117 @@
+<div class="box">
+    <div class="photo-list">
+        <div class="head">
+            <div class="cover" style="background-image: url(<?php echo url_img(config('photo-list-cover', 'plugins/photo/images/cover.jpg'), 920); ?>)">
+                <div class="title"><?php echo lang('photo::photos') ?></div>
+                <div class="actions">
+                    <?php if(is_loggedIn()): ?>
+                        <form data-error="Something went wrong. try again" action="" method="post" enctype="multipart/form-data">
+                            <?php CSRFProtection::embed() ?>
+                            <span class="file-input"><input onchange="upload_photos(this)" multiple type="file" accept="image/*" id="photo-upload-input" name="photos[]" style="position: absolute; cursor:pointer; width: 100%; height: 100%; opacity: 0; z-index: 10; display: none"/></span>
+                        </form>
+                        <a href="<?php echo url_to_pager('photo-create') ?>" class="btn btn-info action-button" onclick="return file_chooser('#photo-upload-input')">
+                            <i class="ion-plus"></i>
+                            <?php echo lang('photo::add-photos') ?>
+                        </a>
+                        <a href="#" class="btn btn-info action-button" data-toggle="modal" data-target="#photo-modal">
+                            <i id="urlLink" class="ion-android-upload"></i><span>
+                        </a>
+                        <div class="modal modal-photo" tabindex="-1" role="dialog" id="photo-modal" aria-hidden="true" aria-labelledby="photo">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="modal-title"><?php echo lang("photo::url-image-upload") ?></h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="photo-modal-error"></div>
+                                        <div class="indicatorUrl" style="display: none">
+                                            <img src="<?php echo img('images/loading.gif') ?>"/> <?php echo lang('photo::uploading') ?>
+                                            <span>0%</span>
+                                        </div>
+                                        <div class="indicatorUrlFilter" style="display: none">
+                                            <?php echo lang('photo::initiating-filter') ?>
+                                        </div>
+                                        <div class="form-photo">
+                                            <input name="urlLink" id="urlLink" class="form-control urlLink" type="text" placeholder="<?php echo lang('photo::url-image-upload') ?>"/>
+                                        </div>
+                                        <div class="form-photo">
+                                            <button onclick="return uploadUrlImage()" id="urlLinkButton" class="form-control btn btn-primary urlLinkButton" type="submit"> Upload</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif ?>
+                </div>
+                <div class="links">
+                    <div class="link <?php echo segment(0) === 'photos' ? 'active' : '' ?>">
+                        <a ajax="true" href="<?php echo url_to_pager('photo') ?>"><?php echo lang('photo::all-photos') ?></a>
+                    </div>
+                    <?php if(is_loggedIn()): ?>
+                        <div class="link <?php echo segment(0) === 'photo' && segment(1) === 'myphotos' ? 'active' : '' ?>">
+                            <a ajax="true" href="<?php echo url_to_pager('photo-myphotos') ?>"><?php echo lang('photo::my-photos') ?></a>
+                        </div>
+                    <?php endif ?>
+                    <div class="link <?php echo segment(0) === 'photo' && segment(1) === 'albums' ? 'active' : '' ?>">
+                        <a ajax="true" href="<?php echo url_to_pager('photo-albums') ?>"><?php echo lang('photo::all-albums') ?></a>
+                    </div>
+                    <div class="link <?php echo segment(0) === 'photo' && segment(1) === 'myalbums' ? 'active' : '' ?>">
+                        <a ajax="true" href="<?php echo url_to_pager('photo-myalbums') ?>"><?php echo lang('photo::my-albums') ?></a>
+                    </div>
+                    <?php foreach(get_menus('photo-menu') as $menu): ?>
+                        <div class="link">
+                            <a ajax="true" href="<?php echo $menu->title ?>"><?php echo lang($menu->title) ?></a>
+                        </div>
+                    <?php endforeach ?>
+                    <?php echo fire_hook('more.photo.menu');?>
+                </div>
+            </div>
+        </div>
+        <div id="photos-list-container" class="box box-content clearfix list-listing-container">
+            <div id="photos-list" class="photos-list photo-directory" data-type="all" data-offset="0" style="margin: 0px;box-shadow: 0px 0px 0px #FFFFFF;border-radius: 0px;border: none;">
+                <div class="indicator">
+                    <img src="<?php echo img('images/loading.gif') ?>"/> <?php echo lang('photo::uploading') ?>
+                    <span>0%</span>
+                </div>
+                <?php foreach($photos as $photo): ?>
+                    <?php $user = find_user($photo['user_id']); $username = $user['username']; $first_name = $user['first_name']; $last_name = $user['last_name']; $user_name = "$first_name $last_name"; $user_name = trim($user_name) == '' ? $username : $user_name; ?>
+                    <div class="photo">
+                        <a data-image="<?php echo url_img($photo['path'], 920) ?>" data-id="<?php echo $photo['id'] ?>" class="image photo-viewer" style="background-image:url(<?php echo url_img($photo['path'], 600) ?>)" href=""></a>
+                        <div class="stat">
+                            <?php if(plugin_loaded('like')): ?>
+                                <div class="like">
+                                    <i class="fa fa-thumbs-o-up icon"></i>
+                                    <span class="like-count-photo-<?php echo $photo['id'] ?> value"><?php echo count_likes('photo', $photo['id']) ?></span>
+                                </div>
+                                <?php if(config('enable-dislike', false)): ?>
+                                    <div class="dislike">
+                                        <i class="fa fa-thumbs-o-down icon"></i>
+                                        <span class="dislike-count-photo-<?php echo $photo['id'] ?> value"><?php echo count_dislikes('photo', $photo['id']) ?></span>
+                                    </div>
+                                <?php endif ?>
+                            <?php endif ?>
+                            <?php if(plugin_loaded('comment')): ?>
+                                <?php load_functions('comment::comment') ?>
+                                <?php $comment_count = count_comments('photo', $photo['id']); ?>
+                                <div class="comment">
+                                    <i class="fa fa-comments-o icon"></i>
+                                    <span class="comment-count-photo-<?php echo $photo['id'] ?> value"><?php echo $comment_count ?></span>
+                                </div>
+                            <?php endif ?>
+                        </div>
+                    </div>
+                <?php endforeach ?>
+                <div class="indicator">
+                    <img src="<?php echo img('images/loading.gif') ?>"/> <?php echo lang('photo::uploading') ?>
+                    <span>0%</span>
+                </div>
+            </div>
+            <a id="photos-list-indicator" href="" onclick="return paginate_album_photos()" class="title" style="display: block;text-align: center"><?php echo lang('view-more') ?>
+                <img src="<?php echo img('images/loading.gif') ?>" style="width: 10px;display: none"/>
+            </a>
+        </div>
+    </div>
+</div>

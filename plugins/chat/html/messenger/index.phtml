@@ -1,0 +1,151 @@
+
+<?php $user = $userid ? find_user($userid, false) : null; ?>
+<div class="messenger">
+    <div class="conversations-list toggle-target <?php echo isMobile() && is_numeric(input('cid')) ? '' : 'toggle-target-active' ?>">
+        <div class="head">
+            <a href="#!" data-toggle="modal" data-target="#chat-setting-modal" class="setting-button"><i class="ion-android-settings"></i></a>
+            <div class="title"><?php echo lang('chat::site-chat', array('site-title' => config('site_title' , 'Crea8social'))) ?></div>
+            <a href="#!" class="close-button toggle-button" data-toggle-target-selector=".conversations-list"><i class="ion-close"></i></a>
+            <a href="<?php echo url_to_pager('messages') ?>?cid=new" ajax="true" class="new-button"><i class="ion-compose"></i></a>
+        </div>
+        <div class="search">
+            <i class="icon search-icon ion-ios-search"></i>
+            <input type="search" placeholder="Search Messenger" class="conversations-search-input search-input" />
+        </div>
+        <div class="conversations-list-items conversation-list paginate slimscroll" data-height="calc(100% - 96px)" data-offset="<?php echo $conversations_limit ?>" data-limit="<?php echo $conversations_limit ?>" data-entity_type='user' data-entity_id="<?php echo get_userid() ?>" data-cid="<?php echo $cid ?>" data-loading="0" data-status="1" data-term="">
+            <?php echo view('chat::messenger/conversations-list-items', array('conversations' => $conversations, 'cid' => $cid)) ?>
+        </div>
+    </div>
+    <div id="message-right-pane" class="conversation conversation-<?php echo $cid ?> message-box-<?php echo $cid ?>">
+        <form id="message-chat-form" enctype="multipart/form-data" action="" method="post" onsubmit="return false">
+            <div class="head">
+                <?php echo view('chat::messenger/conversation-head', array('conversation' => $conversate, 'cid' => $cid, 'user' => $user)) ?>
+            </div>
+            <div class="messaging toggle-target <?php echo isMobile() ? '' : 'toggle-target-active' ?>">
+                <div class="info <?php echo $conversate ? ($conversate['type'] === 'single' ? 'single' : 'multiple') : null; ?>">
+                    <?php echo view('chat::messenger/conversation-messaging-info', array('conversation' => $conversate, 'user' => $user)) ?>
+                </div>
+                <div id="messages-pane-<?php echo $cid ?>" class="messages messages-pane" data-sending="<?php echo lang('chat::sending') ?>" data-offset="0">
+                    <?php if ($conversate): ?>
+                        <?php if ($messageContent): ?>
+                            <?php echo $messageContent ?>
+                        <?php endif ?>
+                    <?php endif ?>
+                </div>
+                <div class="editor">
+                    <?php CSRFProtection::embed() ?>
+                    <input type="hidden" name="val[cid]" id="message-cid-input" value="<?php echo $cid == 'new' ? '' : $cid ?>" />
+                    <input type="hidden" name="val[entity_type]" value="user" />
+                    <input type="hidden" name="val[entity_id]" value="<?php echo get_userid() ?>" />
+                    <textarea id="message-editor-textarea" name="val[message]" class="message-input" placeholder="<?php echo lang('chat::type-a-message') ?>"></textarea>
+                    <div class="actions">
+                        <?php if (config('enable-chat-voice-message', 1)): ?>
+                            <div href="#!" class="chat-editor-voice-recorder voice-recorder action">
+                                <input name="voice" type="hidden" value="" class="voice-input" />
+                                <a href="#!" class="control">
+                                    <i class="icon ion-mic-a record"></i>
+                                    <i class="icon ion-stop stop"></i>
+                                </a>
+                                <div class="actions">
+                                    <a class="icon ion-close close" href="#!"></a>
+                                    <a class="icon ion-play play" href="#!"></a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (plugin_loaded('emoticons')): ?>
+                            <div style="position: relative;" class="action">
+                                <div class="emoticon-box emoticon-bottom"></div>
+                                <a data-target="message-editor-textarea" data-action="1" title="<?php echo lang('emoticons::add-emoticons') ?>" class="emoticon-button" href="javascript::void(0)">
+                                    <i class="icon ion-android-sad emo-button"></i>
+                                </a>
+                            </div>
+                            <a href="#!" class="chat-gif-selector gif-selector action">
+                                <i class="icon gif-icon"></i>
+                                <div class="chat-gif-box gif-box" data-callback="Chat.onGIFClick">
+                                    <div class="gif-box-head">
+                                        <span><?php echo lang('gif') ?></span>
+                                        <i class="gif-box-close-button ion-close"></i>
+                                    </div>
+                                    <div class="gif-box-body">
+                                        <input type="text" class="form-control chat-gif-search-input gif-search-input" placeholder="<?php echo lang('gif-search') ?>" />
+                                        <div class="gif-search-result"></div>
+                                    </div>
+                                    <div class="gif-box-arrow"></div>
+                                    <input name="gif" type="hidden" value="" class="chat-gif-input gif-input" />
+                                </div>
+                            </a>
+                        <?php endif; ?>
+                        <div class="action">
+                            <a onclick="return file_chooser('#chat-message-image-input')" href="#!">
+                                <i class=" icon ion-image"></i>
+                            </a>
+                            <span class="file-input"><input onchange="chat_message_upload()" type="file" id="chat-message-image-input" name="image" /></span>
+                        </div>
+                        <div class="action">
+                            <a href="#!" onclick="return file_chooser('#chat-message-file-input')">
+                                <i class="icon ion-android-attach"></i>
+                            </a>
+                            <span class="file-input"><input onchange="chat_message_upload()" type="file" id="chat-message-file-input" name="file" /></span>
+                        </div>
+                        <?php $privacy = get_privacy('chat-send-button', false) ?>
+                        <a id="chat-send-button" href="#!" class="action send-button" style="<?php echo $privacy ? '' : 'display: none' ?>">
+                            <i class="icon send-icon" data-content="<?php echo lang('chat::send') ?>"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="info <?php echo $conversate ? ($conversate['type'] === 'single' ? 'single' : 'multiple') : null; ?>">
+                <?php echo view('chat::messenger/conversation-info', array('conversation' => $conversate, 'cid' => $cid)) ?>
+            </div>
+        </form>
+    </div>
+    <div class="modal fade" id="chat-setting-modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-form-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title"><?php echo lang('chat::chat-setting') ?></p>
+                </div>
+                <div class="modal-body">
+                    <div class="row account">
+                        <div class="col-md-4">
+                            <label><?php echo lang('chat::account') ?></label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="avatar">
+                                <img src="<?php echo get_avatar(200) ?>" />
+                            </div>
+                            <div class="name"><?php echo get_user_name() ?></div>
+                        </div>
+                    </div>
+                    <div class="row send">
+                        <div class="col-md-4">
+                            <label><?php echo lang('chat::send-button') ?></label>
+                        </div>
+                        <div class="col-md-8">
+                            <?php $privacy = get_privacy('chat-send-button', false) ?>
+                            <span class="input"><input id="chat-send-input" onchange="switch_chat_send_button(this)" type="checkbox" name="" <?php echo (!$privacy) ? 'checked' : null ?>> <?php echo lang('chat::press-enter-to-send') ?></span>
+                        </div>
+                    </div>
+                    <div class="row status">
+                        <div class="col-md-4">
+                            <label><?php echo lang('chat::active-status') ?></label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="dropdown">
+                                <a href="#!" data-toggle="dropdown" class="dropdown-button">
+                                    <span class="online-status online-status-color online-status-color-<?php echo get_userid() ?> <?php echo get_online_status_icon() ?>"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-left">
+                                    <li><a href="#!" class="dropdown-item online-status-change-button" data-id="0" data-user-id="<?php echo get_userid() ?>" data-class="online-icon"><span class="online-status online-icon"></span><?php echo lang('chat::online') ?></a></li>
+                                    <li><a href="#!" class="dropdown-item online-status-change-button" data-id="1" data-user-id="<?php echo get_userid() ?>" data-class="busy-icon"><span class="online-status busy-icon"></span><?php echo lang('chat::busy') ?></a></li>
+                                    <li><a href="#!" class="dropdown-item online-status-change-button" data-id="2" data-user-id="<?php echo get_userid() ?>" data-class="invisible-icon"><span class="online-status invisible-icon"></span><?php echo lang('chat::invisible') ?></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

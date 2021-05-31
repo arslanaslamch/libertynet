@@ -1,0 +1,15 @@
+#adBlockerPopup .modal-header{background: #e74c3c;color: #fff;}
+#adBlockerPopup .modal-header h4{color: #fff;}
+#adBlockerPopup .modal-footer{text-align: center;}
+#adBlockerPopup .modal-footer i{color:#fff;padding-right: 5px;}
+#adBlockerPopup .modal-footer .btn{border-radius:0px;width: 200px;height: 40px;font-size: 17px;}
+#adBlockerPopup .modal-header {
+	display: block!important;
+}
+#adBlockerPopup .modal-body {
+	text-align: center;
+	font-size: 17px;
+}
+#adBlockerPopup .modal-footer {
+	display: block;
+}

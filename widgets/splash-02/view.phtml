@@ -1,0 +1,69 @@
+<div id="home-container" class="splash splash-02">
+    <div class="header">
+        <div class="left-header">
+            <div class="logo">
+                <?php $logo = config('site-logo');
+                $logo_url = !$logo ? img('images/logo.png') : url_img($logo); ?>
+                <img src="<?php echo $logo_url ?>" />
+            </div>
+        </div>
+        <div class="right-header">
+            <div class="float-right ">
+                <div class=" dropdown">
+                    <a class="language-toggle dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <?php foreach (get_all_languages() as $lang): ?>
+                            <?php if ($lang['language_id'] == $app->lang): ?>
+                                <img class="flag-img" src="<?php echo url(get_lang_flag($lang['language_id'])) ?>">
+                                <?php echo $lang['language_title'] ?>
+                            <?php endif ?>
+                        <?php endforeach ?>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <?php foreach (get_all_languages() as $lang): ?>
+                            <a class="dropdown-item" href="<?php echo url_to_pager("change-language", array('lang' => $lang['language_id'])) ?>">
+                                <?php echo $lang['language_title'] ?>
+                                <span class="pull-right">
+                                    <img class="flag-img" src="<?php echo url(get_lang_flag($lang['language_id'])) ?>" />
+                                </span>
+                            </a>
+                        <?php endforeach ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <div id="topo" class="<?php echo isMobile() ? 'mobile ' : ''; ?>auto">
+            <div id="slides">
+                <div class="slide slide-1" style="z-index: 1;"></div>
+                <div class="slide slide-2"></div>
+                <div class="slide slide-3"></div>
+                <div id="topo-content">
+                    <div class="auth">
+                        <h2><?php echo lang('welcome') ?></h2>
+                        <div class="welcome-note"><?php echo lang('splash-02-welcome-note') ?></div>
+                        <div class="login-content">
+                            <?php echo view('login/portable-login'); ?>
+                            <div class="switch">
+                                <?php if (config('user-signup', true)): ?>
+                                    <a href="#!" onclick="return show_home_content(false)"><?php echo lang('dont-have-account') ?></a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php if (config('user-signup', true)): ?>
+                            <div class="signup-content">
+                                <?php echo view('signup/portable-signup', array('show_all_signup_fields' => $show_all_signup_fields)); ?>
+                                <div class="switch">
+                                    <a href="#!" onclick="return show_home_content(true)"><?php echo lang('already-have-account') ?></a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="footer">
+                        <?php Widget::render('footer') ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

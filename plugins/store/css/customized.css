@@ -1,0 +1,64 @@
+.saf-store-single-wrapper{
+    height: 200px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius : 10px;
+    margin: 5px;
+    text-align: center;
+    display:inline-block;
+}
+
+.saf-store-single-wrapper .img-wrapper{
+    display:block;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height:100px;
+    width:100px;
+    border-radius: 50px;
+    margin: 10px auto;
+}
+
+.saf-store-single-wrapper .store-name{
+    font-weight: bold;
+    font-size: 14px
+}
+
+/**********/
+/***  correct start ***/
+/*********/
+
+#board .each-board{
+    display:inline-block;
+    max-width: 180px;
+}
+
+#product-sidemenu{
+    padding-top: 0 !important;
+}
+
+/**********/
+/***  correction end ***/
+/*********/
+
+.no-border{
+    border:none !important;
+}
+
+.product-form{
+    padding: 20px
+}
+
+@media screen and (max-width: 425px) {
+    /** store **/
+    .n-product-box{
+        max-width: 160px;
+    }
+
+    .n-product-box .store-product-img{
+        width: 160px;
+    }
+
+    .oneimagefix img{
+        height: auto !important;
+    }
+}

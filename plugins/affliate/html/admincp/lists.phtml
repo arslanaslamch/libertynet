@@ -1,0 +1,95 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("affliate::manage-affliates"); ?>
+    </div>
+
+    <div class="wrapper-content">
+        <div class="app-header-wrapper">
+            <form class="form" action="" method="get">
+                <?php
+                $name = isset($_GET['name']) ? $_GET['name'] : '';
+                $st = isset($_GET['status']) ? $_GET['status'] : '0';
+                $from =  (input('from_date')) ? input('val.from_date') : date('m/d/Y',(strtotime('-6 days')));
+                $end =  (input('end_date')) ? input('val.end_date') : date('m/d/Y',time());
+                ?>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label><?php echo lang("affliate::client-name"); ?></label>
+                        <input autocomplete="off"  id="name" class="form-control" name="name" />
+                    </div>
+                </div>
+                <div class="col-sm-3">
+
+                    <div class="form-group">
+                        <label><?php echo lang("affliate::purchase-date"); ?></label>
+                        <input autocomplete="off"  class="form-control" id="startDate" name="from_date" value="<?php echo $from ?>" />
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>.</label>
+                        <input autocomplete="off" class="form-control" id="endDate" name="end_date" value="<?php echo $end; ?>" />
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label><?php echo lang("affliate::status"); ?></label>
+                        <select id="status" name="status" class="form-control">
+                            <option <?php echo ($st == 'any') ? 'selected' : ''; ?> value="any"><?php echo lang("affliate::any"); ?></option>
+                            <option <?php echo ($st == '0') ? 'selected' : ''; ?> value="<?php echo 0; ?>"><?php echo lang("affliate::not-approved"); ?></option>
+                            <option <?php echo ($st == '1') ? 'selected' : ''; ?> value="<?php echo 1; ?>"><?php echo lang("affliate::approved"); ?></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="col-sm-12">
+                        <div class="col-sm-2">
+                            <button class="btn btn-block btn-info submit-aff-filter"><?php echo lang("affliate::search"); ?></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="ajax-response"></div>
+        <div class="wrapper-con-admin" id="admincp-aff-row">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th><?php echo lang("affliate::account-owner"); ?></th>
+                    <th><?php echo lang("affliate::name"); ?></th>
+                    <th><?php echo lang("affliate::email"); ?></th>
+                    <th><?php echo lang("affliate::address"); ?></th>
+                    <th><?php echo lang("affliate::phone"); ?></th>
+                    <th><?php echo lang("affliate::approved"); ?></th>
+                    <th><?php _lang('actions')?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php echo view("affliate::admincp/ajax/affliates-row",array('from'=>$from,'end'=>$end,'st'=>$st,'name'=>$name)); ?>
+                </tbody>
+            </table>
+            <div class="indicator" ><img src="<?php echo img('affliate::images/loading.gif')?>"/></div>
+        </div>
+    </div>
+</div>
+
+<!--View Details of EAch Affiliate-->
+<div id="affDetails" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php _lang('close') ?></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="results"></div>
+                <div class="indicator" ><img src="<?php echo img('affliate::images/loading.gif')?>"/></div>
+            </div>
+        </div>
+    </div>
+</div>

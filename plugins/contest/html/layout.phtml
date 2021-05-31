@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <?php echo view("contest::top-menu"); ?>
+        </div>
+        <?php echo view("contest::lhs",array('contest'=>$contest)); ?>
+        <div class="col-sm-8">
+            <?php echo $content; ?>
+        </div>
+    </div>
+</div>

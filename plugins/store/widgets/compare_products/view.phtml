@@ -1,0 +1,26 @@
+<div class="box">
+    <div class="box-content">
+        <div class="container">
+        <div class="row">
+            <div class="compare-widget-wrapper">
+                <?php $products =  session_get("compared-products",array()); ?>
+                <?php foreach($products as $p):
+                    $item = getSingleProduct($p);
+                    echo view("store::products/top-compare",array('item'=>$item));
+                    ?>
+
+                <?php endforeach; ?>
+                <div class="extra-compare"></div>
+                <div class="each-compare-product">
+                    <div class="col-xs-12" style="padding:0">
+                        <a href="<?php echo url_to_pager('products-home'); ?>">
+                           <img src="<?php echo img("store::images/add.png") ?>" class="img img-responsive"/>
+                        </a>
+                    </div>
+                </div>
+                <a ajax="true" class="btn btn-info btn-center" href="<?php echo url_to_pager("compare-products"); ?>"><?php echo lang("store::compare") ?></a>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

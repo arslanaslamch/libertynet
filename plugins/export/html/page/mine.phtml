@@ -1,0 +1,8 @@
+<div class="box page">
+    <?php $list_type = 'list' ?>
+	<div id="group-list-container" class="box-content clearfix <?php echo ($list_type == 'list') ? 'list-listing-container' : 'grid-listing-container' ?>">
+		<?php foreach($pages as $page): ?>
+			<?php echo view('export::page/display', array('page' => $page)) ?>
+		<?php endforeach ?>
+	</div>
+</div>

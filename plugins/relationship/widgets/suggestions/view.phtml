@@ -1,0 +1,58 @@
+ <?php if(is_loggedIn()): ?>
+	<?php load_functions("relationship::relationship");
+	$users = relationship_suggest($limit, null, true); ?>
+	<?php if($users->total): ?>
+		<div class="box users-box people-suggestion-box" id="people-suggestion-box">
+			<div class="title">
+				<?php echo lang('relationship::people-suggestion') ?>
+				<a ajax="true" href="<?php echo url_to_pager('suggestions') ?>"><i class="ion-ios-arrow-forward pull-right"></i></a>
+			</div>
+			<div class="clearfix slider-side-widget">
+                <?php foreach($users->results() as $user): $user = find_user($user['id'])?>
+                    <?php $gender = (isset($user['gender']) and $user['gender']) ? $user['gender'] : null ?>
+                    <?php $gender_image = ($gender) ? img("images/avatar/{$gender}.png") : img("images/avatar.png") ?>
+                    <?php $user_image = $user['avatar'] ? url_img($user['avatar'], 200) : $gender_image ?>
+                    <?php $user_name = trim($user['first_name'].$user['last_name']) == '' ? $user['username'] : $user['first_name'].' '.$user['last_name'] ?>
+                    <?php $online_status = $user['online_time'] > (time() - 50) ? 'online' : 'offline' ?>
+                    <?php $info = array() ?>
+                    <?php if(!empty($user['gender'])) $info[] = lang($user['gender']); ?>
+                    <?php if(!empty($user['country'])) $info[] = ucwords($user['country']); ?>
+                    <div class="item">
+                        <a ajax="true" href="<?php echo url($user['username']) ?>" class="thumb">
+                            <img class="image" src="<?php echo $user_image ?>" alt="<?php echo $user_name ?> " />
+                            <?php if(isset($user['featured']) && $user['featured']): ?>
+                                <div class="featured">
+                                    <i class="ion-ios-star-outline"></i>
+                                </div>
+                            <?php endif ?>
+                        </a>
+                        <div class="details">
+                            <a ajax="true" href="<?php echo url($user['username']) ?>" class="title"><?php echo $user_name ?> <?php fire_hook('users.membership.icon', $user); ?></a>
+                            <div class="stat">
+                                <div class="status <?php echo $online_status ?>"></div>
+                                <div><?php echo implode(', ', $info) ?></div>
+                                <div class="counts">
+                                    <?php if(in_array(config('relationship-method', 3), array(2, 3))): ?>
+                                        <div>
+                                            <div class="value"><?php echo socialCountDisplay(count(get_friends($user['id']))) ?></div>
+                                            <div class="title"><?php echo lang('friends') ?></div>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div>
+                                        <div class="value"><?php echo socialCountDisplay(count_user_posts($user['id'])) ?></div>
+                                        <div class="title"><?php echo lang('posts') ?></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="action">
+                                <?php if(plugin_loaded('relationship')): ?>
+                                    <?php echo view('relationship::button', array('userid' => $user['id']))?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach ?>
+			</div>
+		</div>
+	<?php endif ?>
+<?php endif ?>

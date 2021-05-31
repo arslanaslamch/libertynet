@@ -1,0 +1,91 @@
+<div class="box">
+    <div class="title"><?php echo lang("store::account-settings") ?></div>
+    <div class="box-content">
+       <!-- <h4><?php /*echo lang("store::payment-methods"); */?></h4>-->
+        <div class="payment-methods">
+            <table class="table table-bordered">
+                <thead>
+
+                <tr>
+                    <th colspan="3"> <?php echo lang("store::payment-methods"); ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--<tr>
+                    <td>
+                        <img src="<?php /*echo img("store::images/skrill-chkout_blank.png"); */?>" alt="paypal"/>
+                    </td>
+                    <td>
+                        <h4 class="media-heading" style="margin-top:0"><?php /*echo "Skrill";*/?></h4>
+                        <span class="help-block" style="display: block;font-size:12px">
+                           <?php /*echo lang("store::skrill-payment-description") */?>
+                         </span>
+                        <span style="display: block;font-size:12px">
+                            <a href="https://www.skrill.com/en/" target="_blank">
+                            <?php /*echo lang("store::dont-have-skrilled-acct") */?></a>
+
+                        </span>
+                    </td>
+                    <td>
+                        <a ajax="true" href="<?php /*echo url_to_pager("skrill_manager_settings"); */?>" class="btn btn-secondary"><?php /*echo lang("store::set-up") */?></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="<?php /*echo img("store::images/wire-transfer-logo.png"); */?>" alt="Wired Transfer"/>
+                    </td>
+                    <td>
+                        <h4 class="media-heading" style="margin-top:0"><?php /*echo "Wired Transfer";*/?></h4>
+                        <span class="help-block" style="display: block;font-size:12px">
+
+                            <?php /*echo lang("store::wired-transfer-desc") */?>
+                         </span>
+
+                    </td>
+                    <td>
+                        <a ajax="true" href="<?php /*echo url_to_pager("wired-transfer") */?>" class="btn btn-secondary"><?php /*echo lang("store::set-up") */?></a>
+                    </td>
+                </tr>-->
+                <tr>
+                    <td>
+                        <img src="<?php echo img("store::images/paypal.png"); ?>" alt="Pay Pal"/>
+                    </td>
+                    <td>
+                        <h4 class="media-heading" style="margin-top:0"><?php echo "Paypal";?></h4>
+                        <span class="help-block" style="display: block;font-size:12px">
+                            <?php echo lang("store::skrill-payment-description") ?>
+                         </span>
+                         <span style="display: block;font-size:12px">
+
+                             <a href="https://www.paypal.com/" target="_blank"><?php echo lang("store::dont-have-paypal-acct") ?></a>
+                        </span>
+                    </td>
+                    <td>
+                        <a ajax="true" href="<?php echo url_to_pager("manager_paypal_transfer"); ?>" class="btn btn-secondary"><?php echo lang("store::set-up") ?></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        <br/><br/>
+            <?php if($settings['payment_type']): ?>
+            <div class="active-payment-method">
+                <table class="table table-bordered">
+                    <thead>
+                         <tr>
+                             <th colspan="3"><?php echo lang("store::active-payment-method") ?></th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                         <tr>
+                             <td class="text-success text-center"><h4><i class="ion-checkmark-circled"></i></h4></td>
+                             <td><?php echo $settings['payment_type'] ?></td>
+                             <td><a ajax="true" href="<?php echo url_to_pager(getPagerBasedOnPaymentType($settings['payment_type'])) ?>"><?php echo lang("edit") ?></a> </td>
+                         </tr>
+                    </tbody>
+                </table>
+            </div>
+            <?php endif; ?>
+        </div>
+
+    </div>
+</div>

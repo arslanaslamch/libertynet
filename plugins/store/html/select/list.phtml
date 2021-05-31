@@ -1,0 +1,7 @@
+<?php if ($store = is_seller()): ?>
+    <div class="magic-select-label"><?php echo lang('store::online-store') ?></div>
+    <div class="magic-select-option" data-value="store-<?php echo $store['s_id']; ?>">
+        <img src="<?php echo get_store_logo(75, $store) ?>" class="thumb"/>
+        <?php echo $store['name']; ?>
+    </div>
+<?php endif; ?>

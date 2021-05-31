@@ -1,0 +1,27 @@
+<div class="wrapper">
+    <div class="wrapper-title"><?php _lang('store::change-slide')?>  </div>
+    <div class="wrapper-content">
+        <form method="post" action="" enctype="multipart/form-data" class="wrapper-form">
+            <?php CSRFProtection::embed()?>
+            <?php if($message):?>
+                <div class="alert alert-danger"><?php echo $message?></div>
+            <?php endif?>
+            <div class="form-group row">
+                <label class="col-sm-3 form-control-label"><?php _lang('store::image')?></label>
+                <div class="col-sm-9">
+                    <input type="file" name="image" class="form-control" />
+                </div>
+                <input type="hidden" name="val[type]" value="slides" />
+            </div>
+            <?php echo fire_hook("more.fields.slider.link.store"); ?>
+            <div class="row">
+            <div class="col-sm-3"></div>
+                <div class="col-sm-6">
+                    <img src="<?php echo storeCategoryImage($cat); ?>" class="img img-responsive" style="height:70px; width:100px" />
+                </div>
+                <br/>
+            </div>
+            <button class="btn btn-info"><?php _lang('store::change-slide')?></button>
+        </form>
+    </div>
+</div>

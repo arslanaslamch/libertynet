@@ -1,0 +1,37 @@
+<?php if(isset($app->profileUser) && Birthday::hasBirthdayToday($app->profileUser['id'])): ?>
+<?php $user = $app->profileUser; ?>
+<div class="box profile-wish-wrapper-box">
+    <div class="title"><?php echo lang("birthday::birthday") ?></div>
+    <div class="box-content">
+        <div class="profile-wish-wrapper">
+            <img src="<?php echo img("birthday::image/happy.png"); ?>" class="image-happy-birthday" alt="Happy Birthday" />
+        </div>
+        <span class="have-birthday-today"><?php echo lang("birthday::this-user-have-birthday-today") ?></span>
+        <a href="#"
+           class="btn btn-danger btn-lg btn-celebrate wish-birthday"
+           data-name="<?php echo get_user_name($user); ?>"
+           data-uid="<?php echo $user['id']; ?>"
+        ><i class="ion-ios-rose"></i> <?php echo lang("birthday::wish-something"); ?></a>
+    </div>
+</div>
+
+<div class="birthday-images-wrapper">
+    <?php for($i = 1; $i < 9; $i++): ?>
+    <?php
+        if($i == 3) continue;
+
+    $name = 'b'.$i.'.png';?>
+    <img alt="ballon" class="ballon-single" src="<?php echo img("birthday::image/".$name); ?>" />
+    <img alt="ballon" class="ballon-single" src="<?php echo img("birthday::image/".$name); ?>" />
+    <img alt="ballon" class="ballon-single" src="<?php echo img("birthday::image/".$name); ?>" />
+    <img alt="ballon" class="ballon-single" src="<?php echo img("birthday::image/".$name); ?>" />
+    <img alt="ballon" class="ballon-single" src="<?php echo img("birthday::image/".$name); ?>" />
+    <?php endfor; ?>
+</div>
+
+<?php
+if(segment(0) != 'birthddays'){
+    echo view("birthday::modal");
+}
+?>
+<?php endif; ?>

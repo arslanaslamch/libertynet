@@ -1,0 +1,66 @@
+<div class="box matchmaker">
+    <div id="encounters" class="flex-center">
+        <div id="noEncounters">
+            <?= view("matchmaker::none", ['text' => lang('matchmaker::viewed-all-encounters')]); ?>
+        </div>
+        <?php if (count($encounters) < 1) : ?>
+            <?= view("matchmaker::none", ['text' => lang('matchmaker::no-encounters')]); ?>
+        <?php endif; ?>
+        <?php $i = 0; ?>
+        <?php foreach ($encounters as $user) : ?>
+            <?php $order = rand(1111, 99999999); ?>
+            <div class="box encounter <?= $i == 0 ? '' : 'hide'; ?>" data-type="encounter" id="encounter-<?= $order; ?>">
+                <div class="flex-center encounter-body">
+                    <?php $gender = (isset($user['gender']) and $user['gender']) ? $user['gender'] : null ?>
+                    <?php $gender_image = ($gender) ? img("images/avatar/{$gender}.png") : img("images/avatar.png") ?>
+                    <?php $user_image = $user['avatar'] ? url_img($user['avatar'], 200) : $gender_image ?>
+                    <?php $user_name = trim($user['first_name'] . $user['last_name']) == '' ? $user['username'] : $user['first_name'] . ' ' . $user['last_name'] ?>
+                    <?php $online_status = $user['online_time'] > (time() - 50) ? 'enc-online' : 'enc-offline' ?>
+
+                    <div class="enc-img-con">
+                        <img class="image" src="<?php echo $user_image ?>" alt="<?php echo $user_name ?> " />
+                    </div>
+                    <div class="details">
+                        <h6 class="title my-2 d-flex align-items-center">
+                            <div class="text-center mr-1"><?php echo $user_name ?></div>
+                            <div class="<?= $online_status; ?>"></div>
+                        </h6>
+                        <div class="distance text-center">
+                            <?= round($user['distance'], 2) . " " . lang("matchmaker::" . config('default-unit')) . " " . lang("matchmaker::away"); ?>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="flex-bottom py-2 px-2 w-100 encounter-footer flex-center">
+                    <button class="round-box mx-3 text-lg text-danger likeUser" data-id="<?= $user['id']; ?>" data-order="encounter-<?= $order; ?>">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <button class="round-box mx-3 text-lg text-secondary dismissUser" data-order="encounter-<?= $order; ?>">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        <?php $i++;
+        endforeach; ?>
+    </div>
+    <div id="matched" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg1">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="enc-img-con">
+                        <img class="image" src="" alt="user pic" id="matchedImg" />
+                    </div>
+                    <?= lang('matchmaker::have-matched'); ?> <span id="matchedUser"></span>
+                </div>
+                <div class="modal-footer d-flex">
+                    <button type="button" class="btn btn-light mx-2" data-dismiss="modal"><?= lang("matchmaker::close"); ?></button>
+                    <a href="#" id="matchedLink" class="btn btn-primary"><?= lang('matchmaker::view-profile'); ?></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

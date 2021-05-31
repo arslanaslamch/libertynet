@@ -1,0 +1,435 @@
+/** contest tag start**/
+.contest-tag{
+    position: absolute;
+    left: 0px;
+    top: 0;
+    display: inline-block;
+    padding: 0px 8px;
+    background: rgb(255, 0, 0);
+    font-size: 12px;
+    color: #fff !important;
+}
+
+.contest-tag.premium-c{
+    top:30px;
+    background: rgb(3, 168, 56);
+    font-size: 12px;
+    color: #fff!important;
+}
+
+.contest-tag.ongoing-c{
+    top:60px;
+    background: rgb(16, 84, 168);
+    font-size: 12px;
+    color: #fff!important;
+}
+/** contest tag end**/
+
+/** admincp start**/
+
+.wrapper-admin-form-admincp .field{
+    margin-bottom: 40px;
+    display:block;
+}
+.wrapper-admin-form-admincp .field label
+{
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/**contestcontest-slider **/
+.contest-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.contest-slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked[value="1"] + .contest-slider {
+    background-color: #2196F3;
+}
+
+input:focus + .contest-slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked[value="1"] + .contest-slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.contest-slider.round {
+    border-radius: 34px;
+}
+
+.contest-slider.round:before {
+    border-radius: 50%;
+}
+/** admincp end**/
+
+/** participants **/
+.each-particpant-contest{
+    display:inline-block;
+    margin:5px;
+    padding:4px;
+    border-radius: 100%;
+}
+.each-particpant-contest img{
+    height:50px;
+    width: 50px;
+    border-radius: 100%;
+}
+/** participants end **/
+
+/** iframe start**/
+.contest-promote-preview{
+    max-height: 600px;
+    overflow: hidden;
+    padding:5px;
+    width: 300px;
+    border:1px solid #f2f4f6;
+    border-radius: 5px;
+    margin: 0 auto;
+}
+
+.contest-promote-preview-bf{
+    border:1px solid #f2f4f6;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.contest-image-promote{
+    display:block;
+    height: 200px;
+    width: 100%;
+    max-width: 600px;
+    background-size: contain;
+    background-position:center;
+    background-repeat: no-repeat;
+}
+/** iframe end**/
+
+.contest-music-template-wrapper audio{
+    width: 100%;
+}
+
+.contest-iframe-wrapper textarea{
+    height: 150px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    outline: none;
+}
+.contest-image-preview{
+
+    overflow: hidden;
+    height:200px;
+    width: 200px;
+    border: 2px dotted #ccc;
+    display: block;
+}
+/** contest single page start**/
+#contest-ann > h3{
+    color: #555;
+    cursor: pointer;
+    padding: 15px;
+    background:  #fff;
+    position: relative;
+    outline: none;
+
+}
+#contest-ann > h3.ui-accordion-header-active{
+    background: #f2f4f6;
+    color: #222;
+}
+
+#contest-ann > h3:active,
+#contest-ann > h3:hover{
+    border: 1px solid #ddd;
+}
+
+#contest-ann > h3.ui-accordion-header-active:active,
+#contest-ann > h3.ui-accordion-header-active:hover{
+    border:1px solid #bbb;
+}
+
+#contest-ann > h3 i{
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    border: 1px solid #ddd;
+    /* width: 50px; */
+    max-width: 50px;
+    background: #222f3e;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+#contest-ann .ui-widget-content{
+    border: 1px solid #ddd;
+}
+
+#annModal .form-group{
+    display:block;
+}
+#annModal label{
+    display:block;
+    font-weight: bold;
+}
+
+#annModal textarea{
+    border-radius: 3px;
+    min-height: 100px;
+    border:1px solid #ddd;
+}
+
+    /** contest single page end**/
+/** contest single page start**/
+.contest-duration-box{
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+.contest-duration-box .contest-duration-title{
+    padding:10px;
+    border-bottom: 1px solid #ddd;
+    font-size:14px;
+}
+
+.contest-duration-box .contest-duration-box-body {
+    padding: 10px;
+    /*background: #0099cc;*/
+    /*color: #ddd;*/
+}
+/** contest single page end**/
+
+
+/** entries start **/
+.blog-contest-add label{
+    display:block;
+    font-weight: bold;
+}
+
+/*.contest-arrow-right-left .go-entry-right i,
+.contest-arrow-right-left .go-entry-left i{
+    font-size:14px;
+}*/
+/** entries end **/
+
+
+/** contest invite start**/
+#contestInviteModal .indicator,
+#contestPromoteModal .indicator{
+    display:none;
+}
+
+#contestInviteModal .indicator img,
+#contestPromoteModal.indicator img{
+    display: block;
+    width: 50px;
+    height: 50px;
+}
+
+
+.contest-friends-list{
+    background: #F4F4F4;
+    display:block;
+    margin:5px;
+    height:150px;
+}
+
+.friend-bring-result-contest{
+    position: absolute;
+    width: 100%;
+    max-width: 400px;
+    height: 250px;
+    background: #fff;
+    display:none;
+    border: 1px solid #222;
+    margin: 5px;
+    overflow-y:scroll;
+    z-index:5;
+}
+
+.friend-bring-result-contest .indicator{
+    display:none;
+}
+
+.friend-bring-result-contest .indicator img{
+    height:40px;
+    width:40px;
+    display:block;
+    margin:5px auto;
+}
+/** contest invite end**/
+
+.contest-type-right-wrapper span{
+    margin-right:20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.limit-contest-range-picker{
+    max-width: 200px;
+    display:inline-block !important;
+}
+
+.contest-lhs-image{
+    height:200px;
+    width:100%;
+    display:block;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.contest-view-lhs .menu.contest-lhs-menu li{
+    text-transform: uppercase;
+    padding: 5px 7px !important;
+}
+
+.contest-view-lhs .menu li a i{
+    font-size:18px;
+    margin-right:3px
+}
+
+.contest-view-lhs .menu-contest-two{
+    font-size:14px;
+}
+.contest-view-lhs .menu-contest-two li{
+    padding: 5px 7px !important;
+    color: #808080;
+    display: block;
+}
+.contest-view-lhs .menu-contest-two li i{
+    font-size:16px;
+}
+
+/**contest homepage**/
+.single-contest-row{
+   /* border:1px solid #ddd;*/
+    margin:5px;
+    max-width: 300px;
+    display:inline-block;
+    color: #555;
+    position: relative;
+}
+
+.single-contest-row .contest-image-wrapper a{
+    display:block;
+    height:250px;
+    width:300px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+@media (max-width: 350px) {
+    .single-contest-row {
+        max-width: 250px;
+    }
+    .single-contest-row .contest-image-wrapper a {
+        display: block;
+        width: 250px;
+    }
+    
+}
+
+.contest-details-first-row{
+    padding:10px 10px;
+    background: #f2f4f6;
+    text-align: center;
+}
+.contest-details-first-row span{
+    padding:5px;
+    border-right:1px solid #ccc;
+}
+
+.contest-details-first-row span:last-child{
+    border: none;
+}
+
+.single-contest-row .link-contest-text{
+    font-size:13px !important;
+    font-weight: bold;
+}
+
+.contest-details{
+    border: 1px solid #f2f4f6;
+}
+.contest-details p{
+    margin-bottom:2px !important;
+    padding:4px;
+}
+.contest-icon{
+    position: absolute;
+    padding: 0px 8px;
+    border-radius: 100%;
+    right: 10px;
+    top: 5px;
+    color: #f2f4f6;
+    border: 2px solid #f2f4f6;
+    -webkit-transition: 400ms time;
+    -moz-transition: 400ms time;
+    -ms-transition: 400ms time;
+    -o-transition: 400ms time;
+    transition: 400ms time;
+}
+.contest-icon i{
+    font-size:16px;
+}
+
+.contest-icon:hover{
+    background: #555;
+    border: 2px solid #555;
+    -webkit-transition: 400ms time;
+    -moz-transition: 400ms time;
+    -ms-transition: 400ms time;
+    -o-transition: 400ms time;
+    transition: 400ms time;
+}
+
+
+
+/**contest homepage end**/
+
+
+/** re modify date start**/
+.tui-datepicker{
+    z-index: 9999;
+}
+
+.contest-date-wrapper{
+    display:inline-block !important;
+}
+
+.tui-datepicker .tui-is-blocked{
+    color :#aaa
+}
+
+.tui-calendar th, .tui-calendar td{
+    color: #555;
+}
+
+/**remodify date end*/

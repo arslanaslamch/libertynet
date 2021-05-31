@@ -1,0 +1,31 @@
+
+<?php $products = lp_get_products('any',$limit,'featured',null,null,null,null); ?>
+
+<?php if($products->total):?>
+
+    <div class="box">
+        <div class="title">
+            <?php echo lang("store::featured-products")?>
+            <a ajax="true" href="<?php echo url('products')?>"><i class="ion-ios-arrow-forward pull-right"></i></a>
+        </div>
+        <div class="box-content">
+
+            <?php foreach($products->results() as $p): ?>
+
+                <div  class="media media-lg">
+                    <div class="media-left">
+                        <div class="media-object">
+                            <img src="<?php echo getProductMainImage($p);?>"/>
+                        </div>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading" style="margin-top:0"><a ajax="true" href="<?php echo url_to_pager("single-product",array('slugs'=>$p['slug'])); ?>"><?php echo $p['name']?></a></h4>
+                                <span class="help-block" style="display: block;font-size:14px; font-weight:bold">
+                                   <?php echo config('currency-sign','$').number_format((float)getProductPrice($p),'2','.',',');  ?>
+                                </span>
+                    </div>
+                </div>
+            <?php endforeach?>
+        </div>
+    </div>
+<?php endif?>

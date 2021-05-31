@@ -1,0 +1,48 @@
+<div class="wrapper">
+	<div class="wrapper-title"><?php echo lang('creditgift::gift-category') ?>|
+		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addCategory"><?php echo lang('add') ?></button>
+	</div>
+
+	<div class="wrapper-content">
+		<table width="500">
+			<tr>
+				<th width="15%"><?php echo lang('id') ?></th>
+				<th width="35%"><?php echo lang('category') ?></th>
+				<th width="25%"><?php echo lang('options') ?></th>
+			</tr>
+			<?php foreach($cats as $cat): ?>
+				<tr>
+					<td><?php echo $cat['id']; ?></td>
+					<td><?php echo $cat['category']; ?></td>
+					<td></td>
+				</tr>
+			<?php endforeach; ?>
+		</table>
+	</div>
+</div>
+
+<!-- Modal -->
+<div id="addCategory" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<form action="" method="post" class="form-control">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo lang('creditgift::add-new-category') ?></h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div>
+					<label><?php echo lang('category') ?>:</label>
+					<input id="inputsm" class="form-control input-sm" type="text" name="val[category]" required="">
+				</div>
+				<br/>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-success"><?php echo lang('add') ?></button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo lang('close') ?></button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>

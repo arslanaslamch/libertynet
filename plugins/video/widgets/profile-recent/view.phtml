@@ -1,0 +1,24 @@
+<?php $videos = get_videos('user-profile', 'all', null, app()->profileUser['id'], $limit); ?>
+<?php if($videos->total): ?>
+    <div class="box media-widget">
+        <div class="title"><?php echo lang('video::recent-videos') ?></div>
+        <div class="box-content">
+            <?php foreach($videos->results() as $video): ?>
+                <?php $title = $video['title'] ? $video['title'] : lang('video::untitled-video'); $owner = get_video_owner($video); ?>
+                <div class="item">
+                    <div class="left">
+                        <a ajax="true" href="<?php echo get_video_url($video) ?>">
+                            <div class="thumb" style="background: url(<?php echo $video['photo_path'] ? url_img($video['photo_path'], 75) : img('video::images/preview.png', 75) ?>) center; background-size: cover;"></div>
+                            <div class="thumb video-thumb-hover<?php echo $video['thumbnail'] ? '' : ' static'?>" <?php echo $video['thumbnail'] ? 'data-image="'.url_img($video['thumbnail'], 75).'"' : 'style="background-image: url('.img('video::images/play.png').')"'?>></div>
+                        </a>
+                    </div>
+                    <div class="right">
+                        <a ajax="true" href="<?php echo get_video_url($video) ?>" class="media-heading title"><?php echo $title ?></a>
+                        <a ajax="true" href="<?php echo $owner['link'] ?>" class="user"><?php echo $owner['name'] ?></a>
+                        <div class="info"><?php echo $video['views'] ?> <?php echo lang('video::views') ?></div>
+                    </div>
+                </div>
+            <?php endforeach ?>
+        </div>
+    </div>
+<?php endif ?>

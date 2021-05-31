@@ -1,0 +1,45 @@
+.mail-automation-wrapper form{
+    max-width: 600px;
+    margin:0 auto;
+}
+.mail-automation-wrapper fieldset{
+    display:block;
+    clear:both;
+    margin-bottom:20px;
+    /*margin-top:25px;*/
+}
+.mail-automation-wrapper label{
+    font-weight:bold;
+}
+
+#auto-mail-feed-wrapper{
+    padding:8px;
+    border:1px solid #ccc;
+}
+
+#stats-automation{
+    height: 400px;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    clear: both;
+    margin:0 auto;
+}
+
+.indicator{
+    display:none;
+    margin:0 auto;
+    height: 100px;
+    width: 100px;
+}
+
+#stats-automation-wrapper{
+    display:block
+}
+
+.indicator img{
+    display:block;
+    height:50px;
+    width : 50px;
+}

@@ -1,0 +1,9 @@
+<?php if(count_comments('livestream', $livestream['id']) > config('livestream-comment-limit', 10)): ?>
+    <a id="comment-view-more-button-livestream-<?php echo $livestream['id'] ?>" class="comment-view-more-button comment-view-more-button-livestream-<?php echo $livestream['id'] ?>" onclick="return show_more_comment('livestream', '<?php echo $livestream['id'] ?>', 'comment-view-more-indicator-<?php echo $livestream['id'] ?>')" href=""><?php echo lang('view-previous-comments') ?></a>
+    <img class="comment-view-more-indicator" id="comment-view-more-indicator-<?php echo $livestream['id'] ?>" src="<?php echo img('images/loading.gif') ?>" />
+<?php endif ?>
+<div data-offset="<?php echo config('livestream-comment-limit', 10) ?>" data-limit="<?php echo config('livestream-comment-limit', 10) ?>" class="comment-lists comment-lists-livestream-<?php echo $livestream['id'] ?>" id="">
+    <?php foreach(get_comments('livestream', $livestream['id'], config('livestream-comment-limit', 10), 0, $livestream, 'bottom') as $comment): ?>
+        <?php echo view('comment::display', array('comment' => $comment)) ?>
+    <?php endforeach; ?>
+</div>

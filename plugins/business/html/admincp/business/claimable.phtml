@@ -1,0 +1,57 @@
+<div class="wrapper business">
+	<div class="wrapper-title">
+		<p><?php echo lang('business::businesses-manager-claimable') ?></p>
+		<span><?php echo lang('business::businesses-manager-claimable-desc') ?></span>
+	</div>
+	<div class="wrapper-title">
+		<a href="<?php echo url_to_pager('admin-business-add') ?>" class="btn btn-primary"><?php echo lang('business::add-new') ?></a>
+		<a href="<?php echo url_to_pager('admin-business-pending') ?>" class="btn btn-danger"><?php echo lang('business::pending-approval') ?></a>
+		<a href="<?php echo url_to_pager('admin-business-active') ?>" class="btn btn-success "><?php echo lang('business::active') ?></a>
+		<a href="<?php echo url_to_pager('admin-business-claimable') ?>" class="btn btn-info "><?php echo lang('business::claimable') ?></a>
+		<a href="<?php echo url_to_pager('admin-business-claimed') ?>" class="btn btn-primary "><?php echo lang('business::claim-log') ?></a>
+	</div>
+	<div class="wrapper-content">
+        <div class="list-table-container">
+            <div class="table-responsive">
+        		<table class="table list-table">
+			<thead>
+			<tr>
+				<th>ID</th>
+				<th><?php echo lang('business::title') ?></th>
+				<th><?php echo lang('business::category') ?></th>
+				<th><?php echo lang('business::price') ?></th>
+				<th><?php echo lang('business::views') ?></th>
+				<th><?php echo lang('business::featured') ?></th>
+				<th><?php echo lang('business::approved') ?></th>
+				<th><?php echo lang('business::actions') ?></th>
+			</tr>
+			</thead>
+			<tbody>
+			<?php foreach($businesses->results() as $business): ?>
+				<tr>
+					<td><?php echo $business['id'] ?></td>
+					<td><?php echo $business['business_name'] ?></td>
+					<td><?php echo lang($business['category_title']) ?></td>
+					<td><?php echo $business['price'] <= 0 ? lang('business::free') : $business['price'].' '.config('default-currency') ?></td>
+					<td><?php echo $business['views'] <= 1 ? viewCounts($business['id']).' '.lang('business::view') : viewCounts($business['id']).' '.lang('business::views') ?></td>
+					<td><?php echo $business['featured'] ? lang('business::yes') : lang('business::no') ?></td>
+					<td><?php echo $business['approved'] ? lang('business::yes') : lang('business::no') ?></td>
+					<td>
+						<a href="<?php echo url_to_pager('admin-business-delete').'?id='.$business['id'] ?>" class="btn btn-danger btn-sm admin-confirm"><?php echo lang('business::delete') ?></a>
+                        <a href="<?php echo url_to_pager('admin-biz-claim-approve').'?id='.$business['id'] ?>" class="btn btn-primary btn-sm admin-confirm"><?php echo lang('business::approve') ?></a>
+                    </td>
+				</tr>
+			<?php endforeach ?>
+			</tbody>
+		</table>
+            </div>
+        </div>
+		<?php if($businesses->total): ?>
+			<?php if($businesses->total > config('pagination-limit-businesses', 20)): ?>
+				<?php echo $businesses->links() ?>
+			<?php endif ?>
+		<?php else: ?>
+			<div class="alert alert-info"><?php echo lang('business::no-business-found') ?></div>
+		<?php endif ?>
+	</div>
+</div>

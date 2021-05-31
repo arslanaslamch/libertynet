@@ -1,0 +1,42 @@
+<?php $users = Birthday::getTodaysBirthdays(config('birthday-widget-friends-only',false)); ?>
+<?php if($users->total): ?>
+<div class="box media-widget">
+    <div class="title"><?php echo lang("birthday::birthdays") ?> <span class="pull-right"><img class="birthday-image-icon" src="<?php echo img("birthday::image/c.jpeg") ?>" alt="icon" /> </span> </div>
+    <div class="box-content">
+        <?php foreach($users->results() as $user):  ?>
+            <div class="item">
+                <div class="left">
+                    <a ajax="true" href="<?php echo profile_url(null,$user); ?>">
+                        <div class="thumb" style="background: url(<?php echo get_avatar(200, $user) ?>) center; background-size: cover;border-radius: 100%"></div>
+                    </a>
+                </div>
+                <div class="right">
+                    <a href="#"
+                       class="media-heading title title-ws wish-birthday"
+                       data-name="<?php echo get_user_name($user); ?>"
+                       data-uid="<?php echo $user['id']; ?>">
+                    <?php echo lang("birthday::wish-something") ?></a>
+                    <?php if (is_loggedIn() && $user['id'] != get_userid() && can_send_message($user['id'])): ?>
+                    <?php if (isMobile()): ?>
+                        <a ajax="true" style="font-size:12px"
+                           href="<?php echo url('messages?userid=' . $user['id']) ?>"
+                           class="user message-me-small"><?php echo lang("birthday::private-message"); ?></a>
+                    <?php else: ?>
+                        <a href="" style="font-size:12px"
+                           onclick="return Chat.open(null, '<?php echo $user['id'] ?>', '<?php echo htmlentities(get_user_name($user)) ?>', '<?php echo get_avatar(75, $user) ?>')"
+                           class="user message-me-large"> <?php echo lang("birthday::private-message"); ?></a>
+                    <?php endif; ?>
+                    <?php else: ?>
+                    <a href="javascript:void()" class="user"><?php echo lang("birthday::private-message"); ?></a>
+                    <?php endif; ?>
+
+
+                </div>
+            </div>
+        <?php endforeach ?>
+    </div>
+</div>
+<?php endif; ?>
+<?php if(segment(0) != 'birthddays'){
+    echo view("birthday::modal");
+} ?>

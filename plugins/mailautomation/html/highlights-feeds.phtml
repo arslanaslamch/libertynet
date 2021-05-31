@@ -1,0 +1,38 @@
+<div style="width:400px;margin: 0 auto;display:block;position:relative">
+    <div>
+
+        <?php $logo = config('site-logo');
+        $logo_url = !$logo ? img('images/logo.png') : url_img($logo); ?>
+        <div style="max-width: 100px;
+    max-height: 50px;
+    vertical-align: middle;
+    margin-right: 5px;
+    position: relative;">
+        <img style="width: 100%;
+    max-width: 170px;
+    max-height: 45px;" src="<?php echo $logo_url; ?>" />
+    </div>
+    </div>
+
+    <p>
+    <span style="color:#555;margin-left:10px;font-weight:600;font-family: Helvetica,Arial,sans-serif;font-size:20px;display:block;">
+            <?php echo lang("mailautomation::your-highlights"); ?></span>
+
+    <span style="margin-right:10px;height:50px;width:50px;border-radius: 100%;float:right">
+        <img style="height: 30px;
+    width: 30px;
+    border-radius: 100%;
+    margin-bottom: 25px;" src="<?php echo get_avatar(200,$user) ?>" />
+    </span>
+    </p>
+    <br/>
+    <?php foreach($feeds as $feed): ?>
+        <?php echo view("mailautomation::feed-view",array('feed'=>$feed)); ?>
+    <?php endforeach; ?>
+<br/>
+    <p style="text-align: center;"><span style="border-radius: 25px;padding:10px;background : <?php echo config('header-bg-color', '#4C4C4E') ?>">
+            <a style="text-decoration: none;color : #fff;padding:5px 8px;border-radius: 25px;" href="<?php echo url(); ?>">
+                <?php echo lang("mailautomation::see-more-on").' '.get_setting("site_title", "Crea8social") ?>
+            </a></span>
+    </p>
+</div>

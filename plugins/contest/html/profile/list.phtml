@@ -1,0 +1,14 @@
+<div class="box">
+	<div class="title"><?php echo lang("contest::contests") ?></div>
+	<div id="contests-list-container" class="box-content clearfix list-listing-container">
+		<?php if($contests->total): ?>
+            <?php foreach($contests->results() as $contest): ?>
+                <?php $contest = arrange_contest($contest); ?>
+                <?php echo view("contest::widget-view",array('contest'=>$contest)); ?>
+            <?php endforeach ?>
+			<?php echo $contests->links() ?>
+		<?php else: ?>
+			<div class="alert alert-info"><?php echo lang('contest::contests-list-empty') ?></div>
+		<?php endif ?>
+	</div>
+</div>

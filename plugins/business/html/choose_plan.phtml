@@ -1,0 +1,19 @@
+<div class="box business-plans-page">
+	<div class="title"><?php echo lang('business::choose-plan') ?></div>
+	<div class="box-content">
+		<div class="business-plans-container clearfix">
+			<?php foreach(get_business_plans() as $plan): ?>
+				<div>
+					<div class="title"><?php echo lang($plan['title']) ?></div>
+					<div class="description"><?php echo lang($plan['description']) ?></div>
+					<div class="days"><?php echo $plan['days'] <= 0 ? lang('business::unlimited') : $plan['days'].' '.lang('business::days') ?></div>
+					<div class="featured"><?php echo ($plan['featured']) ? lang('business::featured') : lang('business::not-featured') ?></div>
+					<div class="price"><?php echo $plan['price'] <= 0 ? lang('business::free') : $plan['price'].' '.config('default-currency') ?></div>
+					<div class="action">
+						<a href="<?php echo url_to_pager('business-create', array('appends' => '/'.$plan['id'])) ?>" class="btn btn-info btn-sm"><?php echo lang('business::choose-plan') ?></a>
+					</div>
+				</div>
+			<?php endforeach ?>
+		</div>
+	</div>
+</div>

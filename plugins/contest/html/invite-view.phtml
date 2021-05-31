@@ -1,0 +1,61 @@
+<p><b><?php echo lang("contest::invite-friends"); ?></b></p>
+<form class="form ajax-form" action="<?php echo url_to_pager('ajax-contest').'?action=invite&id='.$contest['id']; ?>" method="post" enctype="multipart/form-data">
+    <?php CSRFProtection::embed() ?>
+    <?php if(is_loggedIn()): ?>
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <input style="font-size:12px !important" type="text" id="friend-name" name="val[friends]" placeholder="<?php echo lang("contest::search-by-email-firstname-lastname")  ?>"  class="form-control"/>
+                <div class="friend-bring-result-contest">
+                    <div class="indicator"><img src="<?php echo img('images/loading.gif')?>"/></div>
+                    <div class="r"></div>
+                </div>
+            </div>
+        </div>
+        <p>
+            <button id="import-all-friends" class="btn btn-secondary btn-sm"><?php echo lang("contest::import-all-my-friends"); ?></button>
+        </p>
+        <div class="contest-friends-list box-content">
+            <div class="slimscroll" data-height="150px">
+
+            </div>
+        </div>
+        <div class="button-contest-holder">
+            <button onclick="return checkAllcontest()" class="btn"><?php echo lang("contest::select-all") ?></button>
+            <button onclick="return unCheckAllcontest()" class="btn"><?php echo lang("contest::un-select-all") ?></button>
+        </div>
+    <?php endif; ?>
+    <br/>
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <label><p><b><?php echo lang("contest::invite-by-email") ?></b></p></label>
+            <textarea name="val[emails]" class="form-control"></textarea>
+            <span><?php echo lang("contest::separate-each-email-with-comma") ?></span>
+        </div>
+    </div>
+    <!--<p><b><?php /*echo lang("contest::invite-by-email") */?></b></p>-->
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <label><?php echo lang("contest::subject"); ?></label>
+            <input  type="text" name="val[subject]" value="<?php echo config('default-subject-contest',getContestsDefaultSubject()); ?>"  class="form-control"/>
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <label><?php echo lang("contest::message"); ?></label>
+            <textarea style="min-height: 200px" name="val[message]" class="form-control" ><?php echo  contestEmailTemplateReplace(strip_tags(nl2br(config('default-contest-message',getContestsDefaultMessage()))),$contest); ?></textarea>
+        </div>
+    </div>
+    <p><?php echo lang("contest::title-break-down-note") ?></p>
+    <p>[contest_name] : <?php echo lang("contest::contest-title");  ?></p>
+    <p>[website_title] : <?php echo lang("contest::website-title");  ?></p>
+    <p>[contest_url] : <?php echo lang("contest::contest_url");  ?></p>
+    <p>[start_time] : <?php echo lang("contest::start-time");  ?></p>
+    <p>[end_time] : <?php echo lang("contest::end-time");  ?></p>
+    <p>[award] : <?php echo lang("contest::award");  ?></p>
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <button type="submit" class="btn btn-info"><?php echo lang("contest::send-invitations"); ?></button>
+        </div>
+    </div>
+</form>

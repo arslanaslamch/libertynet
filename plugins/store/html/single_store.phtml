@@ -1,0 +1,29 @@
+<div class="box">
+    <div class="title">
+        <?php echo $seller['name'] ?>
+    </div>
+    <div class="box-content">
+        <div class="row">
+            <div class="container">
+                <div class="col-sm-6 nop">
+                    <div class="panel-content">
+                        <p><strong><?php echo lang('store::cname'); ?> : </strong> <?php echo $seller['cname'] ?>
+                        </p>
+                        <p><strong><?php echo lang('store::email'); ?> : </strong> <?php echo $seller['email'] ?>
+                        </p>
+                        <p><strong><?php echo lang('store::phone'); ?> : </strong> <?php echo $seller['phone'] ?>
+                        </p>
+                        <p><strong><?php echo lang('store::address'); ?>
+                                : </strong> <?php echo ucfirst($seller['address']); ?> </p>
+                        <p><strong><?php echo lang('store::location'); ?>
+                                : </strong> <?php echo ucwords($seller['location']) ?> </p>
+                        <p><strong><?php echo lang('store::desc'); ?>
+                                : </strong> <?php echo strip_tags(html_entity_decode($seller['describ'])); ?> </p>
+                        <p><strong><?php echo lang('store::website'); ?>
+                                : </strong> <?php echo output_text(urldecode($seller['website'])); ?> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

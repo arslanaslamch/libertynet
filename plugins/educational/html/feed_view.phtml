@@ -1,0 +1,26 @@
+<?php $ed = Educational::getInstance();
+    $user = find_user($book['user_id']);
+?>
+<div class="feed-wrapper clearfix">
+    <div class="feed-view-book">
+        <div class="book-lhs-one">
+        <div class="books-lhs">
+            <a href="<?php echo url_to_pager("single-book", array('slug' => $book['slug'], 'id' => $book['id'])); ?>"><div class="book-image-holder"
+                 style="background-image : url(<?php echo url_img($book['image'], 600); ?>)"></div></a>
+        </div>
+        </div>
+        <div class="rhs-book">
+            <h4><?php echo $book['title']; ?></h4>
+            <?php /*if ($book['price']): */?><!--
+                    <p><b><?php /*echo config('default-currency') . ' ' . $book['price']; */?></b></p>
+                --><?php /*endif; */?>
+            <p style="pointer-events:none"><?php echo view("educational::rating",array('book'=>$book)); ?></p>
+            <?php $category = $ed->get_category($book['category']); ?>
+            <p><?php echo lang("educational::category"); ?> : <a href="<?php echo url('books').'?category='.$book['category']; ?>"><?php echo lang($category['title']); ?> </a></p>
+            <p><?php echo lang("educational::views"); ?> : <?php echo $book['views']; ?> </p>
+            <p><?php echo lang("educational::downloads"); ?> : <?php echo $book['downloads']; ?> </p>
+
+        </div>
+
+    </div>
+</div>

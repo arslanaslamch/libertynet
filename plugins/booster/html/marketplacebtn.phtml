@@ -1,0 +1,38 @@
+<?php if ($type == 'mkp'): ?>
+        <?php $boosted_id = get_boosted_listings(); //print_r($boosted_id); die(); ?>
+        <?php if (in_array($listing['id'], $boosted_id)): ?>
+            <span
+                class=""><?php echo lang('booster::boosted'); ?></span>
+        <?php else: ?>
+            <a data-toggle="modal" data-target=".boost"
+                  onclick="get_my_content(<?php echo $listing['id'] ?>,'Listing')"
+                  class="btn btn-success"><?php echo lang('booster::boost'); ?></span>
+        <?php endif; ?>
+
+<?php elseif ($type == 'Product'): ?>
+    <?php $boosted_id = get_boosted_listings('Product'); ?>
+    <?php if (in_array($product['id'], $boosted_id)): ?>
+        <!--<span
+            class="boost-tag"><?php //echo lang('booster::boosted'); ?></span> -->
+			<span title="<?php echo lang('booster::boosted'); ?>"><i class="ion-speakerphone"></i></span>
+    <?php else: ?>
+        <!--<span style="cursor: pointer;" data-toggle="modal" data-target=".boost"
+              onclick="get_my_content(<?php //echo $product['id'] ?>,'Product')"
+              class="boost-tag"><?php //echo lang('booster::boost'); ?></span> -->
+			  <a title="<?php echo lang('booster::boost'); ?>" style="cursor: pointer;" data-toggle="modal" data-target=".boost"
+              onclick="get_my_content(<?php echo $product['id'] ?>,'Product')"
+              ><i class="ion-speakerphone"></i></a>
+    
+	<?php endif; ?>
+<?php elseif ($type == 'property'): ?>
+    <?php $boosted_id = get_boosted_listings('property'); ?>
+    <?php if (in_array($property['id'], $boosted_id)): ?>
+        <span
+            class="property-tag-boost"><i class="ion-mark"></i><?php echo lang('booster::boosted'); ?></span>
+    <?php else: ?>
+        <a style="cursor: pointer;" data-toggle="modal" data-target=".boost"
+              onclick="get_my_content(<?php echo $property['id'] ?>,'property')"
+              class=" btn btn-secondary btn"><?php echo lang('booster::boost'); ?></a>
+    <?php endif; ?>
+<?php endif; ?>
+

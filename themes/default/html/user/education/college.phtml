@@ -1,0 +1,187 @@
+<?php $id = app()->profileUser['id']; $colleges = getWorkExperience('college', '', $id); ?>
+<div class="box">
+    <div class="title"><?php echo lang('college') ?></div>
+    <div class="box-content">
+        <ul class="eList profileExperience" id="collegeProfileExperience">
+            <?php if ($id == get_userid()): ?>
+                <li class="eListAdd">
+                    <div class="eListAddButton">
+                        <div class="clearfix">
+                            <div class="eListAddIcon"><i class="la la-plus"></i></div>
+                            <div class="eListAddText"><?php echo lang('add-a-college') ?></div>
+                        </div>
+                    </div>
+                    <div class="box workplaceForm">
+                        <div class="box-content">
+                            <form id="collegeForm" method="post" action="<?php echo url_to_pager('education-list') ?>" class="form-horizontal ajax-form">
+                                <div class="eCancelBody">
+                                    <i class="la la-remove"></i>
+                                    <span class="eCancel">Cancel</span>
+                                </div>
+                                <input type="hidden" value="college" name="val[type]">
+                                <input type="hidden" value="add" name="action">
+                                <div class="row form-group">
+                                    <label class="label col-md-3"> <?php echo lang('school')?> </label>
+                                    <div class="col-md-9"> <input id="college-school-input" required autocomplete="off" required data-target="#college-suggestion" data-table-f="school" data-type-name="college" class="form-control user-education-input" type="text" placeholder="<?php echo lang('what-school-did-you-attend')?>" name="val[school]"> </div>
+                                    <div class="user-suggestion-list edu-search box" id="college-suggestion"></div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="label col-md-3"> <?php echo lang('graduated')?> </label>
+                                    <div class="col-md-9"><input value="1" name="val[graduated]" checked class="" style="margin-top: 5px;" type="checkbox" /></div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="label col-md-3"> <?php echo lang('description')?> </label>
+                                    <div class="col-md-9"> <textarea required class="form-control" name="val[description]"></textarea> </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="label col-md-3"> <?php echo lang('concentration')?> </label>
+                                    <div class="col-md-9"> <input required class="form-control" type="text" placeholder="" name="val[concentrations]"> </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="label col-md-3"> <?php echo lang('degree')?> </label>
+                                    <div class="col-md-9"> <input required class="form-control" type="text" placeholder="" name="val[degree]"> </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="label col-md-3"> <?php echo lang('time-period')?> </label>
+                                    <div class="col-md-9 not-present-container" style="position:relative; margin-left: 108px">
+                                        <div class="">
+                                            <?php $type = isset($type) ? $type : 1 ?>
+                                            <?php $day =  isset($day) ? $day : 1 ?>
+                                            <?php $months = config('months') ?>
+                                            <?php $month =  isset($month) ? $month : 'january' ?>
+                                            <?php $current_year = date('Y'); ?>
+                                            <?php $year =  isset($year) ? $year: $current_year ?>
+                                            <div class="magic-select" data-name="val[start_day]" data-width="60px">
+                                                <input type="hidden" name="val[start_day]" value="<?php echo $day ?>" class="magic-select-value" />
+                                                <div class="magic-select-toggle">
+                                                    <?php echo $day ? $day : lang('day') ?>
+                                                </div>
+                                                <div class="magic-select-content slimscroll" data-height="200px">
+                                                    <?php for($i = 1; $i <= 31; $i++): ?>
+                                                        <div class="magic-select-option" data-value="<?php echo $i ?>">
+                                                            <?php echo $i ?>
+                                                        </div>
+                                                    <?php endfor ?>
+                                                </div>
+                                            </div>
+                                            <div class="magic-select" data-name="val[start_month]" data-width="120px">
+                                                <input type="hidden" name="val[start_month]" value="<?php echo $month ?>" class="magic-select-value" />
+                                                <div class="magic-select-toggle">
+                                                    <?php echo $month && isset($months[$month]) ? $months[$month] : lang('month') ?>
+                                                </div>
+                                                <div class="magic-select-content slimscroll" data-height="200px">
+                                                    <?php foreach($months as $n => $k): ?>
+                                                        <div class="magic-select-option" data-value="<?php echo $n ?>">
+                                                            <?php echo $k ?>
+                                                        </div>
+                                                    <?php endforeach ?>
+                                                </div>
+                                            </div>
+                                            <div class="magic-select" data-name="val[start_year]" data-width="80px">
+                                                <input type="hidden" name="val[start_year]" value="<?php echo $year ?>" class="magic-select-value" />
+                                                <div class="magic-select-toggle">
+                                                    <?php echo $year ? $year : lang('year') ?>
+                                                </div>
+                                                <div class="magic-select-content slimscroll" data-height="200px">
+                                                    <?php for($i = $current_year; $i >= 1940; $i--): ?>
+                                                        <div class="magic-select-option" data-value="<?php echo $i ?>">
+                                                            <?php echo $i ?>
+                                                        </div>
+                                                    <?php endfor ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="margin-top:5px" class="npresent">
+                                            <?php $type = isset($type) ? $type : 1 ?>
+                                            <?php $day =  isset($day) ? $day : 1 ?>
+                                            <?php $months = config('months') ?>
+                                            <?php $month =  isset($month) ? $month : 'january' ?>
+                                            <?php $current_year = date('Y'); ?>
+                                            <?php $year =  isset($year) ? $year: $current_year ?>
+                                            <div class="magic-select" data-name="val[end_day]" data-width="60px">
+                                                <input type="hidden" name="val[end_day]" value="<?php echo $day ?>" class="magic-select-value" />
+                                                <div class="magic-select-toggle">
+                                                    <?php echo $day ? $day : lang('day') ?>
+                                                </div>
+                                                <div class="magic-select-content slimscroll" data-height="200px">
+                                                    <?php for($i = 1; $i <= 31; $i++): ?>
+                                                        <div class="magic-select-option" data-value="<?php echo $i ?>">
+                                                            <?php echo $i ?>
+                                                        </div>
+                                                    <?php endfor ?>
+                                                </div>
+                                            </div>
+                                            <div class="magic-select" data-name="val[end_month]" data-width="120px">
+                                                <input type="hidden" name="val[end_month]" value="<?php echo $month ?>" class="magic-select-value" />
+                                                <div class="magic-select-toggle">
+                                                    <?php echo $month && isset($months[$month]) ? $months[$month] : lang('month') ?>
+                                                </div>
+                                                <div class="magic-select-content slimscroll" data-height="200px">
+                                                    <?php foreach($months as $n => $k): ?>
+                                                        <div class="magic-select-option" data-value="<?php echo $n ?>">
+                                                            <?php echo $k ?>
+                                                        </div>
+                                                    <?php endforeach ?>
+                                                </div>
+                                            </div>
+                                            <div class="magic-select" data-name="val[end_year]" data-width="80px">
+                                                <input type="hidden" name="val[end_year]" value="<?php echo $year ?>" class="magic-select-value" />
+                                                <div class="magic-select-toggle">
+                                                    <?php echo $year ? $year : lang('year') ?>
+                                                </div>
+                                                <div class="magic-select-content slimscroll" data-height="200px">
+                                                    <?php for($i = $current_year; $i >= 1940; $i--): ?>
+                                                        <div class="magic-select-option" data-value="<?php echo $i ?>">
+                                                            <?php echo $i ?>
+                                                        </div>
+                                                    <?php endfor ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div style="text-align: center" class="col-md-12">
+                                        <button type="button" class="btn btn-sm" id="add-workplace-cancel"><?php echo lang('cancel') ?></button>
+                                        <button type="submit" class="btn btn-primary btn-sm" id="add-workplace-button"><?php echo lang('save'); ?></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            <?php endif;?>
+            <?php foreach ($colleges as $college): ?>
+                <li id="college-<?php echo $college['id']?>" class="experience work">
+                    <div class="workExperience">
+                        <div class="clearfix">
+                            <a style="    margin-right: 12px;    float: left;display: block;"> <i style="font-size: 30px; color: #3967ff;   border-radius: 50%;    overflow: hidden;    display: block;" class="la la-graduation-cap"></i></a>
+                            <div style="    overflow: hidden;" class="textare">
+                                <div style="display: inline-block;" class="texthd">
+                                    <div style="    vertical-align: middle;    display: inline-block;">
+                                        <div style="    max-width: 412px;    font-weight: 600;     font-size: 16px; line-height: 20px;    color: #385898;" class="jobtitle"><?php echo $college['school']?></div>
+                                        <div style="    color: #90949c; font-size: 12px;line-height: 16px;">
+                                            <?php echo $college['concentrations']?> -
+                                            <?php echo $college['start_day'].' '.$college['start_month'].' '.$college['start_year'].' '.lang('to')?>
+                                            <?php if ($college['present'] == '1'): ?>
+                                                <?php //echo lang('present')?>
+                                            <?php else: ?>
+                                            <?php endif;?>
+                                            <?php echo $college['end_day'].' '.$college['end_month'].' '.$college['end_year']?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php if ($id == get_userid()):?>
+                                <div class="experienceActions">
+                                    <a data-type="college" data-id="<?php echo $college['id'] ?>" class="experienceEdit" style="margin-right: 5px" href=""><i class="la la-edit"></i></a>
+                                    <a data-type="college" data-id="<?php echo $college['id'] ?>" class="experienceDelete" href=""><i class="la la-trash"></i></a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>

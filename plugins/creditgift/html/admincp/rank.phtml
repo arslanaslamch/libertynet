@@ -1,0 +1,65 @@
+<div class="wrapper">
+	<div class="wrapper-title"><?php echo lang('creditgift::manage-rank') ?></div>
+	<div class="wrapper-content">
+		<div class="table-responsive">
+			<table class="table table-striped list-table">
+				<tr>
+					<th><?php echo lang('creditgift::rank') ?></th>
+					<th><?php echo lang('creditgift::credit') ?></th>
+					<th><?php echo lang('creditgift::description') ?></th>
+					<th><?php echo lang('creditgift::action') ?></th>
+				</tr>
+				<?php foreach($ranks as $rank): ?>
+					<tr>
+						<td><?php echo $rank['rank']; ?></td>
+						<td><?php echo $rank['credit']; ?></td>
+						<td><?php echo $rank['description']; ?></td>
+						<td>
+							<a ajax="true" class="btn btn-sm btn-success" href="<?php echo url_to_pager('admincp-creditgift-edit') ?>?action=edit&id=<?php echo $rank['id'] ?>">
+								<i class="ion-edit"></i>
+							</a>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
+<div id="addRank" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<form enctype="multipart/form-data" action="" method="post" class="form-control">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo lang('creditgift::add-new-rank') ?></h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+
+			</div>
+			<div>
+				<label><?php echo lang('creditgift::rank') ?>:</label>
+				<input id="inputsm" class="form-control" type="text" name="val[rank]" required="">
+			</div>
+			<div>
+				<label><?php echo lang('creditgift::credit') ?>:</label>
+				<input id="inputsm" class="form-control input-sm" type="number" name="val[credit]" required="">
+			</div>
+			<div>
+				<label><?php echo lang('creditgift::rank-image') ?>:</label>
+				<input id="inputsm" class="form-control input-sm" type="file" name="rank_image">
+			</div>
+			<div>
+				<label><?php echo lang('creditgift::description') ?>:</label>
+				<input id="inputsm" class="form-control input-sm" type="text" name="val[description]" required="">
+			</div>
+			<br/>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-success"><?php echo lang('add') ?></button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo lang('close') ?></button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>

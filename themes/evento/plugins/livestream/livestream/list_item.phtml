@@ -1,0 +1,28 @@
+<?php
+/**
+ * @var array $livestream
+ */
+$livestream = (array) $livestream;
+?>
+<div class="each-item clearfix">
+    <div class="left">
+        <?php if($livestream['featured']): ?>
+            <span class="featured-tag"><?php echo lang('featured') ?></span>
+        <?php endif ?>
+        <a ajax="true" href="<?php echo url_to_pager('livestream-view', array('slug' => $livestream['slug'])) ?>" style="background-image: url(<?php echo ($livestream['image']) ? url_img($livestream['image'], 600) : img('livestream::images/no_image.png') ?>);"></a>
+    </div>
+    <?php $host = Livestream::getHost($livestream); ?>
+    <div class="right">
+        <a ajax="true" href="<?php echo url_to_pager('livestream-view', array('slug' => $livestream['slug'])) ?>"><?php echo ($livestream['title']) ? $livestream['title'] : lang('livestream::untitled-livestream') ?></a> </span>
+        <div class="item-info">
+            <span>
+	            <span class="feed-time"> <span class="timeago " title="<?php echo date('c', $livestream['start_timestamp']) ?>"><?php echo date('c', $livestream['start_timestamp']) ?></span></span></span>
+            <?php echo lang('livestream::by') ?>
+            <a ajax="true" href="<?php echo $host['link'] ?>"><?php echo $host['name'] ?></a>
+        </div>
+        <?php if(fire_hook('livestream.custom.display', true)): ?>
+            <p class="item-desc"><?php echo str_limit($livestream['description'], 120) ?></p>
+            <span class="livestream-social-share-link"><?php if($livestream['privacy'] == 1 && plugin_loaded('sharer')) echo view('sharer::share_link', array('link' => url("livestream/".$livestream['slug']))) ?></span>
+        <?php endif; ?>
+    </div>
+</div>

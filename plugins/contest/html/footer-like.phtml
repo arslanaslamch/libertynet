@@ -1,0 +1,39 @@
+<div class="feed-footer">
+    <ul class=" feed-footer-menu clearfix">
+        <?php if(plugin_loaded('like')): ?>
+            <?php load_functions('like::like'); ?>
+            <?php echo view('like::like-footer', array('type' => $refName, 'typeId' => $refId)); ?>
+        <?php endif ?>
+        <li class="blog-social-share"><?php echo plugin_loaded('sharer') ? view('sharer::share_link', array('link' =>getFullUrl())) : '' ?></li>
+        <?php fire_hook('more-feed-footer', null, array($refName, $refId)); ?>
+        <li class="pull-right">
+            <ul class="feed-statistics">
+                <?php if(plugin_loaded('like')): ?>
+                    <li>
+                        <a onclick="return show_likes('<?php echo $refName ?>', '<?php echo $refId ?>')" href="">
+                            <i class="fa fa-thumbs-o-up"></i>
+                            <span class="like-count-<?php echo $refName ?>-<?php echo $refId ?>"><?php echo count_likes($refName, $refId) ?></span>
+                        </a>
+                    </li>
+                    <?php if(config('enable-dislike', false)): ?>
+                        <li>
+                            <a onclick="return show_dislikes('<?php echo $refName ?>', '<?php echo $refId ?>')" href="">
+                                <i class="ion-thumbsdown"></i>
+                                <span class="dislike-count-<?php echo $refName ?>-<?php echo $refId ?>"><?php echo count_dislikes($refName, $refId) ?></span>
+                            </a>
+                        </li>
+                    <?php endif ?>
+                <?php endif ?>
+                <?php if(plugin_loaded('comment')): ?>
+                    <?php load_functions('comment::comment') ?>
+                    <?php $countComments = count_comments($refName, $refId); ?>
+                    <li>
+                        <i class="ion-chatbubbles"></i>
+                        <span class="comment-count-<?php echo $refName ?>-<?php echo $refId ?>"><?php echo ($countComments) ? $countComments : null ?></span>
+                    </li>
+                <?php endif ?>
+                <?php fire_hook('more-feed-footer-count', null, array($refName, $refId)); ?>
+            </ul>
+        </li>
+    </ul>
+</div>

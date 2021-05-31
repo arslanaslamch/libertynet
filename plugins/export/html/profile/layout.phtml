@@ -1,0 +1,55 @@
+<?php $app->profileUser = get_user() ?>
+<div class="export-container">
+    <div class="" style="padding: 0;">
+        <div data-width="950" class="profile-container">
+            <div id="profile-cover" class="box">
+                <?php fire_hook('profile.cover', null, array($app->profileUser)); ?>
+                <div class="profile-cover-indicator">
+                    <img src="<?php echo img('images/loading.gif') ?>"/>
+                </div>
+                <a href="javascript::void(0)" id="profile-cover-viewer" data-id="<?php echo ($app->profileUser['cover']) ? get_media_id($app->profileUser['cover']) : null ?>" data-image="<?php echo get_user_cover(app()->profileUser) ?>" class="<?php echo ($app->profileUser['cover']) ? 'photo-viewer' : null ?>">
+                    <div class="profile-cover-wrapper">
+                        <img src="<?php echo get_user_cover(app()->profileUser, false) ?>"/>
+                    </div>
+                </a>
+                <div class="user-avatar box">
+                    <?php if(is_profile_owner()): ?>
+                        <form id="user-profile-image-form" action="" method="post" enctype="multipart/form-data">
+                            <?php CSRFProtection::embed() ?>
+                            <span class="file-input"><input accept="image/*" multiple onchange="upload_user_avatar()" type="file" id="user-avatar-input" name="avatar"/> </span>
+                        </form>
+                    <?php endif ?>
+                    <div class="profile-image-indicator">
+                        <img src="<?php echo img("images/loading.gif") ?>"/>
+                        <span class="percent-indicator">0%</span>
+                    </div>
+                    <a id="profile-image-viewer" style="display: block" href="javascript::void(0)" data-id="<?php echo ($app->profileUser['avatar']) ? get_media_id($app->profileUser['avatar']) : null ?>" data-image="<?php echo get_avatar(920, app()->profileUser) ?>" class="<?php echo ($app->profileUser['avatar']) ? 'photo-viewer' : null ?>">
+                        <img id="profile-image" class="profile-image" src="<?php echo get_avatar(200, app()->profileUser) ?>"/>
+                    </a>
+                </div>
+                <div class="user-info">
+                    <h4 class="user-name left"><?php echo get_user_name(app()->profileUser) ?> <?php echo verify_badge(app()->profileUser) ?></h4>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+	<div id="user-profile-content-container">
+		<?php echo view('export::profile/about') ?>
+	</div>
+
+<style>
+    #profile-cover .user-info {
+        position: initial !important;
+    }
+    #profile-cover .user-avatar {
+        width: 70px !important;
+        height: 70px !important;
+    }
+    #profile-cover .user-info .user-name {
+        color: #0c080c;
+        margin-top: 5px;
+        font-weight: 700;
+    }
+</style>

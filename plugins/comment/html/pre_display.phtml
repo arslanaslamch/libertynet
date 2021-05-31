@@ -1,0 +1,48 @@
+<?php $owner = (isset($owner) && $owner)?$owner:''; $sort = (isset($sort) && $sort)?$sort:'top' ?>
+<div class="feed-comment-container" id="comment-container-<?php echo $type?>-<?php echo $typeId ?>">
+    <?php if($countComments > $limit): ?>
+        <a id="comment-view-more-button-<?php echo $type ?>-<?php echo $typeId ?>" class="comment-view-more-button comment-view-more-button-feed-<?php echo $typeId ?>" onclick="return show_more_comment('<?php echo $type?>', '<?php echo $typeId ?>', 'comment-view-more-indicator-<?php echo $typeId ?>')" href=""><?php echo lang('view-previous-comments') ?></a>
+        <img class="comment-view-more-indicator" id="comment-view-more-indicator-<?php echo $typeId ?>" src="<?php echo img('images/loading.gif') ?>"/>
+    <?php endif ?>
+    <div data-offset="<?php echo $limit ?>" data-limit="<?php echo $limit ?>" class="comment-lists comment-lists-feed-<?php echo $typeId ?>" id="">
+        <?php
+            $comments = get_comments($type, $typeId, $limit, 0, $owner, $sort);
+        ?>
+        <?php foreach($comments as $comment): ?>
+            <?php echo view('comment::display', array('comment' => $comment)) ?>
+        <?php endforeach; ?>
+    </div>
+    <?php
+    echo view('comment::editor', array(
+        'typeId' => $typeId,
+        'type' => $type,
+        'entityId' => $entityId,
+        'entityType' => $entityType,
+        'avatar' => $avatar,
+        'textLimit' => $textLimit))
+    ?>
+    <?php if($countComments > $limit): ?>
+    <div class="comment-sort-menu-container">
+        <a data-top="<?php echo lang("comment::top")?>" data-latest="<?php echo lang("comment::latest")?>" data-limit="<?php echo $limit ?>" data-avatar="<?php echo $avatar ?>" data-entity_type="<?php echo $entityType?>" data-entity_id="<?php echo $entityId ?>" aria-expanded="false" data-toggle="dropdown" id="comment-sort-button-<?php echo $type ?>-<?php echo $typeId ?>" class="dropdown-toggle comment-sort-button comment-sort-button-<?php echo $type ?>-<?php echo $typeId ?>" href=""><?php echo ($sort == 'top')?lang('comment::top'):lang('comment::latest') ?></a>
+        <img class="comment-sort-indicator" id="comment-sort-indicator-<?php echo $typeId ?>" src="<?php echo img('images/loading.gif') ?>" style="display: none"/>
+        <ul class="dropdown-menu comment-sort-ul">
+            <li class="comment-sort-menu" role="presentation">
+                <a aria-checked="true" role="menuitemcheckbox" href="#" class="dropdown-item comment-sort-menu-item" onclick="return sort_comment('<?php echo $type?>', '<?php echo $typeId ?>', 'top')">
+                    <div class="comment-drop-item">
+                        <div class="comment-menu-header"><?php echo lang('comment::top')?></div>
+                        <div class="comment-menu-description"><?php echo lang('comment::top-comment-description')?></div>
+                    </div>
+                </a>
+            </li>
+            <li class="comment-sort-menu" role="presentation">
+                <a aria-checked="true" role="menuitemcheckbox" href="#" class="dropdown-item comment-sort-menu-item" onclick="return sort_comment('<?php echo $type?>', '<?php echo $typeId ?>', 'latest')">
+                    <div class="comment-drop-item">
+                        <div class="comment-menu-header"><?php echo lang('comment::latest')?></div>
+                        <div class="comment-menu-description"><?php echo lang('comment::latest-comment-description') ?></div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <?php endif ?>
+</div>

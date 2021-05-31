@@ -1,0 +1,62 @@
+
+<div class="col-sm-12" style="padding: 0">
+    <div class="box" >
+        <div class="title booster-header-title">
+            <span style='margin-left: 2px'><i style='color: #26A65B' class='ion-android-star'></i> <?php echo lang('booster::sponsored') ?></span>
+        </div>
+           <div class="box-content">
+               <div class="container row">
+            <div class="feed-wrapper">
+            <div class="col-sm-12 clearfix" style="margin-top: 15px;">
+
+                <div class="col-sm-6 col-xs-12">
+                    <img class="img-responsive" src="<?php echo ($product['main_photo']) ? url_img($product['main_photo'], 700) : img("store::images/comingsoon.png")?>" alt="Product Image" />
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <p class="feed-product-name"><strong> <?php echo ucfirst($product['name']) ?></strong></p>
+                    <p class="feed-product-price"><span class="price"> <?php echo config('currency-sign','$').''.number_format((float)getProductPrice($product),2,'.',','); ?> </span><?php echo (getProductDiscountedPrice($product)) ? '<small class="strikethroug">'. config('currency-sign','$').''.number_format((float)$product['price'],2,'.',',').'</small>': '' ?></p>
+                    <p><strong><?php echo lang("store::category") ?> : </strong><?php echo $product['category'] ?></p>
+
+                    <?php if ($product['additional_images']): ?>
+                        <?php $additional = perfectUnserialize($product['additional_images']);
+                        if (is_array($additional)): $i=1; ?>
+                            <div class="little_images">
+                                <img
+                                    src="<?php echo ($product['main_photo']) ? url_img($product['main_photo']) : img("store::images/comingsoon.png"); ?>"
+                                    alt="<?php echo $product['name'] . ' image'; ?>" class="store_thumb_images"/>
+
+                                <?php foreach ($additional as $ad): ?>
+                                    <img src="<?php echo url_img($ad) ?>" class="store_thumb_images "
+                                         alt="thumb images"/>
+                                    <?php if($i==1) break; ?>
+                                    <?php $i++; endforeach; ?>
+                            </div>
+                        <?php else: ?>
+
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    <div class="row" style="clear:both">
+                        <div class="container">
+                            <?php
+                            $to = $product['user_id']; //seller
+                            $from = get_userid();
+                            $seller = get_seller($to);
+                            $phone_number = $seller[0]['phone']
+                            ?>
+                            <a data-id="<?php echo $id; ?>" style="margin-top: 15px;float:left;margin-right:5px;" ajax="true" href="<?php echo url_to_pager("single-product",array('slugs'=>$product['slug'])) ?>" class="booster-click btn btn-sm btn-info"><?php echo lang('store::buy-now') ?></a>
+                            <a href='tel:<?php echo $phone_number; ?>' rel="external" style="margin-top: 15px;margin-right:5px;float:left" class="btn btn-secondary btn-sm only-mobile" title="<?php echo lang('store::call-seller') ?>"><i class="ion-android-call" ></i> <?php echo lang('store::call') ?></a>
+                            <!--<a  class="btn btn-secondary btn-sm" title="send message to seller"><i class="ion-android-chat"></i> Message </a>-->
+                            <?php if($to != $from): ?>
+                                <a style="margin-top: 15px;float:left;" ajax="true" href="<?php echo url('messages?userid='.$to)?>"  class="btn btn-secondary btn-sm message-me-small"><i class="ion-android-chat"></i> <?php echo ucwords(lang('store::message'))?></a>
+                                <a style="margin-top: 15px;float:left;" href="" onclick="return Chat.open(null, '<?php echo $to?>', '<?php echo htmlentities(get_user_name($to))?>', '<?php echo get_avatar(75, find_user($to))?>')" class="btn btn-secondary btn-sm message-me-large"><i class="ion-android-chat"></i>  <?php echo lang('store::message')?></a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+           </div>
+        </div>
+        </div>
+</div>
+

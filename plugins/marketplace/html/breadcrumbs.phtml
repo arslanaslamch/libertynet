@@ -1,0 +1,12 @@
+<div id="marketplace-listing-top-column" class="col-md-12">
+    <a href="<?php echo url() ?>" ajax="true"><?php echo lang('marketplace::home') ?></a>
+    <i class="ion-ios-arrow-right"></i>
+    <a href="<?php echo url_to_pager('marketplace') ?>"
+        ajax="true"><?php echo lang('marketplace::marketplace') ?></a>
+    <i class="ion-ios-arrow-right"></i>
+    <a href="<?php echo url_to_pager('marketplace') ?>?c=<?php echo $listing['category_id'] ?>"
+        ajax="true"><?php echo lang($listing['category_title']) ?></a>
+    <i class="ion-ios-arrow-right"></i>
+    <a href="<?php echo url_to_pager('marketplace-listing', array('slug' => $listing['slug'])) ?>"
+        ajax="true"><?php echo lang($listing['title']) ?></a>
+</div>

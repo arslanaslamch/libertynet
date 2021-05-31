@@ -1,0 +1,36 @@
+<?php echo view("supportsystem::top-menu"); ?>
+<div class="box">
+    <div class="title">
+        <?php echo lang("supportsystem::you-searched-for").' '.urldecode(input("term")); ?>
+    </div>
+    <div class="box-content">
+        <?php if ($articles->total): ?>
+            <ul class="ss-each-article-box__ul">
+                <?php foreach ($articles->results() as $article):
+
+                    $title = $article['subject'];
+                    $sub_title = str_limit(strip_tags($article['content']),150);
+                    $avatar = img("supportsystem::images/doc.png");
+                    $url = ss_article_url($article);
+                    ?>
+                    <div class="media-widget border-bottom ss-ticket-reply">
+                        <div class="item">
+                            <div class="left">
+                                <a ajax="true" href="<?php echo $url; ?>">
+                                    <div class="thumb"
+                                         style="background: url('<?php echo $avatar; ?>') center; background-size: cover;"></div>
+                                </a>
+                            </div>
+                            <div class="right">
+                                <span class="mb-2 d-block"><a href="<?php echo $url; ?>" ajax="true" class="h6"><?php echo ucfirst($title) ?> </a> </span>
+                                <span class="text-secondary"><?php echo $sub_title ?></span>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </ul>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang("supportsystem::we-could-not-find-an-article-matching") ?></div>
+        <?php endif; ?>
+    </div>
+</div>

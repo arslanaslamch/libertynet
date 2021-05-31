@@ -1,0 +1,93 @@
+<div class="wrapper">
+	<div class="wrapper-title"><?php echo lang('creditgift::send-credit') ?> |
+		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#sendCredit"><?php echo lang('creditgift::send-to-all') ?></button>
+	</div>
+	<div class="wrapper-content">
+		<form action="" method="get" style="margin: 20px 0">
+			<?php CSRFProtection::embed() ?>
+			<input type="text" class="form-control" name="search" placeholder="<?php echo lang('search') ?>"/>
+			<button class="btn btn-sm btn-secondary" style="margin-top: 10px"><?php echo lang('search') ?></button>
+		</form>
+        <div class="list-table-container">
+            <div class="table-responsive">
+        		<table class="table list-table">
+					<thead>
+					<tr>
+						<th style="width: 5%"><?php echo lang('creditgift::id') ?></th>
+						<th style="width: 15%"><?php echo lang('Name') ?></th>
+						<th style="width: 25%"><?php echo lang('creditgift::current-balance') ?></th>
+						<th style="width: 10%"><?php echo lang('action') ?></th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php foreach($members->results() as $member): ?>
+						<tr>
+							<td><?php echo $member['id']; ?></td>
+							<td><?php echo get_user_name($member['id']); ?></td>
+							<td><?php echo $member['credit_balance']; ?></td>
+							<td>
+								<a data-id="<?php echo $member['id']; ?>" class="sendOne btn btn-info" href="#sendOne"><i class="ion-android-send"></i><?php echo lang('send') ?>
+								</a>
+							</td>
+						</tr>
+					<?php endforeach ?>
+					</tbody>
+				</table>
+            </div>
+        </div>
+		<?php echo $members->links(); ?>
+	</div>
+</div>
+<!-- Modal -->
+<div id="sendCredit" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<form action="" method="post" class="form-control"
+			">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo lang('creditgift::send-credit') ?></h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div>
+					<label><?php echo lang('creditgift::unit') ?>:</label>
+					<input id="inputsm" class="form-control input-sm" type="number" name="sendTo_all" required="">
+				</div>
+				<br/>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-success"><?php echo lang('send') ?></button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo lang('close') ?></button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
+<div id="sendOne" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<form action="" method="post" class="form-control"
+			">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo lang('creditgift::send-credit') ?></h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div>
+					<label><?php echo lang('creditgift::unit') ?>:</label>
+					<input type="hidden" name="recieverId" id="recieverId" value=""/>
+					<input id="inputsm" class="form-control input-sm" type="number" name="sendTo_one" required="">
+				</div>
+				<br/>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-success"><?php echo lang('send') ?></button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo lang('close') ?></button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>

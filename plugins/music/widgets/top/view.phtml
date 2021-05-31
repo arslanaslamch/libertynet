@@ -1,0 +1,22 @@
+<?php $musics = get_musics('browse', 'all', null, null, $limit, 'top'); ?>
+<?php if($musics->total): ?>
+    <div class="box media-widget media-widget-bg-gradient-primary">
+        <div class="title"><?php echo lang('music::top-musics') ?></div>
+        <div class="box-content">
+            <?php foreach($musics->results() as $music): ?>
+                <div class="item">
+                    <div class="left">
+                        <a ajax="true" href="<?php echo get_music_url($music) ?>">
+                            <div class="thumb" style="background-image: url(<?php echo $music['cover_art'] ? url_img($music['cover_art'], 75) : img('music::images/preview.png', 75) ?>); background-position: center; background-size: cover;"></div>
+                        </a>
+                    </div>
+                    <div class="right">
+                        <a ajax="true" href="<?php echo get_music_url($music) ?>" class="media-heading title"><?php echo ($music['title']) ? $music['title'] : lang('music::untitled-music') ?></a>
+                        <div class="user"><?php echo str_limit($music['artist'].' - '.$music['title'], 50) ?></div>
+                        <div class="info"><?php echo $music['play_count']; ?> <?php echo $music['play_count'] > 1 ? lang('music::plays') : lang('music::play') ?></div>
+                    </div>
+                </div>
+            <?php endforeach ?>
+        </div>
+    </div>
+<?php endif ?>

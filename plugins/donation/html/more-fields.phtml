@@ -1,0 +1,18 @@
+<div class="box">
+    <div class="title"><?php echo $donation['title']; ?>
+    </div>
+    <div class="box-content">
+        <div class="more-fields-donation-menu">
+            <a class="<?php echo (input('t') == 'mi') ? 'btn-info' : ''; ?>" href="<?php echo url_to_pager("more-fields").'?t=mi&id='.input('id'); ?>"><?php echo lang("donation::main-info") ?></a>
+            <a class="<?php echo (input('t') == 'pm') ? 'btn-info' : ''; ?>" href="<?php echo url_to_pager("more-fields").'?t=pm&id='.input('id'); ?>"><?php echo lang("donation::payment-settings") ?></a>
+            <!--<a class="<?php /*echo (input('t') == 'ci') ? 'btn-info' : ''; */?>" href="<?php /*echo url_to_pager("more-fields").'?t=ci&id='.input('id'); */?>"><?php /*echo lang("donation::contact-information") */?></a>-->
+            <a class="<?php echo (input('t') == 'ga') ? 'btn-info' : ''; ?>" href="<?php echo url_to_pager("more-fields").'?t=ga&id='.input('id'); ?>"><?php echo lang("donation::gallery") ?></a>
+            <a class="<?php echo (input('t') == 'ec') ? 'btn-info' : ''; ?>" href="<?php echo url_to_pager("more-fields").'?t=ec&id='.input('id'); ?>"><?php echo lang("donation::email-and-condition") ?></a>
+            <a class="<?php echo (input('t') == 'iv') ? 'btn-info' : ''; ?>" href="<?php echo url_to_pager("more-fields").'?t=iv&id='.input('id'); ?>"><?php echo lang("donation::invite-friends") ?></a>
+            <a href="<?php echo url_to_pager("single_donation",array('id'=>$donation['id'])); ?>" class="pull-right btn-info"><?php echo lang("donation::view-this-campaign"); ?></a>
+        </div>
+        <div class="">
+            <?php echo $view; ?>
+        </div>
+    </div>
+</div>

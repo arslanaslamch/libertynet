@@ -1,0 +1,34 @@
+<div class="box credit credit-stat-widget">
+    <div class="title"><?php echo lang('creditgift::credits-statistics') ?></div>
+    <div class="credit-stat">
+        <div class="details">
+            <div class="detail">
+                <i class="icon ion-cash"></i>
+                <div class="name"><?php echo lang('creditgift::current-balance') ?></div>
+                <div class="value">
+                    <?php $bal = get_creditgift_balance(get_userid()); ?>
+                    <?php echo $bal[0]['credit_balance']; ?>
+                </div>
+            </div>
+            <div class="detail">
+                <i class="icon ion-ios-star"></i>
+                <div class="name"><?php echo lang('creditgift::total-credit-spent') ?></div>
+                <div class="value">
+                    <?php $bal = get_creditgift_balance(get_userid()); ?>
+                    <?php echo $bal[0]['credit_spent']; ?>
+                </div>
+            </div>
+            <div class="detail">
+                <i class="icon ion-trophy"></i>
+                <div class="name"><?php echo lang('creditgift::all-time-credit') ?></div>
+                <div class="value">
+                    <?php $bal = get_creditgift_balance(get_userid()); ?>
+                    <?php echo $bal[0]['credit_balance'] + $bal[0]['credit_spent']; ?>
+                </div>
+            </div>
+        </div>
+        <a href="<?php echo url_to_pager('creditgift-purchase') ?>" class="btn btn-secondary btn-block purchase-button">
+            <?php echo lang('creditgift::purchase-credit') ?>
+        </a>
+    </div>
+</div>

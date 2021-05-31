@@ -1,0 +1,83 @@
+<?php
+/**
+ * @var array $livestream
+ * @var int $user_id
+ * @var string $token
+ * @var string $ice_servers
+ * @var string $ice_transport_policy
+ * @var bool $is_owner
+ */
+?>
+<div class="row livestream-view" data-livestream-id=<?php echo $livestream['id'] ?> data-livestream-type="<?php echo $livestream['type'] ?>" data-livestream-user-id=<?php echo $livestream['user_id'] ?> data-livestream-start-timestamp=<?php echo $livestream['start_timestamp'] ?> data-livestream-token="<?php echo $livestream['token'] ?>" data-livestream-status=<?php echo $livestream['status'] ?> data-user-id=<?php echo $user_id ?> data-user-id=<?php echo $user_id ?> data-token=<?php echo $token ?> data-livestream-ice-servers=<?php echo htmlspecialchars($ice_servers, ENT_QUOTES, 'UTF-8') ?> data-livestream-ice-transport-policy="<?php echo $ice_transport_policy ?>">
+    <div class="col-md-8 left">
+        <div class="media-container">
+            <img src="<?php echo img('livestream::images/loading.gif') ?>" class="livestream-loading<?php echo !$is_owner && $livestream['status'] == 1 ? ' active' : '' ?>" alt="<?php echo lang('livestream::loading') ?>">
+            <?php if($livestream['status'] == 1): ?>
+                <video class="livestream-player media<?php echo $is_owner ? ' muted' : '' ?>"<?php echo $livestream['type'] == 'audio' ? ' style="background-image: url('.($livestream['image'] ? url_img($livestream['image'], 920) : img('livestream::images/no_image.png')).');"' : '' ?> playsinline></video>
+                <div class="viewers-count"><?php echo lang('livestream::viewing') ?>: <span class="count">0</span></div>
+                <div class="time-elapsed">00:00</div>
+            <?php elseif($livestream['status'] == 2): ?>
+                <div class="livestream-record-unavailable"><?php echo lang('livestream::livestream-record-unavailable') ?></div>
+                <video class="livestream-player media<?php echo $is_owner ? ' muted' : '' ?>" style="background-image: url('<?php echo $livestream['image'] ? url_img($livestream['image'], 920) : img('livestream::images/no_image.png') ?>')" playsinline></video>
+            <?php elseif($livestream['status'] == 3): ?>
+                <?php echo view('livestream::livestream/player', array('link' => url($livestream['path']), 'photo' => url_img($livestream['image'], 920))) ?>
+            <?php endif; ?>
+        </div>
+        <div class="feed-footer">
+            <?php if(plugin_loaded('like') and config('feed-like-type', 'regular') != 'regular'): ?>
+                <div class="reactors reactors-livestream-<?php echo $livestream['id'] ?>"><?php echo view('like::reacts', array('type' => 'livestream', 'type_id' => $livestream['id'])) ?></div>
+            <?php endif ?>
+            <ul class=" feed-footer-menu clearfix">
+                <?php if(plugin_loaded('like')): ?>
+                    <?php load_functions('like::like'); ?>
+                    <?php if(config('feed-like-type', 'regular') == 'regular'): ?>
+                        <li><a onclick="return like_item('livestream', '<?php echo $livestream['id'] ?>')" data-status="<?php echo (has_liked('livestream', $livestream['id'])) ? '1' : 0 ?>" class=" like-button-livestream-<?php echo $livestream['id'] ?> like-button <?php echo (has_liked('livestream', $livestream['id'])) ? 'liked' : null ?>" href=""><i class="fa fa-thumbs-o-up"></i> <?php echo lang('like::like') ?> </a></li>
+                        <?php if(config('enable-dislike', false)): ?>
+                            <li><a id="" onclick="return dislike_item('livestream', '<?php echo $livestream['id'] ?>')" data-status="<?php echo (has_disliked('livestream', $livestream['id'])) ? '1' : 0 ?>" class="dislike-button-livestream-<?php echo $livestream['id'] ?> like-button <?php echo (has_disliked('livestream', $livestream['id'])) ? 'disliked' : null ?>" href=""><i class="ion-thumbsdown"></i> <?php echo lang('like::dislike') ?></a></li>
+                        <?php endif ?>
+                    <?php else: ?>
+                        <li class="feed-react">
+                            <div class="react-items react-items-<?php echo $livestream['id'] ?>" id="">
+                                <ul>
+                                    <li><a data-type="livestream" data-target="<?php echo $livestream['id'] ?>" href="" data-code="1" data-toggle="tooltip" title="<?php echo lang('like::like') ?>"><img src="<?php echo img('images/reaction/like.gif') ?>"/></a></li>
+                                    <li><a data-type="livestream" data-target="<?php echo $livestream['id'] ?>" href="" data-code="4" data-toggle="tooltip" title="<?php echo lang('like::love') ?>"><img src="<?php echo img('images/reaction/love.gif') ?>"/></a></li>
+                                    <li><a data-type="livestream" data-target="<?php echo $livestream['id'] ?>" href="" data-code="5" data-toggle="tooltip" title="<?php echo lang('like::haha') ?>"><img src="<?php echo img('images/reaction/haha.gif') ?>"/></a></li>
+                                    <li><a data-type="livestream" data-target="<?php echo $livestream['id'] ?>" href="" data-code="7" data-toggle="tooltip" title="<?php echo lang('like::wow') ?>"><img src="<?php echo img('images/reaction/wow.gif') ?>"/></a></li>
+                                    <li><a data-type="livestream" data-target="<?php echo $livestream['id'] ?>" href="" data-code="8" data-toggle="tooltip" title="<?php echo lang('like::sad') ?>"><img src="<?php echo img('images/reaction/sad.gif') ?>"/></a></li>
+                                    <li><a data-type="livestream" data-target="<?php echo $livestream['id'] ?>" href="" data-code="9" data-toggle="tooltip" title="<?php echo lang('like::angry') ?>"><img src="<?php echo img('images/reaction/angry.gif') ?>"/></a></li>
+                                </ul>
+                            </div>
+                            <a data-type="livestream" data-target="<?php echo $livestream['id'] ?>" data-status="<?php echo (has_reacted('livestream', $livestream['id'])) ? '1' : 0 ?>" class=" react-button-livestream-<?php echo $livestream['id'] ?> react-button <?php echo (has_reacted('livestream', $livestream['id'])) ? 'liked' : null ?>" href=""><i class="fa fa-thumbs-o-up"></i> <span class="hidden-md-down"><?php echo lang('like::like') ?></span></a>
+                        </li>
+                    <?php endif ?>
+                <?php endif ?>
+                <li><span><i class="ion-ios-eye"></i> <?php echo $livestream['views'] ?> <?php echo lang('livestream::views') ?></span></li>
+                <?php fire_hook('more-feed-footer', null, array('livestream', $livestream['id'])); ?>
+                <li class="pull-right">
+                    <ul class="feed-statistics">
+                        <?php if(plugin_loaded('like') and config('feed-like-type', 'regular') == 'regular'): ?>
+                            <?php if(plugin_loaded('like')): ?>
+                                <li><a onclick="return show_likes('livestream', '<?php echo $livestream['id'] ?>')" href=""><i class="fa fa-thumbs-o-up"></i> <span class="like-count-livestream-<?php echo $livestream['id'] ?>"><?php echo count_likes('livestream', $livestream['id']) ?></span></a></li>
+                                <?php if(config('enable-dislike', false)): ?>
+                                    <li><a onclick="return show_dislikes('livestream', '<?php echo $livestream['id'] ?>')" href=""><i class="ion-thumbsdown"></i> <span class="dislike-count-livestream-<?php echo $livestream['id'] ?>"><?php echo count_dislikes('livestream', $livestream['id']) ?></span></a></li>
+                                <?php endif ?>
+                            <?php endif ?>
+                        <?php endif ?>
+                        <?php if(plugin_loaded('comment')): ?>
+                            <?php load_functions('comment::comment') ?>
+                            <?php $countComments = count_comments('livestream', $livestream['id']); ?>
+                            <li><i class="ion-chatbubbles"></i> <span class="comment-count-livestream-<?php echo $livestream['id'] ?>"><?php echo ($countComments) ? $countComments : null ?></span></li>
+                        <?php endif ?>
+                        <?php fire_hook('more-feed-footer-count', null, array('livestream', $livestream['id'])); ?>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-4 right">
+        <?php echo view('livestream::comment/wrapper', array('livestream' => $livestream)) ?>
+        <?php if($is_owner && $livestream['status'] == 1): ?>
+            <button class="btn btn-info btn-block action-button livestream-stop-button"><?php echo lang('livestream::stop-streaming') ?></button>
+        <?php endif ?>
+    </div>
+</div>

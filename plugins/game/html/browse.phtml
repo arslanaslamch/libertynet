@@ -1,0 +1,142 @@
+<div class="box">
+    <div class="game-list">
+        <div class="head">
+            <div class="cover" style="background-image: url(<?php echo url_img(config('game-list-cover', 'plugins/game/images/cover.jpg'), 920); ?>)">
+                <div class="title"><?php echo lang('game::game') ?></div>
+                <div class="actions">
+                    <?php if(can_create_game()): ?>
+                        <a href="<?php echo url_to_pager('game-create') ?>" class="btn btn-block btn-info action-button" data-toggle="modal" data-target="#game-create-modal">
+                            <i class="ion-plus"></i>
+                            <?php echo lang('game::add-game') ?>
+                        </a>
+                        <div id="game-create-modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog modal-lg1">
+                                <div class="modal-content">
+                                    <div class="modal-form-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <p class="modal-title pull-left"><?php echo lang('game::add-game') ?></p>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="<?php echo url('game/add') ?>" method="post" enctype="multipart/form-data" class="ajax-form">
+                                            <?php CSRFProtection::embed() ?>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('game::game-category') ?></label><br/>
+                                                </div>
+                                                <div class="bottom">
+                                                    <div class="magic-select" data-name="val[category]" data-width="200px">
+                                                        <div class="magic-select-toggle">
+                                                            <?php echo lang('game::game-category') ?>
+                                                        </div>
+                                                        <div class="magic-select-content">
+                                                            <?php foreach(get_game_categories() as $category): ?>
+                                                                <div class="magic-select-option" data-value="<?php echo $category['id'] ?>">
+                                                                    <?php echo lang($category['title']) ?>
+                                                                </div>
+                                                            <?php endforeach ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('game::game-title') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <input value="<?php echo input('val.title') ?>" type="text" name="val[title]" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('game::game-name') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <input value="<?php echo input('val.game_name') ?>" type="text" name="val[game_name]" class="form-control"/>
+                                                    <p class="help-block"><?php echo lang('game::game-name-helper') ?></p>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('game::description') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <textarea name="val[description]" class="form-control auto-gfield-input"><?php echo input('val.description') ?></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('game::game-file') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <span class="file-input"><input type="file" name="file" id="game-select-file"></span>
+                                                    <button onclick="return file_chooser('#game-select-file')" type="button" class="btn btn-secondary btn-block"><?php echo lang('game::select-game') ?></button>
+                                                    <?php if(can_embed_game()): ?>
+                                                        <h6 style="margin: 10px 0;font-weight: bold"><?php echo lang('game::or-embed-game-code') ?></h6>
+                                                        <textarea name="val[code]" class="form-control"><?php echo input('val.code') ?></textarea>
+                                                    <?php else: ?>
+                                                        <input type="hidden" name="val[code]"/>
+                                                    <?php endif ?>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="control-label"><?php echo lang('game::dimension-optional') ?></label>
+                                                <b><?php echo lang('game::game-dimension-note') ?></b>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label><?php echo lang('game::width') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <input value="<?php echo input('val.width', '100%') ?>" type="text" name="val[width]" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label><?php echo lang('game::height') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <input value="<?php echo input('val.height', '400') ?>" type="text" name="val[height]" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('game::game-logo') ?></label><br/>
+                                                </div>
+                                                <div class="bottom">
+                                                    <div class="magic-input-image-preview" data-name="logo">
+                                                        <span class="dimension"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="submit">
+                                                <button class="btn btn-info action-button"><?php echo lang('game::add-game') ?></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif ?>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="listings">
+                <div class="listing row">
+                    <?php foreach($games->results() as $game): ?>
+                        <?php echo view('game::display', array('game' => $game)) ?>
+                    <?php endforeach ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box">
+	<div class="box-content games-container clearfix">
+        <?php if(!$games->total): ?>
+            <div class="alert alert-info"><?php echo lang('game::no-games-found') ?></div>
+        <?php else: ?>
+            <?php echo $games->links() ?>
+        <?php endif ?>
+	</div>
+</div>

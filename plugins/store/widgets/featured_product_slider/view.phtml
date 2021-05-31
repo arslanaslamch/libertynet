@@ -1,0 +1,39 @@
+
+<?php $products = lp_get_products('any',$limit,'featured',null,null,null,null); ?>
+
+<?php if($products->total):?>
+
+    <div class="box">
+        <div class="title">
+            <?php echo lang("store::featured-products")?>
+            <a ajax="true" href="<?php echo url('products')?>"><i class="ion-ios-arrow-forward pull-right"></i></a>
+        </div>
+        <div class="box-content">
+
+    <div class="col-md-12">
+    <div class="container">
+    <div id="products-slider" class="jcarousel-wrapper">
+        <div id="each-slider-product" class="jcarousel">
+            <ul class="product-wrapper">
+            <?php foreach($products->results() as $p): ?>
+                <li>
+                    <a ajax="true" title=""  href="<?php echo url_to_pager('single-product',array('slugs'=>$p['slug']))?>" style="display:block;background-image: url(<?php echo getProductMainImage($p);?>)"></a>
+                    <h5 style="color : <?php echo config('store-spotlight-text-color','#000'); ?>">
+                        <a ajax="true" href="<?php echo url_to_pager('single-product',array('slugs'=>$p['slug']))?>"><?php echo ucwords($p['name'])?></a>
+                    </h5>
+                         <span class="help-block price" style="display: block;font-size:14px; font-weight:bold">
+                             <?php echo formatPriceNumber(getProductPrice($p)); ?>
+                   </span>
+                </li>
+            <?php endforeach?>
+            </ul>
+        </div>
+
+        <a href="#" class="jcarousel-control-prev">&lsaquo;</a>
+        <a href="#" class="jcarousel-control-next">&rsaquo;</a>
+</div>
+    </div>
+    </div>
+    </div>
+    </div>
+<?php endif?>

@@ -1,0 +1,94 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("store::manage-sellers") ?>
+    </div>
+    <div class="wrapper-content">
+        <form action="" method="get" style="margin: 20px 0">
+            <?php CSRFProtection::embed()?>
+            <input type="text" class="form-control" name="term" placeholder="<?php _lang('search')?>"/>
+            <button class="btn btn-sm btn-secondary" style="margin-top: 10px"><?php echo _lang('search')?></button>
+        </form>
+
+        <table class="table table-bordered storeTable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th><?php _lang('store::store-owner')?></th>
+                <th style="width: 10%"><?php echo lang("store::store-logo") ?></th>
+                <th><?php _lang('store::store-name')?></th>
+                <th><?php _lang('store::link')?></th>
+                <th><?php _lang('status')?></th>
+                <th><?php _lang('featured'); ?></th>
+                <th style="width: 15%"><?php echo lang("store::created-on");?></th>
+                <th style="width: 25%"><?php _lang("actions")?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if($sellers->total):
+                 $i =1;
+                ?>
+            <?php foreach($sellers->results() as $s):
+                $user = find_user($s['user_id']);
+                ?>
+                <tr>
+                    <td><?php echo $i; ?></td>
+                    <td><a href="<?php echo profile_url(null,$user) ?>"><?php echo get_user_name($user); ?></a> </td>
+                    <td><a ajax="true" href="<?php echo url_to_pager("store-profile",array('slug'=>$s['slug'])) ?>">
+                                    <img style="height: 30px;width: 30px" src="<?php echo getStoreLogo($s); ?>"
+                                         alt="<?php echo $s['name'] . ' image'; ?>"/>
+                             </a></td>
+
+                    <td><?php echo $s['name']; ?></td>
+                    <td><a href="<?php echo urldecode($s['website']); ?>" target="_blank"> <?php echo urldecode($s['website']); ?></a></td>
+
+                    <td>
+                        <?php echo ($s['status']) ? '<span class="label label-success">'.lang("store::approved").'</span>' : '<span class="label label-danger">'.lang("store::not-approved").'</span>'?>
+                    </td>
+                    <td>
+                        <?php echo ($s['featured']) ? 'Yes' : 'No'?>
+                    </td>
+                    <td>
+                        <?php echo date('d F Y', $s['time']);?>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-info btn-assign-store" href="" data-name="<?php echo $s['name']; ?>"  data-sid="<?php echo $s['s_id']; ?>"><?php echo lang('store::assign-store')?></a>
+                        <a class="btn btn-sm btn-secondary" href="<?php echo url_to_pager('admincp-seller-details').'?id='.$s['s_id']?>"><?php _lang('details')?></a>
+                        <a class="btn btn-sm btn-success" href="<?php echo url_to_pager('admincp-seller-manage-single').'?action=edit&id='.$s['s_id']?>"><?php _lang('edit')?></a>
+                        <a class="btn btn-sm btn-danger admin-confirm" href="<?php echo url_to_pager('admincp-seller-manage-single').'?action=delete&id='.$s['s_id']?>"><?php _lang('delete')?></a>
+                    </td>
+                </tr>
+            <?php $i++;  endforeach?>
+                <?php else:?>
+                <tr><td colspan="7"><div class="alert alert-info"><?php echo lang("store::no-store-found")?></div> </td></tr>
+            <?php endif; ?>
+            </tbody>
+        </table>
+
+        <?php echo $sellers->links()?>
+    </div>
+</div>
+<div id="assignStoreModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Assign -  <em class="store-name"></em> to</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php echo lang('close') ?></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mail-to-selectors" id="mail-selected-members" style="display:block">
+                    <div class="wrapper-of-saf-assign">
+                        <input onkeyup="suggest_mail_users(this)" type="text" placeholder="Type member name"/>
+                    </div>
+                    <div class="user-suggestion"></div>
+                </div>
+                <input type="hidden" name="val[s_id]" id="sid-value" value="0" />
+
+                <br/>
+                <button class="btn btn-info" id="assign-saf-store">Assign</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="media media-md">
+    <div class="media-left">
+        <div class="media-object">
+            <img src="<?php echo get_contest_image($contest) ?>"/>
+        </div>
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading" style="margin-top:0">
+            <a ajax="true" href="<?php echo url('contest/'.$contest['slug']) ?>"><?php echo $contest['name'] ?></a>
+        </h4>
+        <span class="help-block" style="display: block;font-size:12px">
+                                    <?php echo lang('contest::publisher') ?>: <a ajax="true" href="<?php echo url($contest['publisher']['id']) ?>"><?php echo $contest['publisher']['name'] ?></a>
+            <br/><b><?php echo $contest['views']; ?></b>  <?php echo lang('contest::views') ?> |  <?php echo lang('contest::type') ?> : <b><?php echo lang('contest::'.$contest['type']); ?></b>
+                                </span>
+    </div>
+</div>

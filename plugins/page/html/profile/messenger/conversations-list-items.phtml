@@ -1,0 +1,3 @@
+<?php foreach($conversations as $conversation): ?>
+    <?php echo view('page::profile/messenger/conversations-list-item', array('conversation' => $conversation, 'cid' => $cid)) ?>
+<?php endforeach ?>

@@ -1,0 +1,82 @@
+<div class="box">
+	<div class="title"><?php echo lang('security-settings') ?></div>
+	<div class="box-content" style="padding:30px 10%">
+		<form action="" method="post" class="ajax-form">
+			<?php CSRFProtection::embed() ?>
+            <div class="field">
+                <div class="left" style="min-width: 230px;">
+                    <label class="control-label"><?php echo lang('security-question') ?></label>
+                </div>
+                <div class="right">
+                    <div class="magic-select" data-name="val[security-question][question]" data-width="100%">
+                        <input type="hidden" name="val[security-question][question]" value="<?php echo $security_settings['security-question']['question'] ?>" class="magic-select-value" />
+                        <div class="magic-select-toggle">
+                            <?php echo $security_settings['security-question']['question'] && isset($security_questions[$security_settings['security-question']['question']]) ? $security_questions[$security_settings['security-question']['question']] : lang('choose-security-question') ?>
+                        </div>
+                        <div class="magic-select-content">
+                            <?php foreach ($security_questions as $question_id => $question): ?>
+                                <div class="magic-select-option" data-value="<?php echo $question_id ?>"><?php echo $question ?></div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="left" style="min-width: 230px;">
+                    <label class="control-label"><?php echo lang('security-answer') ?></label>
+                </div>
+                <div class="right">
+                    <input type="text" name="val[security-question][answer]" value="<?php echo $security_settings['security-question']['question'] ? $security_settings['security-question']['answer'] : '' ?>" class="form-control" />
+                </div>
+            </div>
+			<div class="field">
+				<div class="left" style="min-width: 230px;">
+					<label class="control-label"><?php echo lang('enable-two-factor-auth') ?></label>
+				</div>
+				<div class="right">
+					<div class="magic-select" data-name="val[enable-tfa]" data-width="60px">
+						<input type="hidden" name="val[enable-tfa]" value="<?php echo $security_settings['enable-tfa'] ?>" class="magic-select-value"/>
+						<div class="magic-select-toggle">
+							<?php echo $security_settings['enable-tfa'] == 1 ? lang('yes') : lang('no') ?>
+						</div>
+						<div class="magic-select-content">
+							<div class="magic-select-option" data-value="1"><?php echo lang('yes') ?></div>
+							<div class="magic-select-option" data-value="0"><?php echo lang('no') ?></div>
+						</div>
+					</div>
+                    <p class="help-block"><?php echo lang(config('enable-phone-no', false) ? 'two-factor-require-email-phone' : 'two-factor-require-email') ?></p>
+				</div>
+			</div>
+            <?php if(config('enable-phone-no', false)): ?>
+                <div class="field">
+                    <div class="left" style="min-width: 230px;">
+                        <label class="control-label"><?php echo lang('preferred-auth-medium') ?></label>
+                    </div>
+                    <div class="right">
+                        <div class="magic-select" data-name="val[preferred-tfa-medium]">
+                            <input type="hidden" name="val[preferred-tfa-medium]" value="<?php echo $security_settings['preferred-tfa-medium'] ?>" class="magic-select-value" />
+                            <div class="magic-select-toggle">
+                                <?php echo $security_settings['preferred-tfa-medium'] == 'email' ? lang('email') : lang('phone') ?>
+                            </div>
+                            <div class="magic-select-content">
+                                <div class="magic-select-option" data-value="phone"><?php echo lang('phone') ?></div>
+                                <div class="magic-select-option" data-value="email"><?php echo lang('email') ?></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="field tfa-tos">
+                <div class="left" style="min-width: 230px;">
+                    <input id="tfa-tos" type="checkbox" name="val[tfa-tos]" value="1" <?php echo $security_settings['tfa-tos'] ? 'checked' : '' ?> />
+                </div>
+                <div class="right">
+                    <label for="tfa-tos"><?php echo lang('tfa-tos') ?></label>
+                </div>
+            </div>
+    		<div class="submit">
+				<button class="btn btn-info action-button"><i style="margin-right: 2px" class="font-awesome-ismall fa fa-check-square-o"></i> <?php echo lang('save-settings') ?></button>
+			</div>
+		</form>
+	</div>
+</div>

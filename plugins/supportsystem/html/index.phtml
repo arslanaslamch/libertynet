@@ -1,0 +1,46 @@
+<?php echo view("supportsystem::top-menu"); ?>
+<div class="support-system-header-wrapper"
+     style="background-color : <?php echo config("header-bg-color", "#4C4C4E") ?>; background-image : url('<?php echo img("supportsystem::images/8.svg") ?>')">
+    <div class="support-system-header-wrapper__title_wrappers">
+        <h1 class="support-system-header-wrapper__primary_title"><?php echo lang("supportsystem::how-can-we-help-you"); ?></h1>
+        <p class="support-system-header-wrapper__subtitle"><?php echo lang("supportsystem::ask-question-browse-articles") ?></p>
+    </div>
+    <form class="form" method="get" action="<?php echo url_to_pager("supportsystem-search-page"); ?>">
+        <input type="text" class="ss-search-field form-control" na
+               placeholder="<?php echo lang("supportsystem::enter-your-question-or-keyword-here") ?>" name="term"/>
+    </form>
+</div>
+<?php $categories = get_ss_categories('faq'); ?>
+<?php if($categories): ?>
+<div class="box">
+    <div class="box-content">
+        <div class="container">
+            <div class="row">
+                <?php foreach ($categories as $pc):
+                    $articles = ss_get_articles('category', $pc['id'],'all');
+                    $count = 0;
+                    ?>
+                    <div class="col-sm-4 ss-each-article-box">
+                        <div class="box">
+                            <div class="title">
+                                <a class="h6" ajax="true" href="<?php echo ss_faq_category_url($pc['id']) ?>"><?php echo lang($pc['title']); ?></a>
+                                <span class="pull-right">(<?php echo $articles->total; ?>)</span>
+                            </div>
+                            <div class="box-content">
+                                <ul class="ss-each-article-box__ul">
+                                    <?php foreach ($articles->results() as $article): ?>
+                                        <li class="ss-each-article-box_ul_li"><i class="ion-document"></i> <a ajax="true"
+                                                    href="<?php echo ss_article_url($article) ?>"><?php echo str_limit($article['subject'], 30); ?></a>
+                                        </li>
+                                    <?php if($count == 5) break; ?>
+                                    <?php $count++; endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

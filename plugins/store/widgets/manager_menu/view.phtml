@@ -1,0 +1,53 @@
+<?php if((is_loggedIn() and user_has_permission('can-create-store') and (config('allow-members-create-store', true))) || own_store()): ?>
+
+<div class="box ">
+    <?php if(is_loggedIn() and user_has_permission('can-create-store') and (config('allow-members-create-store', true))):?>
+        <div class="box-content">
+            <a ajax="true"  href="<?php echo (!is_seller()) ? url_to_pager("add-seller") :  url_to_pager("store-manager") ;?>"  class="btn btn-info btn-block"><?php echo (!is_seller()) ? lang('store::add-store') : lang('store::manage-all-stores'); ?></a>
+        </div>
+    <?php endif?>
+    <?php if(own_store()):?>
+    <ul class="menu" id="product-sidemenu">
+        <!--<li class="list-item"><a ajax="true" href="<?php /*echo url_to_pager("store_homepage"); */?>"><?php /*_lang('store::stores'); */?></a>  </li>-->
+
+        <li class="<?php echo (segment(1) == 'earnings' && segment(2) !='withdraw')? 'active' : ''; ?>"><a ajax="true" href="<?php echo url_to_pager("store-transactions") ?>"><?php echo lang("store::earnings"); ?></a></li>
+        <li class="<?php echo (segment(2) == 'withdraw')? 'active' : ''; ?>"><a ajax="true" href="<?php echo url_to_pager("store-transactions-withdraw") ?>"><?php echo lang("store::withdrawal"); ?></a></li>
+        <li class="<?php echo (segment(2) == 'producer')? 'active' : ''; ?>"><a href="" class="StoreMenuParent">
+           <?php _lang('store::producer'); ?> <i class="<?php echo (segment(2) == 'producer')? 'ion-chevron-down' : 'ion-chevron-right'; ?>"></i> </a>
+            <ul class="storeMenuChildren <?php echo (segment(2) == 'producer')? 'slide-down' : ''; ?>">
+                <li><a ajax="true" href="<?php echo url_to_pager("producer-home") ?>"> <?php  _lang('store::manage-producer')?></a> </li>
+                <li><a ajax="true" href="<?php echo url_to_pager('create-producer')?>"> <?php  _lang('store::create-producer')?></a> </li>
+            </ul>
+        </li>
+        <li class="<?php echo (segment(2) == 'products')? 'active' : ''; ?>" ><a href="" class="StoreMenuParent">
+               <?php _lang('store::products'); ?><i class="<?php echo (segment(2) == 'products')? 'ion-chevron-down' : 'ion-chevron-right'; ?>"></i> </a>
+            <ul class="storeMenuChildren <?php echo (segment(2) == 'products')? 'slide-down' : ''; ?>">
+                <li><a ajax="true" href="<?php echo url_to_pager("store-products-manager") ?>"><?php  _lang('store::manage-products')?></a> </li>
+                <li><a ajax="true" href="<?php echo url_to_pager("add-product"); ?>"> <?php  _lang('store::add-product')?></a> </li>
+                <li><a ajax="true" href="<?php echo url_to_pager("import-product"); ?>"> <?php  _lang('lightedphp::import-products')?></a> </li>
+            </ul>
+        </li>
+
+        <li class="<?php echo (segment(2) == 'order')? 'active' : ''; ?>">
+            <a href="" class="StoreMenuParent">
+                <?php _lang('store::orders'); ?><i class="<?php echo (segment(2) == 'order')? 'ion-chevron-down' : 'ion-chevron-right'; ?>"></i></a>
+            <ul class="storeMenuChildren <?php echo (segment(2) == 'order')? 'slide-down' : ''; ?>">
+                <li><a ajax="true" href="<?php echo url_to_pager("store-order-manager");?>"> <?php  _lang('store::manage-order')?></a> </li>
+               <!-- <li><a ajax="true" href="#"><i class="ion-plus"></i> <?php /* _lang('store::create-order')*/?></a> </li>-->
+            </ul>
+
+        </li>
+        <?php /*if(!config('enable-emoney-payment-on-ecommerce',false)): */?>
+        <li><a href="<?php echo url_to_pager("manager-settings") ?>" ajax="true"><?php echo lang("store::account-settings") ?></a> </li>
+        <?php /*endif; */?>
+
+        <li><a href="<?php echo url_to_pager("coupons") ?>" ajax="true"><?php echo lang("store::coupons") ?></a> </li>
+        <li><a href="<?php echo url_to_pager("store-email-templates") ?>" ajax="true"><?php echo lang("lightedphp::email-template") ?></a> </li>
+        <?php if(config('disable-store-shipping',0)): ?>
+        <li><a href="<?php echo url_to_pager("shipping") ?>" ajax="true"><?php echo lang("store::shipping") ?></a> </li>
+        <?php endif; ?>
+    </ul>
+    <?php endif; ?>
+</div>
+
+<?php endif; ?>

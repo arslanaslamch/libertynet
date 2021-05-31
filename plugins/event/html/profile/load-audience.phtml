@@ -1,0 +1,27 @@
+<?php $rsvp = input('v'); $action = ($rsvp == 0 || $rsvp == 1)?lang('event::going-'):lang('event::might-be-going-') ?>
+<?php if ($users): ?>
+    <div class="title"> <?php echo count($users) ?>
+        <?php if ($rsvp == 0 || $rsvp == 1): ?>
+        <?php if (count($users) == 1){
+            echo lang('event::member')." ".lang('event::is');
+            } else {
+                echo lang('event::members')." ".lang('event::are');
+            } ?>
+        <?php else: ?>
+        <?php echo lang('event::member')?>
+        <?php endif; ?>
+        <?php echo $action ?></div>
+    <div class="box-content event-audience">
+        <div class="users">
+            <?php foreach ($users as $user): ?>
+                <?php $user = find_user($user) ?>
+                <a ajax="true" href="<?php echo profile_url('',$user) ?>" data-toggle="tooltip" title="" data-original-title="<?php echo get_user_name($user)?>">
+                    <img class="img" src="<?php echo get_avatar(75, $user)?>">
+                </a>
+            <?php endforeach; ?>
+        </div>
+        <div class="box-footer" style="text-align: center">
+            <a href="<?php echo event_url('audience',$event)?>"><?php echo lang('event::all-audience')?></a>
+        </div>
+    </div>
+<?php endif; ?>

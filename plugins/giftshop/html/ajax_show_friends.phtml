@@ -1,0 +1,80 @@
+<div class="modal-dialog">
+	<div class="modal-content" style="max-width:500px">
+		<div class="modal-header">
+			<h4 class="modal-title"><?php echo lang($gift['name']) ?></h4>
+			<button type="button" class="close" data-dismiss="modal" onclick="closeGiftFriendsModal()">&times;</button>
+		</div>
+		<div class="modal-body" style="min-height:500px">
+			<?php echo fire_hook('send.gift.menu', null, array()); ?>
+			<div id="giftshop-modal-friends-list">
+				<?php if($friends->results()): ?>
+					<?php foreach($friends->results() as $friend): ?>
+						<div class="row">
+							<div class="col-sm-2">
+								<a ajax="true" href="<?php echo profile_url(null, $friend) ?>"><img src="<?php echo get_avatar(75, $friend) ?>"/></a>
+							</div>
+							<div class="col-sm-10">
+								<a href="<?php echo profile_url(null, $friend) ?>"><?php echo get_user_name($friend) ?></a>
+								<ul class="info">
+									<?php if($friend['country']): ?>
+										<li>
+											<i class="ion-ios-location"></i> <?php echo ucwords($friend['country']) ?>
+										</li>
+									<?php endif ?>
+								</ul>
+								<div class="action">
+									<span><a id="giftshop-send-<?php echo $friend['id'] ?>" href="#" class="btn btn-secondary btn-sm" onclick="giftshop_send(<?php echo $gift['id'].', '.$friend['id'].', '.$gift['price'] ?>)"><?php echo lang('giftshop::send') ?></a></span>
+								</div>
+							</div>
+						</div>
+					<?php endforeach ?>
+				<?php else: ?>
+					<div class="alert alert-info"><?php echo lang('giftshop::no-friends') ?></div>
+				<?php endif; ?>
+			</div>
+		</div>
+		<?php if($total_pages > 1 && $id): ?>
+			<div class="modal-footer">
+				<div class="box-content">
+					<div class="pagination">
+						<?php if($page > 1): ?>
+							<a href="#" onclick="return giftshop_paginate_friends(<?php echo $id ?>, 1);"><i class="ion-ios-skipbackward"></i></a>
+							<a href="#" onclick="return giftshop_paginate_friends(<?php echo $id ?>, <?php echo($page - 1) ?>);"><i class="ion-arrow-left-b"></i></a>
+						<?php endif ?>
+						<?php if(($page < 6) && ($total_pages > 11)): ?>
+							<?php for($i = 1; $i <= 11; $i++): ?>
+								<?php echo preg_replace('/ '.$page.' /', ' <strong>'.$page.'</strong>', '<a href="#" onclick="return giftshop_paginate_friends('.$id.', '.$i.')"> '.$i.' </a>'); ?>
+							<?php endfor ?>
+						<?php elseif($page < 6): ?>
+							<?php for($i = 1; $i <= $total_pages; $i++): ?>
+								<?php echo preg_replace('/ '.$page.' /', ' <strong>'.$page.'</strong>', '<a href="#" onclick="return giftshop_paginate_friends('.$id.', '.$i.')"> '.$i.' </a>'); ?>
+							<?php endfor ?>
+						<?php elseif(($page >= 6) && ($page <= $total_pages - 5)): ?>
+							<?php for($i = ($page - 5); $i <= ($page + 5); $i++): ?>
+								<?php echo preg_replace('/ '.$page.' /', ' <strong>'.$page.'</strong>', '<a href="#" onclick="return giftshop_paginate_friends('.$id.', '.$i.')"> '.$i.' </a>'); ?>
+							<?php endfor ?>
+						<?php else: ?>
+							<?php for($i = ($page - 5); $i <= $total_pages; $i++): ?>
+								<?php echo preg_replace('/ '.$page.' /', ' <strong>'.$page.'</strong>', '<a href="#" onclick="return giftshop_paginate_friends('.$id.', '.$i.')"> '.$i.' </a>'); ?>
+							<?php endfor ?>
+						<?php endif ?>
+						<?php if($page < $total_pages): ?>
+							<a href="#" onclick="return giftshop_paginate_friends(<?php echo $id ?>, <?php echo($page + 1) ?>);"><i class="ion-arrow-right-b"></i></a>
+							<a href="#" onclick="return giftshop_paginate_friends(<?php echo $id ?>, <?php echo $total_pages ?>);"><i class="ion-ios-skipforward"></i></a>
+						<?php endif ?>
+					</div>
+				</div>
+			</div>
+		<?php endif ?>
+		<!--<div class="alert alert-info"><?php echo lang('friend::no-friend-available') ?></div> -->
+		<div class="foreground">
+			<div class="indicator">
+				<img src="<?php echo img('images/loading.gif') ?>"/>
+			</div>
+			<div class="message">
+				<div class="alert alert-success"><?php echo lang('giftshop::gift-sent') ?></div>
+				<div class="alert alert-danger"><?php echo lang('giftshop::gift-not-sent') ?></div>
+			</div>
+		</div>
+	</div>
+</div>

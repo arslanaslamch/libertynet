@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-12">
+            <div class="box">
+                <div class="title">
+                    <h6 class="title"><?= lang('horoscope::select-sign'); ?></h6>
+                </div>
+                <div class="box-content">
+                    <div class="row">
+                        <?php foreach ($signs as $sign) : ?>
+                            <?php $image = strtolower($sign['title']) . '.jpg'; ?>
+                            <div class="mb-2 col-md-6 col-4 sign">
+                                <div class="">
+                                    <a ajax="true" href="<?= url('horoscope?sign=' . $sign['title']); ?>" class="flex-row text-center flex-md-column d-flex align-items-center">
+                                        <span class="imgContainer">
+                                            <img src="<?= img('horoscope::images/' . $image); ?>" alt="<?= $sign['title']; ?> image" class="">
+                                        </span>
+                                        <span class="text-center">
+                                            <h6><?= $sign['title']; ?></h6>
+                                            <p class="mt-n2 small d-md-block d-none"><?= $sign['date']; ?></p>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-12">
+            <div class="h-100 box">
+                <div class="title">
+                    <h6 class="title"><?= lang('horoscope::horoscopes'); ?></h6>
+                </div>
+                <div class="box-content">
+                    <?php if ($horoscope) : ?>
+                        <div class="d-flex align-items-start">
+                            <img src="<?= img('horoscope::images/' . strtolower(input('sign')) . '.jpg'); ?>" alt="<?= input('sign'); ?> image" class="horoscope-img">
+                            <div>
+                                <h6><?= input('sign') . " " . lang('horoscope::horoscope-for-today'); ?></h6>
+                                <p><?= $horoscope; ?></p>
+                            </div>
+                        </div>
+                    <?php else : ?>
+                        <?php foreach ($signs as $sign) : ?>
+                            <div class="d-flex align-items-start">
+                                <img src="<?= img('horoscope::images/' . strtolower($sign['title']) . '.jpg'); ?>" alt="<?= $sign['title']; ?> image" class="horoscope-img">
+                                <div>
+                                    <h6><?= $sign['title'] . " " . lang('horoscope::horoscope-for-today'); ?></h6>
+                                    <p><?= $sign['horoscope']; ?></p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

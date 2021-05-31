@@ -1,0 +1,16 @@
+<?php
+/**
+ * @var int $user_id
+ * @var string $type
+ * @var bool $stream_support
+ */
+?>
+
+<a href="#!"
+   class="mediachat-call-button action"
+   title="<?php echo $stream_support ? ($type == 'video' ? lang('mediachat::video-call') : lang('mediachat::voice-call')) : ($type == 'video' ? lang('mediachat::user-unavailable-video-call') : lang('mediachat::user-unavailable-voice-call')) ?>"
+   data-disabled="<?php echo $stream_support ? 0 : 1 ?>"
+   data-user-id="<?php echo $user_id ?>"
+   data-type="<?php echo $type ?>">
+    <i class="<?php echo $type == 'video' ? 'ion-ios-videocam' : 'ion-android-call' ?>"></i>
+</a>

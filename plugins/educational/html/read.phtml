@@ -1,0 +1,22 @@
+<?php
+//$path = "http://www.ccsales.com/the_richest_man_in_babylon.pdf";
+$path = url($book['book']);
+?>
+<div class="box">
+    <div class="title"><a class="btn" id="expandBook" href=""><i class="ion-arrow-expand"></i>  <?php echo lang("educational::expand") ?></a></div>
+    <div class="box-content">
+        <iframe src="http://docs.google.com/gview?url=<?php echo $path ?>&embedded=true" style="display:block;margin:10px; width:98%; height:500px;" frameborder="0"></iframe>
+        <!--<embed src="<?php /*echo url($book['book']) */?>" width="800px" height="600px" />-->
+    </div>
+</div>
+<div id="readModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="box">
+                <div class="box-content">
+                    <iframe src="http://docs.google.com/gview?url=<?php echo $path ?>&embedded=true" style="display:block;margin:10px; width:98%; height:500px;" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

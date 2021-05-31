@@ -1,0 +1,51 @@
+<div class="wrapper">
+	<div class="wrapper-title">
+		<?php echo lang('ranker::ranges') ?>
+		-
+		<a class="btn btn-success" href="<?php echo url_to_pager('admincp-rank-range') ?>"><?php echo lang('ranker::add') ?></a>
+	</div>
+	<div class="wrapper-content">
+		<div class="list-table-container">
+			<div class="table-responsive">
+				<table class="table table-striped list-table">
+					<thead>
+					<tr>
+						<th>
+							<div class="list-table-select" data-group="users" data-id="0"></div>
+						</th>
+						<th>ID</th>
+						<th><?php echo lang('range') ?></th>
+						<th><?php echo lang('Caption') ?></th>
+						<th><?php echo lang('actions') ?></th>
+					</tr>
+					</thead>
+					<tbody data-url="<?php echo url_to_pager('admincp-blog-manage-category').'?action=order' ?>" class="admincp-sortable" style="position: relative">
+					<?php foreach($ranges as $range): ?>
+						<tr class="item" id="<?php echo $range['id'] ?>">
+							<td>
+								<div class="list-table-select" data-group="users" data-id="<?php echo $range['id'] ?>"></div>
+							</td>
+
+							<td style="width: 10%"><?php echo $range['id'] ?></td>
+							<td style="width: 30%"><?php echo lang($range['range']) ?></td>
+							<td style="width: 30%"><?php echo lang($range['caption']) ?></td>
+							<td>
+								<div class="dropdown actions">
+									<a href="#" data-toggle="dropdown">
+										<i class="ion-android-settings"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right">
+										<a class="ion-edit" href='<?php echo url_to_pager('admincp-range-manage').'?action=edit&id='.$range['id'] ?>'></a>
+										<a class="admin-confirm ion-android-delete" href="<?php echo url_to_pager('admincp-range-manage').'?action=delete&id='.$range['id'] ?>"></a>
+									</div>
+								</div>
+							</td>
+
+
+						</tr>
+					<?php endforeach ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>

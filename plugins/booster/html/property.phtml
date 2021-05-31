@@ -1,0 +1,43 @@
+<div class="box">
+    <div class="title booster-header-title">
+        <span style='margin-left: 2px'><i style='color: #26A65B' class='ion-android-star'></i> <?php echo lang('booster::sponsored') ?></span>
+    </div>
+    <div class="col-sm-12 clearfix" style="margin-top: 15px;pointer-events:none">
+
+        <?php $owner = find_user($property['user_id']); ?>
+        <?php $property_image = $property['image'] ? url_img($property['image'], 200) : img('property::images/no_image.jpg', 75) ?>
+        <?php $description = trim($property['description']) == '' ? '<em>'.lang('property::no-description').'</em>' : $property['description'] ?>
+        <?php $price = is_numeric($property['price']) ? config('default-curency', '$').$property['price'] : $property['price']; ?>
+        <?php $price = !trim($property['price']) ? lang('property::free') : $price; ?>
+        <div class="each-item clearfix ">
+            <div class="col-sm-6 col-xs-12">
+                <img class="img-responsive" src="<?php echo $property_image; ?>" alt="Property Image"/>
+            </div>
+            <div class="col-sm-6 col-xs-12" >
+                <p class="feed-product-name"><?php echo
+                    ($property['title']) ? $property['title'] : lang('property::untitled-property') ?>
+                </p>
+
+                <p class="feed-product-price"><span class="price"><?php echo $price ?></span>
+                </p>
+
+                <p><i class="ion-ios-location"></i>
+                    <?php echo $property['address'] ?></p>
+
+                <p><strong><?php echo lang("store::category") ?>
+                        : </strong><?php echo lang($property['category_title']) ?>
+                </p>
+
+                <p><a ajax="true" class="btn btn-info btn-sm" href="<?php echo
+                    url_to_pager('property-slug', array('appends' => '/' . $property['slug'])) ?>"><?php echo
+                        "Read Full Details" ?>
+                    </a>
+                </p>
+            </div>
+        </div>
+
+
+</div>
+    </div>
+
+

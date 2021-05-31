@@ -1,0 +1,49 @@
+------------------------------------------------------------------------------------------------------------------------
+======================================================CREA8SOCIAL=======================================================
+------------------------------------------------------------------------------------------------------------------------
+=================================================VERSION 7.4.6 CHANGELOG================================================
+------------------------------------------------------------------------------------------------------------------------
+-----------------------This document contains changes from the previous version worth mentioning------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+-------------------------------------------NEW FEATURES AND MAJOR IMPROVEMENTS------------------------------------------
+
+- ADDED Horoscope plugin
+- ADDED User Ranking plugin
+
+
+---------------------------------------------------MINOR IMPROVEMENTS---------------------------------------------------
+
+- IMPROVED General UI
+- IMPROVED Tranlations
+
+
+---------------------------------------------------------BUG FIXES------------------------------------------------------
+
+- FIXED PHP 7.4 Compatibilty issues
+- FIXED UI issue in friend request email
+- FIXED Livestream comment update
+- FIXED Livestream browser support issue
+- FIXED Bug in Poll directory
+- FIXED Empty chat conversations
+
+
+--------------------------------------------------------INSTRUCTIONS----------------------------------------------------
+
+After adding and updating necessary files,
+
+- Login to your AdminCP.
+
+- Click Maintenance -> Update System
+
+- Test your site.
+
+You may report any bug via our Feedback System at https://crea8social.com/feedback
+
+
+
+
+
+Thank you for using Crea8social.

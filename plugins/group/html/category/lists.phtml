@@ -1,0 +1,21 @@
+<div class="box group">
+	<div class="global-filter-container" data-url="<?php echo url('groups') ?>">
+		<div class="list-head">
+			<h3 class="heading"><?php echo lang('group::groups') ?></h3>
+		</div>
+	</div>
+	<div id="group-list-container" class="box-content clearfix list-listing-container">
+		<?php foreach($groups->results() as $group): ?>
+			<?php echo view('group::display', array('group' => $group)) ?>
+		<?php endforeach ?>
+	</div>
+	<div class="box-content">
+		<?php if(!$groups->total): ?>
+        <div class="alert alert-info">
+			<?php echo lang('group::no-group-found') ?>
+        </div>
+		<?php else: ?>
+			<?php echo $groups->append(array('term' => input('term'), 'type' => input('type', 'recommend'), 'filter' => input('filter')))->links(true) ?>
+		<?php endif ?>
+	</div>
+</div>

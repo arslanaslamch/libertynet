@@ -1,0 +1,19 @@
+<div class="box">
+    <div class="title"><?php echo lang('whos_online::online-members') ?></div>
+    <div class="box-content">
+        <div class="row container" style="padding: 0">
+        <?php  $members = get_online_members();
+        if($members): ?>
+            <?php foreach($members as $m):
+                $user = find_user($m);
+                ?>
+                <div class="whos_onlime_c">
+                <?php echo view('user/display',array('user'=>$user)); ?>
+                </div>
+                <?php  endforeach; ?>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang('whos_online:no-member-is-online'); ?></div>
+        <?php endif; ?>
+        </div>
+    </div>
+</div>

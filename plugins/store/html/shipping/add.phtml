@@ -1,0 +1,62 @@
+<div class="box">
+    <div class="title">
+        <?php echo lang("store::add-shipping-zones"); ?>
+    </div>
+    <div class="box-content">
+        <?php if($message): ?>
+        <div class="alert alert-danger"><?php echo $message; ?></div>
+        <?php endif;?>
+        <form action="" method="post">
+            <fieldset class="form-group">
+                <div class="col-sm-4">
+                    <label> <?php echo lang("store::shipping-zone"); ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <input class="form-control" value="<?php echo input('val.zone') ?>" name="val[zone]" type="text" />
+                </div>
+            </fieldset>
+
+
+            <fieldset class="form-group">
+                <div class="col-sm-4">
+                    <label> <?php echo lang("store::regions"); ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <?php load_functions('country'); ?>
+                    <select class="chosen-select form-control" data-placeholder="<?php echo lang("store::select-regions") ?>"   multiple name="val[regions][]">
+                        <option value=""></option>
+                        <?php foreach(get_countries() as $country => $name):?>
+                            <option <?php echo (input("val.country") == $name) ? "selected" : null?> value="<?php echo $name?>"><?php echo ucwords($name)?></option>
+                        <?php endforeach?>
+                    </select>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <div class="col-sm-4">
+                    <label> <?php echo lang("store::shipping-method"); ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <select name="val[shipping_method]" class="c-select" onchange=" return open_flat_rate_amount(this)">
+                        <option  value="free-shipping"><?php echo lang("store::free-shipping") ?></option>
+                        <option value="flat-rate"><?php echo lang("store::flat-rate") ?></option>
+                    </select>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-group" id="shipping_amount" style="display: none">
+                <div class="col-sm-4">
+                    <label> <?php echo lang("store::amount"); ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <input class="form-control" placeholder="0" value="<?php echo input('val.amount') ?>" name="val[amount]" type="number" />
+                </div>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <input type="hidden" value="new_shipping" name="val[save_type]" />
+                <button type="submit" class="btn btn-info btn-lg"><?php echo lang("store::add-shipping-settings") ?></button>
+            </fieldset>
+        </form>
+    </div>
+</div>

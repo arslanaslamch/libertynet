@@ -1,0 +1,164 @@
+<div class="auction box">
+	<div class="title"><?php echo lang('auction::add-new-auction') ?></div>
+	<?php if(input('status') == 'success'): ?>
+		<div class="alert alert-success"><?php echo lang('auction::auction-success') ?></div>
+	<?php endif; ?>
+	<form action="<?php url_to_pager('auction-add') ?>" method="post" enctype="multipart/form-data" class="ajax-form">
+		<?php CSRFProtection::embed(); ?>
+		<div class="field">
+			<div class="left">
+				<label class="control-label"><strong>*</strong><?php echo lang('auction::product-title') ?>
+				</label>
+			</div>
+			<div class="right">
+				<input type="text" name="val[title]" class="form-control" id=""/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label"><strong>*</strong><?php echo lang('auction::category') ?>
+				</label>
+			</div>
+			<div class="right">
+				<div class="magic-select" data-name="val[category]" data-width="200px">
+					<?php $categories = get_auction_categories(); ?>
+					<div class="magic-select-toggle">
+						<?php echo lang('auction::category') ?>
+					</div>
+					<div class="magic-select-content">
+						<?php foreach($categories as $category): ?>
+							<div class="magic-select-option" data-value="<?php echo $category['id'] ?>">
+								<?php echo lang($category['title']) ?>
+							</div>
+						<?php endforeach ?>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label"><strong>*</strong><?php echo lang('auction::quantity') ?>
+				</label>
+			</div>
+			<div class="right">
+				<input type="number" class="form-control" name="val[quantity]" min="0"/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label"><strong>*</strong><?php echo lang('auction::mobile-number') ?>
+				</label>
+			</div>
+			<div class="right">
+				<input type="tel" class="form-control" name="val[mobile]"/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label"><?php echo lang('auction::description') ?></label>
+			</div>
+			<div class="right">
+				<textarea name="val[description]" class="form-control"></textarea>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label" for="val[post]"><?php echo lang('auction::main-photo') ?>: </label>
+			</div>
+			<div class="right">
+				<div class="magic-input-image-preview" data-name="image">
+					<span class="dimension"></span>
+				</div>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label"><strong>*</strong><?php echo lang('auction::reserved-price') ?>
+				</label>
+			</div>
+			<div class="right">
+				<input type="number" name="val[reserved_price]" class="form-control" min="0"/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label"><strong>*</strong><?php echo lang('auction::buy-now-price') ?>
+				</label>
+			</div>
+			<div class="right">
+				<input type="number" name="val[buy_price]" class="form-control" min="0"/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<!--<label class="control-label">--><?php //echo lang('auction::shipment-info') ?><!--</label>-->
+				<label class="control-label"><?php echo lang('auction::item-location') ?></label>
+			</div>
+			<div class="right">
+				<div class="magic-select" data-name="val[country]" data-width="200px">
+					<?php load_functions('country') ?>
+					<div class="magic-select-toggle">
+						<?php echo lang('auction::select-country') ?>
+					</div>
+					<div class="magic-select-content slimscroll" data-height="200px">
+						<?php foreach(get_countries() as $country => $name): ?>
+							<div class="magic-select-option" data-value="<?php echo $name; ?>">
+								<?php echo ucfirst($name); ?>
+							</div>
+						<?php endforeach ?>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label"><?php echo lang('auction::state') ?></label>
+			</div>
+			<div class="right">
+				<input type="text" name="val[state]" placeholder="Enter State" class="form-control"/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label"><?php echo lang('auction::city') ?></label>
+			</div>
+			<div class="right">
+				<input type="text" name="val[city]" placeholder="Enter City" class="form-control"/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label"><?php echo lang('auction::shipment-details') ?></label>
+			</div>
+			<div class="right">
+				<textarea class="form-control" fields="12" name="val[ship_details]"></textarea>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<!--<label class="control-label">--><?php //echo lang('auction::availability') ?><!--</label>-->
+				<label class="control-label"><strong>*</strong><?php echo lang('auction::start-date') ?>
+				</label>
+			</div>
+			<div class="right">
+				<input type="text" name="val[start_date]" class="datetimepicker form-control" placeholder="<?php echo lang('auction::start-date') ?>"/>
+			</div>
+		</div>
+		<div class="field">
+			<div Class="left">
+				<label class="control-label"><strong>*</strong><?php echo lang('auction::date-end') ?>
+				</label>
+			</div>
+			<div class="right">
+				<input type="text" name="val[end_date]" class="datetimepicker form-control" placeholder="<?php echo lang('auction::date-end') ?>"/>
+			</div>
+		</div>
+		<div class="submit">
+			<button name="create" class="btn btn-info"><?php echo lang('auction::save') ?></button>
+			<!--<a href="" class="btn btn-success">Publish</a>-->
+			<a href="<?php echo url_to_pager('auction-list') ?>" class="btn btn-danger"><?php echo lang('auction::cancel') ?></a>
+			<!--<button name="create" class="btn btn-success">Publish</button>-->
+			<!--<button name="create" class="btn btn-danger">Cancel</button>-->
+		</div>
+	</form>
+</div>

@@ -1,0 +1,556 @@
+<?php $furl =  url_to_pager("view-post", array("id"=>$feed['feed_id'])); ?>
+
+<div style="padding: 0px 10px;
+    color: #303030;font-family: Helvetica,Arial,sans-serif;
+    font-size: 15px;" class="feed-content <?php echo $feed['background'] ?>" id="feed-content-<?php echo $feed['feed_id'] ?>">
+    <span class="content"><?php echo output_text($feed['feed_content'],array('more'=>false)); ?></span>
+</div>
+
+<?php if($feed['feeling_data']):$feeling = $feed['feeling_data'] ?>
+    <div class="feed-feeling-content clearfix" style="margin: 0 10px;
+    border: solid 1px #E8E8E8;">
+        <div class="feeling-left" style=" width: 30%;
+    background: #FEFEFE;
+    padding: 7px 5px;
+    float: left; width: 7%;">
+            <img style="width: 15px;" src="<?php echo img("images/status/{$feeling['type']}.png") ?>"/>
+
+        </div>
+        <div class="feeling-right" style="width: 68%;
+    padding: 3px;
+    float: left;
+    position: relative;padding: 7px 5px;
+    position: relative;
+    border-left: solid 1px #E8E8E8;">
+            <strong><?php echo lang("feed::{$feeling['type']}") ?></strong>
+            <?php echo $feeling['text'] ?>
+        </div>
+    </div>
+    <?php $data = perfectUnserialize($feeling['data']) ?>
+    <?php if($data): ?>
+        <div class="feed-feeling-media-content" style="margin: 5px 10px;">
+            <?php if($feeling['type'] == 'listening-to'): ?>
+                <iframe style="max-width:100%;" width="100%" height="120" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=<?php echo $data['link'] ?>"></iframe>
+            <?php elseif($feeling['type'] == 'watching' and !preg_match("#soundcloud#", $data['link'])): ?>
+                <iframe style="width: 100%;max-width:100%;height: 320px" allowfullscreen frameborder="no" src="<?php echo $data['link'] ?>"></iframe>
+            <?php endif ?>
+        </div>
+    <?php endif ?>
+<?php endif ?>
+<?php if ($feed['list']):?>
+    <?php
+$list = $feed;
+    $listData = perfectUnserialize($list['list']);
+    $items = $listData['items'];
+    $backgroundStyle = $listData['background'];
+    $listType = $listData['list_type'];
+    $icon = $listData['icon'];
+    $title = $listData['title'];
+    $i = 1;
+    $listClass = "list-option-ol";
+    if ($listType =="ul") {
+        $listClass = "list-option-ul";
+    }
+    ?>
+    <div class="feed-list-option-container feed-view-list-option-container" style="align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-bottom: 20px;
+        width: 100%;">
+        <div class="feed-list-option-background" style="<?php echo $backgroundStyle; ?>; border-radius: 8px;
+            margin: 12px;
+            overflow: hidden;
+            width: 100%;">
+            <div class="feed-list-option-title" style="align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, .15);
+        margin-right: 16px;
+        min-height: 36px;
+        padding-right: 0;
+        display: flex;
+        justify-content: flex-start;
+        margin-left: 16px;
+        padding: 12px 16px 12px 0;">
+                <span class="list-icon" style="font-size: 24px;
+        min-width: 36px;
+        align-items: center;
+        align-self: flex-start;
+        border-radius: 50%;
+        color: #fff;
+        display: flex;
+        font-size: 16px;
+        font-weight: bold;
+        height: 36px;
+        justify-content: center;
+        line-height: 19px;
+        min-width: 36px;"> <i style="color:yellow" class="<?php echo $icon; ?>"></i> </span>
+                <span class="list-option-title-f" style="direction: ltr;
+        text-align: left;
+        position: relative;
+        white-space: pre-wrap;
+        margin-left: 8px;
+        width: 398px;
+        background-color: transparent;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 19px;
+        padding: 0;"><?php echo $title; ?></span>
+            </div>
+            <div class="list-options-container">
+                <div class="list-options">
+                    <?php foreach ($items as $key => $item): ?>
+                        <div class="list-option" style="display: flex;
+        justify-content: flex-start;
+        margin-left: 16px;
+        padding: 12px 16px 12px 0;">
+                            <span style=" align-items: center;
+        align-self: flex-start;
+        border-radius: 50%;
+        color: #fff;
+        display: flex;
+        font-size: 16px;
+        font-weight: bold;
+        height: 36px;
+        justify-content: center;
+        line-height: 19px;
+        min-width: 36px;" class="list-option-span <?php echo $listClass; ?>"><?php if($listType == "ol") { echo $i;} ?></span>
+                            <span style="align-self: center;
+        margin-left: 10px;
+        width: 362px;
+        background-color: transparent;
+        border: none;
+        color: rgba(255,255,255,.9);
+        font-size: 15px;
+        line-height: 32px;" class="list-option-display"> <?php echo $item; ?></span>
+                        </div>
+                        <?php $i++; endforeach;?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<?php if ($feed['gif']): ?>
+    <div class="feed-images" style="width: 100%;">
+        <div class="one-image" style=" padding: 0 10px;">
+            <a style="padding: 0;display: block;
+    width: 100%;
+    height: 100%;
+    padding-top: 5%;
+    overflow: hidden;
+    background-position: center center;
+    background-size: cover;
+    min-width: 100px;
+    min-height: 100px;" data-image="<?php echo url_img(perfectUnserialize($feed['gif']), 920) ?>"
+               data-id="<?php echo $feed['feed_id'] ?>" class="photo-viewer" href="<?php echo $furl; ?>">
+                <img style="max-width: 100%;
+    margin: auto;
+    display: block;border-radius: 3px;" src="<?php echo url_img(perfectUnserialize($feed['gif']), 600) ?>"/>
+            </a>
+        </div>
+    </div>
+<?php endif;?>
+<?php if(isset($feed['images'])): ?>
+    <div class="feed-images" style="width: 100%;">
+        <?php if(count($feed['images']) == 1): ?>
+            <div class="one-image"  style=" padding: 0 10px;">
+                <?php $i = 1;
+                foreach($feed['images'] as $id => $image): ?>
+                    <?php if($i == 1): ?>
+                        <a  style="padding: 0;display: block;
+    width: 100%;
+    height: 100%;
+    padding-top: 5%;
+    overflow: hidden;
+    background-position: center center;
+    background-size: cover;
+    min-width: 100px;
+    min-height: 100px;" data-image="<?php echo url_img($image, 920) ?>" data-id="<?php echo $id ?>" class="photo-viewer" href="<?php echo $furl; ?>">
+                            <img style="max-width: 100%;
+    margin: auto;
+    display: block;border-radius: 3px;" src="<?php echo url_img($image, 600) ?>"/>
+                        </a>
+                    <?php endif ?>
+                    <?php $i++; endforeach ?>
+            </div>
+        <?php elseif(count($feed['images']) == 2): ?>
+            <div style="padding: 0 !important;padding: 0 10px;" class="two-images clearfix">
+                <?php foreach($feed['images'] as $id => $image): ?>
+                    <div style="width: 49%;
+    float: left;
+    overflow: hidden;
+    margin-right: 1%;
+    height: 200px;">
+                        <a data-image="<?php echo url_img($image, 920) ?>" data-id="<?php echo $id ?>"
+                           class="photo-viewer" href="<?php echo $furl; ?>" style="background-image: url(<?php echo url_img($image, 600) ?>);display: block;
+                            width: 100%;
+                            height: 100%;
+                            padding-top: 5%;
+                            overflow: hidden;
+                            background-position: center center;
+                            background-size: cover;
+                            min-width: 100px;
+                            min-height: 100px;"></a>
+                    </div>
+                <?php endforeach ?>
+            </div>
+        <?php elseif(count($feed['images']) == 3): ?>
+
+            <div class="three-images clearfix" style="padding: 0 !important;padding: 0 10px;">
+                <div class="col-sm-7 left" style="height: 300px;
+    overflow: hidden;
+    padding: 0 3px 0 0;
+    display: inline-block;position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;-webkit-box-flex: 0;
+        -ms-flex: 0 0 58.333333%;
+        flex: 0 0 58.333333%;
+        max-width: 58.333333%">
+                    <?php $i = 1;
+                    foreach($feed['images'] as $id => $image): ?>
+                        <?php if($i == 1): ?>
+                            <a data-image="<?php echo url_img($image, 920) ?>" data-id="<?php echo $id ?>"
+                               class="photo-viewer" href="<?php echo $furl; ?>" style="background-image: url(<?php echo url_img($image, 600) ?>);display: block;
+                                width: 100%;
+                                height: 100%;
+                                padding-top: 5%;
+                                overflow: hidden;
+                                background-position: center center;
+                                background-size: cover;
+                                min-width: 100px;
+                                min-height: 100px;"></a>
+                        <?php else: break;endif ?>
+                        <?php $i++; endforeach ?>
+
+                </div>
+                <div class="col-sm-5 right" style="padding: 0;
+    display: inline-block;
+    margin-left: -4px;position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;-webkit-box-flex: 0;
+        -ms-flex: 0 0 41.666667%;
+        flex: 0 0 41.666667%;
+        max-width: 41.666667%">
+                    <?php $i = 1;
+                    foreach($feed['images'] as $id => $image): ?>
+                        <?php if($i > 1): ?>
+                            <div style="width: 100%;
+    height: 148px;
+    overflow: hidden;">
+                                <a data-image="<?php echo url_img($image, 920) ?>" data-id="<?php echo $id ?>" class="photo-viewer"
+                                   href="<?php echo $furl; ?>" style="background-image: url(<?php echo url_img($image, 600) ?>);display: block;
+                                    width: 100%;
+                                    height: 100%;
+                                    padding-top: 5%;
+                                    overflow: hidden;
+                                    background-position: center center;
+                                    background-size: cover;
+                                    min-width: 100px;
+                                    min-height: 100px;"></a>
+                            </div>
+                        <?php endif ?>
+                        <?php $i++; endforeach ?>
+                </div>
+
+
+            </div>
+        <?php elseif(count($feed['images']) == 4): ?>
+            <div class="four-images clearfix" style="padding: 0 10px;">
+                <div class="col-sm-7 left" style="height: 300px;
+    overflow: hidden;
+    padding: 0 3px 0 0;
+    display: inline-block;height: 400px;position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;-webkit-box-flex: 0;
+        -ms-flex: 0 0 58.333333%;
+        flex: 0 0 58.333333%;
+        max-width: 58.333333%;">
+                    <?php $i = 1;
+                    foreach($feed['images'] as $id => $image): ?>
+                        <?php if($i == 1): ?>
+                            <a data-image="<?php echo url_img($image, 920) ?>" data-id="<?php echo $id ?>" class="photo-viewer"
+                               href="<?php echo $furl; ?>" style="background-image: url(<?php echo url_img($image, 600) ?>); display: block;
+                                width: 100%;
+                                height: 100%;
+                                padding-top: 5%;
+                                overflow: hidden;
+                                background-position: center center;
+                                background-size: cover;
+                                min-width: 100px;
+                                min-height: 100px;"></a>
+                        <?php else: break;endif ?>
+                        <?php $i++; endforeach ?>
+                </div>
+                <div class="col-sm-5 right" style="padding: 0;
+    display: inline-block;
+    margin-left: -4px;-webkit-box-flex: 0;
+        -ms-flex: 0 0 41.666667%;
+        flex: 0 0 41.666667%;
+        max-width: 41.666667%;position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px">
+                    <?php $i = 1;
+                    foreach($feed['images'] as $id => $image): ?>
+                        <?php if($i > 1): ?>
+                            <div style="width: 100%;
+    height: 148px;
+    overflow: hidden;height: 132px;
+    margin-bottom: 2px;">
+                                <a data-image="<?php echo url_img($image, 920) ?>" data-id="<?php echo $id ?>"
+                                   class="photo-viewer" href="<?php echo $furl; ?>" style="background-image: url(<?php echo url_img($image, 600) ?>);display: block;
+                                    width: 100%;
+                                    height: 100%;
+                                    padding-top: 5%;
+                                    overflow: hidden;
+                                    background-position: center center;
+                                    background-size: cover;
+                                    min-width: 100px;
+                                    min-height: 100px;"></a>
+                            </div>
+                        <?php endif ?>
+                        <?php $i++; endforeach ?>
+                </div>
+
+
+            </div>
+        <?php else: ?>
+            <div class="five-images" >
+                <div class="top clearfix" style="margin-bottom: 0px;">
+                    <div class="left" style="float: left;
+    width: 49%;
+    margin-right: 1%;
+    overflow: hidden;
+    position: relative;">
+                        <?php $i = 1;
+                        foreach($feed['images'] as $id => $image): ?>
+                            <?php if($i == 1): ?>
+                                <a data-image="<?php echo url_img($image, 920) ?>" data-id="<?php echo $id ?>" class="photo-viewer"
+                                   href="<?php echo $furl; ?>" style="background-image: url(<?php echo url_img($image, 600) ?>);display: block;
+                                    width: 100%;
+                                    height: 100%;
+                                    padding-top: 5%;
+                                    overflow: hidden;
+                                    background-position: center center;
+                                    background-size: cover;
+                                    min-width: 100px;
+                                    min-height: 100px;"></a>
+                            <?php else: break;endif ?>
+                            <?php $i++; endforeach ?>
+                    </div>
+                    <div class="right" style="float: left;
+    width: 49%;
+    margin-right: 1%;
+    overflow: hidden;
+    position: relative;">
+                        <?php $i = 1;
+                        foreach($feed['images'] as $id => $image): ?>
+                            <?php if($i == 2): ?>
+                                <a data-image="<?php echo url_img($image, 920) ?>" data-id="<?php echo $id ?>" class="photo-viewer" href="<?php echo $furl; ?>"
+                                   style="background-image: url(<?php echo url_img($image, 600) ?>);display: block;
+                                       width: 100%;
+                                       height: 100%;
+                                       padding-top: 5%;
+                                       overflow: hidden;
+                                       background-position: center center;
+                                       background-size: cover;
+                                       min-width: 100px;
+                                       min-height: 100px;"></a>
+                            <?php endif ?>
+                            <?php $i++; endforeach ?>
+                    </div>
+                </div>
+                <div class="bottom clearfix">
+                    <?php $i = 1;
+                    foreach($feed['images'] as $id => $image): ?>
+                        <?php if($i > 2 and $i <= 5): ?>
+                            <div style="width: 32%;
+    height: 150px;
+    overflow: hidden;
+    float: left;
+    margin-right: 1%;
+    position: relative;">
+                                <a data-image="<?php echo url_img($image, 920) ?>" data-id="<?php echo $id ?>" class="photo-viewer" href="<?php echo $furl; ?>"
+                                   style="background-image: url(<?php echo url_img($image, 600) ?>);display: block;
+                                       width: 100%;
+                                       height: 100%;
+                                       padding-top: 5%;
+                                       overflow: hidden;
+                                       background-position: center center;
+                                       background-size: cover;
+                                       min-width: 100px;
+                                       min-height: 100px;">
+                                    <?php if($i == 5 and count($feed['images']) > 5): ?>
+                                        <div class="more-images" style=" width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.6);
+    top: 0;
+    color: #ffffff;
+    font-size: 30px;
+    padding: 25%;
+    font-weight: bold;">+<?php echo count($feed['images']) - 5 ?></div>
+                                    <?php endif ?>
+                                </a>
+
+                            </div>
+                        <?php endif ?>
+                        <?php $i++; endforeach ?>
+                </div>
+
+
+            </div>
+        <?php endif ?>
+    </div>
+<?php endif ?>
+<?php if(plugin_loaded('music') && isset($feed['music']) && $feed['music']): ?>
+    <?php load_functions('music::music') ?>
+    <?php if(is_numeric($feed['music'])): ?>
+        <?php $music = (isset($feed['musicDetails'])) ? $feed['musicDetails'] : get_music($feed['music']); ?>
+        <?php if($music): ?>
+            <?php $music['file_path'] = fire_hook('filter.url', url($music['file_path'])); ?>
+            <div class="feed-music-player-container" style=" margin: 10px;
+    margin-top: 0;
+    background: #F1F1F1;">
+                <?php if($music['source'] == 'upload'): ?>
+                    <?php if($music['status'] == 0): ?>
+                        <div class="music-in-processing"><?php echo lang('music::music-in-processing') ?></div>
+                    <?php else: ?>
+                        <?php echo view('music::feed_music', array('music' => $music)) ?>
+                    <?php endif ?>
+                <?php else: ?>
+                    <div class="external-music"><?php echo $music['code'] ?></div>
+                <?php endif ?>
+                <div class="music-title" style="min-height: 40px;padding: 8px;
+    background: #DEDEDE;
+    position: relative;">
+                    <a style="color: #3B3E40;
+    font-size: 15px;
+    width: 80%;" ajax="true" href="<?php echo $furl; ?>"><?php echo empty($music['artist']) ? $music['title'] : $music['artist'].' - '.$music['title'] ?></a>
+                    <span style="font-size: 15px;
+    color: #000000;
+    float: right;" class="plays"><i class="ion-play"></i> <?php echo $music['play_count'] ?> <?php echo $music['play_count'] > 1 ? lang('music::plays') : lang('music::play') ?></span>
+                </div>
+            </div>
+        <?php endif ?>
+    <?php else: ?>
+        <iframe style="border: none; padding: 0px !important; margin:0px 10px; border-radius: 3px; overflow: hidden; width: 96%;" src="<?php echo $feed['music'] ?>"></iframe>
+    <?php endif ?>
+<?php endif ?>
+
+<?php if($feed['video']): ?>
+    <?php if(is_numeric($feed['video'])): ?>
+        <?php $video = isset($feed['videoDetails']) ? $feed['videoDetails'] : null; ?>
+        <?php if($video): ?>
+            <div class="feed-video-player-container" style="margin: 10px;
+    margin-top: 0;
+    background: #F1F1F1;">
+                <?php if($video['source'] == 'upload'): ?>
+                    <?php if($video['status'] == 0): ?>
+                        <div class="video-in-processing">
+                            <?php echo lang('video::video-in-processing') ?>
+                        </div>
+                    <?php else: ?>
+                        <div class="feed-video-embed-container internal-video" id="feed-video-embed-container-<?php echo $feed['feed_id']; ?>">
+                            <iframe style=" border: none;
+    padding: 0 !important;
+    border-radius: 3px;
+    overflow: hidden;
+    width: 100%;
+    height: 450px;" id="feed-video-embed-<?php echo $feed['feed_id']; ?>" class="player" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="<?php echo url_to_pager("play-video").'?link='.$video['file_path'].'&id='.$video['id'].'&photo='.$video['photo_path'] ?>"></iframe>
+                        </div>
+                    <?php endif ?>
+                <?php else: ?>
+                    <div class="feed-video-embed-container external-video" id="<?php echo 'feed-video-embed-container-'.$feed['feed_id']; ?>">
+                        <?php $code = set_iframe_link_param($video['code'], array('rel' => 0)) ?>
+                        <?php $code = preg_replace('/(width=)("|\')(.*?)("|\')/i', '${1}${2}100%${4}', $code) ?>
+                        <?php echo $code ?>
+                    </div>
+                <?php endif ?>
+                <div class="video-title" style="min-height: 40px;
+    height: unset;
+    background: #DEDEDE;
+    padding: 0px 10px;
+    position: relative;">
+                    <a style="color: #3B3E40;
+    font-size: 15px;
+    width: 80%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;" ajax="true" href="<?php echo $furl; ?>"><?php echo $video['title'] ?></a>
+                    <span class="views" style="font-size: 15px;
+    color: #000000;
+    display: inline-block;"> <?php echo $video['view_count'] ?>  <?php echo lang('video::views') ?></span>
+                </div>
+            </div>
+        <?php endif ?>
+    <?php else: ?>
+        <div class="feed-video-embed-container internal-video" id="feed-video-embed-container-<?php echo $feed['feed_id']; ?>">
+            <iframe id="feed-video-embed-<?php echo $feed['feed_id']; ?>" class="player" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="<?php echo url_to_pager("play-video").'?link='.$feed['video'] ?>"></iframe>
+        </div>
+    <?php endif ?>
+<?php endif ?>
+
+<?php /*if($feed['files']): */?><!--
+    <div class="feed-files">
+        <?php /*foreach($feed['files'] as $id => $file): */?>
+            <?php /*if(isset($file['extension'])): */?>
+                <div class="media">
+                    <div class="media-left">
+                        <div>
+                            <img src="<?php /*echo img('images/file-icons/'.$file['extension'].'.png') */?>"/>
+                        </div>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="media-heading"><?php /*echo $file['name'] */?></h5>
+                        <?php /*if(config('allow-guest-download-file', true) or is_loggedIn()): */?>
+                            <a data-toggle="tooltip" title="<?php /*echo lang('download-file') */?>" href="<?php /*echo url_to_pager('feed-download') */?>?feed_id=<?php /*echo $feed['feed_id'] */?>&file_id=<?php /*echo $id */?>" class="btn btn-secondary-outline btn-sm" download><i class="ion-android-download"></i></a>
+                        <?php /*endif */?>
+                    </div>
+                </div>
+            <?php /*endif */?>
+        <?php /*endforeach */?>
+    </div>
+--><?php /*endif */?>
+
+<?php /*if($feed['voice']): */?><!--
+    <div class="feed-voice" style="padding-top: 8px;
+    text-align: center;">
+        <div class="audio-player">
+            <audio preload="true">
+                <source src="<?php /*echo url($feed['voice']) */?>" />
+            </audio>
+            <button class="playback-button ion-play"></button>
+            <div class="timeline">
+                <div class="play-head"></div>
+            </div>
+        </div>
+    </div>
+--><?php /*endif */?>
+
+
+<?php if($feed['location']):$location = $feed['location'] ?>
+    <?php $key = trim(config('google-api-key', '') != '') ? '&key='.config('google-api-key', '') : '' ?>
+    <img style="width: 100%;margin-top: 10px" class="post-location-image" src="https://maps.googleapis.com/maps/api/staticmap?center=<?php echo $location ?>&zoom=15&size=700x200&maptype=roadmap&markers=color:red%7C<?php echo $location ?>&sensor=false&scale=1&visual_refresh=true<?php echo $key ?>"/>
+<?php endif ?>
+
+<?php /*if($feed['is_poll']): */?><!--
+    <div class="feed-poll" id="feed-poll-<?php /*echo $feed['feed_id'] */?>">
+        <?php /*echo view("feed::poll-result", array('feed' => $feed)); */?>
+
+    </div>
+--><?php /*endif */?>
+
+<?php /*if($feed['link_details']): */?><!--
+    <?php /*echo view('feed::link', array('details' => perfectUnserialize($feed['link_details']))) */?>
+--><?php /*endif */?>

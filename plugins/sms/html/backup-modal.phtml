@@ -1,0 +1,18 @@
+<p><?php echo lang("sms::make-sure-you-have-a-copy-of-code-desc"); ?></p>
+<div class="code-box clearfix">
+    <div class="col-sm-12">
+        <p><?php echo lang("sms::here-is-your-code") ?>
+            <span class="pull-right"><a href="" id="copybcup" data-copied="<?php echo lang('sms::copied'); ?>"><i class="ion-ios-copy-outline"></i> <?php echo lang("sms::copy"); ?></a></span>
+        </p>
+        <div id="backup-code-mother">
+        <?php foreach($codes as $c): ?>
+        <div class="col-sm-3 each-code-b"><b><?php echo $c; ?></b></div>
+        <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<br/>
+<p><?php echo lang("sms::descripton-lost-default"); ?></p>
+<!--<br/>-->
+<textarea style="opacity:0" id="texta-code-g"><?php foreach($codes as $c): ?><?php echo $c.PHP_EOL; ?><?php endforeach; ?></textarea>
+<a class="btn btn-block btn-info btn-lg" href="<?php echo url('sms/two-factor').'?action=download-txt' ?>"><i class="ion-ios-download-outline"></i> <?php echo lang("sms::download-txt"); ?></a>

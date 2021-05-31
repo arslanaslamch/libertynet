@@ -1,0 +1,91 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang('mailautomation::add-new-automation') ?>
+    </div>
+    <div class="wrapper-content mail-automation-wrapper">
+
+        <form class="wrapper-form" action="" enctype="multipart/form-data" method="post">
+            <?php CSRFProtection::embed(); ?>
+            <?php if($message): ?>
+                <div class="alert alert-danger"><?php echo $message ?></div>
+            <?php endif ?>
+            <fieldset style="margin-top:0">
+                <label class="control-label"><?php echo lang('mailautomation::title') ?></label>
+                <input autocomplete="off" value="<?php echo input('val.title') ?>" type="text" class="form-control" name="val[title]"/>
+                <span class="from-help"><?php echo lang("mailautomation::this-is-for-your-help"); ?></span>
+            </fieldset><br/>
+
+
+            <fieldset>
+                <label class="control-label"><?php echo lang('mailautomation::non-active-members-for-the-last'); ?></label>
+                <div class="input-group mb-3">
+                    <input name="val[na_count]" type="number" class="form-control" placeholder="<?php echo lang('mailautomation::num-of-days'); ?>"
+                           aria-label="<?php echo lang('mailautomation::non-active-members-for-the-last'); ?>" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2"><?php echo lang("mailautomation::days"); ?></span>
+                    </div>
+                    <span class="form-help"><?php echo lang("mailautomation::x-days-description"); ?></span>
+                </div>
+
+            </fieldset><br/>
+
+            <fieldset>
+                <label class="control-label"><?php echo lang('mailautomation::mail-subject-ma') ?></label>
+                <input value="" placeholder="<?php echo lang('mailautomation::mail-subject-ma').' (English)'; ?>" type="text"
+                       class="form-control" name="val[subject][english]"/>
+                English
+            </fieldset>
+            <br/>
+            <a href="" class="other-languages-link" onclick="return show_other_languages('#subject-info-other-languages')"><?php echo lang('edit-other-languages') ?></a>
+            <div class="other-languages" id="subject-info-other-languages">
+                <?php foreach(get_all_languages() as $language): ?>
+                    <?php if($language['language_id'] != 'english'): ?>
+                        <input class="form-control" type="text" name="val[subject][<?php echo $language['language_id'] ?>]"
+                               placeholder="<?php echo lang('mailautomation::mail-subject').' ('.$language['language_title'].')';  ?>"/>
+                        <br>
+                        <p class="help-block"><?php echo $language['language_title'] ?></p>
+                        <br/>
+                    <?php endif ?>
+                <?php endforeach ?>
+            </div>
+
+
+            <fieldset>
+                <label class="control-label"><?php echo lang('mailautomation::mail-body') ?></label>
+                <textarea name="val[body_content][english]" class="ckeditor" placeholder="<?php echo lang('mailautomation::mail-body').'(English)'; ?>"></textarea>
+                English
+            </fieldset><br/>
+            <a href="" class="other-languages-link" onclick="return show_other_languages('#body-info-other-languages')"><?php echo lang('edit-other-languages') ?></a>
+            <div class="other-languages" id="body-info-other-languages">
+                <?php foreach(get_all_languages() as $language): ?>
+                    <?php if($language['language_id'] != 'english'): ?>
+                        <textarea name="val[body_content][<?php echo $language['language_id'] ?>]" class="ckeditor" placeholder="<?php echo lang('mailautomation::mail-body').'('.$language['language_title'].')'; ?>"></textarea>
+                        <br>
+                        <p class="help-block"><?php echo $language['language_title'] ?></p><br/>
+                    <?php endif ?>
+                <?php endforeach ?>
+            </div>
+            <br/>
+            <fieldset>
+                <label class="control-label"><?php echo lang('mailautomation::useable-placeholders'); ?></label>
+                <p>[username] - Member Username</p>
+                <p>[full_name] - Member Full Name</p>
+                <p>[first_name] - Member First Name</p>
+                <p>[last_name] - Member Last Name</p>
+                <p>[email_address] - Member Email Address</p>
+                <p>[profile_link] - User Profile Link</p>
+                <p>[site-title] - This Website Title (<?php echo get_setting("site_title", "Crea8social") ?>)</p>
+                <p>[post-1] - This is a random posts from the Friends of this user. </p>
+                <p>[post-2] - This is another random posts from the Friends of this user. </p>
+                <p>[post-3] - This is another random posts from the Friends of this user. </p>
+                <p>[post-4] - This is another random posts from the Friends of this user. </p>
+                <p>[post-5] - This is another random posts from the Friends of this user. </p>
+            </fieldset><br/>
+
+
+
+            <button class="btn btn-info" style="margin-top: 20px"><?php echo lang("add") ?></button>
+        </form>
+
+    </div>
+</div>

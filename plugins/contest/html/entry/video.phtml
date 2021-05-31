@@ -1,0 +1,67 @@
+<div class="box-content">
+    <form action="" method="post" enctype="multipart/form-data" class="ajax-form blog-contest-add">
+        <?php CSRFProtection::embed(); ?>
+        <?php if($entry): ?>
+            <span><b><?php echo lang("contest::preview") ?></b></span><br/>
+        <div class="box-content" style="padding: 10px;background:#f2f4f6;-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;">
+             <?php echo view("contest::video-template",array('entry'=>$entry)); ?>
+        </div>
+        <br/>
+        <?php endif; ?>
+        <?php $current = (config('video-upload', false) and config('video-encoder', 'none') != 'none') ? 'upload' : 'external'; ?>
+        <div class="form-group">
+            <label class="control-label"><?php echo lang('contest::video-source') ?></label>
+
+            <div class="magic-select" data-name="val[source]" data-width="200px">
+                <div class="magic-select-toggle">
+                    <?php if (config('video-upload', false) and config('video-encoder', 'none') != 'none'): ?>
+                        <?php echo lang('video::upload-from-computer') ?>
+                    <?php else: ?>
+                        <?php echo lang('video::external-link') ?>
+                    <?php endif ?>
+                </div>
+                <div class="magic-select-content">
+                    <?php //if (config('video-upload', false) and config('video-encoder', 'none') != 'none'): ?>
+                        <div class="magic-select-option video-source-option" data-value="upload">
+                            <?php echo lang('video::upload-from-computer') ?>
+                        </div>
+                    <?php //endif ?>
+                    <div class="magic-select-option video-source-option" data-value="external">
+                        <?php echo lang('video::external-link') ?>
+                    </div>
+                </div>
+            </div>
+            <div class="video-source-selector" style="margin-top: 20px">
+                <?php //if (config('video-upload', false)): ?>
+                    <div class=" source upload <?php echo ($current == 'external') ? 'video-hide-field' : null ?>">
+                        <input type="file" id="file" name="video_file">
+                    </div>
+                <?php //endif ?>
+                <div class="source external <?php echo ($current == 'upload') ? 'video-hide-field' : null ?>">
+                    <div class="form-group ">
+                        <input autocomplete="off" value="<?php echo isset($entry['link']) ? urldecode($entry['link']) : input('link'); ?>" name="val[link]" type="text"
+                               class="form-control">
+                        <span class="help-block"><?php echo lang('contest::external-video-info') ?></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label><?php echo lang("contest::video-title"); ?></label>
+            <input autocomplete="off" type="text" class="form-control" name="val[title]"
+                   value="<?php echo isset($entry['title']) ? $entry['title'] : input('title'); ?>"/>
+        </div>
+        <div class="form-group">
+            <label><?php echo lang("contest::video-description"); ?></label>
+            <textarea name="val[description]" class="form-control"
+                      placeholder="<?php echo lang('contest::description') ?>"><?php echo isset($entry['description']) ? $entry['description'] : input('description'); ?></textarea>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-info"><?php echo lang("contest::submit-entry") ?></button>
+            <?php if ($entry): ?>
+                <a href="<?php echo getEntryContestUrl($contest, $entry) . '?action=del'; ?>"
+                   class="btn btn-danger"><?php echo lang("contest::delete-entry") ?></a>
+            <?php endif; ?>
+        </div>
+    </form>
+</div>

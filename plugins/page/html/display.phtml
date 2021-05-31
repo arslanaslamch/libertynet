@@ -1,0 +1,22 @@
+<div class="item">
+    <div class="thumb">
+        <?php if($page['featured']): ?>
+            <span class="featured"></span>
+        <?php endif ?>
+        <img class="img" src="<?php echo get_page_logo(200, $page) ?>" alt="<?php echo ucwords($page['page_title']) ?>" aria-label="<?php echo $page['page_title'] ?>" role="img" />
+    </div>
+    <div class="details">
+        <a href="<?php echo page_url(null, $page) ?>" ajax="true" class="title">
+            <?php echo ucwords($page['page_title']) ?>
+        </a>
+        <div class="actions">
+            <?php if(plugin_loaded('like')): ?>
+                <?php load_functions('like::like'); ?>
+                <a onclick="return like_item('page', '<?php echo $page['page_id'] ?>')" data-status="<?php echo (has_liked('page', $page['page_id'])) ? '1' : 0 ?>" class="btn btn-secondary like-button-page-<?php echo $page['page_id'] ?> like-button <?php echo (has_liked('page', $page['page_id'])) ? 'liked' : null ?>" href="#">
+                    <i class="fa fa-thumbs-o-up"></i>
+                    <?php echo lang('like::like') ?>
+                </a>
+            <?php endif ?>
+        </div>
+    </div>
+</div>

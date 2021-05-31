@@ -1,0 +1,52 @@
+<?php $users = Birthday::getTodaysBirthdays(); ?>
+<?php if ($users->total): ?>
+    <div class="today-birthday-cover">
+        <!--<img src="<?php /*echo img("birthday::image/happy.png") */ ?>" class="img celebrant-img" />-->
+        <img src="<?php echo img("birthday::image/happy.png") ?>" class="img celebrant-img" alt=""/>
+
+        <h4 class="top-title-birthday"><?php echo lang("birthday::todays-birthday"); ?></h4>
+        <?php foreach ($users->results() as $user): ?>
+            <div class="img-circle-wrapper-celebrant">
+                <div class="img-circle-wrapper-cover-to-content-celebrant">
+                    <a href="<?php echo profile_url(null, $user); ?>" ajax="true">
+                        <img class="img-circle img-user-birth-celebrant" src="<?php echo get_avatar(200, $user) ?>"/>
+                    </a>
+                    <span class="birth-name-celebrant"><a href="<?php echo profile_url(null, $user); ?>" ajax="true"
+                                                          title="<?php echo get_user_name($user); ?>"><?php echo str_limit(get_user_name($user), 20); ?></a></span>
+
+                    <span class="birth-icon-and-date sub-content-today-b"><span class="">
+                            <i class="ion-ios-rose"></i> </span>
+                         <?php echo lang("birthday::today") ?>! </span>
+                    <span class="sub-content-today-b b-wish-s"><i class="ion-bag"></i> <span><a
+                                    href="" class="wish-birthday"
+                                    data-name="<?php echo get_user_name($user); ?>"
+                                    data-uid="<?php echo $user['id']; ?>">
+                                <?php echo lang("birthday::wish-something"); ?></a></span>
+                    </span>
+                    <span class="sub-content-today-b b-wish-s">
+                  <?php if (is_loggedIn() && $user['id'] != get_userid() && can_send_message($user['id'])): ?>
+                      <i class="ion-ios-chatboxes"></i>
+                      <span>
+                           <?php if (isMobile()): ?>
+                               <a ajax="true" style="font-size:12px"
+                                  href="<?php echo url('messages?userid=' .$user['id']) ?>"
+                                  class="btn btn-secondary btn-sm message-me-small"><?php echo lang("birthday::private-message"); ?></a>
+                           <?php else: ?>
+                               <a href="" style="font-size:12px"
+                                  onclick="return Chat.open(null, '<?php echo $user['id'] ?>', '<?php echo htmlentities(get_user_name($user)) ?>', '<?php echo get_avatar(75, $user) ?>')"
+                                  class="message-me-large"> <?php echo lang("birthday::private-message"); ?></a>
+                           <?php endif; ?>
+                    </span>
+                  <?php else: ?>
+                      <i class="ion-ios-chatboxes"></i>
+                      <span><a href="" style="font-size:12px"><?php echo lang("birthday::private-message"); ?></a></span>
+                  <?php endif; ?>
+
+                    </span>
+                    <br/>
+                </div>
+            </div>
+        <?php endforeach ?>
+    </div>
+<?php echo view("birthday::modal"); ?>
+<?php endif; ?>

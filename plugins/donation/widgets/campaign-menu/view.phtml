@@ -1,0 +1,13 @@
+<?php if(isset(app()->Donation)):
+    $donation = app()->Donation;
+    ?>
+<div class="box">
+    <div class="box-content">
+        <img style="max-height:" class="img img-responsive" src="<?php echo url_img($donation['image'], 700) ?>"/>
+        <ul class="menu">
+            <li><a href="<?php echo ""; ?>" id="ivmc" ><?php _lang('donation::invite-friends')?></a></li>
+            <li><a href="" id="promot-cp" ><?php _lang('donation::promote-campaign')?></a></li>
+        </ul>
+    </div>
+</div>
+<?php endif; ?>

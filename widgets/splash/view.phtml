@@ -1,0 +1,226 @@
+<?php $logo = config('site-logo'); $logo_url = !$logo ? img('images/logo.png') : url_img($logo); ?>
+<div class="splash-00">
+    <div class="top" style="background-image: url(<?php echo url_img(config('default-theme-splash-cover','themes/default/images/splash/cover.jpg')) ?>)">
+        <div class="row container">
+            <div class="left col-md-8">
+                <div class="header">
+                    <div class="logo">
+                        <img src="<?php echo $logo_url ?>" alt="logo" />
+                    </div>
+                    <div class="links">
+                        <?php foreach (get_menus('home-menu') as $menu): ?>
+                            <a <?php echo $menu->ajax ? 'ajax="true"' : null ?> <?php echo $menu->tab ? 'onclick="return window.open(\'' . $menu->link . '\')"' : null ?> href="<?php echo $menu->tab ? 'javascript:void(0)' : $menu->link ?>" class="link"><?php echo lang($menu->title) ?></a>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="content row">
+                    <div class="message col-md-6"><?php echo lang('welcome-message') ?></div>
+                    <div class="image col-md-6">
+                        <img src="<?php echo url_img(config('default-theme-splash-image','themes/default/images/splash/image.png')) ?>" alt="image" />
+                    </div>
+                </div>
+            </div>
+            <div class="right col-md-4">
+                <div class="auth signup" data-auth-content="signup">
+                    <div class="heading"><?php echo lang('create-new-account') ?></div>
+                    <div class="subheading"><?php echo lang('join-site-message', array('site-title' => config('site_title'))) ?></div>
+                    <form method="post" class="ajax-form" action="<?php echo url('signup') ?>">
+                        <div class="field">
+                            <label>
+                                <input type="text" name="val[name]" value="<?php echo input('val.name') ?>" placeholder="<?php echo lang('your-name') ?>" />
+                            </label>
+                        </div>
+                        <div class="field">
+                            <label>
+                                <input type="text" name="val[username]" value="<?php echo input('val.username') ?>" placeholder="<?php echo lang('username') ?>" />
+                            </label>
+                        </div>
+                        <?php if(config('signup-merge-email-phone') && config('enable-phone-no', false) && !config('signup-hide-phone-no') && !config('signup-hide-phone-no')): ?>
+                            <div class="field">
+                                <label>
+                                    <input type="text" name="val[email_phone]" value="<?php echo input('val.email_phone') ?>" placeholder="<?php echo lang('email-or-phone') ?>" />
+                                </label>
+                            </div>
+                        <?php else: ?>
+                            <?php if(!config('signup-hide-email-address')): ?>
+                                <div class="field">
+                                    <label>
+                                        <input type="text" name="val[email_address]" value="<?php echo input('val.email_address') ?>" placeholder="<?php echo lang('your-email-address') ?>" />
+                                    </label>
+                                </div>
+                            <?php endif; ?>
+                            <?php if(config('enable-phone-no', false) && !config('signup-hide-phone-no')): ?>
+                                <?php $iso_country_calling_codes = get_iso_country_calling_codes(); ?>
+                                <?php $phone_number = get_phone_number_country_code(get_user_data('phone_no')) ?>
+                                <div class="field multiple phone-number-input">
+                                    <label>
+                                        <span class="magic-select search-dropdown iso-country_calling-codes" data-name="val[code]" data-width="77px">
+                                            <input type="hidden" name="val[code]" value="<?php echo $phone_number['code'] ?>" class="magic-select-value code" />
+                                            <span class="magic-select-toggle">
+                                                <?php echo strtoupper($phone_number['iso']) ?> +<?php echo $phone_number['code'] ?>
+                                            </span>
+                                            <span class="magic-select-content slimscroll" data-height="200px">
+                                                <?php foreach($iso_country_calling_codes as $iso_country_calling_code): ?>
+                                                    <div class="magic-select-option" data-value="<?php echo $iso_country_calling_code['code'] ?>" data-title="<?php echo strtoupper($iso_country_calling_code['iso']) ?> +<?php echo $iso_country_calling_code['code'] ?>">
+                                                        <div class="flag">
+                                                            <?php if($iso_country_calling_code['country_flag']): ?>
+                                                                <img src="<?php echo $iso_country_calling_code['country_flag'] ?>" alt="<?php echo $iso_country_calling_code['iso'] ?>" />
+                                                            <?php else: ?>
+                                                                <span class="icon"><?php echo strtoupper($iso_country_calling_code['iso']) ?></span>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                        <div class="country-name"><?php echo $iso_country_calling_code['country_name'] ?></div>
+                                                        <div class="code">+<?php echo $iso_country_calling_code['code'] ?></div>
+                                                    </div>
+                                                <?php endforeach ?>
+                                            </span>
+                                        </span>
+                                        <input type="text" name="val[number]" value="<?php echo $phone_number['number'] ? $phone_number['number'] : '' ?>" placeholder="<?php echo lang('your-phone-number') ?>" class="number" />
+                                        <input type="hidden" name="val[phone_no]" value="<?php echo input('val.number') ?>" class="phone-no" />
+                                    </label>
+                                </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        <div class="field">
+                            <label>
+                                <input type="password" name="val[password]" value="<?php echo input('val.password') ?>" placeholder="<?php echo lang('password') ?>" />
+                            </label>
+                        </div>
+                        <?php if(config('enable-gender', true)): ?>
+                            <div class="field multiple">
+                                <span class="title"><?php echo lang('gender') ?></span>
+                                <?php $genders = get_genders() ?>
+                                <?php $value = input('val.gender') ?>
+                                <?php foreach($genders as $gender): ?>
+                                    <label>
+                                        <input type="radio" name="val[gender]" value="<?php echo $gender ?>" />
+                                        <span class="title"><?php echo lang($gender) ?></span>
+                                    </label>
+                                <?php endforeach; ?>
+								<?php if(!in_array('gender', user_required_fields(), true)): ?>
+									<label>
+										<input type="radio" name="val[gender]" value="" />
+										<span class="title"><?php echo lang('prefer-not-to-say') ?></span>
+									</label>
+								<?php endif ?>
+                            </div>
+                        <?php else: ?>
+                            <?php fire_hook('enable.gender.exception'); ?>
+                        <?php endif ?>
+                        <?php fire_hook('signup.form.extend', null, array(true)) ?>
+                        <input type="hidden" name="val[tos]" value="1">
+                        <div class="tos"><?php echo lang('tos-consent', array('site-title' => config('site_title'))) ?></div>
+                        <?php if(get_setting("enable-captcha")): ?>
+                            <?php if(get_setting("enable-captcha") == '1'): ?>
+                                <div class="row captcha">
+                                    <div class="col-md-6">
+                                        <input class="form-control" type="text" placeholder="<?php echo lang('enter-text-below') ?>" name="captcha" id="captcha-input"/>
+                                    </div>
+                                    <div class="col s6">
+                                        <img id="captcha-image" src="<?php echo url("captcha.php") ?>"/>
+                                        <a onclick="document.getElementById('captcha-image').src='<?php echo url('captcha.php') ?>?'+Math.random();    document.getElementById('captcha-input').focus();    "><i class="ion-ios-reload"></i></a><br/>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <div class="g-recaptcha" data-sitekey="<?php echo config('recaptcha-key'); ?>"></div>
+                                <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=en"></script>
+                            <?php endif ?>
+                        <?php endif ?>
+                        <?php fire_hook('signup.footer'); ?>
+                        <div class="submit">
+                            <input type="submit" value="<?php echo lang('create-site-account', array('site-title' => config('site_title'))) ?>" />
+                        </div>
+                    </form>
+                </div>
+                <div class="auth-more signup" data-auth-content="signup"><?php echo lang('already-have-account') ?> <a href="<?php echo url('login') ?>" data-auth-toggle="login"><?php echo lang('login') ?></a>.</div>
+                <div class="auth login" data-auth-content="login">
+                    <div class="heading"><?php echo lang('log-into-account') ?></div>
+                    <form method="post" class="ajax-form" action="<?php echo url('login') ?>">
+                        <div class="field">
+                            <label>
+                                <input type="text" name="val[username]" value="<?php echo input('val.username') ?>" placeholder="<?php echo lang('username-or-email') ?>" />
+                            </label>
+                        </div>
+                        <div class="field">
+                            <label>
+                                <input type="password" name="val[password]" value="<?php echo input('val.password') ?>" placeholder="<?php echo lang('password') ?>" />
+                            </label>
+                        </div>
+                        <div class="field">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" name="remember" class="custom-control-input" id="auth-form-remember-switch">
+                                <label class="custom-control-label" for="auth-form-remember-switch"><?php echo lang('remember-me') ?></label>
+                            </div>
+                            <a href="<?php echo url_to_pager('forgot-password') ?>" class="forgot-password-link"><?php echo lang('forgot-password') ?></a>
+                        </div>
+                        <div class="submit">
+                            <input type="submit" value="<?php echo lang('login') ?>" />
+                        </div>
+                    </form>
+                    <?php if(config('enable-facebook', false) || config('enable-twitter', false) || config('enable-googleplus', false) || config('enable-vk', false)): ?>
+                        <div class="social-login">
+                            <div class="title" data-content="Login with"></div>
+                            <div class="body">
+                                <div class="links">
+                                    <?php if(config('enable-facebook', false)): ?>
+                                        <a href="<?php echo url_to_pager('facebook-auth') ?>" class="facebook"><i class="fa fa-facebook"></i></a>
+                                    <?php endif ?>
+                                    <?php if(config('enable-twitter', false)): ?>
+                                        <a href="<?php echo url_to_pager('twitter-auth') ?>" class="twitter"><i class="fa fa-twitter"></i></a>
+                                    <?php endif ?>
+                                    <?php if(config('enable-googleplus', false)): ?>
+                                        <a href="<?php echo url_to_pager('googleplus-auth') ?>" class="google"><i class="fa fa-google"></i></a>
+                                    <?php endif ?>
+                                    <?php if(config('enable-vk', false)): ?>
+                                        <a href="<?php echo url_to_pager('vk-auth') ?>" class="vk"><i class="fa fa-vk"></i></a>
+                                    <?php endif ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif ?>
+                </div>
+                <div class="auth-more login" data-auth-content="login"><?php echo lang('dont-have-account') ?> <a href="<?php echo url('signup') ?>" data-auth-toggle="signup"><?php echo lang('register') ?></a>.</div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="row container">
+            <div class="left col-md-8">
+                <div class="auth">
+                    <?php $user_sessions = get_user_sessions() ?>
+                    <?php if($user_sessions): ?>
+                        <div class="heading"><?php echo lang('login-as') ?>...</div>
+                    <?php endif; ?>
+                    <div class="sessions">
+                        <?php foreach ($user_sessions as $id => $hash): $user = find_user($id) ?>
+                            <?php if($user): ?>
+                                <a href="#" class="session" data-id="<?php echo $user['id'] ?>" data-hash="<?php echo $hash ?>" data-cookie-path="<?php echo config('cookie_path') ?>">
+                                    <span class="remove-button">
+                                        <i class="ion-close"></i>
+                                    </span>
+                                    <div class="avatar">
+                                        <img src="<?php echo get_avatar(200, $user) ?>" alt="<?php echo get_user_name($user) ?>" />
+                                    </div>
+                                    <div class="name"><?php echo get_user_name($user) ?></div>
+                                    <div class="time">
+                                        <?php echo lang('active') ?>
+                                        <span class="timeago" title="<?php echo date('c', $user['online_time']) ?>"><?php echo date('c', $user['online_time']) ?></span>
+                                    </div>
+                                </a>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <a href="#" class="session-add">
+                            <div class="icon">
+                                <i class="ion-plus"></i>
+                            </div>
+                            <div class="label"><?php echo $user_sessions ? lang('add-account') : lang('login') ?></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="right col-md-4">
+
+            </div>
+        </div>
+    </div>
+</div>

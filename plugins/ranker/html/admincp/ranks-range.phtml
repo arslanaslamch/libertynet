@@ -1,0 +1,31 @@
+<div class="wrapper">
+	<div class="wrapper-title"><?php echo lang('ranker::ranks-range') ?>-
+		<a class="btn btn-success" href="<?php echo url_to_pager('admincp-ranges') ?>"><?php echo lang('ranker::ranges') ?></a>  </div>
+	<div class="wrapper-content">
+		<form method="post" action="" enctype="multipart/form-data" class="wrapper-form">
+			<?php CSRFProtection::embed() ?>
+		
+			
+            <div class="form-group row">
+                <label class="col-sm-3 form-control-label"><?php echo lang('ranker::range') ?></label>
+                <div class="col-sm-9">
+				   <select class="form-control" name="val[range]">
+                    <option value="0-40">0 to 40</option>
+                    <option value="41-70">41 to 70</option>
+					<option value="71-100">71 to 100</option>
+                </select>
+
+                </div>
+            </div>
+			<div class="form-group row">
+                <label class="col-sm-3 form-control-label"><?php echo lang('Caption') ?></label>
+                <div class="col-sm-9">
+                   <input class="form-control" type="text" name="val[caption]" placeholder="<?php echo lang('ranker::caption') ?>"/>
+
+                </div>
+            </div>
+
+			<button class="btn btn-info"><?php echo lang('ranker::add') ?></button>
+		</form>
+	</div>
+</div>

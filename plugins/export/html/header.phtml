@@ -1,0 +1,277 @@
+<?php if(isMobile()): ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><?php else: ?><!DOCTYPE html><?php endif ?>
+<html lang="en">
+	<head>
+		<title><?php echo html_entity_decode(config('site_title'), ENT_QUOTES) ?></title><?php echo render_meta_tags() ?>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+		<link rel="shortcut icon" type="image/x-icon" href="<?php echo (config('site-favicon')) ? url_img(config('site-favicon')) : img('images/favicon.ico') ?>" />
+        <link href='css/style.css' rel='stylesheet' type='text/css'/>
+		<style>
+			#header #loading-line {
+				background-color: <?php echo config('loading-line-color', '#F62459') ?>;
+			}
+
+			#header {
+				background-color: <?php echo config('header-bg-color', '#4C4C4E') ?>;
+			}
+
+			#header .navbar-brand {
+				color: <?php echo config('header-brand-color', '#FFFFFF') ?>;
+			}
+
+			#header .nav-item,
+			#header .nav-link {
+				color: <?php echo config('header-menu-color','#FFFFFF') ?>;
+			}
+
+			#header .nav-link i {
+				color: <?php echo config('header-menu-icon-color','#FFFFFF') ?>;
+			}
+
+			#header #header-search {
+				background: <?php echo config('header-search-background','#1C2733') ?>;
+			}
+
+			#header #header-search input[type=text]::placeholder {
+				color: <?php echo config('header-search-placeholder-color','#FFFFFF') ?> !important;
+			}
+
+			#header #header-search input[type=text] {
+				color: <?php echo config('header-search-text-color','#FFFFFF') ?>;
+			}
+
+			#home-login-container .login-content {
+				background-color: <?php echo config('landing-reg-bg-color','rgba(46, 62, 69, 0.36)') ?> !important;
+			}
+
+			#welcome-notes {
+				font-family: <?php echo  config('welcomes-notes-font','Segoe UI, Arial, sans-serif') ?> !important;
+			}
+
+			.btn-post {
+				background-color: <?php echo config('header-bg-color','#1c2331') ?> !important;
+				color: white;
+			}
+
+			a {
+				color: <?php echo config('link-color','#2b354f') ?>;
+                font-size: <?php echo config('link-size','12px') ?>
+			}
+
+			#explore-menu {
+				background-color: <?php echo config('explorer-bg-color','#F4F4F4') ?>;
+			}
+
+			#explore-menu .container > .explore-menu-bar > .explore-menu-item a {
+				color: <?php echo config('explorer-link-color','#1c2331') ?>;
+			}
+
+			#explore-menu .container > .explore-menu-bar .arrow-up {
+				border-bottom-color: <?php echo app()->design['color'] ?>
+			}
+
+			#explore-menu .container #all-container > a {
+				background-color: <?php echo config('explorer-dropdown-bg-color','#626A73') ?>;
+				color: <?php echo config('explorer-dropdown-text-color','#808080') ?>;
+			}
+
+			body {
+				background-color: <?php echo app()->design['color'] ?>;
+			}
+
+			#main-wrapper {
+				background-color: <?php echo app()->design['color'] ?>;
+				background-image: <?php echo (app()->design['image']) ? "url(".app()->design['image'].")" : 'none' ?>;
+				background-attachment: fixed;
+				background-position: top<?php echo app()->design['position'] ?>;
+				background-repeat: <?php echo app()->design['repeat'] ?>;
+			}
+
+			#main-wrapper > .container {
+			<?php if(app()->design['container']): ?> background: <?php echo app()->design['container'] ?>;
+				padding: 10px;
+			<?php endif ?>
+			}
+
+			#main-wrapper > .container a {
+				color: <?php echo app()->design['link'] ?>
+			}
+
+			#chat-boxes-container .onlines-container .main > ul,
+			#chat-boxes-container .onlines-container {
+				background-color: <?php echo config('chat-list-bg-color','#FFFFFF') ?> !important;
+			}
+
+			.btn-info {
+				background: <?php echo config('button-bg-color','#0abde3') ?> !important;
+				border: none !important;
+				-webkit-appearance: normal !important;
+			}
+
+			.dropdown-menu .dropdown-item:hover {
+				background: <?php echo config('dropdown-menu-hover-bg-color','#54A0FF') ?> !important;
+				color: <?php echo config('dropdown-menu-hover-text-color','#FFFFFF') ?> !important;
+			}
+            ::-webkit-scrollbar{
+                width: <?php echo config('scroll-bar-size','4px') ?> !important;
+                height: <?php echo config('scroll-bar-height','4px') ?> !important;
+            }
+
+			.verify-badge {
+				color: <?php echo config('verify-badge-color','#19B5FE') ?>
+			}
+
+			#topo #slides .slide-1 {
+				background-image: url(<?php echo url_img(config('default-theme-topography-image-1','themes/default/images/topography/one.jpg')) ?>) !important;
+			}
+
+			#topo #slides .slide-2 {
+				background-image: url(<?php echo url_img(config('default-theme-topography-image-2','themes/default/images/topography/two.jpg')) ?>) !important;
+			}
+
+			#topo #slides .slide-3 {
+				background-image: url(<?php echo url_img(config('default-theme-topography-image-3','themes/default/images/topography/three.jpg')) ?>) !important;
+			}
+
+            @media (max-width: 500px) {
+                body.logged-out.right-menu-active:not(.home) #header #header-right {
+                    background-color: <?php echo config('header-bg-color', '#4C4C4E') ?>;
+                }
+            }
+            <?php if (config('custom-css') && config('custom-css') != lang('custom-css-description')) echo config('custom-css')?>
+			<?php if(!segment(0)):?>
+			#header {
+				display: none;
+			}
+			<?php endif?>
+		</style>
+        <?php if (fire_hook('server.privacy','analytics-code')):?>
+		    <?php echo html_entity_decode(config('google-analytics-code'), ENT_QUOTES) ?>
+        <?php endif;?>
+	</head>
+	<body class="<?php echo (isRTL()) ? 'rtl-body' : '' ?> <?php echo is_loggedIn() ? 'logged-in' : 'logged-out';
+	echo !segment(0) ? ' home' : '';
+	echo segment(0) == 'login' ? ' login-page' : '';
+	echo segment(0) == 'signup' ? ' signup-page' : '';
+	echo config('enable-night-mode', true) && isset($_COOKIE['night-mode']) && $_COOKIE['night-mode'] ? ' night-mode' : '';
+	echo is_loggedIn() && !isMobile() && (isset(app()->sideChat) && app()->sideChat || !isset(app()->sideChat)) ? '' : '' ?>" data-general-error="<?php echo lang('something-went-wrong') ?>">
+	<?php if($app->onHeader): ?>
+		<?php $logo = config('site-logo'); $logo_url = !$logo ? img('images/logo.png') : url_img($logo); ?>
+		<nav id="header" class="navbar navbar-expand-lg">
+			<div id="loading-line"></div>
+			<?php if($app->onHeaderContent): ?>
+				<div class="container">
+					<?php if(is_loggedIn()): ?>
+						<a href="" onclick="return open_sidebar_menu()" class="header-menu-trigger">
+							<i class="ion-android-menu"></i>
+						</a>
+						<a class="navbar-brand" href="<?php echo url() ?>" ajax="true">
+							<?php if(config('show-nav-brand-logo', 1)): ?>
+								<img src="<?php echo $logo_url ?>" class="navbar-brand-logo"/>
+							<?php endif ?>
+							<?php if (config('show-nav-brand-title', 0)): ?> <div class="navbar-brand-title"><?php echo config('site_title') ?></div>
+							<?php endif ?>
+						</a>
+						<form action="<?php echo url_to_pager("search") ?>" id="header-search" class="form-inline">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="header-search-button"><i class="ion-ios-search"></i></span>
+								</div>
+								<input id="header-search-input" type="text" name="term" class="form-control" placeholder="<?php echo lang('search::search-placeholder') ?>" autocomplete="off" aria-label="<?php echo lang('search') ?>" aria-describedby="header-search-button" onkeyup="process_search_dropdown()" onfocus="process_search_dropdown()">
+							</div>
+							<div id="search-dropdown">
+								<div class="search-dropdown-content">
+									<img src="<?php echo img('images/loading.gif') ?>" id="search-dropdown-indicator"/>
+									<div class="search-dropdown-result-container slimscroll data-height="266px"></div>
+									<a ajax="true" id="search-dropdown-full-search-button" class="" href=""><?php echo lang('see-all-results') ?></a>
+								</div>
+							</div>
+						</form>
+						<ul class="navbar-nav ml-auto">
+							<li class="nav-item">
+								<a data-toggle="tooltip" data-original-title="<?php echo lang('home') ?>" ajax="true" href="<?php echo url() ?>" class="nav-link"><i class="la la-home"></i></a>
+							</li>
+							<li class="dropdown text-link nav-item hide-in-mobile" id="header-account-menu">
+								<a aria-expanded="false" class="dropdown-toggle nav-link" data-toggle="dropdown" href="<?php echo profile_url() ?>">
+									<span class="span">
+										<img src="<?php echo get_avatar(75) ?>"/>
+									</span>
+									<span class="header-user-name"><?php echo mb_substr(get_first_name(), 0, 12) ?></span>
+								</a>
+							</li>
+						</ul>
+					<?php else: ?>
+						<a class="navbar-brand" href="<?php echo url() ?> ">
+							<?php if(config('show-nav-brand-logo', 1)): ?>
+								<img src="<?php echo $logo_url ?>" class="navbar-brand-logo"/>
+							<?php endif ?>
+							<?php if(config('show-nav-brand-title', 0)): ?>
+								<div class="navbar-brand-title"><?php echo config('site_title') ?></div>
+							<?php endif ?>
+						</a>
+						<button class="right-menu-toggler" type="button">
+							<span class="navbar-toggler-icon ion-android-more-vertical"></span>
+						</button>
+						<div id="header-right" class="right">
+							<?php if(segment(0)): ?>
+								<div class="nav-item">
+									<a class="nav-link" href="<?php echo url('signup') ?>"><?php echo lang('signup') ?></a>
+								</div>
+								<div class="nav-item">
+									<a class="nav-link" href="<?php echo url('login') ?>"><?php echo lang('login') ?></a>
+								</div>
+							<?php endif; ?>
+							<div class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<?php foreach(get_all_languages() as $lang): ?>
+										<?php if($lang['language_id'] == $app->lang): ?>
+											<img class="flag-img" src="<?php echo url(get_lang_flag($lang['language_id'])) ?>" />
+											<?php echo $lang['language_title'] ?>
+										<?php endif ?>
+									<?php endforeach ?>
+								</a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+									<?php foreach(get_all_languages() as $lang): ?>
+										<a class="dropdown-item" href="<?php echo url_to_pager("change-language", array('lang' => $lang['language_id'])) ?>">
+											<?php echo $lang['language_title'] ?>
+											<span class="pull-right">
+														<img class="flag-img" src="<?php echo url(get_lang_flag($lang['language_id'])) ?>">
+													</span>
+										</a>
+									<?php endforeach ?>
+								</div>
+							</div>
+						</div>
+					<?php endif; ?>
+				</div>
+			<?php endif ?>
+			<a id="feed-top-update-alert" href="">
+				<div>
+					<span></span>
+					<br/><?php echo lang('feed::new-feeds') ?>
+				</div>
+			</a>
+		</nav>
+		<?php theme_extend('header') ?>
+	<?php endif ?>
+    <div id="site-wide-notification" class="success">
+        <span class="message"></span>
+        <a href="#" onclick="return closeNotify()" class="close">
+            <i class="ion-close"></i>
+        </a>
+    </div>
+	<div class="modal fade" id="quick-post-modal">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>One fine body&hellip;</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="main-wrapper"<?php echo $app->onHeader ? ' class="header-space"' : '' ?>>

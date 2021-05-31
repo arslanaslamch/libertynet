@@ -1,0 +1,138 @@
+<div class="box">
+    <div class="playlist-list">
+        <div class="head">
+            <div class="cover" style="background-image: url(<?php echo url_img(config('music-list-cover', 'plugins/music/images/cover.jpg'), 920); ?>)">
+                <div class="title"><?php echo lang('music::playlists') ?></div>
+                <div class="actions">
+                    <?php if(user_has_permission('can-add-playlist')): ?>
+                        <a class="btn btn-block btn-info action-button" href="<?php url_to_pager('music-playlist-create') ?>" data-toggle="modal" data-target="#playlist-create-modal"><i class="ion-ios-plus-empty"></i> <?php echo lang('music::add-new-playlist') ?></a>
+                        <div id="playlist-create-modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form action="<?php echo url_to_pager('music-playlist-create') ?>" class="ajax-form" method="post">
+                                        <?php CSRFProtection::embed() ?>
+                                        <div class="modal-form-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <p class="modal-title pull-left"><?php echo lang('music::add-playlist') ?></p>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label for="val[title]" class="control-label"><?php echo lang('music::title') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <input value="<?php echo input('val.title') ?>" type="text" name="val[title]" class="form-control" placeholder="<?php echo lang('music::title') ?>"/>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label for="val[description]" class="control-label"><?php echo lang('music::description') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <input value="<?php echo input('val.description') ?>" type="text" name="val[description]" class="form-control" placeholder="<?php echo lang('music::description') ?>" placeholder="<?php echo lang('music::search-musics') ?>"/>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label for="val[music_search]" class="control-label"><?php echo lang('music::add-music') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <input autocomplete="off" value="<?php echo input('val.music_search') ?>" type="text" name="val[music_search]" class="form-control" onblur="$('#music-playlist-editor-search-result').fadeOut('fast');" onfocus="music.playlist.editor.searchMusic(this)" onkeyup="music.playlist.editor.searchMusic(this)" placeholder="<?php echo lang('music::search-musics') ?>"/>
+                                                    <div style="height: 0px; overflow: visible; z-index: 9999; position: relative;">
+                                                        <div id="music-playlist-editor-search-result">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label for="val[musics]" class="control-label"></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <div id="music-items">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('privacy') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <?php fire_hook('privacy.select', 'relationship', config('default-playlist-privacy', 1)); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="submit" class="btn btn-default" value="<?php echo lang('music::add-playlist') ?>"/>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif ?>
+                </div>
+                <div class="links">
+                    <div class="link <?php echo segment(1) === 'playlists' || input('type') ? '' : 'active' ?>">
+                        <a ajax="true" href="<?php echo url_to_pager('musics') ?>"><?php echo lang('music::musics') ?></a>
+                    </div>
+                    <?php if(is_loggedIn()): ?>
+                        <div class="link <?php echo segment(1) !== 'playlists' && input('type') === 'mine' ? 'active' : '' ?>">
+                            <a ajax="true" href="<?php echo url_to_pager('musics').'?type=mine' ?>"><?php echo lang('music::my-musics') ?></a>
+                        </div>
+                    <?php endif; ?>
+                    <div class="link <?php echo segment(1) === 'playlists' ? 'active' : '' ?>">
+                        <a ajax="true" href="<?php echo url_to_pager('music-playlists') ?>"><?php echo lang('music::playlists') ?></a>
+                    </div>
+                    <?php foreach(get_menus('musics-menu') as $menu): ?>
+                        <li>
+                            <a ajax="true" href="<?php echo $menu->link ?>"><?php echo lang($menu->title) ?></a>
+                        </li>
+                    <?php endforeach ?>
+                </div>
+            </div>
+            <div class="filters global-filter-container filter-pane" data-url="<?php echo url_to_pager('music-playlists') ?>">
+                <div class="left">
+                    <i class="icon ion-android-options"></i>
+                    <select id="playlist-filter-select" onchange="return run_global_filter()" data-name="filter" class="c-select filter-input">
+                        <option value="all"><?php echo lang('all') ?></option>
+                        <option <?php echo (input('filter') == 'top') ? 'selected' : null ?> value="top"><?php echo lang('music::top') ?></option>
+                        <option <?php echo (input('filter') == 'featured') ? 'selected' : null ?> value="featured"><?php echo lang('music::featured') ?></option>
+                    </select>
+                </div>
+                <div class="right">
+                    <form id="playlist-list-search" method="post" onsubmit="return run_global_filter()" action="" class="search form-inline list-search">
+                        <?php CSRFProtection::embed() ?>
+                        <input type="hidden" class="filter-input form-control" data-name="type" value="<?php echo input('type', 'browse') ?>" />
+                        <input type="search" value="<?php echo input('term') ?>" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>" />
+                        <button type="submit">
+                            <i class="search-icon icon ion-ios-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="listings">
+                <div class="listing row">
+                    <?php foreach($playlists->results() as $playlist): ?>
+                        <div class="col-md-6">
+                            <?php echo view('music::playlist', array('playlist' => $playlist, 'playlist' => $playlist)) ?>
+                        </div>
+                    <?php endforeach ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-content">
+        <?php if($playlists->total): ?>
+            <?php $appends = array(); ?>
+            <?php if(input('category')) $appends['category'] = input('category'); ?>
+            <?php if(input('term')) $appends['term'] = input('term'); ?>
+            <?php if(input('type')) $appends['type'] = input('type'); ?>
+            <?php echo $playlists->append($appends)->links(); ?>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang('music::no-playlists-found-here') ?></div>
+        <?php endif ?>
+    </div>
+</div>

@@ -1,0 +1,4 @@
+<?php $livestreams = Livestream::getLivestreams(array('featured' => 1), $limit); ?>
+<div class="livestream-content livestream-widget livestream-featured">
+    <?php echo view('livestream::livestream/widget_list', array('title' => lang('livestream::featured-livestreams'), 'livestreams' => $livestreams)) ?>
+</div>

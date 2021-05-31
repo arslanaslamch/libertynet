@@ -1,0 +1,19 @@
+<?php echo view("store::customization/new-top-menu"); ?>
+<?php $stores = getMyStores(); ?>
+<div class="box">
+    <div class="title">
+        <?php echo lang("store::my-stores"); ?>
+        <span class="pull-right"><?php echo $stores->total ?> <?php echo lang("store::stores"); ?></span>
+
+    </div>
+    <div class="box-content">
+        <?php foreach($stores->results() as $s): ?>
+        <a href="<?php echo store_url(null, $s) ?>" ajax="true">
+        <div class="saf-store-single-wrapper">
+            <div class="img-wrapper" style="background-image: url(<?php echo getStoreLogo($s,200); ?>) "></div>
+            <p class="store-name"><?php echo $s['name']; ?></p>
+        </div>
+        </a>
+        <?php endforeach; ?>
+    </div>
+</div>

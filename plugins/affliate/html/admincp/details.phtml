@@ -1,0 +1,64 @@
+<div class="container row">
+
+    <div class="col-sm-12">
+        <div class="col-sm-6">
+            <img src="<?php echo get_avatar(200,$user) ?>" style="height:150px;width:150px;border-radius:100%" />
+        </div>
+        <div class="col-sm-6">
+            <h4><?php echo  get_user_name($user); ?></h4>
+            <p><a target="_blank" href="<?php echo profile_url(null,$user); ?>"><?php echo lang("affliate::view-profile") ?></a></p>
+            <p><b><?php echo lang("affliate::total-clients"); ?> : </b> <?php echo count_my_downline($uid); ?></p>
+            <p><b><?php echo lang("affliate::user-role"); ?> : </b> <?php echo get_user_role($user['role'])['role_title']; ?></p>
+        </div>
+    </div>
+
+    <div class="c-contact-wrapper">
+        <div class="container row">
+            <div class="col-sm-6">
+                <p><?php echo lang("affliate::contact-name"); ?> : <b><?php echo $info['name']; ?></b></p>
+
+                <p><?php echo lang("affliate::contact-address"); ?> : <b><?php echo $info['address']; ?></b>
+                </p>
+            </div>
+            <div class="col-sm-6">
+                <p><?php echo lang("affliate::contact-email"); ?> : <b><?php echo $info['email']; ?></b></p>
+
+                <p><?php echo lang("affliate::contact-phone"); ?> : <b><?php echo $info['phone']; ?></b></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container row">
+        <div class="col-sm-3 single-request-box">
+            <h4 class="srbt"><?php echo aff_percent(get_aff_earnings('all',$uid),false); ?></h4>
+
+            <p><span data-placement="bottom" title="<?php echo lang("affliate::total-earnings-desc"); ?>"
+                     data-toggle="tooltip"><b> <?php echo lang("affliate::total-earnings"); ?> </b></span>
+            </p>
+        </div>
+        <div class="col-sm-3 single-request-box">
+            <?php $av = aff_percent(get_aff_earnings('available',$uid),false); ?>
+            <h4 class="srbt"><?php echo $av; ?></h4>
+
+            <p><span data-placement="bottom" title="<?php echo lang("affliate::available-points-desc"); ?>"
+                     data-toggle="tooltip"
+                     class=""><b> <?php echo lang("affliate::available-points"); ?> </b></span></p>
+        </div>
+
+        <div class="col-sm-3 single-request-box">
+            <h4 class="srbt"><?php echo aff_percent(get_aff_earnings('pending',$uid),false); ?></h4>
+
+            <p>
+                            <span data-placement="bottom" title="<?php echo lang("affliate::pending-points-desc"); ?>"
+                                  data-toggle="tooltip"><b> <?php echo lang("affliate::pending-points"); ?> </b></span>
+            </p></div>
+        <div class="col-sm-3 single-request-box">
+            <h4 class="srbt"><?php echo aff_percent(get_aff_earnings('received',$uid),false); ?></h4>
+
+            <p>
+                            <span data-placement="bottom" title="<?php echo lang("affliate::recieved-points-desc"); ?>"
+                                  data-toggle="tooltip"><b> <?php echo lang("affliate::recieved-points"); ?> </b></span>
+            </p>
+        </div>
+    </div>
+</div>

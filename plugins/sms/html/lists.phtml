@@ -1,0 +1,36 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <p><?php echo lang('sms::sms-verifications') ?></p>
+        <span><?php echo lang('sms::lists-unverified') ?></span>
+    </div>
+    <div class="wrapper-content">
+        <table class="table striped bordered">
+            <thead class="active">
+            <tr>
+                <th>ID</th>
+                <th><?php echo lang('sms::full-name') ?></th>
+                <th><?php echo lang('sms::time') ?></th>
+                <th><?php echo lang('sms::actions'); ?></th>
+            </tr>
+            </thead>
+            <?php if ($lists->total): ?>
+                <tbody>
+                <?php foreach ($results = $lists->results() as $r): ?>
+                    <tr id="<?php echo $r['id']; ?>">
+                        <td><?php echo $r['id']; ?></td>
+                        <td><?php echo $r['first_name']. ' '. $r['last_name']; ?></td>
+                        <td><?php echo $r['join_date']; ?></td>
+                        <td>
+                            <a href="#" onclick="return activate_user(<?php echo $r['id']; ?>)" class="btn btn-success btn-sm"><?php echo lang('sms::activate') ?></a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+
+            <?php else: ?>
+                <div class="alert alert-info"><?php echo lang('sms::no-result') ?></div>
+            <?php endif; ?>
+        </table>
+        <?php if($lists->total > 10)echo $lists->links() ?>
+    </div>
+</div>

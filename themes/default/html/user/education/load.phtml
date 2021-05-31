@@ -1,0 +1,82 @@
+<?php if ($type == 'work'): ?>
+    <div class="workExperience">
+        <div class="clearfix">
+            <a style="    margin-right: 12px;    float: left;display: block;"> <i style="font-size: 30px;    border-radius: 50%;    overflow: hidden;    display: block;" class="la la-industry"></i></a>
+            <div style="    overflow: hidden;" class="textare">
+                <div style="display: inline-block;" class="texthd">
+                    <div style="    vertical-align: middle;    display: inline-block;">
+                        <div style="    max-width: 412px;    font-weight: 600;     font-size: 16px; line-height: 20px;    color: #385898;" class="jobtitle"><?php echo $list['company']?></div>
+                        <div style="    color: #90949c; font-size: 12px;line-height: 16px;">
+                            <?php echo $list['position']?> -
+                            <?php echo $list['start_day'].' '.$list['start_month'].' '.$list['start_year'].' '.lang('to')?>
+                            <?php if ($list['present'] == '1'): ?>
+                                <?php echo lang('present')?>
+                            <?php else: ?>
+                                <?php echo $list['end_day'].' '.$list['end_month'].' '.$list['end_year']?>
+                            <?php endif;?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="experienceActions">
+                <a data-type="work" data-id="<?php echo $list['id'] ?>" class="experienceEdit" style="margin-right: 5px" href=""><i class="la la-edit"></i></a>
+                <a data-type="work" data-id="<?php echo $list['id'] ?>" class="experienceDelete" href=""><i class="la la-trash"></i></a>
+            </div>
+        </div>
+    </div>
+<?php elseif ($type == 'college'): ?>
+    <div class="workExperience">
+        <div class="clearfix">
+            <a style="    margin-right: 12px;    float: left;display: block;"> <i style="font-size: 30px; color: #3967ff;   border-radius: 50%;    overflow: hidden;    display: block;" class="la la-graduation-cap"></i></a>
+            <div style="    overflow: hidden;" class="textare">
+                <div style="display: inline-block;" class="texthd">
+                    <div style="    vertical-align: middle;    display: inline-block;">
+                        <div style="    max-width: 412px;    font-weight: 600;     font-size: 16px; line-height: 20px;    color: #385898;" class="jobtitle"><?php echo $list['school']?></div>
+                        <div style="    color: #90949c; font-size: 12px;line-height: 16px;">
+                            <?php echo $list['concentrations']?> -
+                            <?php echo $list['start_day'].' '.$list['start_month'].' '.$list['start_year'].' '.lang('to')?>
+                            <?php if ($list['present'] == '1'): ?>
+                                <?php //echo lang('present')?>
+                            <?php else: ?>
+                            <?php endif;?>
+                            <?php echo $list['end_day'].' '.$list['end_month'].' '.$list['end_year']?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php if ($list['user_id'] == get_userid()):?>
+                <div class="experienceActions">
+                    <a data-type="work" data-id="<?php echo $list['id'] ?>" class="experienceEdit" style="margin-right: 5px" href=""><i class="la la-edit"></i></a>
+                    <a data-type="work" data-id="<?php echo $list['id'] ?>" class="experienceDelete" href=""><i class="la la-trash"></i></a>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php elseif ($type == 'high'): ?>
+    <div class="workExperience">
+        <div class="clearfix">
+            <a style="    margin-right: 12px;    float: left;display: block;"> <i style="font-size: 30px;    border-radius: 50%;    overflow: hidden;    display: block;    color: #3967ff;" class="la la-university"></i></a>
+            <div style="    overflow: hidden;" class="textare">
+                <div style="display: inline-block;" class="texthd">
+                    <div style="    vertical-align: middle;    display: inline-block;">
+                        <div style="    max-width: 412px;    font-weight: 600;     font-size: 16px; line-height: 20px;    color: #385898;" class="jobtitle"><?php echo $list['school']?></div>
+                        <div style="    color: #90949c; font-size: 12px;line-height: 16px;">
+                            <?php echo $list['start_day'].' '.$list['start_month'].' '.$list['start_year'].' '.lang('to')?>
+                            <?php if ($list['present'] == '1'): ?>
+                                <?php //echo lang('present')?>
+                            <?php else: ?>
+                            <?php endif;?>
+                            <?php echo $list['end_day'].' '.$list['end_month'].' '.$list['end_year']?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php if ($list['user_id'] == get_userid()):?>
+                <div class="experienceActions">
+                    <a data-type="work" data-id="<?php echo $list['id'] ?>" class="experienceEdit" style="margin-right: 5px" href=""><i class="la la-edit"></i></a>
+                    <a data-type="work" data-id="<?php echo $list['id'] ?>" class="experienceDelete" href=""><i class="la la-trash"></i></a>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>

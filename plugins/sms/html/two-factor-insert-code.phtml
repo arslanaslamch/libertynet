@@ -1,0 +1,31 @@
+<div class="panel-container login">
+    <div class="pane-title">
+        <?php $logo = config('site-logo');
+        $logo_url = !$logo ? img('images/logo.png') : url_img($logo); ?>
+        <img class="logo" src="<?php echo $logo_url ?>"/>
+    </div>
+    <div class="title">
+        <?php echo lang('sms::two-authentication-split'); ?>
+        <p><small><?php echo lang('sms::an-sms-was-sent-to-your-phone'); ?></small></p>
+    </div>
+    <div class="card-block">
+        <?php /*echo session_get('tfa_code'); */?>
+        <?php if($message): ?>
+            <div class="alert alert-info">
+                <?php echo $message ?>
+            </div>
+        <?php endif ?>
+        <form action="<?php echo url_to_pager('sms-two-auth') ?>" method="post">
+            <?php CSRFProtection::embed() ?>
+            <fieldset class="form-group">
+                <input type="text" class="form-control form-control-lg" name="val[code]" placeholder="<?php echo lang('sms::enter-6-code'); ?>">
+            </fieldset>
+            <button class="btn-submit btn-block "><?php echo lang('sms::verify') ?></button>
+        </form>
+        <div class="divider"></div>
+        <hr/>
+        <p><?php echo lang('sms::cant-recieve-sms') ?><a ajax="true" href="<?php echo url_to_pager('sms-two-auth-backup') ?>"
+              class="" style=""><?php echo lang('sms::enter-backup-code') ?>
+            </a></p>
+    </div>
+</div>

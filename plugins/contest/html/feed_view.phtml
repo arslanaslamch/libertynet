@@ -1,0 +1,15 @@
+<div class="feed-wrapper clearfix">
+    <div class="col-sm-12 clearfix">
+        <div class="col-sm-6">
+            <p><strong><a href="<?php echo contestUrl($contest); ?>"> <?php echo $contest['name'] ?></a></strong></p>
+            <p><?php echo str_limit($contest['description'], 200); ?></p>
+
+            <a href="<?php echo contestUrl($contest); ?>">
+                <img class="img-responsive" src="<?php echo get_contest_image($contest); ?>" alt="contest Image  "/>
+            </a>
+        </div>
+        <div class="col-sm-6">
+
+        </div>
+    </div>
+</div>

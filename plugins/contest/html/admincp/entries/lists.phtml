@@ -1,0 +1,53 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("contest::manage-entries").' - <em>'.$contest['name'].'</em>' ?>
+    </div>
+    <div class="wrapper-content">
+        <form action="" method="get" style="margin: 20px 0">
+            <?php CSRFProtection::embed() ?>
+            <input autocomplete="off" type="text" class="form-control" name="term" value="<?php echo input('term'); ?>" placeholder="<?php echo lang('contest::search-entries') ?>"/>
+
+            <button class="btn btn-sm btn-secondary" style="margin-top: 10px"><?php echo lang('search') ?></button>
+        </form>
+        <div class="wrapper-content">
+            <a href="<?php echo url_to_pager("admincp-contests-entries-manage").'?id='.input('id').'&sort=highest-votes' ?>" class="filter-link ">Sort By Highest Votes</a>
+            <a href="<?php echo url_to_pager("admincp-contests-entries-manage").'?id='.input('id').'&sort=most-views' ?>" class="filter-link ">Sort By Highest Views</a>
+        </div>
+        <div class="list-table-container">
+            <div class="table-responsive">
+                <table class="table table-striped list-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th><?php echo lang('title') ?></th>
+                        <th><?php echo lang('contest::By') ?></th>
+                        <th><?php echo lang('contest::contest-type') ?></th>
+                        <th><?php echo lang('contest::votes') ?></th>
+                        <th><?php echo lang('contest::views') ?></th>
+                        <th><?php echo lang('actions') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach($entries->results() as $entry): ?>
+                    <?php $user = find_user($entry['user_id']); ?>
+                        <tr class="item" id="<?php echo $contest['id'] ?>">
+                            <td><?php echo $entry['id'] ?></td>
+                            <td><?php echo $entry['title'] ?></td>
+                            <td><a href="<?php echo profile_url(null,$user); ?>"> <img src="<?php echo get_avatar(200,$user) ?>" style="height: 50px;width: 50px; border-radius: 100%" title="<?php echo get_user_name($user) ?>" /></a></td>
+                            <td><b><?php echo lang("contest::".$contest['type']) ?></b></td>
+                            <td><b><?php echo contestEntryVoteCount($entry['ref_name'],$entry['id']) ?></b></td>
+                            <td><b><?php echo $entry['views']; ?></b></td>
+
+                            <td>
+                                <a style="color : #fff;text-decoration: none" class="btn btn-sm btn-secondary" href="<?php echo getEntryContestUrl($contest,$entry) ?>"><i class="ion-eye"></i> <?php echo lang("view"); ?></a>
+                                <a style="color : #fff;text-decoration: none" class="admin-confirm btn btn-sm btn-danger" href="<?php echo url_to_pager("admincp-contests-entries-manage").'?id='.$contest['id'].'&eid='.$entry['id'].'&action=delete';?>"><i class="ion-android-delete"></i> <?php echo lang("contest::delete-entry"); ?></a>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <?php echo $entries->links() ?>
+    </div>
+</div>

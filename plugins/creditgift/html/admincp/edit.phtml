@@ -1,0 +1,33 @@
+<div class="wrapper">
+	<div class="wrapper-title">
+		<a ajax="true" href="<?php echo url_to_pager('admincp-creditgift-rank') ?>">
+			<h4><?php echo lang('contest::manage-rank') ?></h4>
+		</a>
+	</div>
+	<div class="wrapper-content">
+		<form enctype="multipart/form-data" class="wrapper-form" action="" method="post">
+			<?php CSRFProtection::embed() ?>
+			<?php foreach($edits as $edit): ?>
+				<div>
+					<label><?php echo lang('creditgift::rank') ?>:</label>
+					<input id="inputsm" class="form-control" type="text" name="val[rank]" value="<?php echo $edit['rank']; ?>" required="">
+				</div>
+				<div>
+					<label><?php echo lang('creditgift::credit') ?>:</label>
+					<input id="inputsm" class="form-control input-sm" type="number" name="val[credit]" value="<?php echo $edit['credit']; ?>" required="">
+				</div>
+				<div>
+					<label><?php echo lang('creditgift::rank-image') ?>:</label>
+					<input id="inputsm" class="form-control input-sm" type="file" name="rank_image">
+					<input type="hidden" name="val[rank_image]" value="<?php echo $edit['rank_image']; ?>">
+				</div>
+				<div>
+					<label><?php echo lang('creditgift::description') ?>:</label>
+					<input id="inputsm" class="form-control input-sm" type="text" name="val[description]" value="<?php echo $edit['description']; ?>" required="">
+				</div>
+				<br/>
+			<?php endforeach; ?>
+			<button class="btn btn-info" style="margin-top: 20px"><?php echo lang("edit") ?></button>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,73 @@
+<?php if (!isset($single)): ?>
+    <?php
+    $fe = unix_aff_time($from, $end);
+    $f = $fe['f'];
+    $e = $fe['e'];
+    $status = isset($status) ? $status : 'any';
+    $admin = ($admin == 'yes' && is_admin()) ? 'admin' : 'mine';
+    $row = get_aff_requests($admin, $status, $f, $e);
+    ?>
+    <?php if ($row->total):
+        foreach ($row->results() as $r):
+            $user = find_user($r['user_id']);
+            ?>
+            <tr id="request-<?php echo $r['id'] ?>">
+                <td><?php echo date('d - m - Y', $r['request_time']); ?></td>
+                <?php if($admin == 'admin'): ?>
+                    <td><a ajax="true" href="<?php echo profile_url(null,$user); ?>">
+                            <img src="<?php echo get_avatar(200,$user); ?>" class="img img-responsive round-aff" />
+                        </a>
+                    </td>
+                <?php endif; ?>
+                <td><?php echo aff_percent($r['amount'], false) . config('default-currency');; ?></td>
+                <td><?php echo $r['points'];; ?></td>
+
+                <td><?php echo $r['request_message']; ?></td>
+                <td id="response-time-<?php echo $r['id']; ?>"><?php echo ($r['response_time']) ? date('d - m - Y', $r['response_time']) : ''; ?></td>
+                <td id="reason-<?php echo $r['id']; ?>"><?php echo $r['response_message']; ?></td>
+                <td id="stat-<?php echo $r['id']; ?>"><?php echo get_aff_commission_status($r['status'], 'request'); ?></td>
+                <td id="contain-<?php echo $r['id']; ?>">
+                    <?php if ($r['status'] == 1): ?>
+                        <?php if ($admin == 'mine'): ?>
+                            <a href="" id="cancel-request"
+                               data-id="<?php echo $r['id'] ?>"><?php echo lang("affliate::cancel-request"); ?></a>
+                        <?php else: ?>
+                            <!-- btn for admin to work with-->
+                            <a data-id="<?php echo $r['id']; ?>" data-method="app"
+                               class="earn-action btn-sm btn btn-success"
+                               href=""><?php echo lang("affliate::respond"); ?></a>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        N/A
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach;  endif; ?>
+
+    <?php if (!$row->total): ?>
+        <tr id="empty-row-request">
+            <td colspan="9"><?php echo lang("affliate::no-record-found"); ?></td>
+        </tr>
+    <?php endif; ?>
+
+<?php else: ?>
+    <!--This is ajax single view -->
+    <?php $r = get_single_aff_request($single); //single is the id; ?>
+    <tr id="request-<?php echo $r['id'] ?>">
+        <td><?php echo date('d - m - Y', $r['request_time']); ?></td>
+        <td><?php echo aff_percent($r['amount'], false) . config('default-currency');; ?></td>
+        <td><?php echo $r['points'];; ?></td>
+        <td><?php echo $r['request_message']; ?></td>
+        <td><?php echo ($r['response_time']) ? date('d - m - Y', $r['response_time']) : ''; ?></td>
+        <td><?php echo $r['response_message']; ?></td>
+        <td><?php echo get_aff_commission_status($r['status']); ?></td>
+        <td>
+            <?php if ($r['status'] == 1): ?>
+                <a href="" id="cancel-request"
+                   data-id="<?php echo $r['id'] ?>"><?php echo lang("affliate::cancel-request"); ?></a>
+            <?php else: ?>
+                N/A
+            <?php endif; ?>
+        </td>
+    </tr>
+<?php endif; ?>

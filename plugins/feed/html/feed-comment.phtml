@@ -1,0 +1,23 @@
+<?php if(plugin_loaded('comment') && $feed['hide_comment'] != '1'): ?>
+<?php $avatar = $feed['editor']['avatar']; $entityId = $feed['editor']['id']; $entityType = $feed['editor']['type']; $countComments = count_comments('feed', $feed['feed_id']); ?>
+    <div class="feed-comment-container" id="feed-comment-container-<?php echo $feed['feed_id'] ?>">
+        <?php if($countComments > config('feed-comment-limit', 3)): ?>
+            <a id="comment-view-more-button-feed-<?php echo $feed['feed_id'] ?>" class="comment-view-more-button comment-view-more-button-feed-<?php echo $feed['feed_id'] ?>" onclick="return show_more_comment('feed', '<?php echo $feed['feed_id'] ?>', 'comment-view-more-indicator-<?php echo $feed['feed_id'] ?>')" href=""><?php echo lang('view-previous-comments') ?></a>
+            <img class="comment-view-more-indicator" id="comment-view-more-indicator-<?php echo $feed['feed_id'] ?>" src="<?php echo img('images/loading.gif') ?>"/>
+        <?php endif ?>
+        <div data-offset="<?php echo config('feed-comment-limit', 3) ?>" data-limit="<?php echo config('feed-comment-limit', 3) ?>" class="comment-lists comment-lists-feed-<?php echo $feed['feed_id'] ?>" id="">
+            <?php foreach(get_comments('feed', $feed['feed_id'], config('feed-comment-limit', 3), 0, $feed) as $comment): ?>
+                <?php echo view('comment::display', array('comment' => $comment)) ?>
+            <?php endforeach; ?>
+        </div>
+        <?php
+        echo view('comment::editor', array(
+            'typeId' => $feed['feed_id'],
+            'type' => 'feed',
+            'entityId' => $entityId,
+            'entityType' => $entityType,
+            'avatar' => $avatar,
+            'textLimit' => (config('enable-feed-text-limit', false)) ? config('maximum-feed-text-limit', 150) : false))
+        ?>
+    </div>
+<?php endif ?>

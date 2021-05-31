@@ -1,0 +1,436 @@
+@import url(https://fonts.googleapis.com/css?family=Share+Tech+Mono);
+
+.mediachat#mediachat-call-container {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .9);
+    text-align: center;
+    z-index: 9999;
+    /*display: none;*/
+}
+
+.mediachat #mediachat-call {
+    position: relative;
+    background-color: #000000;
+    box-shadow: 0px 0px 16px 0px #000;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.mediachat .id {
+    width: 100px;
+    height: 75px;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+}
+
+.mediachat #mediachat-remote {
+    background: #2980B9;
+    width: 100%;
+    height: 100%;;
+}
+
+.mediachat #mediachat-remote-video,
+.mediachat #mediachat-remote-avatar {
+    display: none;
+}
+
+.mediachat #mediachat-local {
+    position: absolute;
+    bottom: 47px;
+    right: 8px;
+    width: 150px;
+    height: 112.5px;
+    background-color: #000;
+    display: none;
+}
+
+.mediachat#mediachat-call-container .media {
+    width: 100%;
+    height: 100%;
+    margin-top: 0px;
+}
+
+.mediachat#mediachat-call-container .avatar {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 200px;
+    background-position: center;
+    background-size: cover;
+    border: solid 2px #FFF;
+}
+
+.mediachat .media video {
+    width: 100%;
+    max-height: 100%;
+    border: none;
+}
+
+.mediachat#mediachat-call-container .controls-container {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    text-align: center;
+}
+
+body[data-type="voice"] .mediachat#mediachat-call-container .controls .control#mediachat-toggle-video {
+    display: none;
+}
+
+.mediachat #mediachat-remote-info-container {
+    position: absolute;
+    bottom: -40px;
+    width: 100%;
+    text-align: center;
+}
+
+.mediachat .info {
+    padding: 0px 4px;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.mediachat #mediachat-time-container {
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    text-align: center;
+    z-index: 999999;
+    margin-bottom: 10px
+}
+
+.mediachat .time {
+    padding: 0px 4px;
+    color: #FFFFFF;
+}
+
+@media (max-width: 600px) {
+    #mediachat-local {
+        display: none;
+    }
+}
+
+@media (max-height: 460px) {
+
+}
+
+.mediachat-call-button[data-disabled="1"] {
+    cursor: not-allowed;
+}
+
+.mediachat-call-button[data-disabled="1"]:hover {
+    background: inherit;
+    cursor: not-allowed;
+}
+
+.mediachat-call-button[data-disabled="1"] i {
+    color: #C0C0C0;
+}
+
+#mediachat-modal .modal-header {
+    padding: 15px !important;
+    background-color: rgba(0, 0, 0, .1);
+}
+
+#mediachat-modal .modal-body {
+    min-height: 400px;
+}
+
+.ph-15 {
+    padding: 0px 15px;
+}
+
+.mediachat-form input,
+.mediachat-form select {
+    width: max-content;
+    width: -moz-max-content;
+    width: -o-max-content;
+    width: -webkit-max-content;
+
+}
+
+.mediachat-form .submit {
+    text-align: center;
+}
+
+.mediachat-form input[type="submit"] {
+    margin: 30px 0px;
+    display: inline-block;
+}
+
+[data-server-type="stun"] .server-type-twilio:not(.server-type-stun),
+[data-server-type="stun"] .server-type-xirsys:not(.server-type-stun),
+[data-server-type="stun"] .server-type-turn:not(.server-type-stun),
+[data-server-type="turn"] .server-type-twilio:not(.server-type-turn),
+[data-server-type="turn"] .server-type-xirsys:not(.server-type-turn),
+[data-server-type="turn"] .server-type-stun:not(.server-type-turn),
+[data-server-type="twilio"] .server-type-stun:not(.server-type-twilio),
+[data-server-type="twilio"] .server-type-turn:not(.server-type-twilio),
+[data-server-type="twilio"] .server-type-xirsys:not(.server-type-twilio),
+[data-server-type="xirsys"] .server-type-stun:not(.server-type-xirsys),
+[data-server-type="xirsys"] .server-type-turn:not(.server-type-xirsys),
+[data-server-type="xirsys"] .server-type-twilio:not(.server-type-xirsys) {
+    display: none;
+}
+
+div.ajax-form-loading,
+div.mediachat-modal-ajax-loading {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.56);
+    display: none;
+    z-index: 9;
+}
+
+div.ajax-form-loading:before,
+div.mediachat-modal-ajax-loading:before {
+    font-family: 'Ionicons', serif;
+    content: "\f29c";
+    position: absolute;
+    font-size: 60px;
+    left: calc(50% - 30px);
+    top: calc(50% - 30px);
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* controls */
+.mediachat#mediachat-call-container .controls {
+    display: inline-flex;
+    justify-items: center;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+}
+
+.mediachat #mediachat-end {
+    color: #eee !important;
+    background-color: red !important;
+    margin-bottom: 1rem !important;
+}
+
+.mediachat #mediachat-end:hover {
+    background-color: darkred !important;
+    color: white !important;
+}
+
+.mediachat#mediachat-call-container #mediachat-controls-container.controls-container {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.mediachat#mediachat-call-container .controls .control,
+.control#mediachat-end {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px !important;
+    padding: 4px 16px;
+    width: 3rem;
+    height: 3rem;
+    font-size: 16px;
+    color: #CCCCCC;
+    margin: 0 1rem;
+    background-color: rgba(50, 50, 50, 0.5);
+}
+
+@media (min-width: 992px) {
+
+    .mediachat#mediachat-call-container .controls .control,
+    .control#mediachat-end {
+        font-size: 1.5rem;
+    }
+}
+
+.mediachat#mediachat-call-container .controls .control.active,
+.mediachat#mediachat-call-container .controls .control:hover,
+#mediachat-end.control.active,
+.control#mediachat-end:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.control.ion-android-call#mediachat-end {
+    transform: rotate(135deg);
+}
+
+#mediachat-centered-avatar {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes ping {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    75%,
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+#mediachat-centered-avatar span {
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 9999px;
+    z-index: 20;
+}
+
+#mediachat-centered-avatar img {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 9999px;
+    object-position: center;
+    object-fit: cover;
+    position: relative;
+    z-index: 90;
+}
+
+/* receive */
+.mediachat#mediachat-receive-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, .75);
+}
+
+#mediachat-receive-container #mediachat-receive {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    max-width: 20rem;
+    width: 100%;
+    padding: 2rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, .1), 0 10px 10px -5px rgba(0, 0, 0, .04);
+    border-radius: .5rem;
+}
+
+#mediachat-receive>:not(template)~:not(template) {
+    --space-y-reverse: 0;
+    margin-top: calc(4rem * calc(1 - var(--space-y-reverse)));
+    margin-bottom: calc(4rem * var(--space-y-reverse))
+}
+
+h1.instruction#mediachat-receiver-instruction {
+    color: #4a5568;
+    font-size: .875rem;
+    font-weight: 700;
+}
+
+#mediachat-receive-container #mediachat-caller-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#mediachat-receive-container #mediachat-caller-info>img {
+    position: relative;
+    width: 8rem;
+    height: 8rem;
+    object-position: center;
+    object-fit: cover;
+    border-radius: 9999px;
+}
+
+#mediachat-receive-container #mediachat-caller-info>span {
+    animation: ping 1s cubic-bezier(0, 0, .2, 1) infinite;
+    position: absolute;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 9999px;
+    background-color: #a0aec0;
+}
+
+#mediachat-receive-container #mediachat-caller-name {
+    font-size: 1rem;
+    color: #4a5568;
+    font-weight: 700;
+}
+
+#mediachat-receive-container #mediachat-receive-actions {
+    display: flex;
+}
+
+#mediachat-receive-actions>:not(template)~:not(template){
+    --space-x-reverse: 0;
+    margin-right: calc(4rem * var(--space-x-reverse));
+    margin-left: calc(4rem * calc(1 - var(--space-x-reverse)));
+}
+
+#mediachat-receive-container #mediachat-receive-actions>a {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    display: block;
+    color: #fff;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    font-size: 1.5rem;
+}
+#mediachat-receive-container #mediachat-receive-actions>a>svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+
+#mediachat-receive-container #mediachat-receive-actions>a#mediachat-receive-button {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+#mediachat-receive-container #mediachat-receive-actions>a#mediachat-receive-button:hover {
+    background-color: #289745;
+    border-color: #289745;
+}
+
+#mediachat-receive-container #mediachat-receive-actions>a#mediachat-drop-button {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+#mediachat-receive-container #mediachat-receive-actions>a#mediachat-drop-button:hover {
+    background-color: #bc3545;
+    border-color: #bc3545;
+}

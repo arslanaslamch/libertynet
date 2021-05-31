@@ -1,0 +1,56 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("birthday::birthday-email-template"); ?><br/>
+        <small><?php echo lang("birthday::birthday-email-template-desc") ?></small>
+    </div>
+    <div class="wrapper-content">
+        <div class="birthday-form-wrapper">
+            <?php if($saved): ?>
+                <div class="alert alert-success alert-dismissable">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <?php echo $saved ?>
+                </div>
+            <?php endif; ?>
+            <form class="form" action="" method="post" enctype="multipart/form-data">
+                <fieldset>
+                    <label><b><?php echo lang("birthday::email-subject") ?></b></label>
+                    <input class="form-control"
+                              name="val[subject]"
+                           value="<?php echo $template['subject']; ?>"
+                              placeholder=""/>
+                </fieldset><br/><br/>
+
+                <fieldset>
+                    <label><b>Email Content</b></label>
+                    <textarea class="form-control wish-content"
+                              name="val[content]"
+                              placeholder="<?php echo lang("birthday::write-something-here") ?>"><?php echo $template['content']; ?></textarea>
+                </fieldset>
+                <br/>
+                <br/>
+                <fieldset>
+                    <label class="control-label"><?php echo lang('birthday::attach-image'); ?></label>
+                    <?php if($template['image']): ?>
+                        <br/>
+                        <img src="<?php echo url_img($template['image']) ?>" alt="image" style="height: 50px;width : 50px" />
+                        <br/>
+                        <br/>
+                    <?php endif; ?>
+                    <input type="file" name="image" class="form-control" accept="image/*"/>
+                    <input type="hidden" name="val[image]" value="<?php echo $template['image']; ?>" />
+                </fieldset>
+
+                <br/>
+
+                <button class="btn btn-info btn-sm"><?php echo lang("birthday::save-template") ?></button>
+                <br/>
+                <br/>
+                <h6><?php echo "Placeholders"; ?></h6>
+                <p><b>[first_name]</b> : Birthday Celebrant First Name </p>
+                <p><b>[last_name]</b> : Birthday Celebrant Last Name </p>
+                <p><b>[username]</b> : Birthday Celebrant Username </p>
+                <p><b>[img]</b> : Image you attached, If any </p>
+            </form>
+        </div>
+    </div>
+</div>

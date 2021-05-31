@@ -1,0 +1,19 @@
+<?php
+$members = get_online_members();
+$i = 0;
+
+if($members): ?>
+    <?php foreach($members as $m):
+        //echo $m;
+        if($i == $limit) break;
+        $user = find_user($m);
+        ?>
+        <div style="float: left" class="each-online">
+            <a data-toggle="tooltip" title="<?php echo get_user_name($user); ?>" ajax="true" href="<?php echo profile_url(null,$user) ?>">
+                <img src="<?php echo get_avatar(200,$user);  ?>"/>
+            </a>
+        </div>
+        <?php $i++; endforeach; ?>
+<?php else: ?>
+    <div class="alert alert-info"><?php echo lang('whos_online:no-member-is-online'); ?></div>
+<?php endif; ?>

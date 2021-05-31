@@ -1,0 +1,140 @@
+<div class="box" id="board">
+    <div class="title"><?php echo lang("store::account-details") ?></div>
+    <div class="box-content">
+        <div class="container row">
+
+            <div class="col-sm-12">
+                <?php
+                $store = getCurrentUserStore();
+                $store_id = $store['s_id'];
+              // print_r($store);
+                ?>
+                <div class="col-sm-4 each-board green">
+                    <span class="board-title"><?php echo lang("store::store-total-products") ?></span><br/>
+                    <span class="board-content"><?php echo countStoreTotalProducts($store_id) ?></span>
+                </div>
+                <div class="col-sm-4 each-board purple">
+                    <span><?php echo lang("store::available-balance") ?></span><br/>
+                    <span
+                        class="board-content"><?php echo config('currency-sign', '$') . number_format((float)getUserAvailableBalance(),'2','.',','); ?></span>
+                </div>
+                <div class="col-sm-4 each-board red">
+                    <span><?php echo lang("store::total-sales") ?></span><br/>
+                    <span class="board-content"><?php echo countStoreTotalSales($store_id); ?></span>
+                </div>
+
+            </div>
+            <div class="col-sm-12">
+
+                <div class="global-filter-container" style="padding-top: 10px;padding: 0" data-url="<?php echo url_to_pager('store-transactions') ?>">
+                    <h4 class="sale-summ-header"><?php echo lang("store::sales-summary") ?>
+                       <!-- <?php /*if (getUserAvailableBalance() > config('minimum-withdrawal-limit', 50)): */?>
+                            <small><a ajax="true" href="<?php /*echo url_to_pager("store-transactions-withdraw"); */?>"
+                                      style="float: right"><?php /*echo lang("store::request-widthrawal") */?></a></small>
+                        --><?php /*endif; */?>
+                    </h4>
+                    <div class="  filter-pane">
+                        <select id="video-category-list" onchange="return run_global_filter()" data-name="month"
+                                class="c-select filter-input">
+                            <option value=""><?php echo lang('month') ?></option>
+                            <?php foreach (config('months') as $m => $value): ?>
+                                <option <?php echo (input('month') == $m) ? "selected" : null ?>
+                                    value="<?php echo $m ?>"><?php echo $value ?></option>
+                            <?php endforeach ?>
+
+                        </select>
+
+                        <select id="video-filter-select" onchange="return run_global_filter()" data-name="year"
+                                class="c-select filter-input">
+                            <option value=""><?php echo lang('year') ?></option>
+                            <?php
+                            $currentYear = 2016;
+                            ?>
+                            <?php for ($i = $currentYear; $i <= $currentYear + 5; $i++): ?>
+                                <option <?php echo (input('year') == $i) ? "selected" : null ?>
+                                    value="<?php echo $i ?>"><?php echo $i ?></option>
+                            <?php endfor ?>
+                        </select>
+
+                    </div>
+                </div>
+                <table class="table storeTable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><?php echo lang("store::product-name"); ?></th>
+                        <th><?php echo lang("store::quantity"); ?></th>
+                        <th><?php echo lang("store::price"); ?></th>
+                        <th><?php echo lang("store::total") ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    $order = getStoreOrders(10, 's');
+                    $shipping_price = 0;
+                    $unique_orders = array();
+                    $i = 1;
+                    $total = array(0);
+                    if ($order->total):
+                        foreach ($order->results() as $o):
+                            $product = getSingleProduct($o['product_id']);
+                            $product_price = $o['price'];
+                            $sub_total = $o['sub_total'];
+                            ?>
+                            <tr>
+                                <td><?php echo $i; ?></td>
+                                <td><?php echo $product['name']; ?></td>
+                                <td><?php echo $o['quantity']; ?></td>
+                                <td><?php echo formatPriceNumber($o['price']); ?></td>
+                                <td><?php echo formatPriceNumber($sub_total); ?></td>
+                                <?php
+                                $total[] = $sub_total;
+
+                                //shipping
+                                if(!in_array($o['order_id'],$unique_orders)){
+                                    $shipping_price += $o['shipping_price'];
+                                    $unique_orders[] = $o['order_id'];
+                                }
+                                ?>
+                            </tr>
+                            <?php $i++; endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="6">
+                                <div class="alert alert-info"><?php echo lang("store::empty-sales") ?></div>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><?php echo lang('store::shipping'); ?></td>
+                        <td><?php
+                            $total[] = $shipping_price;
+                            echo formatPriceNumber($shipping_price);
+                            ?></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                        <td><span style="float: right;font-size: 16px"><?php echo ucfirst(lang("store::total")); ?></span></td>
+                        <td>
+                            <span
+                                style="font-weight: bold;font-size: 16px"><?php echo formatPriceNumber(array_sum($total)); ?></span>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+                <div class="box-content">
+                    <?php echo  $order->links() ?>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

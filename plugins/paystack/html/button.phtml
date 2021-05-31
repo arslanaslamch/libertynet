@@ -1,0 +1,61 @@
+<style>
+    .paystack-button {
+
+        background-color: #FFFFFF;
+        height: 35px;
+        vertical-align: baseline;
+        width: 150px;
+        border: none;
+        border-radius: 4px;
+        box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, .5) inset;
+        color: #1f3652;
+        /*background-image: url(<?php echo img('paystack::images/paystack.png', 200)?>); */
+    }
+</style>
+<form >
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <button class="paystack-button" type="button" onclick="payWithPaystack()"> Checkout with PayStack </button>
+</form>
+
+<script>
+    function payWithPaystack(){
+        let type = encodeURI('<?php echo $data['type']?>');
+        let id = encodeURI('<?php echo $data['id']?>');
+        let return_url  = encodeURI('<?php echo $data['return_url']?>');
+        let cancel_url = encodeURI('<?php echo $data['cancel_url']?>');
+        let handler = PaystackPop.setup({
+            key: '<?php echo $data['key'] ?>',
+            email: '<?php echo get_user_data('email_address') ?>',
+            amount: '<?php echo $data['price']?>',
+            currency: "NGN",
+            ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+            firstname: '<?php echo get_user_data('first_name') ?>',
+            lastname: '<?php echo get_user_data('last_name') ?>',
+            // label: "Optional string that replaces customer email"
+            metadata: {
+                custom_fields: [
+                    {
+                        display_name: "<?php echo $data['name']?>",
+                        variable_name: "<?php echo $data['description']?>",
+                        value: "<?php echo $data['id'] ?>"
+                    }
+                ]
+            },
+            callback: function(response){
+                //alert('success. transaction ref is ' + response.reference);
+                let res = JSON.stringify(response);
+                $.ajax({
+                    url: baseUrl + 'paystack/success/callback?response=' + res +'&type='+ type + '&id='+ id + '&return='+ return_url + '&cancel='+ cancel_url,
+                    success: function (data) {
+                        let resp = JSON.parse(data);
+                        loadPage(resp.redirect);
+                    }
+                });
+            },
+            onClose: function(){
+                alert('window closed');
+            }
+        });
+        handler.openIframe();
+    }
+</script>

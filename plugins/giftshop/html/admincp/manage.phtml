@@ -1,0 +1,105 @@
+<div class="wrapper">
+	<div class="wrapper-title"><?php echo lang('giftshop::gift-shop') ?>
+		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addGift"><?php echo lang('giftshop::add-gift') ?></button>
+	</div>
+	<div class="wrapper-content">
+		<div class="list-table-container">
+			<div class="row list-table-select-actions hide" data-group="users">
+				<div class="col-sm-12">
+					<a href="<?php echo url_to_pager('admin-giftshop-batch-action') ?>?action=delete_game"
+					   class="action-link list-table-select-action" data-group="users"><?php echo lang('delete') ?></a>
+					<?php fire_hook('admin.user.list.actions'); ?>
+				</div>
+			</div>
+			<div class="table-responsive">
+				<table class="table table-striped list-table">
+					<thead>
+					<tr>
+						<th>
+							<div class="list-table-select" data-group="users"
+							     data-id="0"></div>
+						</th>
+						<th><?php echo lang('giftshop::id') ?></th>
+						<th><?php echo lang('giftshop::name') ?></th>
+						<th><?php echo lang('giftshop::category') ?></th>
+						<th><?php echo lang('giftshop::price') ?></th>
+						<th><?php echo lang('giftshop::description') ?></th>
+						<th><?php echo lang('giftshop::option') ?></th>
+					</tr>
+					<?php foreach($gifts as $gift): ?>
+						<tr>
+							<td>
+								<div class="list-table-select" data-group="users"
+								     data-id="<?php echo $gift['id']; ?>"></div>
+							</td>
+							<td><?php echo $gift['id']; ?></td>
+							<td><?php echo $gift['name']; ?></td>
+							<td><?php echo $gift['category']; ?></td>
+							<td><?php echo $gift['price']; ?></td>
+							<td><?php echo $gift['description']; ?></td>
+
+							<td>
+								<div class="dropdown actions">
+									<a href="#" data-toggle="dropdown">
+										<i class="ion-android-settings"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right">
+										<a ajax="true" class="ion-edit" href='<?php echo url_to_pager('admincp-giftshop-gift-edit') ?>?action=edit&id=<?php echo $gift['id'] ?>'></a>
+										<a ajax="true" class="admin-confirm ion-android-delete" href="<?php echo url_to_pager('admincp-giftshop-gift-edit') ?>?action=delete&id=<?php echo $gift['id'] ?>"></a>
+									</div>
+								</div>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
+<div id="addGift" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<form enctype="multipart/form-data" action="" method="post" class="form-control"
+			">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo lang('giftshop::add-new-gift') ?></h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+
+			</div>
+			<div>
+				<label><?php echo lang('giftshop::name') ?>:</label>
+				<input id="inputsm" class="form-control" type="text" name="val[name]" required="">
+			</div>
+			<div>
+				<label><?php echo lang('giftshop::category') ?>:</label><br/>
+				<select class="c-select" name="val[category]" required="required">
+					<?php foreach($cats as $cat): ?>
+						<option value="<?php echo $cat['category'] ?>"><?php echo $cat['category'] ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<div>
+				<label><?php echo lang('giftshop::price') ?>:</label>
+				<input id="inputsm" class="form-control input-sm" type="number" name="val[price]" required="">
+			</div>
+			<div>
+				<label><?php echo lang('giftshop::image') ?>:</label>
+				<input id="inputsm" class="form-control input-sm" type="file" name="image" required/>
+			</div>
+			<div>
+				<label><?php echo lang('giftshop::description') ?>:</label>
+				<input id="inputsm" class="form-control input-sm" type="text" name="val[description]" required="">
+			</div>
+			<br/>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-success"><?php echo lang('add') ?></button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo lang('close') ?></button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>

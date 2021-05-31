@@ -1,0 +1,107 @@
+<div class="box" id="withdrawn">
+    <div class="title">
+        <?php echo lang("store::withdrawal-details") ?>
+<!--        --><?php /*echo lang("store::available-for-withdraw").' '.'<strong>'. config('currency-sign','$').number_format(getUserAvailableBalance()).'</strong>'; */?>
+    </div>
+    <?php
+    $store = getCurrentUserStore();
+    $store_id = $store['s_id'];
+  // print_r($store); die();
+    ?>
+    <div class="box-content">
+        <div class="container row">
+            <div class="col-sm-12">
+                <?php if($message): ?>
+                    <div class="alert alert-<?php echo ($type == 'error') ? 'danger' : 'success'  ?>"><?php  echo $message?></div>
+                <?php endif; ?>
+            <div class="col-sm-6">
+
+               <!-- <form action="" method="post">
+                    <?php /*CSRFProtection::embed()*/?>
+                   <div class="widthGroup" style="display: none" data-type="hide">
+                    <div class="form-group">
+                            <br/>
+                            <input type="text" name="val[amount]" id="Amount" class="form-control" style="max-width: 100px" placeholder="<?php /*echo config('currency-sign','$').' 50.00' */?> "/>
+                    </div>
+                    <span class="payment-method"><?php /*echo lang("store::payment-method") */?></span><br/><br/>
+                    <div class="form-group">
+
+                        <div class="form-group" style="display: block">
+                            <label class="c-input c-radio">
+                                <input class="paymentType" id="radioStacked1" checked name="val[type]" value="type" type="radio">
+                                <span class="c-indicator"></span>
+                            </label>
+                            <span><?php /*echo ucfirst(lang("store::paypal")); */?></span>
+                        </div>
+                        <div class="form-group" style="display: block">
+                            <label class="c-input c-radio">
+                                <input class="paymentType" id="radioStacked1" checked name="val[type]" value="type" type="radio">
+                                <span class="c-indicator"></span>
+                            </label>
+                            <span><?php /*echo ucfirst(lang("store::bank-transfer")); */?></span>
+                        </div>
+                        <div class="form-group" style="display: block">
+                            <label class="c-input c-radio">
+                                <input class="paymentType" id="radioStacked1" checked name="val[type]" value="type" type="radio">
+                                <span class="c-indicator"></span>
+                            </label>
+                            <span><?php /*echo ucfirst(lang("store::others")); */?></span>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <br/>
+                        <button id="submitRequest" class="btn btn-info"><?php /*echo lang("store::submit-request");*/?></button>
+                    </div>
+                   </div>
+                </form>-->
+            </div>
+            <div class="col-sm-6">
+                <h4 class="acct-bal"><?php echo lang("store::your-account-balance") ?></h4>
+
+                <p><strong><?php echo lang("store::current-balance") ?></strong> : <span class="account-bal"> <?php echo config('currency-sign','$').number_format((float)getUserAvailableBalance(),'2','.',','); ?></span></p>
+                <p><strong><?php echo lang("store::last-withdrawn-date") ?></strong> : <span class="account-bal"><?php echo ($d = getUserLastWithdrawnDate($store_id)) ? date('M j , y  h:i A',$d) : lang("store::never"); ?></span></p>
+                <p><strong><?php echo lang("store::processing-amount"); ?></strong>: <span class="account-bal"><?php echo config('currency-sign','$').number_format((float)getUserProcessingAmount($store_id),'2','.',','); ?></span></p>
+            </div>
+                </div>
+            <div class="col-sm-12">
+                <h4 class="acct-bal"><?php echo lang("store::withdrawal-history") ?></h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th><?php echo lang("store::amount"); ?></th>
+                            <th><?php echo lang("store::status") ?></th>
+                            <th><?php echo lang("store::method") ?></th>
+                            <th><?php echo lang("store::time") ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    $request = getStoreRequests();
+                    $i = 1;
+                    if($request->total):
+                        foreach($request->results() as $r):
+                        ?>
+                        <tr>
+                             <td><?php echo $i;?></td>
+                            <td><?php echo config('currency-sign','$').number_format((float)$r['amount'],'2','.',','); ?></td>
+                            <td><?php echo ($r['status'] == 0) ? lang('store::pending') : lang("store::successful"); ?></td>
+                            <td><?php echo $r['method'] ?></td>
+                            <td><?php echo date('M j , y  h:i A',$r['time'])?></td>
+                        </tr>
+                       <?php $i++; endforeach; ?>
+                        <?php else: ?>
+                        <tr><td colspan="5"><div class="alert alert-info"><?php echo lang("store::no-withdraw-history-available") ?></div> </td> </tr>
+                    <?php endif; ?>
+                    </tbody>
+                    <?php /*if($request->total): */?><!--
+                         <?php /*echo $request->links()  */?>
+                    --><?php /*endif; */?>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</div>

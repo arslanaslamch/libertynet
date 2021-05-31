@@ -1,0 +1,288 @@
+<?php
+$refId = $book['id'];
+$refName = 'books';
+$ed = Educational::getInstance();
+$user = find_user($book['user_id']);
+//$path = "http://www.ccsales.com/the_richest_man_in_babylon.pdf";
+//$path ="https://demo.lightedphp.com/addons/storage/uploads/books/files/bb916febc595b029b1a89d222f9ff353.epub";
+$path = url($book['book']);
+
+//get book extension
+$ext = pathinfo($path, PATHINFO_EXTENSION);
+?>
+<div class="box">
+    <div class="box-content single-book">
+        <div class="container" style="padding:0;">
+            <div class="bokk-upper">
+            <div class="book-lhs-one">
+                <div class="books-lhs">
+                    <div class="book-image-holder"
+                         style="background-image : url(<?php echo url_img($book['image'], 600); ?>)"></div>
+
+                    <?php if($ed->isBookOwner($book)): ?>
+                        <a class="btn btn-block" href="<?php echo url_to_pager("edit-book",array('slug'=>$book['slug'],'id'=>$refId)); ?>"><?php echo lang("educational::edit"); ?></a>
+                    <?php endif; ?>
+                    <a class="btn-info btn btn-block"
+                       id="expandBook"
+                       data-url="<?php echo $path; ?>"
+                       href="<?php echo url_to_pager("read-book",array('slug'=>$book['slug'],'id'=>$refId)); ?>">
+                        <?php echo lang("educational::read-now"); ?></a>
+                    <a id="donwload-book" data-id="<?php echo $book['id']; ?>" href="<?php echo url_to_pager('book-offline')?>?id=<?php echo $book['id']; ?>"
+                       class="btn btn-secondary btn-block">
+                        <i class="ion-android-download"></i>
+                        <?php echo lang("educational::save-offline") ?></a>
+                </div>
+            </div>
+            <div class="rhs-book">
+                <h4><?php echo $book['title']; ?></h4>
+                <?php /*if ($book['price']): */?><!--
+                    <p><b><?php /*echo config('default-currency') . ' ' . $book['price']; */?></b></p>
+                --><?php /*endif; */?>
+                <?php echo view("educational::rating",array('book'=>$book)); ?>
+                <p><?php echo lang("educational::posted-by") ?>  <b><a href="<?php echo profile_url(null,$user);  ?>"><?php echo get_user_name($user); ?></a></b>
+                   <em><?php echo lang("on") ?> </em> <?php echo date('F j , Y', $book['time']); ?>
+                </p>
+                <?php $category = $ed->get_category($book['category']); ?>
+                <p><?php echo lang("educational::category"); ?> : <a href="<?php echo url('books').'?category='.$book['category']; ?>"><?php echo lang($category['title']); ?> </a></p>
+                <p><?php echo lang("educational::views"); ?> : <?php echo $book['views']; ?> </p>
+                <p><?php echo lang("educational::downloads"); ?> : <?php echo $book['downloads']; ?> </p>
+            </div>
+            </div>
+            <div class="row">
+            <div style="display:block;margin-top:15px" class="col-sm-12">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#info"
+                           role="tab"><?php echo lang('educational::info') ?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#messages"
+                           role="tab"><?php echo lang("educational::comments") ?></a>
+                    </li>
+
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active books-des" id="info" role="tabpanel">
+                        <?php echo '<br/>'. nl2br($book['description']); ?>
+                        <br/>
+                        <br/>
+                    </div>
+                    <div class="tab-pane" id="messages" role="tabpanel">
+                        <div class="box" style="margin-top:0px">
+                            <div class="box-content feed-footer">
+                                <?php echo view("educational::reactions",array('refName'=>$refName,'refId'=>$refId,'book'=>$book)); ?>
+                                <?php echo view("educational::comment",array('refName'=>$refName,'refId'=>$refId,'book'=>$book)); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="readModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel" aria-hidden="true">
+    <?php if($ext != 'epub'): ?>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="box">
+                <div class="box-content">
+                    <?php if($ext != 'epub'): ?>
+                    <iframe src="https://docs.google.com/gview?url=<?php echo $path ?>&embedded=true" style="display:block;margin:10px; width:98%; height:500px;" frameborder="0"></iframe>
+                    <?php else: ?>
+                        <div id="area"></div>
+                        <select id="toc"></select>
+                        <div id="viewer" class="spreads"></div>
+                        <a id="prev" href="#prev" class="arrow">‹</a>
+                        <a id="next" href="#next" class="arrow">›</a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php else: ?>
+
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="width: 100%">
+                <div class="modal-header">
+                    <h4 class="modal-title"><?php echo $book['title']; ?></h4>
+                    <button onclick="return closeBookModal()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <div id="area"></div>
+             <span class="pull-right">
+                 <a class=""
+             </span>
+            <!--<select id="toc" style="margin-bottom: 30px;"></select>-->
+            <div id="viewer" class="spreads"></div>
+            <a id="prev" href="#prev" class="arrow">‹</a>
+            <a id="next" href="#next" class="arrow">›</a>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>
+<?php if($ext == 'epub'): ?>
+<!--<link href="https://futurepress.github.io/epubjs-reader/css/main.css" rel="stylesheet"/>-->
+<!--<link href="https://futurepress.github.io/epubjs-reader/css/popup.css" rel="stylesheet"/>
+<script src="https://futurepress.github.io/epubjs-reader/js/libs/zip.min.js"></script>
+<script src="https://futurepress.github.io/epubjs-reader/js/libs/screenfull.min.js"></script>
+<script src="https://futurepress.github.io/epubjs-reader/js/epub.js"></script>
+<script src="https://futurepress.github.io/epubjs-reader/js/reader.js"></script>-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+    <script src="http://futurepress.github.io/epub.js/dist/epub.js"></script>
+<link href="http://futurepress.github.io/epub.js/examples/examples.css" rel="stylesheet" />
+
+<style>
+    #viewer.spreads {
+        width: 100%;
+        height: 600px;
+        box-shadow: 0 0 4px #ccc;
+        border-radius: 5px;
+        padding: 0;
+        position: relative;
+        margin: 0;
+        background: white url(ajax-loader.gif) center center no-repeat;
+        top: 0;
+    }
+</style>
+
+    <!--<script>
+        var params = URLSearchParams && new URLSearchParams(document.location.search.substring(1));
+        var url = params && params.get("url") && decodeURIComponent(params.get("url"));
+        var currentSectionIndex = (params && params.get("loc")) ? params.get("loc") : undefined;
+
+        // Load the opf
+        //var book = ePub(url || "https://s3.amazonaws.com/moby-dick/moby-dick.epub");
+        var book = ePub(url || "<?php /*echo $path */?>");
+        var rendition = book.renderTo("viewer", {
+            width: "100%",
+            height: 600,
+            spread: "always"
+        });
+
+        rendition.display(currentSectionIndex);
+
+        book.ready.then(() => {
+
+            var next = document.getElementById("next");
+
+            next.addEventListener("click", function(e){
+                book.package.metadata.direction === "rtl" ? rendition.prev() : rendition.next();
+                e.preventDefault();
+            }, false);
+
+            var prev = document.getElementById("prev");
+            prev.addEventListener("click", function(e){
+                book.package.metadata.direction === "rtl" ? rendition.next() : rendition.prev();
+                e.preventDefault();
+            }, false);
+
+            var keyListener = function(e){
+
+                // Left Key
+                if ((e.keyCode || e.which) == 37) {
+                    book.package.metadata.direction === "rtl" ? rendition.next() : rendition.prev();
+                }
+
+                // Right Key
+                if ((e.keyCode || e.which) == 39) {
+                    book.package.metadata.direction === "rtl" ? rendition.prev() : rendition.next();
+                }
+
+            };
+
+            rendition.on("keyup", keyListener);
+            document.addEventListener("keyup", keyListener, false);
+
+        })
+
+        var title = document.getElementById("title");
+
+        rendition.on("rendered", function(section){
+            var current = book.navigation && book.navigation.get(section.href);
+
+            if (current) {
+                var $select = document.getElementById("toc");
+                var $selected = $select.querySelector("option[selected]");
+                if ($selected) {
+                    $selected.removeAttribute("selected");
+                }
+
+                var $options = $select.querySelectorAll("option");
+                for (var i = 0; i < $options.length; ++i) {
+                    let selected = $options[i].getAttribute("ref") === current.href;
+                    if (selected) {
+                        $options[i].setAttribute("selected", "");
+                    }
+                }
+            }
+
+        });
+
+        rendition.on("relocated", function(location){
+            console.log(location);
+
+            var next = book.package.metadata.direction === "rtl" ?  document.getElementById("prev") : document.getElementById("next");
+            var prev = book.package.metadata.direction === "rtl" ?  document.getElementById("next") : document.getElementById("prev");
+
+            if (location.atEnd) {
+                next.style.visibility = "hidden";
+            } else {
+                next.style.visibility = "visible";
+            }
+
+            if (location.atStart) {
+                prev.style.visibility = "hidden";
+            } else {
+                prev.style.visibility = "visible";
+            }
+
+        });
+
+        rendition.on("layout", function(layout) {
+            let viewer = document.getElementById("viewer");
+
+            if (layout.spread) {
+                viewer.classList.remove('single');
+            } else {
+                viewer.classList.add('single');
+            }
+        });
+
+        window.addEventListener("unload", function () {
+            console.log("unloading");
+            this.book.destroy();
+        });
+
+        book.loaded.navigation.then(function(toc){
+            var $select = document.getElementById("toc"),
+                docfrag = document.createDocumentFragment();
+
+            toc.forEach(function(chapter) {
+                var option = document.createElement("option");
+                option.textContent = chapter.label;
+                option.setAttribute("ref", chapter.href);
+
+                docfrag.appendChild(option);
+            });
+
+            $select.appendChild(docfrag);
+
+            $select.onchange = function(){
+                var index = $select.selectedIndex,
+                    url = $select.options[index].getAttribute("ref");
+                rendition.display(url);
+                return false;
+            };
+
+        });
+
+    </script>-->
+<?php endif; ?>
+

@@ -1,0 +1,137 @@
+<div class="wrapper">
+	<div class="wrapper-title">
+		<?php echo 'Add New Tv'; ?>
+
+	</div>
+	<div class="wrapper-content onlinetv-admin-wrapper">
+        <?php if($message): ?>
+            <div class="alert alert-danger"><?php echo $message ?></div>
+        <?php endif ?>
+        <form action="" method="post" enctype="multipart/form-data" class="ajax-form">
+            <div class="modal-body">
+                <?php CSRFProtection::embed() ?>
+                <fieldset>
+                    <div class="top">
+                        <label class="control-label"><?php echo lang('onlinetv::tv-name') ?></label>
+                    </div>
+                    <div class="bottom">
+                        <input autocomplete="off" value="<?php echo input('val.name') ?>" type="text" class="form-control" name="val[name]" placeholder="<?php echo lang('onlinetv::tv-name') ?>"/>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="top">
+                        <label class="control-label"><?php echo lang('onlinetv::description') ?></label>
+                    </div>
+                    <div class="bottom">
+                        <textarea name="val[description]" class="form-control"  placeholder="<?php echo lang('onlinetv::description') ?>"><?php echo input('val.description') ?></textarea>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="top">
+                        <label class="control-label"><?php echo lang('onlinetv::photo') ?></label>
+                    </div>
+                    <div class="bottom">
+                        <input type="file" name="image" />
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="top">
+                        <label class="control-label"><?php echo lang('onlinetv::source') ?></label>
+                    </div>
+                    <div class="bottom">
+                        <select class="form-control" name="val[source]" onchange="return tv_change_embed_code(this)">
+                            <option value=""><?php echo lang("onlinetv::select-source"); ?></option>
+                            <option value="embed"><?php echo lang("onlinetv::embed-code-iframe"); ?></option>
+                            <option value="url"><?php echo lang("onlinetv::streaming-url"); ?></option>
+                        </select>
+
+                        <div class="embed-content">
+                            <br/>
+                            <textarea placeholder="" name="val[source_embed]" class="form-control"></textarea>
+                        </div>
+                        <div class="url-content">
+                            <Br/>
+                            <input autocomplete="off" placeholder="" name="val[source_url]" class="form-control" type="text"/>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="top">
+                        <label class="control-label"><?php echo lang('onlinetv::category') ?></label>
+                    </div>
+                    <div class="bottom">
+                        <div class="magic-select" data-name="val[category]" data-width="200px">
+                            <?php $categories = get_onlinetv_categories(); ?>
+                            <select name="val[category]" class="c-select">
+                                <option <?php echo (input('category', 'all') == 'all') ? 'selected' : null ?> value="all"><?php echo lang('music::all-categories') ?></option>
+                                <?php foreach($categories as $category): ?>
+                                    <?php $subCategories = get_onlinetv_parent_categories($category['id']) ?>
+                                    <?php if($subCategories): ?>
+                                        <optgroup label="<?php echo lang($category['title']) ?>">
+                                            <?php foreach($subCategories as $cat): ?>
+                                                <option <?php echo (input('category', 'all') == $cat['id']) ? 'selected' : null ?> value="<?php echo $cat['id'] ?>"><?php echo lang($cat['title']) ?></option>
+                                            <?php endforeach ?>
+                                        </optgroup>
+                                    <?php else: ?>
+                                        <option <?php echo (input('category', 'all') == $category['id']) ? 'selected' : null ?> value="<?php echo $category['id'] ?>"><?php echo lang($category['title']) ?></option>
+                                    <?php endif ?>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+                <?php if(config('enable-country-filter',true)): ?>
+                    <fieldset>
+                        <div class="top">
+                            <label class="control-label"><?php echo lang('onlinetv::country') ?></label>
+                        </div>
+                        <div class="bottom">
+                            <?php load_functions('country') ?>
+                            <?php $countries = get_countries() ?>
+                            <?php $country_name = input('val.country') ?>
+                            <select name="val[country]" class="form-control">
+                                <option value="all"><?php echo lang('onlinetv::choose-country'); ?></option>
+                                <?php foreach($countries as $country => $name): ?>
+                                    <option value="<?php echo $name ?>">
+                                        <?php echo ucwords($name) ?>
+                                    </option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </fieldset>
+                <?php endif; ?>
+
+                <fieldset>
+                    <input type="hidden" value="user-<?php echo get_userid() ?>" name="val[entity]" />
+                </fieldset>
+                <?php fire_hook('more.onlinetv.field') ?>
+            <fieldset class="control-group">
+                <label class="control-label"><?php echo lang('privacy') ?></label>
+                <select class="form-control" name="val[privacy]">
+                    <option value="1"><?php echo lang('public') ?></option>
+                    <option value="2"><?php echo lang('relationship::friends-followers\'') ?></option>
+                    <option value="3"><?php echo lang('only-me') ?></option>
+                </select>
+            </fieldset>
+                <fieldset>
+                    <div class="top">
+                        <label class="control-label"><?php echo lang('onlinetv::price') ?></label>
+                    </div>
+                    <div class="bottom">
+                        <input autocomplete="off" value="<?php echo input('val.price',0) ?>" type="text"
+                               class="form-control" name="val[price]" placeholder="<?php echo lang('onlinetv::price') ?>"/>
+                        <span><?php echo lang('onlinetv::price-desc') ?></span>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <div class="submit">
+                    <input type="submit" class="btn btn-info" value="<?php echo lang("onlinetv::add") ?>"/>
+                </div>
+            </div>
+        </form>
+
+
+
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<div class="box no-border" >
+    <select class="form-control" onchange="return store_type_change(this,'<?php echo getFullUrl(); ?>')">
+        <option <?php echo (input('t',0) == 0) ? 'selected' : null; ?> value="0"> Pick Store to manage </option>
+        <?php foreach(getMyStores()->results() as $c): ?>
+            <option <?php echo (input('t',0) == $c['s_id']) ? 'selected' : null; ?> value="<?php echo $c['s_id'] ?>"><?php echo $c['name']; ?></option>
+        <?php endforeach; ?>
+    </select>
+    <Br/>
+</div>

@@ -1,0 +1,54 @@
+<div class="wrapper">
+	<div class="wrapper-title">
+		<?php echo lang('business::business-plans') ?>
+
+	</div>
+	<div class="wrapper-content">
+		<?php if(isset($message)): ?>
+			<div class="alert alert-danger"><?php echo $message ?></div>
+		<?php endif ?>
+		<form method="post" action="" class="wrapper-form">
+			<?php CSRFProtection::embed() ?>
+			<div class="form-group row">
+				<label class="col-sm-3 form-control-label"><?php echo lang('business::plan-title') ?></label>
+				<div class="col-sm-9">
+					<input class="form-control" value="<?php echo $plan['title'] ?>" type="text" name="val[title]" placeholder="<?php echo lang('business::plan-title') ?>"/><br>
+					<p class="help-block"><?php ?></p>
+
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-3 form-control-label"><?php echo lang('business::plan-description') ?></label>
+				<div class="col-sm-9">
+
+
+					<textarea name="val[desc]" class="form-control ckeditor" placeholder="<?php echo lang('business::plan-title') ?>"><?php echo $plan['description'] ?></textarea>
+					<p class="help-block"><?php ?></p>
+
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-3 form-control-label"><?php echo lang('business::plan-days-limit') ?></label>
+				<div class="col-sm-9">
+					<input type="text" value="<?php echo $plan['days'] ?>" class="form-control" name="val[days]" placeholder="<?php echo lang('business::plan-days-limit') ?>"/><br/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-3 form-control-label"><?php echo lang('business::featured') ?></label>
+				<div class="col-sm-9">
+					<select class="c-select" name="val[featured]">
+						<option <?php echo ($plan['featured'] == 0) ? 'selected' : null ?> value="0"><?php echo lang('business::no') ?></option>
+						<option <?php echo ($plan['featured'] == 1) ? 'selected' : null ?> value="1"><?php echo lang('business::yes') ?></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group row plan-price">
+				<label class="col-sm-3 form-control-label"><?php echo lang('business::plan-price') ?> (<?php echo config('default-currency') ?>)</label>
+				<div class="col-sm-9">
+					<input type="text" value="<?php echo $plan['price'] ?>" class="form-control" name="val[price]" placeholder="<?php echo lang('business::plan-price') ?>"/><br/>
+				</div>
+			</div>
+			<button class="btn btn-info"><?php echo lang('business::save-plan') ?></button>
+		</form>
+	</div>
+</div>

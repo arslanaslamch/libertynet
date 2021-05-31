@@ -1,0 +1,30 @@
+<?php
+$categories = business_get_categories();
+$category_id = input('c');
+$type = input('t');
+$active_class = array('l' => '', 'm' => '', 'p' => '');
+switch($type) {
+	case 'm':
+		$active_class['m'] = ' active';
+	break;
+	case 'p':
+		$active_class['p'] = ' active';
+	break;
+	default:
+		$active_class['l'] = ' active';
+	break;
+}
+$url = http_build_query($_GET) == '' ? url_to_pager('all-business', array('appends' => '')) : url_to_pager('all-business', array('appends' => '')).'?'.http_build_query($_GET);
+?>
+<div class="business business-categories box">
+	<ul class="menu">
+		<li class="<?php if(!$category_id): ?> active<?php endif ?>">
+			<a href="<?php echo business_get_business_slug_link(business_remove_get_var(business_remove_get_var($url, 's'), 'c')) ?>" ajax="true"><?php echo lang('business::all-categories') ?></a>
+		</li>
+		<?php foreach($categories as $category): ?>
+			<li class="<?php if($category_id == $category['id']): ?> active<?php endif ?>">
+				<a href="<?php echo business_get_business_slug_link(business_assign_get_var(business_remove_get_var($url, 's'), 'c', $category['id'])) ?>" ajax="true"><?php echo lang($category['category']) ?></a>
+			</li>
+		<?php endforeach ?>
+	</ul>
+</div>

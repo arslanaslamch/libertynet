@@ -1,0 +1,48 @@
+<?php
+$category_id = $article['category_id'];
+$ctitle = "";
+$category = get_ss_category($category_id);
+if ($category) {
+    $ctitle = lang($category['title']);
+}
+?>
+<?php echo view("supportsystem::top-menu"); ?>
+<div class="box">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="<?php echo url_to_pager("supportsystem-dashboard-page"); ?>"
+                                           ajax="true"><?php echo lang("supportsystem::help-center") ?></a></li>
+            <li class="breadcrumb-item"><a href="<?php echo ss_faq_category_url($category_id); ?>"
+                                           ajax="true"><?php echo $ctitle; ?></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><?php echo lang('supportsystem::article'); ?></li>
+        </ol>
+    </nav>
+</div>
+<div class="box">
+    <div class="title"><span class="h3"> <?php echo $article['subject']; ?></span></div>
+    <div class="box-content">
+        <?php echo $article['content'] ?>
+    </div>
+    <hr/>
+    <div class="have-more-questions">
+        <p class="m-4"><?php echo lang("supportsystem::have-more-questions") ?><a
+                    href="<?php echo url_to_pager("supportsystem-create-page") ?>" ajax="true"
+                    class="bold"><?php echo lang("supportsystem::submit-a-request") ?></a></p>
+    </div>
+    <hr/>
+    <div class="was-this-article-helpful">
+        <?php if(!has_responded_to_article($article['id'])): ?>
+        <p class="m-4"><?php echo lang("supportsystem::was-this-article-helpful") ?>
+            <a class="btn ss-helpful-btn btn-success text-success" data-type="1" data-aid="<?php echo $article['id'] ?>"><i
+                        class="ion-checkmark-round"></i> <?php echo strtoupper(lang("yes")); ?></a>
+            <a class="btn ss-helpful-btn btn-danger text-danger" data-type="0" data-aid="<?php echo $article['id'] ?>"><i
+                        class="ion-close"></i> <?php echo strtoupper(lang("no")); ?></a>
+        </p>
+        <?php endif; ?>
+        <p class="help-center-answer-response p-3">
+            <?php echo lang("supportsystem::thank-you-for-your-feedback-response"); ?>
+        </p>
+    </div>
+    <hr/>
+
+</div>

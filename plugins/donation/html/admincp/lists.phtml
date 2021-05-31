@@ -1,0 +1,122 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("donation::manage-campaigns"); ?>
+    </div>
+
+    <div class="wrapper-content">
+        <form action="" method="get" style="margin: 20px 0">
+            <?php CSRFProtection::embed() ?>
+            <input type="text" class="form-control" name="term" value="<?php echo input('term'); ?>" placeholder="<?php _lang('search')?>"/>
+            <button class="btn btn-sm btn-secondary" style="margin-top: 10px"><?php echo _lang('search')?></button>
+        </form>
+        <?php if(isset($_GET['success'])): ?>
+            <?php echo view("donation::alert",array('message'=>lang("donation::saved-successfully"))); ?>
+        <?php endif; ?>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th style="width: 15%"><?php _lang('donation::created-by')?></th>
+                <th style="width: 15%"><?php _lang('title')?></th>
+                <td style="width: 25%"><?php echo lang("donation::description"); ?></td>
+                <td style="width: 15%"><?php echo lang("donation::image"); ?></td>
+                <td style="width: 10%"><?php echo lang("donation::status"); ?></td>
+                <th style="width: 20%"><?php _lang('actions')?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php $don = Donation::getInstance(); ?>
+            <?php foreach($donations->results() as $donation):?>
+                <?php $user = find_user($donation['user_id']); ?>
+                <?php
+                    $unlimited = $donation['unlimited'];
+                    $expired = ($donation['expire_time'] < time()) ? true : false;
+                    $closed = $donation['closed'];
+                    $draft = ($donation['published']) ? false : true;
+                ?>
+
+                <tr>
+                    <td><?php echo $donation['id']; ?></td>
+                    <td><a href="<?php echo profile_url(null,$user); ?>"><?php echo get_user_name($user); ?></a></td>
+                    <td><?php echo $donation['title']; ?></td>
+                    <td><?php echo str_limit($donation['description'],100); ?></td>
+                    <td><img style="height:50px;width:50px" src="<?php echo url_img($donation['image'],200); ?>" class="img img-responsive" /></td>
+                    <td><?php
+                        if($draft){echo '<span class="label label-warning">'.lang('donation::draft').'</span>'; };
+                        if($closed){echo '<span class="label label-danger">'.lang('donation::closed').'</span>'; };
+                        if(!$unlimited && $expired){echo '<span class="label label-danger">'.lang('donation::expired').'</span>'; };
+                        if(($unlimited || !$expired) and !$closed and !$draft){echo '<span class="label label-success">'.lang('donation::active').'</span>'; };
+                        ?></td>
+                    <td>
+                        <a href="<?php echo url_to_pager("admincp-manage-donation").'?action=edit&id='.$donation['id']; ?>" class="btn btn-primary btn-sm"><i class="ion-edit"></i></a>
+                        <a href="<?php echo url_to_pager("admincp-manage-donation").'?action=delete&id='.$donation['id']; ?>" class="btn btn-danger btn-sm admin-confirm"><i class="ion-trash-a"></i></a>
+                        <a
+                            href="<?php echo url_to_pager("single_donation",array('id'=>$donation['id'])) ?>"
+                            class="btn btn-info btn-sm"
+                            data-uid="<?php echo $donation['user_id']; ?>"
+                            ><i class="ion-eye"></i></a>
+                    </td>
+                </tr>
+            <?php endforeach?>
+            </tbody>
+        </table>
+        <?php echo $donations->links()?>
+    </div>
+</div>
+
+<div id="donationAdmincpModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php _lang('close')?></span>
+                </button>
+                <h6 class="modal-title"></h6>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="<?php echo url_to_pager("admincp-settings-donation"); ?>" class="">
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="title"><b><?php echo lang("donation::paypal-email") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input type="hidden" id="uid"  name="val[uid]" value="" class="form-control" />
+                            <input  type="text" id="pe" name="val[pe]" value=""
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="title"><b><?php echo lang("donation::stripe-publishable-key") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input  type="text" id="pk" name="val[pk]" value=""
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="title"><b><?php echo lang("donation::stripe-secret-key") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input  type="text" id="sk" name="val[sk]" value=""
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-sm btn-info "><?php _lang('save'); ?></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

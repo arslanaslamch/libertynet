@@ -1,0 +1,6 @@
+<div id="ivm-wrapper">
+    <input type="hidden" id="ivm-id" value="<?php echo $donation['id'] ?>" />
+    <?php $don = Donation::getInstance(); ?>
+    <?php $email = $don->emailTemplateInvite(); ?>
+    <?php echo view("donation::more-fields/iv",array('message'=>'','email'=>$email,'donation'=>$donation));?>
+</div>

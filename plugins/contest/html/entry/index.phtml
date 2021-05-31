@@ -1,0 +1,10 @@
+<div class="box">
+    <div class="title"><?php echo $contest['name']; ?></div>
+    <div class="box-content">
+        <?php echo view("contest::contest-head",array('contest'=>$contest)); ?>
+        <div class="title"><?php echo ucwords(lang('contest::submit-an-entry')); ?></div>
+        <div class="box-content">
+            <?php echo $view; ?>
+        </div>
+    </div>
+</div>

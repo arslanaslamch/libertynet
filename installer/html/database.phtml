@@ -1,0 +1,50 @@
+<?php echo view('installer/header', array('title' => 'Database Details')) ?>
+    <div class="container">
+        <div class="title">Database Details</div>
+        <div class="content">
+            <?php if ($message): ?>
+                <div class="alert alert-error"><?php echo $message ?></div>
+            <?php endif ?>
+
+            <form id="database-form" action="" method="post" data-steps-url="<?php echo url_to_pager('install-db-steps') ?>">
+                <div class="form-progress">
+                    <div class="loading-animation">
+                        <div class="lds-roller">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div class="info"></div>
+                        <div class="percent"></div>
+                    </div>
+                    <div class="meter blue animate">
+                        <span style="width: 50%"><span></span></span>
+                    </div>
+                </div>
+                <?php CSRFProtection::embed() ?>
+                <label>Database Hostname:</label>
+                <input value="<?php echo installer_input('val.host') ?>" type="text" name="val[host]" placeholder="Database hostname" required />
+
+                <label>Database Username:</label>
+                <input value="<?php echo installer_input('val.username') ?>" type="text" name="val[username]" placeholder="Database Username" required />
+
+                <label>Database Name:</label>
+                <input value="<?php echo installer_input('val.name') ?>" type="text" name="val[name]" placeholder="Database name" required />
+
+                <label>Database Password:</label>
+                <input value="<?php echo installer_input('val.password') ?>" type="text" name="val[password]" placeholder="Database password"/>
+
+                <div class="footer">
+                    <div class="buttons">
+                        <button class="btn">Save and Install Database</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<?php echo view('installer/footer') ?>

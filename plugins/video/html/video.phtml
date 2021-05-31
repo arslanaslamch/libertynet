@@ -1,0 +1,28 @@
+<?php $owner = get_video_owner($video); ?>
+<div class="item">
+    <a href="<?php echo get_video_url($video) ?>" ajax="true" class="video-thumb-hover<?php echo $video['thumbnail'] ? '' : ' static'?>" <?php echo $video['thumbnail'] ? 'data-image="'.url_img($video['thumbnail'], 75).'"' : 'style="background-image: url('.img('video::images/play.png').')"'?>></a>
+        <a href="<?php echo get_video_url($video) ?>" ajax="true" class="thumb" style="background-image: url(<?php echo ($video['photo_path']) ? url_img($video['photo_path']) : img('video::images/preview.png') ?>);">
+        <?php if($video['featured']): ?>
+            <div class="featured">
+                <i class="ion-ios-star-outline"></i>
+            </div>
+        <?php endif ?>
+    </a>
+    <div class="details">
+        <div class="title"><?php echo $video['title'] ? $video['title'] : lang('video::untitled-video') ?></div>
+        <small class="time muted timeago" title="<?php echo date('c', $video['time']) ?>"><?php echo date('c', $video['time']) ?></small>
+        <div class="stat">
+            <div class="left">
+                <div class="user">
+                    <a ajax="true" href="<?php echo $owner['link'] ?>" class="name"><?php echo $owner['name'] ?></a>
+                </div>
+                <div class="count view"><?php echo $video['views']; ?> <?php echo lang('video::views'); ?></div>
+            </div>
+            <div class="right">
+                <div class="actions">
+                    <span class="video-social-share-link"><?php if($video['privacy'] == 1 && plugin_loaded('sharer')) echo view('sharer::share_link', array('link' => url("video/".$video['slug']))) ?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,6 @@
+<select id="marketplace-category-filter" name="c" data-name="c" class="c-select filter-input search-dropdown">
+    <option value=""><?php echo lang('marketplace::all-categories') ?></option>
+    <?php foreach (marketplace_get_categories() as $category) : ?>
+        <option <?php echo input('c') == $category['id'] ? 'selected' : '' ?> value="<?php echo $category['id'] ?>"><?php echo lang($category['title']) ?></option>
+    <?php endforeach ?>
+</select>

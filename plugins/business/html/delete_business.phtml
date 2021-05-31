@@ -1,0 +1,16 @@
+<div id="delete-business" class="business business-content box">
+	<form action="" method="post" class="adm">
+		<?php CSRFProtection::embed() ?>
+		<div class="alert alert-warning"><?php echo lang('business::delete-warning') ?>
+			<strong><?php echo $business['business_name'] ?></strong>?
+		</div>
+		<div class="row">
+			<div class="col-sm-5"></div>
+			<div class="col-sm-7">
+				<input type="submit" value="<?php echo lang('business::delete') ?>" class="btn btn-danger"/>
+			</div>
+		</div>
+		<input type="hidden" name="val[business_id]" value="<?php echo $business['id'] ?>"/>
+		<input type="hidden" name="val[type]" value="delete_business"/>
+	</form>
+</div>

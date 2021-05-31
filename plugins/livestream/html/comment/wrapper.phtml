@@ -1,0 +1,12 @@
+<div class="feed-footer comment">
+    <?php if(plugin_loaded('comment')): ?>
+        <div class="feed-comment-container">
+            <div class="list">
+                <?php echo view('livestream::comment/list', array('livestream' => $livestream)) ?>
+            </div>
+            <div class="editor">
+                <?php echo view('comment::editor', array('type' => 'livestream', 'typeId' => $livestream['id'])) ?>
+            </div>
+        </div>
+    <?php endif ?>
+</div>

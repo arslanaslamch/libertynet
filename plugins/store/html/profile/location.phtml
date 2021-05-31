@@ -1,0 +1,39 @@
+<div class="box">
+    <div class="title"><?php echo $seller['name'].' '.'<em>'.lang("store::location").'</em>'; ?></div>
+    <div class="box-content">
+    <div class="">
+        <div id="map" style="height: 400px"></div>
+        <script>
+            function initMap() {
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 8,
+                    center: {lat: -34.397, lng: 150.644}
+                });
+                var geocoder = new google.maps.Geocoder();
+
+                geocodeAddress(geocoder, map);
+            }
+
+            function geocodeAddress(geocoder, resultsMap) {
+                var address = '<?php echo json_encode($seller['address']) ?>';
+                geocoder.geocode({'address': address}, function (results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        resultsMap.setCenter(results[0].geometry.location);
+                        var marker = new google.maps.Marker({
+                            map: resultsMap,
+                            position: results[0].geometry.location
+                            //animation: google.maps.Animation.BOUNCE
+                        });
+                    } else {
+                        //alert('
+
+                    }
+                });
+            }
+        </script>
+        <?php $key = trim(config('google-api-key', '') != '') ? '&key=' . config('google-api-key', '') : '' ?>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?callback=initMap<?php echo $key ?>"></script>
+    </div>
+</div>
+</div>

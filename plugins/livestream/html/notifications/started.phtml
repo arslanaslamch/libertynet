@@ -1,0 +1,22 @@
+<?php $livestream = Livestream::get($notification['type_id']); ?>
+<?php if($livestream): ?>
+	<div id="notification-<?php echo $notification['notification_id'] ?>" class="notification media media-md <?php echo $notification['mark_read'] == 0 ? 'notification-unread' : '' ?>">
+		<div class="media-left">
+			<a href="<?php echo url_to_pager('livestream-view', array('slug' => $livestream['slug'])) ?>" data-toggle="modal" data-target="#livestream-modal" data-title="<?php echo $livestream['title'] ?>">
+				<div class="media-object">
+					<img src="<?php echo $livestream['image'] ? url_img($livestream['image'], 75) : img('livestream::images/no_image.png'); ?>" />
+				</div>
+			</a>
+		</div>
+		<div class="media-body">
+			<a href="<?php echo url_to_pager('livestream-view', array('slug' => $livestream['slug'])) ?>" data-toggle="modal" data-target="#livestream-modal" data-title="<?php echo $livestream['title'] ?>">
+				<h6 class="media-heading"><?php echo lang('livestream::'.($livestream['status'] == 1 ? 'user-is-live' : 'user-was-live'), array('user' => $livestream['first_name'].' '.$livestream['last_name'])) ?></h6>
+				<span class="timeago " title="<?php echo date('c', $notification['time']) ?>"><?php echo date('c', $notification['time']) ?></span>
+			</a>
+			<div class="actions">
+				<a class="mark-button" data-status="<?php echo $notification['mark_read'] ?>" data-read="<?php echo lang('notification::read') ?>" data-mark="<?php echo lang('notification::mark-as-read') ?>" title="<?php echo ($notification['mark_read'] == 1) ? lang('notification::read') : lang('notification::mark-as-read') ?> " onclick="return notification.markRead('<?php echo $notification['notification_id'] ?>')" href="#"><i class="ion-checkmark-circled"></i></a>
+				<a onclick="return notification.delete('<?php echo $notification['notification_id'] ?>')" href="#"><i class="ion-close"></i></a>
+			</div>
+		</div>
+	</div>
+<?php endif; ?>

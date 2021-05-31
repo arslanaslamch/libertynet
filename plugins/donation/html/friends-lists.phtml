@@ -1,0 +1,20 @@
+<?php if($lists): ?>
+<div class="box-content">
+    <ul>
+        <?php foreach($lists as $user): ?>
+            <a data-l="<?php echo lang("donation::added-successfully") ?>" data-name="<?php echo get_user_name($user);  ?>" data-id="<?php echo $user['id']; ?>" class="choosing-friends-donation" href="">
+                <div class="media media-md">
+                    <div class="media-left">
+                        <div class="media-object"><img src="<?php echo get_avatar(75, $user)?>"/></div>
+                    </div>
+                    <div class="media-body">
+                        <h6 class="media-heading"><?php echo get_user_name($user)?> <?php echo verify_badge($user)?></h6>
+                    </div>
+                </div>
+            </a>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<?php else: ?>
+<div class="alert alert-info"><p><?php _lang('no-people-found') ?></p></div>
+<?php endif; ?>

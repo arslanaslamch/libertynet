@@ -1,0 +1,36 @@
+<div id="onlinetvs-list-container" class="box-content clearfix list-listing-container">
+        <?php $onlinetv = arrange_onlinetv($onlinetv); ?>
+        <?php $user = find_user($onlinetv['user_id']) ?>
+        <?php $refId = $onlinetv['id'];
+        $refName = 'onlinetv'; ?>
+    <?php $onlinetv['image'] = ($onlinetv['image']) ? $onlinetv['image'] : img("onlinetv::images/tv.png"); ?>
+        <div class="each-item clearfix onlinetv-list">
+            <?php if($onlinetv['image']): ?>
+                <div class="left">
+                    <?php if($onlinetv['featured']): ?>
+                        <span class="featured-tag"><?php echo lang('featured') ?></span>
+                    <?php endif ?>
+                    <a ajax="true" href="<?php echo url('onlinetv/'.$onlinetv['slug']) ?>" style="background-image:url(<?php echo ($onlinetv['image']) ? url_img($onlinetv['image'], 700) : get_avatar(200, $user) ?>)"></a>
+                </div>
+                <div class="right">
+                    <span class="item-title"><a ajax="true" href="<?php echo url('onlinetv/'.$onlinetv['slug']) ?>"><?php echo $onlinetv['name'] ?></a></span>
+                    <div class="item-info">
+							<span class="help-block" style="display: block">
+								<?php echo lang('onlinetv::by') ?>: <a href="<?php echo url($onlinetv['publisher']['id']) ?>"><?php echo $onlinetv['publisher']['name'] ?></a>
+                                <?php echo lang('onlinetv::on') ?> <?php echo date('M j , y  h:i A', $onlinetv['time']) ?>
+							</span>
+                    </div>
+                    <p class="item-desc"><?php echo strip_tags(str_limit($onlinetv['description'], 100)) ?></p>
+                    <p>
+                        <strong><?php echo $onlinetv['views']; ?></strong> <?php echo lang('onlinetv::views'); ?>
+                        <strong><?php $likes = count_likes($refName, $refId);
+                            echo $likes; ?></strong> <?php if($likes > 1) {
+                            echo lang('onlinetv::likes');
+                        } else {
+                            echo lang('onlinetv::like');
+                        } ?>
+                    </p>
+                </div>
+            <?php endif; ?>
+        </div>
+</div>

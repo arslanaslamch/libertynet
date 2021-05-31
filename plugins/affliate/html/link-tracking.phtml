@@ -1,0 +1,49 @@
+<?php echo view("affliate::tm"); ?>
+<div class="box">
+    <div class="title"><?php echo lang("affliate::link-tracking"); ?></div>
+    <div class="box-content">
+        <div class="container">
+            <div class="app-header-wrapper">
+                <form class="form" action="" method="post">
+                    <div class="row">
+                    <div class="col-sm-4">
+                        <?php $from =  (input('val.from_date')) ? input('val.from_date') : date('m/d/Y',(strtotime('-6 days')));?>
+                        <?php $end =  (input('val.end_date')) ? input('val.end_date') : date('m/d/Y',time());?>
+                        <div class="form-group">
+                            <label><?php echo lang("affliate::from-date"); ?></label>
+                            <input autocomplete="off"  class="form-control" id="startDate" name="val[from_date]" value="<?php echo $from ?>" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label><?php echo lang("affliate::end-date"); ?></label>
+                            <input autocomplete="off"  class="form-control" id="endDate" name="val[end_date]" value="<?php echo $end; ?>" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label style="color:#f2f4f6">.</label>
+                        <button class="btn btn-block btn-info submit-filter-date"><?php echo lang("affliate::search"); ?></button>
+                    </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-wrapper" id="lnkt">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width:60%"><?php echo lang("affliate::reffering-url"); ?></th>
+                            <th style="width:10%"><?php echo lang("affliate::aff-account"); ?></th>
+                            <th style="width:10%"><?php echo lang("affliate::successful-registration"); ?></th>
+                            <th style="width:20%"><?php echo lang("affliate::date"); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                          <?php echo view("affliate::link-tracking-row",array('from'=>$from,'end'=>$end)); ?>
+                    </tbody>
+                </table>
+                <div class="indicator" ><img src="<?php echo img('images/loading.gif')?>"/></div>
+            </div>
+        </div>
+    </div>
+</div>

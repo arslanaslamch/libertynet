@@ -1,0 +1,182 @@
+<div class="box-content">
+    <div class="container row clearfix">
+        <div class="form-roller-donation">
+            <?php if($message): ?>
+                <?php echo view("donation::alert",array('message'=>$message)) ?>
+            <?php endif; ?>
+            <form class="form" action="" method="post" enctype="multipart/form-data">
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label for="title"><b><?php echo lang("donation::title") ?></b></label>
+                        <input id="title" type="text" name="val[title]" value="<?php echo input('val.title') ? input('val.title') : $donation['title']; ?>"  class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label for="don-category"><b><?php echo lang("donation::category") ?></b></label>
+                        <?php $don = Donation::getInstance(); ?>
+                        <select id="don-category" name="val[category]" class="c-select">
+                            <?php foreach($don->get_categories() as $category): ?>
+                                <option <?php echo ($donation['category'] == $category['id']) ? ' selected ' : ''; ?> value="<?php echo $category['id']; ?>"><?php echo lang($category['title']); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label for="description"><b><?php echo lang("donation::short-description") ?></b></label>
+                        <textarea  id="description" name="val[description]"  class="form-control"><?php echo (input('val.description')) ? input('val.description') : $donation['description']; ?></textarea>
+                    </div>
+                </div>
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label><b><?php echo lang("donation::main-description") ?></b></label>
+                        <textarea name="val[full_description]" class="ckeditor"><?php echo (input('val.full_description')) ? input('val.full_description') : $donation['full_description']; ?></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label for="target_amount"><b><?php echo lang("donation::target-amount-or-goal") ?></b></label>
+                        <input id="target_amount" placeholder="0" type="text" name="val[target_amount]" value="<?php echo input('val.target_amount') ? input('val.target_amount') : $donation['target_amount']; ?>"  class="form-control" />
+                        <span class="form-help"><?php echo lang("donation::target-amount-desc"); ?></span>
+                    </div>
+                </div>
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label ><b><?php echo lang("donation::currency") ?></b></label>
+                        <select name="val[cur]" class="c-select">
+                            <?php foreach($don->getCurrency() as $k=>$v): ?>
+                                <option <?php echo ($k == $donation['cur']) ? ' selected ' : ''; ?> value="<?php echo $k ?>"><?php echo $v.' ( '.$k.' )'; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label for="exdonation"><b><?php echo lang("donation::expiration-date") ?></b></label>
+                        <input id="exdonation" type="text" name="val[expire_time]" value="<?php echo ($donation['expire_time'] && !$donation['unlimited']) ? date('m/d/Y',$donation['expire_time']) : $donation['expire_time']; ?>"  class="form-control" />
+                        <br/>
+                        <input type="checkbox" <?php echo ($donation['unlimited']) ? ' checked ' : ''; ?> value="1" name="val[unlimited]" /> <span style="margin-left:5px;font-weight:bold"><?php echo lang("donation::unlimited-time-desc"); ?></span>
+                    </div>
+                </div>
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label ><b><?php echo lang("donation::minimum-donation-amount"); ?></b></label>
+                        <input type="text" name="val[d_min]" placeholder="0" value="<?php echo input('val.d_min') ? input('val.d_min') : $donation['donation_min']; ?>"  class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label ><b><?php echo lang("donation::list-predefined"); ?></b></label>
+                        <span style="display:block"><?php echo lang("donation::set-predefined-donation-buttons") ?></span>
+                        <?php $predefined = perfectUnserialize($donation['predefined']); ?>
+                        <?php if($predefined): ?>
+                            <?php foreach($predefined as $k=>$p): ?>
+                                 <div class="predefined-input"><input type="text" style="" value="<?php echo $p; ?>" name="val[pre][]" class="form-control" /> <span><i class="ion-minus"></i></span></div>
+                            <?php endforeach; ?>
+                         <?php endif; ?>
+                        <div class="predefined-more"></div>
+                        <button class="add-more-prededfined btn btn-secondary btn-sm"><i class="ion-plus"></i>  <?php echo lang("donation::add-more") ?></button>
+                    </div>
+                </div>
+
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label ><b><?php echo lang("donation::allow-anonymous-donation"); ?></b></label>
+                        <div class="c-inputs-stacked">
+                            <label class="c-input c-radio">
+                                <input <?php echo ($donation['anonymous']) ? 'checked' : ''; ?> value="1" name="val[anonymous]" type="radio">
+                                <span class="c-indicator"></span>
+                                <?php _lang('yes')?>
+                            </label>
+                            <label class="c-input c-radio">
+                                <input value="0" <?php echo (!$donation['anonymous']) ? 'checked' : ''; ?> name="val[anonymous]" type="radio">
+                                <span class="c-indicator"></span>
+                                <?php _lang("no")?>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <?php // if(plugin_loaded('locationfilter')): ?>
+                    <div class="form-group row clearfix">
+                        <div class="col-sm-12">
+                            <label ><b><?php echo lang("donation::location-venue"); ?></b></label>
+                            <input class="form-control" value="" name="val[location]" id="lf_location" />
+                            <br/>
+                            <!--<div id="mapping-lf" style="height: <?php /*echo config("lf-map-height","250px"); */?>">
+                            </div>-->
+                        </div>
+                    </div>
+                <?php //endif; ?>
+
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label for="photo"><b><?php echo lang("donation::main-photo") ?></b></label>
+                        <input id="photo" accept="image/*" type="file" name="photo" class="form-control" />
+                        <img src="<?php echo url_img($donation['image'],700) ?>" style="height: 40px;width: 40px" />
+                    </div>
+                </div>
+                <input type="hidden" name="val[image]" value="<?php echo $donation['image']; ?>" />
+
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label><b><?php echo lang("donation::who-can-see-campaign") ?></b></label>
+                        <select name="val[privacy]" class="c-select">
+                            <option <?php echo ($donation['privacy'] == 1) ? ' selected ' : ''; ?> value="1"><?php echo lang("educational::everyone") ?></option>
+                            <option <?php echo ($donation['privacy'] == 2) ? ' selected ' : ''; ?> value="2"><?php echo lang("educational::friends-and-followers") ?></option>
+                            <option <?php echo ($donation['privacy'] == 3) ? ' selected ' : ''; ?> value="3"><?php echo lang("educational::only-me") ?></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label><b><?php echo lang("donation::who-can-comment") ?></b></label>
+                        <select name="val[who_comment]" class="c-select">
+                            <option <?php echo ($donation['who_comment'] == 1) ? ' selected ' : ''; ?> value="1"><?php echo lang("donation::everyone") ?></option>
+                            <option <?php echo ($donation['who_comment'] == 2) ? ' selected ' : ''; ?> value="2"><?php echo lang("donation::friends-and-followers") ?></option>
+                            <!--<option value="3"><?php /*echo lang("educational::only-me") */?></option>-->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label ><b><?php echo lang("donation::who-can-donate") ?></b></label>
+                        <select name="val[who_donate]" class="c-select">
+                            <option <?php echo ($donation['who_donate'] == 1) ? ' selected ' : ''; ?> value="1"><?php echo lang("donation::everyone") ?></option>
+                            <option <?php echo ($donation['who_donate'] == 2) ? ' selected ' : ''; ?> value="2"><?php echo lang("donation::friends-and-followers") ?></option>
+                            <!--<option value="3"><?php /*echo lang("educational::only-me") */?></option>-->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row clearfix">
+                    <div class="col-sm-12">
+                        <label ><b><?php echo lang("donation::close") ?></b></label>
+                        <select name="val[closed]" class="c-select">
+                            <option <?php echo ($donation['closed'] == 0) ? ' selected ' : ''; ?> value="0"><?php echo lang("no") ?></option>
+                            <option <?php echo ($donation['closed'] == 1) ? ' selected ' : ''; ?> value="1"><?php echo lang("yes") ?></option>
+                        </select>
+                    </div>
+                </div>
+
+                <br/>
+                <br/>
+                <div class="form-group row clearfix">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <!--<button type="submit" name="val[save]" value="sv" class="btn btn-secondary"><?php /*echo lang("donation::save-as-draft"); */?></button>
+                        <button type="submit" name="val[save]" value="pub" class="btn btn-info"><?php /*echo lang("donation::publish"); */?></button>-->
+
+                        <button type="submit" class="btn btn-info"><?php echo lang("save"); ?></button>
+                        <a  href="javascript::void()" onclick="return confirm.url('<?php echo url_to_pager("manage_donation",array('id'=>$donation['id'])).'?action=delete'; ?>')" class="btn btn-danger pull-right"><?php echo lang("delete"); ?></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

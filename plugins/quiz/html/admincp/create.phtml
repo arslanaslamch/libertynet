@@ -1,0 +1,51 @@
+
+	<div class="wrapper">
+		<div class="question-box" style="border: 2px solid #F1F1F1">
+			<div class="title"><?php echo lang('quiz::quiz-questions') ?></div>
+			<div class="question-c">
+				<form action="<?php echo url_to_pager('admincp-quiz-manage-question').'?action=add-q&id='.$quiz['id'] ?>" method="post" enctype="multipart/form-data" class="ajax-form">
+					<?php CSRFProtection::embed() ?>
+					<div class="overall-question-c">
+						<div class="first-q-c-c">
+							<div class="field">
+								<div class="left">
+									<label class="control-label"><?php echo lang('quiz::question') ?></label>
+								</div>
+								<div class="right">
+									<input value="<?php echo input('val.question') ?>" type="text" class="form-control" name="val[question]" placeholder="" required/>
+								</div>
+							</div>
+							<div class="field">
+								<div class="left">
+									<label class="control-label"><?php echo lang('quiz::answer') ?></label>
+								</div>
+								<div class="right"><?php $m = date("i"); ?>
+									<div class="right-answer-b" style="border: 1px solid #e7e4e4">
+										<input value="<?php echo input('val.answer') ?>" type="text" class="form-control" name="val[answer][<?php echo $m ?>]" placeholder="" required/>
+										<input id="correct-answer" value="yes" type="checkbox" name="val[correct_answer][<?php echo $m ?>]"/><label for="correct-answer"><?php echo lang('quiz::correct-answer') ?></label>
+									</div>
+								</div>
+							</div>
+							<div class="field">
+								<div class="left">
+									<label class="control-label"></label>
+								</div>
+								<div class="right"><?php $s = date("s"); ?>
+									<div class="right-answer-b" style="border: 1px solid #e7e4e4">
+										<input value="<?php echo input('val.answer') ?>" type="text" class="form-control" name="val[answer][<?php echo $s ?>]" placeholder="" required/>
+										<input id="correct-answer" value="yes" type="checkbox" name="val[correct_answer][<?php echo $s ?>]"/><label for="correct-answer"><?php echo lang('quiz::correct-answer') ?></label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="submit">
+						<input type="hidden" name="val[quiz_id]" value="<?php echo $id ?>"/>
+						<a href="#!" class="add-new-answer"><?php echo lang('quiz::add-new-answer') ?></a>
+						<button class="btn btn-info"><?php echo lang("quiz::save") ?></button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+

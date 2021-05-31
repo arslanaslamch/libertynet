@@ -1,0 +1,85 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("supportsystem::manage-tickets") ?>
+    </div>
+    <div class="wrapper-content">
+        <form action="" method="get" style="margin: 20px 0">
+            <?php CSRFProtection::embed() ?>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="term" placeholder="<?php echo lang('search') ?>"/>
+                    </div>
+                    <div class="col-sm-2">
+                        <?php $type = input('type','all'); ?>
+                        <select id="video-filter-select" name="type"
+                                class="c-select filter-input">
+                            <option <?php echo ($type === 'all') ? 'selected' : '' ?> value="all"><?php echo lang('supportsystem::all-tickets') ?></option>
+                            <?php foreach (get_ss_ticket_status('admin') as $key => $status): ?>
+                                <option <?php echo (($type != 'all') && (int)$type === (int)$key) ? 'selected' : '' ?> value="<?php echo $key; ?>"><?php echo $status; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-sm btn-secondary" style=""><?php echo lang('search') ?></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="list-table-container">
+            <div class="table-responsive">
+                <?php if ($tickets->total): ?>
+                    <table class="table ">
+                        <tbody>
+                        <tr class="ss-header">
+                            <td style="width: 40%"><?php echo lang("supportsyste::subject"); ?></td>
+                            <td style="width: 10%"><?php echo "ID"; ?></td>
+                            <td style="width: 5%"><?php echo lang("supportsystem::priority"); ?></td>
+                            <td style="width: 15%"><?php echo lang("suppportsystem::created"); ?></td>
+                            <td style="width: 20%"><?php echo lang("suppportsystem::last-updated"); ?></td>
+                            <td style="width: 10%"><?php echo lang("suppportsystem::status"); ?></td>
+                        </tr>
+                        <?php foreach ($tickets->results() as $ticket):
+                            $last_reply = ss_get_last_reply($ticket['id']);
+                            $last_reply_time = ($last_reply) ? $last_reply['time'] : $ticket['time']
+                            ?>
+                            <tr>
+                                <td><a class="ss-ticket-url" ajax="true"
+                                       href="<?php echo url_to_pager("admincp-support-system-tickets").'?id='.$ticket['id'] ?>"><?php echo $ticket['subject']; ?></a>
+                                </td>
+                                <td><?php echo get_ss_ticket_id($ticket) ?></td>
+                                <td><span class="ss-priority ss-priority-<?php echo $ticket['priority'] ?>">
+                            <?php echo get_ss_priorities($ticket['priority']); ?>
+                        </span>
+                                </td>
+                                <td>
+                        <span class="">
+                                <?php echo date('Y-m-d', $ticket['time']) ?>
+                        </span>
+                                </td>
+                                <td>
+                                    <?php echo date('F j, Y, g:i a', $last_reply_time) ?>
+                                </td>
+                                <td>
+                                    <?php $t_status = get_ss_ticket_status('member', $ticket); ?>
+                                    <span class="ss-notify ss--status<?php echo $ticket['status'] ?>"><?php echo $t_status ?></span>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php endif; ?>
+                <?php if ($tickets->total): ?>
+                    <?php //echo $tickets->append(array('category' => input('category'), 'type' => input('type', 'browse'), 'term' => input('term'), 'filter' => input('filter', 'all')))->links() ?>
+                <?php else: ?>
+                    <?php $message = lang('supportsystem::ticket-list-is-empty');
+                    if (input('type') == 1) $message = lang("supportsystem::there-is-no-answered-ticket");
+                    if (input('type') == 2) $message = lang("supportsystem::there-is-no-unanswered-ticket");
+                    ?>
+                    <div class="alert alert-info"><?php echo $message; ?></div>
+                <?php endif ?>
+            </div>
+        </div>
+        <?php echo $tickets->links() ?>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="box ">
+    <ul class="menu">
+
+        <?php if(is_affliate()): ?>
+        <li class="<?php echo (segment(1) == 'links') ? 'active' : ''; ?>"><a href="<?php echo url_to_pager("affliate-links"); ?>" ><?php _lang('affliate::links')?></a></li>
+        <li class="<?php echo (segment(1) == 'network') ? 'active' : ''; ?>"><a href="<?php echo url_to_pager("affliate-network")?>" ajax="true" ><?php _lang('affliate::network-clients')?></a></li>
+        <li class="<?php echo (segment(1) == 'codes') ? 'active' : ''; ?>"><a href="<?php echo url_to_pager("affliate-code")?>" ajax="true" ><?php _lang('affliate::codes'); ?></a></li>
+        <li class="<?php echo (segment(1) == 'link-tracking') ? 'active' : ''; ?>"><a href="<?php echo url_to_pager('affliate-link-tracking')?>" ajax="true" ><?php _lang('affliate::link-tracking')?></a></li>
+        <li class="<?php echo (segment(1) == 'commission-tracking') ? 'active' : ''; ?>"><a href="<?php echo url_to_pager("affliate-commission-tracking")?>" ajax="true" ><?php _lang('affliate::commission-tracking')?></a></li>
+            <li class="<?php echo (segment(1) == 'statistics') ? 'active' : ''; ?>"><a href="<?php echo url_to_pager("affliate-stats");?>" ><?php _lang('affliate::statistics')?></a></li>
+            <li class="<?php echo (segment(1) == 'my-requests') ? 'active' : ''; ?>"><a href="<?php echo url_to_pager("aff-requests"); ?>" ajax="true" ><?php _lang('affliate::my-requests'); ?></a></li>
+        <?php else: ?>
+            <li><a href="<?php echo url_to_pager("affliate-home")?>" ajax="true" ><?php _lang('affliate::join-affliates')?></a></li>
+        <?php endif; ?>
+
+        <li class="<?php echo (segment(1) == 'commission') ? 'active' : ''; ?>"><a href="<?php echo url_to_pager("commision-rules")?>" ajax="true" ><?php _lang('affliate::commission-rules')?></a></li>
+        <!--<li><a href="<?php /*echo url()*/?>" ajax="true" ><?php /*_lang('affliate::faqs')*/?></a></li>-->
+    </ul>
+</div>

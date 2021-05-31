@@ -1,0 +1,14 @@
+<div id="dashboard-filter-menu" class="box clearfix">
+    <ul class="pull-left left">
+        <?php $url = getFullUrl(); ?>
+        <li class="<?php echo $url == url_to_pager('matchmaker') ? 'active' : '' ?>">
+            <a href="<?php echo url_to_pager('matchmaker') ?>" ajax="true"><?php echo lang('matchmaker::encounters') ?></a>
+        </li>
+        <li class="<?php echo $url == url_to_pager('matchmaker-likes') ? 'active' : '' ?>">
+            <a href="<?php echo url_to_pager('matchmaker-likes') ?>" ajax="true"><?php echo ucfirst(lang('matchmaker::likes')); ?></a>
+        </li>
+        <li class="<?php echo $url == url_to_pager('matchmaker-matches') ? 'active' : '' ?>">
+            <a href="<?php echo url_to_pager('matchmaker-matches') ?>" ajax="true"><?php echo lang('matchmaker::matches') ?></a>
+        </li>
+    </ul>
+</div>

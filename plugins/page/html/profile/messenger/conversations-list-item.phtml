@@ -1,0 +1,27 @@
+<?php ?>
+<?php $uid = ($conversation['user1'] == get_userid()) ? $conversation['user2'] : $conversation['user1']; ?>
+<div class="conversations-list-item conversations-list-item-<?php echo $conversation['cid'] ?> <?php echo $conversation['unread'] > 0 ? 'chat-conversation-unread unread' : '' ?> <?php echo isset($cid) && $cid == $conversation['cid'] ? 'conversation-active' : '' ?> <?php echo $conversation['type'] == 'single' ? 'single' : 'multiple' ?> <?php echo isset($searched) && $searched ? 'searched' : '' ?>">
+    <a href="<?php echo page_url('messages', $app->profilePage) ?>?cid=<?php echo $conversation['cid'] ?>" ajax="true" class="image">
+        <?php if ($conversation['type'] == 'single'): ?>
+            <img src="<?php echo $conversation['avatar'] ?>" />
+        <?php else: ?>
+            <img src="<?php echo $conversation['avatars'][0] ?>" />
+            <?php if (isset($conversation['avatars'][1])): ?>
+                <img src="<?php echo $conversation['avatars'][1] ?>" />
+            <?php else: ?>
+                <img src="<?php echo get_avatar(75) ?>" />
+            <?php endif ?>
+        <?php endif ?>
+    </a>
+    <a href="<?php echo page_url('messages', $app->profilePage) ?>?cid=<?php echo $conversation['cid'] ?>" ajax="true" class="name"><?php echo $conversation['title'] ?></a>
+    <a href="<?php echo page_url('messages', $app->profilePage) ?>?cid=<?php echo $conversation['cid'] ?>" ajax="true" class="message"><?php echo $conversation['last_sender'] == get_userid() ? lang('chat::you').':' : '' ?> <?php echo strip_tags($conversation['last_message']) ?></a>
+    <div class="time chat-conversation-last-update-time" data-cid="<?php echo $conversation['cid'] ?>"><?php echo str_time($conversation['last_update_time']) ?></div>
+    <?php if ($conversation['type'] == 'single' && !count_unread_messages(array($conversation['cid']), get_userid() == $conversation['user1'] ? $conversation['user2'] : $conversation['user1'])): ?>
+        <div class="seen">
+            <img src="<?php echo $conversation['avatar'] ?>" />
+        </div>
+    <?php endif ?>
+    <?php if ($conversation['unread'] > 0): ?>
+        <div class="unread-count"><?php echo $conversation['unread'] ?></div>
+    <?php endif ?>
+</div>

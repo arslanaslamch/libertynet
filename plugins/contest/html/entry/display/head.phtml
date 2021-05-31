@@ -1,0 +1,90 @@
+<?php $refId = $entry['id'];
+$refName = $entry['ref_name'];
+$user = find_user($entry['user_id']); ?>
+<input type="hidden" id="eid" value="<?php echo $refId ?>"/>
+<input type="hidden" id="et" value="<?php echo $refName ?>"/>
+<input type="hidden" id="cid" value="<?php echo $contest['id'] ?>"/>
+<div class="box-content">
+    <div class="clearfix">
+        <div style="float: left; padding: 0px 8px;min-height: 80px;">
+            <img style="border-radius: 50%; float: left;" src="<?php echo get_avatar(75, $user) ?>" width="45"
+                 height="45"/>
+        </div>
+        <div>
+            <div>
+                <?php echo lang('contest::posted-by') ?>:
+                <a ajax="true" href="<?php echo profile_url(null, $user) ?>"><?php echo get_user_name($user); ?></a>
+            </div>
+            <div>
+                <?php echo lang('contest::votes'); ?>:
+                <b><span id="vote-count"><?php echo contestEntryVoteCount($refName, $refId) ?></span></b>
+            </div>
+            <div>
+                <?php echo lang('contest::views'); ?>:
+                <b><?php echo $entry['views']; ?></b>
+            </div>
+        </div>
+        <div class="contest-arrow-right-left">
+            <a href="<?php echo prevEntryUrl($contest,$entry); ?>" ajax="true" class="go-entry-left btn btn-sm btn-secondary">
+                <i class="ion-arrow-left-b"></i>
+                <?php echo lang('contest::prev'); ?>
+            </a>
+            <a href="<?php echo nextEntryUrl($contest,$entry); ?>" ajax="true" class="go-entry-right btn btn-sm btn-secondary">
+                <?php echo lang('contest::next'); ?>
+                <i class="ion-arrow-right-b"></i>
+            </a>
+            <?php if (is_loggedIn()): ?>
+                <?php if($contest['voting_start'] > time() || $contest['contest_start'] > time()): ?>
+                        <button class="pull-right btn-sm btn-secondary" disabled><?php echo lang("contest::voting-not-commenced"); ?></button>
+                <?php else: ?>
+
+                    <?php if(time() > $contest['voting_end'] || time() > $contest['contest_end']): ?>
+
+                        <button class="pull-right btn-sm btn-secondary" disabled><?php echo lang("contest::voting-ended"); ?></button>
+
+                    <?php else: ?>
+
+
+                       <?php if($contest['who_vote'] == 0 and !isContestParticipant($contest)): ?>
+                            <button class="pull-right btn-sm btn-secondary" disabled><?php echo lang("contest::join-contest-to-vote"); ?></button>
+                        <?php else: ?>
+                        <button class="btn <?php echo hasVotedEntryVote($refName, $refId) ? 'btn-danger' : 'btn-info' ?> pull-right btn-sm"
+                                id="vote-contest-entry"
+                                data-un="<?php echo lang("contest::unvote-this-entry") ?>"
+                                data-vote="<?php echo lang("contest::vote-this-entry") ?>"
+                                data-status="<?php echo hasVotedEntryVote($refName, $refId) ? 1 : 0 ?>">
+
+                            <?php if (!hasVotedEntryVote($refName, $refId)): ?>
+                                <i class="ion-thumbsup"></i> <?php echo lang("contest::vote-this-entry") ?>
+                            <?php else: ?>
+                                <i class="ion-thumbsdown"></i> <?php echo lang("contest::unvote-this-entry") ?>
+                            <?php endif; ?>
+                        </button>
+                        <?php endif; ?>
+
+
+
+                    <?php endif; ?>
+
+                <?php endif; ?>
+
+            <?php else: ?>
+                <button class="pull-right btn btn-secondary btn-sm"
+                        disabled><?php echo lang("contest::login-to-vote") ?></button>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<hr style="margin-top:0px"/>
+<?php if (is_contest_owner($entry)): ?>
+
+        <a ajax="true" href="<?php echo getEntryContestUrl($contest,$entry).'?action=edit'; ?>" class=" btn btn-sm btn-primary"><i
+                    class="ion-edit"></i> <?php echo lang('contest::manage-entry'); ?></a>
+
+<?php else: ?>
+    <a data-type="contest-entry"
+       data-link="<?php echo getEntryContestUrl($contest,$entry) ?>"
+       class="report-btn btn btn-secondary" href=""><i class="ion-flag"></i></a>
+<?php endif; ?>
+
+

@@ -1,0 +1,27 @@
+<?php $livestream = (array) $livestream; $host = Livestream::getHost($livestream); ?>
+<div class="item">
+    <a href="<?php echo url_to_pager('livestream-view', array('slug' => $livestream['slug'])) ?>" ajax="true" class="thumb" style="background-image: url(<?php echo ($livestream['image']) ? url_img($livestream['image'], 600) : img('livestream::images/no_image.png') ?>);">
+        <?php if($livestream['featured']): ?>
+            <div class="featured">
+                <i class="ion-ios-star-outline"></i>
+            </div>
+        <?php endif ?>
+    </a>
+    <div class="details">
+        <div class="title"><?php echo $livestream['title'] ? $livestream['title'] : lang('livestream::untitled-livestream') ?></div>
+        <small class="time muted timeago" title="<?php echo date('c', $livestream['start_timestamp']) ?>"><?php echo date('c', $livestream['start_timestamp']) ?></small>
+        <div class="stat">
+            <div class="left">
+                <div class="user">
+                    <a ajax="true" href="<?php echo $host['link'] ?>" class="name"><?php echo $host['name'] ?></a>
+                </div>
+                <div class="count view"><?php echo $livestream['views']; ?> <?php echo lang('livestream::views'); ?></div>
+            </div>
+            <div class="right">
+                <div class="actions">
+                    <span class="livestream-social-share-link"><?php if($livestream['privacy'] == 1 && plugin_loaded('sharer')) echo view('sharer::share_link', array('link' => url("livestream/".$livestream['slug']))) ?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

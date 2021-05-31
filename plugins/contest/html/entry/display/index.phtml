@@ -1,0 +1,12 @@
+<div class="box">
+    <div class="title"><?php echo $contest['name']; ?></div>
+    <div class="box-content">
+        <?php echo view("contest::entry/display/head",array('entry'=>$entry,'contest'=>$contest)) ?>
+        <?php echo $view; ?>
+    </div>
+</div>
+<?php
+$refId = $entry['id'];
+$refName = $entry['ref_name'];
+?>
+<?php echo view("contest::footer-comment",array('refName'=>$refName,'refId'=>$refId)); ?>

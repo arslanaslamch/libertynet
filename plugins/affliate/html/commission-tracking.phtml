@@ -1,0 +1,85 @@
+<?php echo view("affliate::tm"); ?>
+<div class="box">
+    <div class="title"><?php echo lang("affliate::commsion-tracking"); ?></div>
+    <div class="box-content">
+        <div class="container row">
+            <div class="app-header-wrapper">
+                <form class="form row" action="" method="post">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label><?php echo lang("affliate::client-name"); ?></label>
+                            <input autocomplete="off"  id="name" class="form-control" name="val[name]" />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <?php $from =  (input('val.from_date')) ? input('val.from_date') : date('m/d/Y',(strtotime('-6 days')));?>
+                        <?php $end =  (input('val.end_date')) ? input('val.end_date') : date('m/d/Y',time());?>
+                        <div class="form-group">
+                            <label><?php echo lang("affliate::purchase-date"); ?></label>
+                            <input autocomplete="off"  class="form-control" id="startDate" name="val[from_date]" value="<?php echo $from ?>" />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label style="color:#f2f4f6">.</label>
+                            <input autocomplete="off" class="form-control" id="endDate" name="val[end_date]" value="<?php echo $end; ?>" />
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label><?php echo lang("affliate::payment-type"); ?></label>
+                            <select id="ptype" name="val[ptype]" class="form-control">
+                                <option value="any"><?php echo lang("affliate::any"); ?></option>
+                                <?php foreach(get_commissions_list() as $k=>$v): ?>
+                                    <option value="<?php echo toAscii($v) ?>"><?php echo $v; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label><?php echo lang("affliate::status"); ?></label>
+                            <select id="status" name="val[status]" class="form-control">
+                                <option value="any"><?php echo lang("affliate::any"); ?></option>
+                                <?php foreach(get_aff_commission_status() as $k=>$v): ?>
+                                    <option value="<?php echo $k ?>"><?php echo $v; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="col-sm-12">
+                            <div class="">
+                                <button class="btn btn-block btn-info submit-filter-com-track"><?php echo lang("affliate::search"); ?></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-wrapper" id="comissonTrack">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th style=""><?php echo lang("affliate::purchased-date"); ?></th>
+                        <th style=""><?php echo lang("affliate::client-name"); ?></th>
+                        <th style=""><?php echo lang("affliate::payment-type"); ?></th>
+                        <th style=""><?php echo lang("affliate::total-amount"); ?></th>
+                        <th style=""><?php echo lang("affliate::comission-rate"); ?></th>
+                        <th style=""><?php echo lang("affliate::comission-amount"); ?></th>
+                        <th style=""><?php echo lang("affliate::comission-points"); ?></th>
+                        <th style=""><?php echo lang("affliate::reason"); ?></th>
+                        <th style=""><?php echo lang("affliate::status"); ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php echo view("affliate::commission-tracking-row",array('from'=>$from,'end'=>$end,'admin'=>'no')); ?>
+                    </tbody>
+                </table>
+                <div class="indicator" ><img src="<?php echo img('images/loading.gif')?>"/></div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="ad" value="n" />

@@ -1,0 +1,120 @@
+<div class="box">
+    <div class="box-content">
+        <div class="container" style="padding: 0">
+            <div class="col-sm-12">
+                <div class="row">
+                <div class="col-sm-6" style="clear: both">
+                    <div class="left-product-side">
+                        <div id="main_image_container">
+                            <img
+                                 src="<?php echo ($product['main_photo']) ? url_img($product['main_photo']) : img("store::images/comingsoon.png"); ?>"
+                                 alt="<?php echo $product['name'] . ' image'; ?>" id="main_image" class="img img-responsive" />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="right-product-side">
+                        <div class="seller-info">
+                            <?php
+                            $seller = lpGetStoreById($product['store_id'],'user_id');
+                            $user = find_user($seller);
+                            $storeDetails = lpGetStoreById($product['store_id'],null);
+                            $store_owner_img = $storeDetails['image'];
+
+                            ?>
+                            <div  class="media media-sm">
+                                <div class="media-left">
+                                    <div class="media-object">
+                                        <img class="img-circle" src="<?php echo ($store_owner_img) ? url_img($store_owner_img,200) : get_avatar(200, $user)?>"/>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+
+                                <span class="help-block" style="display: block;font-size:12px">
+                                    <?php echo lang('store::sold-by') ?>
+                                </span>
+                                    <h4 class="media-heading" style="margin-top:0"><a ajax="true" href="<?php echo url_to_pager('store-profile',array('slug'=>$storeDetails['slug']))?>"><?php echo $storeDetails['name']?></a>&nbsp;<?php verify_badge($storeDetails) ?></h4>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <h2 class="single-page-product-title"><?php echo ucwords($product['name']); ?></h2>
+                        <input type="hidden" id="RatingStatus" value="<?php echo (hasRated('product',$product['id'])) ? 'yes' : 'no' ?>"/>
+                        <div data-type="product" data-typeid="<?php echo $product['id'] ?>" class="product-rating-container" data-myrating="<?php echo getUserRating('product',$product['id']) ?>">
+                            <?php $r = getItemRatings('product',$product['id']);
+                            $rating = getAverageRating($r);
+                            ?>
+
+                            <span style="pointer-events:none; cursor: not-allowed">
+                                <input type="hidden" id="myProductrating" value="<?php echo getUserRating('product',$product['id']) ?>" />
+                                <i data-id="1" class="ion-android-star <?php echo ($rating > 0) ? 'background-rating' : '' ?> star1 rating"></i>
+                                <i data-id="2" class="ion-android-star <?php echo ($rating > 1) ? 'background-rating' : '' ?>  star2 rating"></i>
+                                <i  data-id="3" class="ion-android-star <?php echo ($rating > 2) ? 'background-rating' : '' ?> star3 rating"></i>
+                                <i data-id="4" class="ion-android-star <?php echo ($rating > 3) ? 'background-rating' : '' ?> star4 rating"></i>
+                                <i  data-id="5" class="ion-android-star <?php echo ($rating > 4) ? 'background-rating' : '' ?> star5 rating"></i>
+                            </span>
+
+                            <!--<a class="btn btn-sm btn-primary" style="float: right"><i class="ion-heart"></i><?php /*echo lang('store::like-this-item')*/?> </a>-->
+                        </div>
+                        <hr/>
+
+                        <!--Other Attributes-->
+                        <?php if($product['labels']): ?>
+                            <?php $labels = perfectUnserialize($product['labels']); $i = 1;?>
+                            <?php foreach($labels as $k=>$v):
+                                $options = explode(',',$v);
+                                if(empty($options) || empty($v)) continue;
+                                ?>
+                                <div style="display: inline-block;min-width: 80px" class="form-group inline-form">
+
+                                    <label style="display: block"><?php echo ucfirst($k); ?></label>
+                                    <input type="hidden" value="<?php echo $k; ?>" id="attr_<?php echo $i;  ?>"/>
+                                    <select class="c-select attributes">
+
+                                        <?php foreach($options as $o):?>
+                                            <?php if(empty($o)) continue;?>
+                                            <option value="<?php echo $o ?>"><?php  echo ucwords($o); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <?php $i++; endforeach; ?>
+                        <?php endif; ?>
+                        <div style="display: inline-block;min-width: 80px" class="form-group inline-form">
+                            <?php if(!isOutofStock($product)): ?>
+                                <label style="display: block" for="quantity"><?php echo ucwords(lang("store::quantity")); ?> </label>
+                                <input value="1" style="font-size: 12px !important;display: inline; max-width: 150px" min="1" max="<?php echo $product['quantity'] ?>" class="form-control" type="number" id="quantity" name="quantity" />
+                            <?php else: ?>
+                                <span> <?php echo lang("store::out-of-stock"); ?></span>
+                            <?php endif;?>
+                        </div>
+                        <hr/>
+                        <!--<div class="quantity">
+                            <label for="quantity"><?php /*echo ucwords(lang("store::quantity")); */?> </label>
+                            <input value="1" style="font-size: 12px !important;display: inline; max-width: 150px" class="form-control" type="number" id="quantity" name="quantity" />
+                        </div>-->
+                        <h4><span class="price"> <?php echo config('currency-sign','$').''.number_format((float)getProductPrice($product),2,'.',','); ?> </span><?php echo (getProductDiscountedPrice($product)) ? '<small class="strikethroug">'. config('currency-sign','$').''.number_format((float)$product['price'],2,'.',',').'</small>': '' ?></h4>
+                        <div class="add-to-cart">
+                            <input id="successMessage" value="<?php echo lang('store::success-added-cart') ?>" type="hidden"/>
+                            <input id="processing" value="<?php echo lang('store::processing') ?>" type="hidden"/>
+
+                            <?php if(!isOutofStock($product)): ?>
+                                <button data-toggle="tooltip" title="<?php echo lang("store::add-to-cart")?>" data-id="<?php echo $product['id']; ?>" style="background: none !important;color: <?php echo config('button-bg-color','#F62459') ?> !important" id="add-to-cart" class="btn btn-lg btn-info"><?php echo lang('store::add-to-cart') ?></button>
+                            <?php endif; ?>
+                            <button data-toggle="tooltip" title="<?php echo lang("store::add-to-wishlist") ?>" data-id="<?php echo $product['id']; ?>" style="background: none !important;color:<?php echo config('button-bg-color','#F62459') ?> !important" id="save-to-wishlist" class="btn btn-lg btn-info"><i class="ion-heart"></i> </button>
+                            <!--<button data-toggle="tooltip" title="<?php /*echo lang("store::share-to-feed") */?>" data-id="<?php /*echo $product['id']; */?>" style="background: none !important;color: #f62459 !important" id="share-to-field" class="btn btn-lg btn-info"><i class="ion-reply"></i> </button>-->
+
+                            <?php if(config('enable-product-social-sharing',true)): ?>
+                                <span id="product-social-share">
+                                     <?php if(plugin_loaded('sharer')) echo view('store::share_link', array('link' => url_to_pager('single-product', array('slugs' => $product['slug'])))) ?>
+                                 </span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

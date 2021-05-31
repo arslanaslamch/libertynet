@@ -1,0 +1,140 @@
+<div class="md-container">
+	<div class="box">
+		<div class="title"><?php echo lang('edit-quiz') ?></div>
+		<div>
+			<?php if($message): ?>
+				<div class="alert alert-danger"><?php echo $message ?></div>
+			<?php endif ?>
+			<form action="" method="post" enctype="multipart/form-data" class="ajax-form">
+				<?php CSRFProtection::embed() ?>
+				<?php if($message): ?>
+					<div class="alert alert-danger"><?php echo $message ?></div>
+				<?php endif ?>
+				<div class="field">
+					<div class="left">
+						<label class="control-label"><?php echo lang('quiz::category') ?></label>
+					</div>
+					<div class="right">
+                        <div class="magic-select" data-name="val[category]" data-width="200px">
+                            <input type="hidden" name="val[category]" value="<?php echo $quiz['category_id'] ?>" class="magic-select-value"/>
+                            <?php $categories = get_quiz_categories(); ?>
+                            <?php $category = get_quiz_category($quiz['category_id']); ?>
+                            <div class="magic-select-toggle">
+                                <?php echo $category ? lang($category['title']) : lang('select-category') ?>
+                            </div>
+                            <div class="magic-select-content">
+                                <?php foreach($categories as $category): ?>
+                                    <?php $sub_categories = get_quiz_parent_categories($category['id']) ?>
+                                    <?php if($sub_categories): ?>
+                                        <div class="magic-select-label"><?php echo lang($category['title']) ?></div>
+                                        <?php foreach($sub_categories as $cat): ?>
+                                            <div class="magic-select-option" data-value="<?php echo $cat['id'] ?>">
+                                                <?php echo lang($cat['title']) ?>
+                                            </div>
+                                        <?php endforeach ?>
+                                    <?php else: ?>
+                                        <div class="magic-select-option" data-value="<?php echo $category['id'] ?>">
+                                            <?php echo lang($category['title']) ?>
+                                        </div>
+                                    <?php endif ?>
+                                <?php endforeach ?>
+                            </div>
+                        </div>
+					</div>
+				</div>
+				<div class="field">
+					<div class="left">
+						<label class="control-label"><?php echo lang('quiz::quiz-title') ?></label>
+					</div>
+					<div class="right">
+						<input value="<?php echo $quiz['title'] ?>" type="text" class="form-control" name="val[title]" placeholder="<?php echo lang('quiz::quiz-title') ?>"/>
+					</div>
+				</div>
+				<div class="field">
+					<div class="left">
+						<label class="control-label"><?php echo lang('quiz::pass-mark') ?></label>
+					</div>
+					<div class="right">
+						<input value="<?php echo $quiz['pass_mark'] ?>" type="text" class="form-control" name="val[pass_mark]" placeholder="<?php echo lang('quiz::pass-mark') ?>"/>
+					</div>
+				</div>
+				<div class="field">
+					<div class="left">
+						<label class="control-label"><?php echo lang('quiz::quiz-content') ?></label>
+					</div>
+					<div class="right">
+						<textarea name="val[content]" class="ckeditor" placeholder="<?php echo lang('quiz::quiz-content') ?>"><?php echo input('val.content', $quiz['content'], false) ?></textarea>
+
+					</div>
+					<div class="field">
+						<div class="left">
+							<label class="control-label"><?php echo lang('quiz::tags') ?></label>
+						</div>
+						<div class="right">
+							<input type="text" name="val[tags]" class="form-control" value="<?php echo $quiz['tags'] ?>" placeholder="<?php echo lang('quiz::tags') ?>">
+						</div>
+					</div>
+					<div class="field">
+						<div class="left">
+							<label class="control-label"><?php echo lang('quiz::preview-image') ?></label>
+						</div>
+						<div class="right">
+							<div class="magic-input-image-preview" data-name="image" data-image="<?php echo $quiz['image'] ? url_img($quiz['image'], 200) : '' ?>">
+								<span class="dimension"></span>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<div class="left">
+							<label class="control-label"><?php echo lang('status') ?></label>
+						</div>
+						<div class="right">
+							<div class="magic-select" data-value="<?php echo $quiz['status'] ?>" data-name="val[status]" data-width="200px">
+								<div class="magic-select-toggle">
+									<?php echo $quiz['status'] ? lang('quiz::published') : lang('quiz::draft') ?>
+								</div>
+								<div class="magic-select-content">
+									
+									<div class="magic-select-option" data-value="0"><?php echo lang('quiz::draft') ?></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<div class="left">
+							<label class="control-label"><?php echo lang('publisher') ?></label>
+						</div>
+						<div class="right">
+							<div class="magic-select" data-name="val[entity]" data-width="200px">
+								<input type="hidden" name="val[entity]" value="<?php echo $quiz['entity_type'] ?>-<?php echo $quiz['entity_id'] ?>" class="magic-select-value"/>
+								<div class="magic-select-toggle">
+									<?php $publisher = get_quiz_publisher($quiz) ?>
+									<img src="<?php echo $publisher['avatar'] ?>" class="thumb"/>
+									<?php echo $publisher['name'] ?>
+								</div>
+								<div class="magic-select-content slimscroll" data-height="200px">
+									<div class="magic-select-option" data-value="user-<?php echo get_userid() ?>">
+										<img src="<?php echo get_avatar(75) ?>" class="thumb"/>
+										<?php echo get_user_name(); ?>
+									</div>
+									<?php fire_hook('entity.select.list') ?>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<div class="left">
+							<label class="control-label"><?php echo lang('privacy') ?></label>
+						</div>
+						<div class="right">
+							<?php fire_hook('privacy.select'); ?>
+						</div>
+					</div>
+					<div class="submit">
+						<button class="btn btn-info action-button"><?php echo lang("save") ?></button>
+						<a href="javascript::void(0)" onclick="return confirm.url('<?php echo url('quiz/manage?type=delete&id='.$quiz['id']) ?>')" class="btn btn-danger action-button"><?php echo lang('quiz::delete-quiz') ?></a>
+					</div>
+			</form>
+		</div>
+	</div>
+</div>

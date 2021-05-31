@@ -1,0 +1,47 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php _lang('store::success_payouts')?>
+    </div>
+    <div class="wrapper-content">
+        <table class="table storeTable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th><?php echo lang("store::store-name") ?></th>
+                <th><?php echo lang("store::store-owner");?></th>
+                <th><?php echo lang("store::amount") ?></th>
+                <th><?php echo lang("store::time");?></th>
+                <th><?php echo lang("store::method");?></th>
+                <th></th>
+            </tr>
+            </thead>
+            <?php if($payouts->total):
+                $i=1;
+                ?>
+
+                <tbody>
+                <?php foreach($payouts->results() as $p):
+                    $store = lpGetStoreById($p['store_id']);
+                    $userid = $store['user_id'];
+
+                    ?>
+                    <tr>
+                        <td><?php echo $i; ?></td>
+                        <td><?php echo $store['name']; ?></td>
+                        <td><?php echo config('currency-sign','$').number_format((float)$p['amount'],'2','.',',');;?></td>
+                        <td><a href="<?php echo profile_url(null,find_user($userid)); ?>"> <?php echo get_user_name(find_user($userid)); ?></a></td>
+                        <td><?php echo date('M j , y  h:i A', $p['time']) ?></td>
+                        <td><?php echo strtoupper($p['method'])?></td>
+                        <td class="text-success"><i class="ion-checkmark-circled"></i> </td>
+                    </tr>
+                <?php $i++; endforeach?>
+
+                </tbody>
+
+            <?php else: ?>
+                <div class="alert alert-info"><?php echo lang('store::no-category-found'); ?></div>
+            <?php endif; ?>
+
+        </table>
+    </div>
+</div>

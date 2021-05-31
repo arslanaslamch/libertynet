@@ -1,0 +1,23 @@
+<div class="each-item clearfix auction">
+	<div class="left">
+		<a ajax="true" class="" href="<?php echo url_to_pager('auction-details').'?id='.$auction['id'].'&title='.$auction['title']; ?>">
+			<img id="auction_img" src="<?php echo ($auction['picture']) ? url_img($auction['picture'], 700) : get_avatar(200) ?>" width="200"/>
+		</a>
+	</div>
+	<div class="right">
+		<span class="item-title"><a href="<?php echo url_to_pager('auction-details').'?id='.$auction['id']; ?>" class=""><h6><strong id="hides"><?php echo $auction['title']; ?></strong></h6></a></span>
+		<div class="item-info">
+			<span class="price">$<?php echo $auction['reserved_price']; ?>.00 </span>
+			<br/>
+			<div class="time-bid">
+				<span id="endtime"><?php echo time_countdown($auction['end_date']); ?></span>
+				<span>&nbsp;&nbsp;<i class="fa fa-gavel" aria-hidden="true"></i><strong><?php echo count_auction_bid($auction['id']); ?></strong>&nbsp;<?php echo lang('auction::bids') ?></span>
+			</div>
+		</div>
+		<p class="item-desc showmore"><?php echo $auction['description']; ?></p>
+		<p class="compare-user">
+			<span><i class="fa fa-user" aria-hidden="true"></i>&nbsp;<a href="" ajax="true"><?php echo get_user_name($auction['user_id']); ?></a></span><span class="pull-right"><input type="checkbox" class="formp-group"><?php echo lang('auction::add-to-compare') ?></span>
+		</p>
+		<span class="auction-social-share-link"><?php if(plugin_loaded('sharer')) echo view('sharer::share_link', array('link' => url_to_pager("auction-details").'?id='.$auction['id'].'&title='.$auction['title'])) ?></span>
+	</div>
+</div>

@@ -1,0 +1,67 @@
+<div class="box">
+    <div class="photo-list">
+        <div class="head">
+            <div class="cover" style="background-image: url(<?php echo url_img(config('photo-list-cover', 'plugins/photo/images/cover.jpg'), 920); ?>)">
+                <div class="title"><?php echo lang('photo::my-albums') ?></div>
+                <div class="actions">
+                    <?php if(is_loggedIn()): ?>
+                        <a ajax="true" href="<?php echo url_to_pager('photo-create-album') ?>" class="btn btn-info action-button">
+                            <i class="ion-android-add-circle"></i>
+                            <?php echo lang('photo::create-new-album') ?>
+                        </a>
+                    <?php endif ?>
+                </div>
+                <div class="links">
+                    <div class="link <?php echo segment(0) === 'photos' ? 'active' : '' ?>">
+                        <a ajax="true" href="<?php echo url_to_pager('photo') ?>"><?php echo lang('photo::all-photos') ?></a>
+                    </div>
+                    <?php if(is_loggedIn()): ?>
+                        <div class="link <?php echo segment(0) === 'photo' && segment(1) === 'myphotos' ? 'active' : '' ?>">
+                            <a ajax="true" href="<?php echo url_to_pager('photo-myphotos') ?>"><?php echo lang('photo::my-photos') ?></a>
+                        </div>
+                    <?php endif ?>
+                    <div class="link <?php echo segment(0) === 'photo' && segment(1) === 'albums' ? 'active' : '' ?>">
+                        <a ajax="true" href="<?php echo url_to_pager('photo-albums') ?>"><?php echo lang('photo::all-albums') ?></a>
+                    </div>
+                    <div class="link <?php echo segment(0) === 'photo' && segment(1) === 'myalbums' ? 'active' : '' ?>">
+                        <a ajax="true" href="<?php echo url_to_pager('photo-myalbums') ?>"><?php echo lang('photo::my-albums') ?></a>
+                    </div>
+                    <?php foreach(get_menus('photo-menu') as $menu): ?>
+                        <div class="link">
+                            <a ajax="true" href="<?php echo $menu->title ?>"><?php echo lang($menu->title) ?></a>
+                        </div>
+                    <?php endforeach ?>
+                    <?php echo fire_hook('more.photo.menu');?>
+                </div>
+            </div>
+        </div>
+        <div id="photos-list-container" class="box box-content clearfix list-listing-container">
+            <div id="photo-album-lists" class="box-content photos-list clearfix" data-type="user" data-id="<?php echo get_userid() ?>" data-offset="0" data-link="<?php echo url_to_pager('photo-album-photos') ?>" style="margin: 0px;box-shadow: 0px 0px 0px #FFFFFF;border-radius: 0px;border: none;">
+                <?php foreach($myalbums as $album): ?>
+                    <?php
+                    $user = find_user($album['entity_id']);
+                    $username = $user['username'];
+                    $first_name = $user['first_name'];
+                    $last_name = $user['last_name'];
+                    $user_name = "$first_name $last_name";
+                    $user_name = trim($user_name) == '' ? $username : $user_name;
+                    ?>
+                    <?php $album = arrange_photo_album($album); ?>
+                    <div class="photo album">
+                        <div>
+                            <a class="image" style="background-image:url(<?php echo $album['image'] ?>)" ajax="true" href="<?php echo (isset($link)) ? $link : url_to_pager('photo-album-photos').'?id='.$album['id'] ?>"></a>
+                            <div class="info">
+                                <span class="album-title"><?php echo str_limit($album['title'], 22) ?></span>
+                                <span class="album-photos-count pull-right"><i class="ion-camera"></i> <?php echo $album['photo-count'] ?></span>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach ?>
+            </div>
+            <a id="photos-list-indicator" href="" onclick="return paginate_photo_albums()" class="title" style="display: block;text-align: center">
+                <?php echo lang('view-more') ?>
+                <img src="<?php echo img('images/loading.gif') ?>" style="width: 10px;display: none"/>
+            </a>
+        </div>
+    </div>
+</div>

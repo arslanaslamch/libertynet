@@ -1,0 +1,46 @@
+<div class="box">
+    <div class="title">
+        <?php echo lang("store::shipping-settings") ?>
+        <a class="btn btn-info right" href="<?php echo url_to_pager('add-shipping') ?>">
+            <?php echo lang("store::add-new-shipping-settings") ?>
+        </a>
+    </div>
+    <div class="box-content">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th><?php echo lang("store::zone"); ?></th>
+                <th><?php echo lang("store::regions"); ?></th>
+                <th><?php echo lang("store::shipping-method"); ?></th>
+                <th><?php echo lang("store::amount"); ?></th>
+                <th><?php echo lang("store::action"); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+                <?php if($shipping): ?>
+                <?php foreach($shipping as $s): ?>
+                <tr>
+                    <td><?php echo $s['zone']; ?></td>
+                    <td><?php
+                        $countries = unserialize($s['regions']);
+                        foreach($countries as $c){
+                            echo '<span class="country-regions">'.ucwords($c).'</span>';
+                        }
+                        //echo $s['amount']; ?>
+                    </td>
+                    <td><?php echo ($s['shipping_method'] == 'flat-rate') ? lang("store::flat-rate") : lang("store::free-shipping"); ?></td>
+                    <td><?php echo ($s['amount']) ? formatPriceNumber($s['amount']) : lang('store::free-shipping'); ?></td>
+                    <td>
+                        <a ajax="true" class="btn btn-secondary" href="<?php echo url_to_pager('manage_shipping').'?id='.$s['id'].'&action=edit'; ?>" ><?php echo lang("edit") ?></a>
+                        <a ajax="true" class="btn btn-danger" href="<?php echo url_to_pager('manage_shipping').'?id='.$s['id'].'&action=edit';?>"><?php echo lang('delete'); ?></a>
+                    </td>
+
+                </tr>
+                 <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><div class="alert alert-info"><?php echo lang("store::no-shipping-settings-found") ?></div></tr>
+                <?php endif ?>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,97 @@
+<div id="delete-business" class="business business-content box">
+
+	<div class="panel panel-primary">
+		<div class="panel-body">
+			<article class="">
+				<div class="business-head">
+					<div class="business-title business-detail">
+						<a href="<?php echo url_to_pager('business-page', array('slug' => $business['slug'])); ?>">
+							<h1><?php echo $business['business_name'] ?></h1>
+						</a>
+					</div>
+					<div class="business-address business-detail">
+						<i class="ion-ios-location"></i> <?php echo $business['company_address']; ?>
+					</div>
+					<?php if(trim($business['tags'], ',') != ""): ?>
+						<div id="business-tags" class="business-tags business-detail"><?php foreach(explode(',', trim($business['tags'], ',')) as $tag): ?> #<?php echo trim($tag) ?><?php endforeach ?></div><?php endif ?>
+					<div class="business-links business-detail"><?php if($business['user_id'] == get_userid()): ?>
+							<a href="<?php echo url_to_pager('business-edit-business') ?>?id=<?php echo $business['id'] ?>" class=" ajax="" ><?php echo lang('business::edit') ?></a> · 
+							<a href="<?php echo url_to_pager('business-delete-business') ?>?id=<?php echo $business['id'] ?>" class="" ajax="true"><?php echo lang('business::remove') ?></a> · 
+							<?php if(filter_var($business['website'], FILTER_VALIDATE_URL)): ?>
+								<a href="<?php echo $business['website'] ?>" class=""><?php echo lang('business::link') ?></a> · 
+							<?php endif ?>
+							<?php if(plugin_loaded('sharer')) echo view('sharer::share_link') ?>
+						<?php endif ?>
+						<?php if(is_loggedIn() and plugin_loaded('report')): ?>
+							<a data-type="group" data-link="<?php echo url_to_pager('business-page', array('slug' => $business['slug'])) ?>" class="report-btn" style="font-size:10.8px !important;" href=""><i class="ion-flag"></i></a> ·
+						<?php endif ?>
+						<?php if($business['paid'] != 0): ?>
+							<?php $check_f = check_business_followers($business['id']); ?>
+							<?php if($check_f == '1'): ?>
+								<a href="#" data-action="unfollow" data-id="<?php echo $business['slug'] ?>" onclick="return businessFollow(this)"><?php echo lang('business::unfollow') ?></a>
+							<?php else: ?>
+								<a href="#" data-action="follow" data-id="<?php echo $business['slug'] ?>" onclick="return businessFollow(this)"><?php echo lang('business::follow') ?></a>
+							<?php endif; ?>
+							<span class="badge" id="fcount"><?php echo rowscount('business_member', $business['id']) ?></span>
+						<?php endif; ?> · 
+						<?php if($business['paid'] != 0): ?>
+							<?php $check_fa = check_business_favourite($business['id']); ?>
+							<?php if($check_fa == '1'): ?>
+								<a title="Favourite" href="#" data-id=<?php echo $business['slug'] ?> data-action="unfavourite" onclick="return businessFavourite(this)">
+									<i id="faicon" class="ion-android-star business-favourite"></i></a>
+							<?php else: ?>
+								<a href="#" title="Favourite" data-id=<?php echo $business['slug'] ?> data-action="favourite" onclick="return businessFavourite(this)">
+									<i id="faicon" class="ion-android-star business-unfavourite"></i></a>
+							<?php endif; ?>
+						<?php endif; ?>
+						<span class="badge" id="facount"><?php echo rowscount('business_favourite', $business['id']) ?></span>
+
+					</div>
+				</div>
+				<a href="#" data-toggle="modal" data-target="#provide-help-modal">
+					<span class="pull-right btn btn-info "> Write Review </span></a>
+			</article>
+		</div>
+	</div>
+	<hr>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3>Reviews</h3>
+		</div>
+		<div class="panel-body">
+			<?php foreach($reviews->results() as $review): ?>
+				<div class="business-description">
+					<a href=""> <?php echo(get_user_email($review['user_id'])['username']); ?>: </a><?php echo $review['comment']; ?>
+				</div>
+			<?php endforeach; ?>
+		</div>
+		<?php echo $reviews->links(true) ?>
+	</div>
+	<div class="modal fade" id="provide-help-modal" tabindex="-1" role="dialog" aria-labelledby="Review" aria-hidden="true">
+		<div class="modal-dialog">
+
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="Login">Write Review</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+				<div class="modal-body">
+					<form action="" method="post" class="adm">
+						<?php CSRFProtection::embed() ?>
+						<div class="alert alert-success">Reviews<strong><?php ?></strong>?
+						</div>
+						<?php if($message): ?>
+							<div class="alert alert-danger"><?php echo $message ?></div>
+						<?php endif ?>
+						<input type="hidden" value="<?php echo get_userid(); ?>" name="val[user_name]">
+						<input type="hidden" value="<?php echo $business_id; ?>" name="val[business_id]">
+						<div class="form-group">
+							<textarea class="form-control ckeditor" rows="3" id="comment" name="val[reviews]" placeholder="Wite Your Reviews"></textarea>
+						</div>
+						<button type="submit" class="btn btn-primary"> Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

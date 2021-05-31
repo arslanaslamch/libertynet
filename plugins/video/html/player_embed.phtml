@@ -1,0 +1,23 @@
+<style>
+    body {
+        background-color: transparent;
+    }
+
+    div#chat-boxes-container {
+        display: none !important;
+    }
+</style>
+
+<div class="box-content video-player-container">
+    <?php if ($video['source'] == 'upload') : ?>
+        <?php if ($video['status'] == 0) : ?>
+            <div class="video-in-processing">
+                <?php echo lang('video::video-in-processing') ?>
+            </div>
+        <?php else : ?>
+            <iframe id="video-iframe" class="video-iframe" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" style="border: none;padding: 0 !important;margin:0 10px;border-radius: 3px;overflow: hidden;width: 96%;" src="<?php echo url_to_pager("play-video") . '?link=' . $video['file_path'] ?>&height=430" width="94%" height="450"></iframe>
+        <?php endif ?>
+    <?php else : ?>
+        <div class="external-video"><?php echo set_iframe_link_param($video['code'], array('rel' => 0)) ?></div>
+    <?php endif ?>
+</div>

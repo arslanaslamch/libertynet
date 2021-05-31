@@ -1,0 +1,203 @@
+<div class="box">
+    <div class="title"><?php echo lang("blog::blogs") ?><?php fire_hook("profile.blog.title")?>
+
+    <span class="pull-right">
+        <a href=""  type="button" data-toggle="modal" data-target="#create-blog-modal">Add Post</a>
+        <div class="modal fade" id="create-blog-modal" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<form action="<?php echo url_to_pager('blog-add'); ?>" method="post" enctype="multipart/form-data" class="ajax-form">
+							<div class="modal-form-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<p class="modal-title"><?php echo lang('blog::new-blog') ?></p>
+							</div>
+							<div class="modal-body">
+								<?php CSRFProtection::embed() ?>
+								<div class="field">
+									<div class="top">
+										<label class="control-label"><?php echo lang('blog::category') ?></label>
+									</div>
+									<div class="bottom">
+                                        <div class="magic-select" data-name="val[category]" data-width="200px">
+                                            <?php $categories = get_blog_categories(); ?>
+                                            <div class="magic-select-toggle">
+                                                <?php echo lang('select-category') ?>
+                                            </div>
+                                            <div class="magic-select-content">
+                                                <?php foreach($categories as $category): ?>
+                                                    <?php $sub_categories = get_blog_parent_categories($category['id']) ?>
+                                                    <?php if($sub_categories): ?>
+                                                        <div class="magic-select-label"><?php echo lang($category['title']) ?></div>
+                                                        <?php foreach($sub_categories as $cat): ?>
+                                                            <div class="magic-select-option" data-value="<?php echo $cat['id'] ?>">
+                                                                <?php echo lang($cat['title']) ?>
+                                                            </div>
+                                                        <?php endforeach ?>
+                                                    <?php else: ?>
+                                                        <div class="magic-select-option" data-value="<?php echo $category['id'] ?>">
+                                                            <?php echo lang($category['title']) ?>
+                                                        </div>
+                                                    <?php endif ?>
+                                                <?php endforeach ?>
+                                            </div>
+                                        </div>
+									</div>
+								</div>
+								<div class="field">
+									<div class="top">
+										<label class="control-label"><?php echo lang('blog::blog-title') ?></label>
+									</div>
+									<div class="bottom">
+										<input value="<?php echo input('val.title') ?>" type="text" class="form-control" name="val[title]" placeholder="<?php echo lang('blog::blog-title') ?>"/>
+									</div>
+								</div>
+								<div class="field">
+									<div class="top">
+										<label class="control-label"><?php echo lang('blog::blog-content') ?></label>
+									</div>
+									<div class="bottom">
+										<textarea name="val[content]" class="ckeditor" placeholder="<?php echo lang('blog::blog-content') ?>"><?php echo input('val.content') ?></textarea>
+									</div>
+								</div>
+								<div class="field">
+									<div class="top">
+										<label class="control-label"><?php echo lang('blog::tags') ?></label>
+									</div>
+									<div class="bottom">
+										<input type="text" name="val[tags]" class="form-control" value="<?php echo input('val.tags') ?>" placeholder="<?php echo lang('blog::tags') ?>">
+									</div>
+								</div>
+								<div class="field">
+									<div class="top">
+										<label class="control-label"><?php echo lang('blog::preview-image') ?></label>
+									</div>
+									<div class="bottom">
+										<div class="magic-input-image-preview" data-name="image">
+											<span class="dimension"></span>
+										</div>
+									</div>
+								</div>
+								<div class="field">
+									<div class="top">
+										<label class="control-label"><?php echo lang('status') ?></label>
+									</div>
+									<div class="bottom">
+										<div class="magic-select" data-name="val[status]" data-width="200px">
+											<div class="magic-select-toggle">
+												<?php echo lang('blog::published') ?>
+											</div>
+											<div class="magic-select-content">
+												<div class="magic-select-option" data-value="1"><?php echo lang('blog::published') ?></div>
+												<div class="magic-select-option" data-value="0"><?php echo lang('blog::draft') ?></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--<div class="field">
+									<div class="top">
+										<label class="control-label"><?php /*echo lang('publisher') */?></label>
+									</div>
+									<div class="bottom">
+										<div class="magic-select" data-name="val[entity]" data-width="300px">
+											<div class="magic-select-toggle">
+												<img src="<?php /*echo get_avatar(75) */?>" class="thumb"/>
+												<?php /*echo get_user_name(); */?>
+											</div>
+											<div class="magic-select-content slimscroll" data-height="200px">
+												<div class="magic-select-option" data-value="user-<?php /*echo get_userid() */?>">
+													<img src="<?php /*echo get_avatar(75) */?>" class="thumb"/>
+													<?php /*echo get_user_name(); */?>
+												</div>
+												<?php /*fire_hook('entity.select.list') */?>
+											</div>
+										</div>
+									</div>
+								</div>-->
+                                <input type="hidden" name="val[entity]" class="magic-select-value" value="store-<?php echo app()->profileStore['s_id'] ?>">
+                                <?php fire_hook('more.blog.field') ?>
+								<div class="field">
+									<div class="top">
+										<label class="control-label"><?php echo lang('privacy') ?></label>
+									</div>
+									<div class="bottom">
+										<?php fire_hook('privacy.select'); ?>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<div class="submit">
+									<input type="submit" class="btn btn-default" value="<?php echo lang("blog::add") ?>"/>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+    </span>
+    </div>
+    <div id="blogs-list-container" class="box-content clearfix list-listing-container">
+        <?php if($blogs->total): ?>
+            <?php /*foreach($blogs->results() as $blog): */?><!--
+                <?php /*$blog = arrange_blog($blog); */?>
+                <?php /*$user = find_user($blog['user_id']) */?>
+                <div class="media media-lg">
+                    <div class="media-left">
+                        <div class="media-object">
+                            <img src="<?php /*echo ($blog['image']) ? url_img($blog['image'], 700) : get_avatar(200, $user) */?>"/>
+                        </div>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <a ajax="true" href="<?php /*echo url('blog/'.$blog['slug']) */?>"><?php /*echo $blog['title'] */?></a>
+                        </h4>
+                        <span class="help-block" style="display: block">
+                            <?php /*echo lang('blog::publisher') */?>: <a ajax="true" href="<?php /*echo url($blog['publisher']['id']) */?>"><?php /*echo $blog['publisher']['name'] */?></a>
+							<?php /*echo lang('blog::on') */?> <?php /*echo date('M j , y  h:i A', $blog['time']) */?>
+						</span>
+                        <div><?php /*echo strip_tags(str_limit($blog['content'], 100)) */?></div>
+                    </div>
+                </div>
+            --><?php /*endforeach */?>
+            <?php foreach($blogs->results() as $blog): ?>
+
+                <?php $blog = arrange_blog($blog); ?>
+
+                <?php $user = find_user($blog['user_id']) ?>
+
+                <?php $refId = $blog['id'];
+
+                $refName = 'blog';
+
+                $ext_url = urldecode($blog['ext_link'])
+                ?>
+
+                <div class="each-item clearfix blog-list podcast">
+                    <?php if(is_blog_owner($blog)): ?>
+                        <span class="modify-nd"><a href="<?php echo url('blog/manage?type=edit&id='.$blog['id']) ?>"><i class="ion-edit"></i></a></span>
+                    <?php endif; ?>
+
+
+                    <div id="podcast-list" class="box podcast-list podcast-directory" data-type="user-all" data-id="<?php echo get_userid() ?>" data-offset="0" style="margin: 0px;box-shadow: 0px 0px 0px #FFFFFF;border-radius: 0px;border: none;">
+                        <div class="photo" id="textrun">
+                            <?php if($ext_url): ?>
+                                <a data-toggle="tooltip" target="_blank" href="<?php echo $ext_url; ?>" class="image blog-podcast-image" style="background-image:url(<?php echo ($blog['image']) ? url_img($blog['image'], 700) : get_avatar(200, $user) ?>);"></a>
+                            <?php else: ?>
+                                <a data-toggle="tooltip"  ajax="true" href="<?php echo url('blog/'.$blog['slug']) ?>" class="image blog-podcast-image" style="background-image:url(<?php echo ($blog['image']) ? url_img($blog['image'], 700) : get_avatar(200, $user) ?>);"></a>
+                            <?php endif; ?>
+                            <span class="caption"><?php echo mb_strimwidth($blog['title'],  0, 16, "...") ?></span>
+                            <!--<span class="caption"><a ajax="true" style="font-size: 9px;" href="<?php /*echo url($blog['publisher']['id']) */?>"><?php /*echo mb_strimwidth($blog['publisher']['name'],0,14,'...'); */?></a></span>-->
+
+                        </div>
+                    </div>
+                </div>
+
+            <?php endforeach ?>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang('blog::blogs-list-empty') ?></div>
+        <?php endif ?>
+    </div>
+    <div class="box-content">
+        <?php echo $blogs->links() ?>
+    </div>
+</div>
+

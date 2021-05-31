@@ -1,0 +1,473 @@
+.night-mode-toggle i:before,
+.night-mode-toggle i {
+    font-size: 24px !important;
+    line-height: 16px;
+    vertical-align: -3px;
+}
+
+body.night-mode .night-mode-toggle i {
+    color: var(--color-header-bg) !important;
+}
+
+body.night-mode #get-started-form,
+body.night-mode #header {
+    background-color: rgb(33, 33, 33) !important;
+}
+
+body.night-mode,
+body.night-mode #main-wrapper {
+    background-color: rgb(48, 48, 48) !important;
+}
+
+body.night-mode .box,
+body.night-mode .box-content,
+body.night-mode #explore-menu,
+body.night-mode .panel-container,
+body.night-mode #sidebar-menu,
+body.night-mode #feed-editor .head,
+body.night-mode #feed-editor .body,
+body.night-mode #feed-editor .foot,
+body.night-mode .sort-feed-menu,
+body.night-mode #profile-side-info,
+body.night-mode .livechat-chatbox,
+body.night-mode .user-card-widget .stats,
+body.night-mode .users-box .clearfix,
+body.night-mode .feed_loading_post,
+body.night-mode .sp-container,
+body.night-mode .messenger,
+body.night-mode .conversations-list,
+body.night-mode .conversation > form > .head > .create,
+body.night-mode .conversation > form > .head > .create .user-suggestion-list,
+body.night-mode #businesses-list-container .item .body,
+body.night-mode #chat-boxes-container,
+body.night-mode .onlines-container .main > ul,
+body.night-mode #chat-boxes-container .onlines-container,
+body.night-mode #chat-group-modal .modal-body .chat-group-members,
+body.night-mode #chat-boxes-container .chat-boxes-wrapper .chat-box,
+body.night-mode #chat-boxes-container .chat-boxes-wrapper .chat-box .message-list,
+body.night-mode #shout-boxes-container .shout-boxes-wrapper .shout-box,
+body.night-mode #shout-boxes-container .shout-boxes-wrapper .shout-box .message-list,
+body.night-mode .grid.list .item .body,
+body.night-mode .ads-create-left,
+body.night-mode #footer,
+body.night-mode .emoticon-box,
+body.night-mode .gif-box,
+body.night-mode .info-body,
+body.night-mode .upcoming-event,
+body.night-mode .event-dashboard,
+body.night-mode .event-profile-summary,
+body.night-mode .range-time-box-span,
+body.night-mode .event-about-discussion-container,
+body.night-mode #FindEventMenu > div,
+body.night-mode #search-dropdown .search-dropdown-content,
+body.night-mode .friend-request-dropdown-result-container .user,
+body.night-mode .modal-content,
+body.night-mode #profile-menu,
+body.night-mode .profile-container .profile-actions,
+body.night-mode #profile-menu .navbar,
+body.night-mode .forum-reply-dashboard,
+body.night-mode .forum-replies-wrapper,
+body.night-mode #notification-popup,
+body.night-mode .dropdown-title,
+body.night-mode .header-dropdown-content,
+body.night-mode .people-suggestion-box .item,
+body.night-mode #get-started-form.vertical > .actions,
+body.night-mode .splash-00 .top .right .auth,
+body.night-mode #get-started-form > .content,
+body.night-mode #get-started-form > .steps .disabled a,
+body.night-mode #get-started-form > .steps .disabled a:hover,
+body.night-mode #get-started-form > .steps .disabled a:active,
+body.night-mode .splash-00 .bottom .left .auth .sessions .session,
+body.night-mode .dropdown-menu {
+    background-color: rgb(66, 66, 66) !important;
+}
+
+body.night-mode .modal-form-header {
+    background-color: rgb(99, 99, 99) !important;
+}
+
+body.night-mode .feed_loading_post_child,
+body.night-mode .feed_loading_post_child2 {
+    background-image: radial-gradient(circle 30px at 60px 30px, rgb(33, 33, 33) 99%, transparent 0), linear-gradient(100deg, rgba(99, 99, 99, 0), rgba(99, 99, 99, .5) 50%, rgba(99, 99, 99, 0) 80%), linear-gradient(rgb(99, 99, 99) 15px, transparent 0), linear-gradient(rgb(48, 48, 48) 10px, transparent 0), linear-gradient(rgb(48, 48, 48) 10px, transparent 0), linear-gradient(rgb(48, 48, 48) 10px, transparent 0);
+}
+
+body.night-mode .feed-video-player-container,
+body.night-mode .feed-video-player-container .video-title,
+body.night-mode .feed-footer .feed-comment-container,
+body.night-mode #header #header-search,
+body.night-mode #chat-boxes-container .onlines-container .online-search,
+body.night-mode #search-dropdown .search-dropdown-content #search-dropdown-full-search-button,
+body.night-mode .list-search,
+body.night-mode .people-list > .head > .filters > .top .search input[type="search"],
+body.night-mode .marketplace-list > .head > .filters > .top .search input[type="search"],
+body.night-mode .panel-container .title span,
+body.night-mode #home-container .right .action-title span,
+body.night-mode .feed-media-selected-info,
+body.night-mode .find-event-header,
+body.night-mode .marketplace .filter-pane,
+body.night-mode .feed-react .react-items,
+body.night-mode .comment-lists .comment .comment-content .contents,
+body.night-mode .box > .title {
+    background-color: rgb(70, 70, 70) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    outline-color: rgba(255, 255, 255, 0.12) !important;
+    color: rgba(255, 255, 255, .8) !important;
+}
+
+body.night-mode .splash-00 .top .right .auth form .field label input[type="password"],
+body.night-mode .splash-00 .top .right .auth form .field label input[type="text"] {
+    background-color: rgb(80, 80, 80) !important;
+}
+
+body.night-mode input,
+body.night-mode textarea {
+    background-color: transparent !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    outline-color: rgba(255, 255, 255, 0.12) !important;
+    color: rgba(255, 255, 255, .8) !important;
+}
+
+
+body.night-mode .mce-container,
+body.night-mode textarea {
+    background-color: transparent !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    outline-color: rgba(255, 255, 255, 0.12) !important;
+    color: rgba(255, 255, 255, .8) !important;
+}
+
+body.night-mode .right-col-content .media:hover,
+body.night-mode .right-col-content .media:active,
+body.night-mode .media-widget .item:hover,
+body.night-mode .media-widget .item:active,
+body.night-mode #feed-editor .feed-editor-feeling-container .feeling-right #feed-feeling-suggestion .media:hover,
+body.night-mode #feed-editor .feed-editor-feeling-container .feeling-right #feed-feeling-suggestion .media:active,
+body.night-mode #chat-boxes-container .onlines-container .online-lists .lists a:hover,
+body.night-mode #chat-boxes-container .onlines-container .online-lists .lists a:active,
+body.night-mode .blog-list:hover,
+body.night-mode .blog-list:active,
+body.night-mode .notification:hover,
+body.night-mode .notification:active,
+body.night-mode .chat-conversation:hover,
+body.night-mode .chat-conversation:active,
+body.night-mode .chat-conversation-unread,
+body.night-mode .shout-conversation:hover,
+body.night-mode .shout-conversation:active,
+body.night-mode .shout-conversation-unread,
+body.night-mode .conversation-active,
+body.night-mode #main-wrapper .box .menu .active,
+body.night-mode #main-wrapper .box .menu li:hover,
+body.night-mode #main-wrapper .box .menu li:active,
+body.night-mode .main-sidebar-menu .menu-item.active,
+body.night-mode .main-sidebar-menu .menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.night-mode input::placeholder,
+body.night-mode textarea::placeholder {
+    color: rgba(255, 255, 255, .8) !important;
+}
+
+body.night-mode #main-wrapper > .container a.btn-primary:visited,
+body.night-mode #main-wrapper > .container a.btn-primary:focus,
+body.night-mode #main-wrapper > .container a.btn-primary:active,
+body.night-mode #main-wrapper > .container a.btn-primary:hover,
+body.night-mode #main-wrapper > .container a.btn-primary,
+body.night-mode a.btn-primary:visited,
+body.night-mode a.btn-primary:focus,
+body.night-mode a.btn-primary:active,
+body.night-mode a.btn-primary:hover,
+body.night-mode a.btn-primary,
+body.night-mode .btn-primary:visited,
+body.night-mode .btn-primary:focus,
+body.night-mode .btn-primary:active,
+body.night-mode .btn-primary:hover,
+body.night-mode .btn-primary,
+body.night-mode #main-wrapper > .container a.btn-secondary:visited,
+body.night-mode #main-wrapper > .container a.btn-secondary:focus,
+body.night-mode #main-wrapper > .container a.btn-secondary:active,
+body.night-mode #main-wrapper > .container a.btn-secondary:hover,
+body.night-mode #main-wrapper > .container a.btn-secondary,
+body.night-mode a.btn-secondary:visited,
+body.night-mode a.btn-secondary:focus,
+body.night-mode a.btn-secondary:active,
+body.night-mode a.btn-secondary:hover,
+body.night-mode a.btn-secondary,
+body.night-mode .btn-secondary:visited,
+body.night-mode .btn-secondary:focus,
+body.night-mode .btn-secondary:active,
+body.night-mode .btn-secondary:hover,
+body.night-mode .btn-secondary,
+body.night-mode body.night-mode #feed-editor .editor-actions .editor-action > a,
+body.night-mode #feed-editor .editor-actions .editor-action > div > a,
+body.night-mode .feed-load-more a,
+body.night-mode .slick-prev-tweak,
+body.night-mode .slick-next-tweak,
+body.night-mode #message-chat-form .messages-pane-title.title .mediachat-call-button,
+body.night-mode #message-chat-form .messages-pane-title.title .mediachat-call-button,
+body.night-mode .pagination .page-item:not(.active) .page-link,
+body.night-mode .sp-replacer,
+body.night-mode .c-indicator,
+body.night-mode .mce-btn,
+body.night-mode option,
+body.night-mode button,
+body.night-mode .btn {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    background-color: rgb(50, 50, 50) !important;
+    color: rgba(255, 255, 255, .9) !important;
+}
+
+body.night-mode a,
+body.night-mode button i {
+    color: rgba(255, 255, 255, .9) !important;
+}
+
+body.night-mode .alert {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    color: rgba(255, 255, 255, .8) !important;
+}
+
+body.night-mode #chat-boxes-container .chat-boxes-wrapper .chat-box .message-list .message:not(.owned) .content,
+body.night-mode .conversation > form > .messaging .messages .message:not(.owned) .content {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+body.night-mode #chat-boxes-container .chat-boxes-wrapper .chat-box .message-list .message.owned .content,
+body.night-mode .conversation > form > .messaging .messages .message.owned .content {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+body.night-mode .conversations-list-item > .time,
+body.night-mode .conversation > form > .head > .dashboard > .time,
+body.night-mode #chat-boxes-container .chat-boxes-wrapper .chat-box .message-list > .time,
+body.night-mode .conversation > form > .messaging .messages > .time {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+body.night-mode .conversation > form > .head > .dashboard > .name {
+    color: unset !important;
+}
+
+body.night-mode .alert {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    color: rgba(255, 255, 255, .8) !important;
+}
+
+body.night-mode .message-editor > div {
+    border-width: 0px;
+}
+
+body.night-mode select,
+body.night-mode .magic-select-toggle {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    background: linear-gradient(to bottom, rgb(40, 40, 40) 0, rgb(50, 50, 50) 100%) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+body.night-mode .magic-select-content {
+    background-color: rgb(50, 50, 50) !important;
+    box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.3);
+}
+
+body.night-mode .reactions img {
+    box-shadow: 0px 0px 0px 2px #222222;
+}
+
+body.night-mode .feed-react .react-items {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.5);
+}
+
+body.night-mode .magic-select-option {
+    background-color: rgba(0, 0, 0, .4);
+}
+
+body.night-mode .magic-select-option:active,
+body.night-mode .magic-select-option:hover {
+    background-color: rgba(0, 0, 0, .2)
+}
+
+body.night-mode #feed-editor .editor-actions .editor-action.active > a,
+body.night-mode #feed-editor .editor-actions .editor-action.active > div > a,
+body.night-mode #feed-editor .editor-actions .editor-action:hover > div > a,
+body.night-mode #feed-editor .editor-actions .editor-action:active > div > a,
+body.night-mode #feed-editor .editor-actions .editor-action:hover > a,
+body.night-mode #feed-editor .editor-actions .editor-action:active > a,
+body.night-mode .comment-lists .comment .comment-footer .right a,
+body.night-mode button:hover,
+body.night-mode button:active,
+body.night-mode .btn:hover,
+body.night-mode .btn:active {
+    background-color: rgba(0, 0, 0, .3) !important;
+    color: rgba(255, 255, 255, .9) !important;
+}
+
+body.night-mode * {
+    border-color: rgba(255, 255, 255, 0.12);
+    outline-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+body.night-mode .arrow-up {
+    border-bottom-color: rgb(66, 66, 66) !important;
+}
+
+body.night-mode #feed-editor .actions,
+body.night-mode .sort-feed-menu,
+body.night-mode .sort-feed-menu .menu-item,
+body.night-mode .sort-feed-menu .menu-item > a,
+body.night-mode #people-suggestion-box .user,
+body.night-mode .comment-lists .comment .comment-image img,
+body.night-mode .feed-wrapper .feed-files .media,
+body.night-mode #chat-boxes-container .onlines-container,
+body.night-mode .chat-opener-head,
+body.night-mode #chat-boxes-container .chat-boxes-wrapper .editor form,
+body.night-mode .feed_loading_post,
+body.night-mode #input_container,
+body.night-mode .divider,
+body.night-mode #sidebar-menu li a,
+body.night-mode .emoticon-box .emoticon-header li a,
+body.night-mode .emoticon-box .emoticon-header,
+body.night-mode #shout-boxes-container .shout-boxes-wrapper .editor form,
+body.night-mode #design-pane .design-footer,
+body.night-mode .list-listing-container .each-item,
+body.night-mode #profile-side-info li,
+body.night-mode .dropdown-title,
+body.night-mode .panel-container .title,
+body.night-mode #social-import-services-pane .services li,
+body.night-mode #getstarted-image-input.avatar-preview-box,
+body.night-mode .header-dropdown .see-all-button,
+body.night-mode .upcoming-event > div,
+body.night-mode .forum .table,
+body.night-mode .forum .table thead,
+body.night-mode .forum .table tr,
+body.night-mode .forum .table th,
+body.night-mode #notification-popup,
+body.night-mode .photos-list .photo,
+body.night-mode #dashboard-filter-menu .left li,
+body.night-mode #dashboard-filter-menu .left li a,
+body.night-mode .feed-react .react-items,
+body.night-mode #feed-editor #feed-editor-content .feed-media-selected-info > i,
+body.night-mode .feed-wrapper .feed-poll .results .result,
+body.night-mode .feed-wrapper .feed-poll .results,
+body.night-mode .feed-wrapper .box > div {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    outline-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+body.night-mode #profile-menu #menu > li {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+body.night-mode .sort-feed-menu .menu-item.active,
+body.night-mode #dashboard-filter-menu .left li.active,
+body.night-mode #profile-menu #menu > li.active {
+    border-bottom-color: rgba(0, 0, 0, .5) !important;
+}
+
+body.night-mode .feed_loading_post {
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+body.night-mode,
+body.night-mode label,
+body.night-mode .media-body,
+body.night-mode .feed-wrapper .feed-content,
+body.night-mode .pagination .page-item.active .page-link,
+body.night-mode .date-range-event,
+body.night-mode #profile-side-info li,
+body.night-mode .user-card-widget .user .name,
+.header-dropdown .header-dropdown-content .dropdown-title,
+body.night-mode .chat-message .media-body .message-content span {
+    color: rgb(255, 255, 255) !important;
+}
+
+body.night-mode .media-body span,
+body.night-mode #profile-side-info li span,
+body.night-mode .pir,
+body.night-mode .mce-path-item,
+body.night-mode .event-summary-range,
+body.night-mode .event-weekday-time,
+body.night-mode .comment-lists .comment .comment-footer a,
+body.night-mode .media-body strong {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+body.night-mode .user-card-widget .stat .title,
+body.night-mode .feed-time,
+body.night-mode .name,
+body.night-mode .splash-00 .top .right .auth-more,
+body.night-mode #chat-boxes-container .onlines-container .online-lists .lists a .media-heading,
+body.night-mode .upcoming-event-heading-1,
+body.night-mode .find-event-header span,
+body.night-mode .modal-title,
+body.night-mode .media-heading,
+body.night-mode .forum-replier-info > a > span,
+body.night-mode .sort-feed-menu .menu-item > a,
+body.night-mode .media-widget .info,
+body.night-mode a {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+body.night-mode .sort-feed-menu .menu-item > a:active,
+body.night-mode .sort-feed-menu .menu-item > a:hover,
+body.night-mode a:active,
+body.night-mode a:hover {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+body.night-mode .user-suggestion-list a:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.night-mode .music-item:active,
+body.night-mode .music-item:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, .1), 0 10px 10px rgba(0, 0, 0, .1);
+}
+
+body.night-mode #feed-editor #post-editor-indicator,
+body.night-mode div.ajax-form-loading, div.watermark-modal-ajax-loading {
+    background-color: rgba(0, 0, 0, .3);
+}
+
+body.night-mode #home-container .right .action-title {
+    border-color: transparent !important;
+}
+
+body.night-mode .media-widget .right .title {
+    background-color: transparent !important;
+}
+
+body.night-mode .business #businesses-list-container .each-item.on,
+body.night-mode .business #businesses-list-container .each-item:hover {
+    background: unset !important;;
+    background-color: unset !important;
+}
+
+body.night-mode .main-sidebar-menu .menu {
+    background-color: #292929 !important;
+}
+
+body.night-mode .blog-list > .head > .filters {
+    background-color: rgb(70, 70, 70);
+}
+
+body.night-mode .blog-list > .head > .filters > .right .search input[type="search"] {
+    background-color: #2D2D2D !important;
+}
+
+body.night-mode #feed-editor .editor-actions .editor-action > a,
+body.night-mode #feed-editor .editor-actions .editor-action > div > a {
+    box-shadow: 0 0 1px 0 #888, 0 -10px 0 0 #292929 inset !important;
+}
+
+body.night-mode #feed-editor .head a {
+    background-color: #555555;
+    color: #AAAAAA !important;
+}
+
+body.night-mode #header #header-search-button {
+    background-color: #393939;
+}
+
+body.night-mode #feed-editor .editor-actions .editor-action > a, body.night-mode #feed-editor .editor-actions .editor-action > div > a {
+    background-color: transparent !important
+}

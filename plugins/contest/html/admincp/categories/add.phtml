@@ -1,0 +1,46 @@
+<div class="wrapper">
+	<div class="wrapper-title"><?php echo lang('contest::add-contest-category') ?>  </div>
+	<div class="wrapper-content">
+		<form method="post" action="" enctype="multipart/form-data" class="wrapper-form">
+			<?php CSRFProtection::embed() ?>
+			<?php if($message): ?>
+				<div class="alert alert-danger"><?php echo $message ?></div>
+			<?php endif ?>
+            <div class="form-group row">
+                <label class="col-sm-3 form-control-label"><?php echo lang('contest::category-title') ?></label>
+                <div class="col-sm-9">
+                    <label>(English)</label>
+                    <input type="text" name="val[title][english]" class="form-control" placeholder="<?php echo lang('contest::category-title') ?>"/>
+                    <a href="" class="other-languages-link" onclick="return show_other_languages('#contest-category-info-other-languages')"><?php echo lang('edit-other-languages') ?></a>
+                    <div class="other-languages" id="contest-category-info-other-languages">
+                        <?php foreach(get_all_languages() as $language): ?>
+                            <?php if($language['language_id'] != 'english'): ?>
+                                <input class="form-control" type="text" name="val[title][<?php echo $language['language_id'] ?>]" placeholder="<?php echo lang('video::category-title') ?>"/>
+                                <br>
+                                <p class="help-block"><?php echo $language['language_title'] ?></p>
+                            <?php endif ?>
+                        <?php endforeach ?>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <input type="hidden" name="val[category]" value="0" />
+            <!--<div class="form-group row">
+                <label class="col-sm-3 form-control-label"><?php /*echo lang('music::parent-category') */?></label>
+                <div class="col-sm-9">
+                    <select class="c-select" name="val[category]">
+                        <option value="0"><?php /*echo lang('music::none') */?></option>
+                        <?php /*foreach(get_contest_categories() as $category): */?>
+                            <option value="<?php /*echo $category['id'] */?>"><?php /*echo lang($category['title']) */?></option>
+                        <?php /*endforeach */?>
+                    </select>
+
+                </div>
+            </div>-->
+
+			<button class="btn btn-info"><?php echo lang('contest::add-category') ?></button>
+		</form>
+	</div>
+</div>

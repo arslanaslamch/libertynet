@@ -1,0 +1,48 @@
+<div class="auction">
+	<div class="box">
+		<div class="box-content">
+			<?php $count_bid = count(get_bid_user()); ?>
+			<?php if($count_bid > 0) { ?>
+				<div class="title">
+					<strong><?php echo lang('auction::auction-bid-on') ?></strong>(<?php echo $count_bid; ?>)<?php echo lang('auction::auctions') ?>
+				</div>
+				<?php foreach(get_bid_user() as $bid):
+					foreach(get_auction_all($bid['auction_id']) as $auction): ?>
+						<div class="media" id="list">
+							<div class="media-left">
+								<a class="" href="<?php echo url_to_pager('auction-details').'?id='.$auction['id'].'&title='.$auction['title']; ?>">
+									<img id="auction_img" src="<?php echo ($auction['picture']) ? url_img($auction['picture'], 700) : get_avatar(200) ?>" width="200" height="200"/>
+								</a>
+							</div>
+							<div class="media-body">
+								<a href="<?php echo url_to_pager('auction-details').'?id='.$auction['id']; ?>" class="">
+									<h6>
+										<strong id="my-bids"><?php echo $auction['title']; ?></strong>
+									</h6>
+								</a>
+								<p>
+									<i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;By <?php echo get_user_name($auction['user_id']); ?>&nbsp;&nbsp;&nbsp;&nbsp;
+									<i class="fa fa-gavel" aria-hidden="true"></i><?php echo count_auction_bid($auction['id']); ?> Bids
+								</p>
+								<p>Current Bid:
+									<strong>$<?php echo $auction['current_bid']; ?>.00</strong>
+								</p>
+								<p>
+									<i class="fa fa-clock-o" aria-hidden="true"></i><?php echo lang('auction::time-left:') ?><?php echo time_countdown($auction['end_date']); ?>
+								</p>
+								<p>
+									<input type="checkbox" name=""/><?php echo lang('auction::add-to-compare') ?>                                 <?php if($bid['tmp_approve'] == 1): ?>
+										<span class="help-block"> </span>
+										<a href="<?php echo url_to_pager("auction-cart") ?>?auction_id=<?php echo $auction['id'] ?>" class="btn btn-success"><?php echo lang("auction::details") ?></a>
+									<?php endif; ?>
+								</p>
+							</div>
+						</div>
+					<?php endforeach;
+				endforeach; ?>
+			<?php } else { ?>
+				<div><?php echo lang('auction::you-have-no-bid') ?></div>
+			<?php } ?>
+		</div>
+	</div>
+</div>

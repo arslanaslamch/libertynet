@@ -1,0 +1,40 @@
+<?php if ($donors): ?>
+    <div class="">
+        <div class="">
+            <table class="table">
+                <tbody>
+    <?php foreach ($donors as $d):
+        if($d['anonymous']){
+            $avatar = img("donation::images/ano2.png");
+        }else{
+            //it can be guest or our user
+            $user = find_user($d['user_id']);
+            if($user){
+                $avatar = get_avatar(200,$user);
+            }else{
+                $avatar = img("donation::images/guest.png");
+            }
+        }
+        ?>
+        <tr class="donor-each">
+            <td>
+                <span class="fst"><img src="<?php echo $avatar; ?>"/> <b> <?php echo ($d['anonymous']) ? lang("donation::anonymous") : $d['full_name']; ?></b>
+                    <span><?php echo lang("donation::donated"); ?> <?php echo number_format((float)$d['amount'], 2, '.', ',').' '.$d['cur']; ?></span>
+               <?php if($d['msg']) : ?>
+                   <span style="display:block"><?php echo $d['msg']; ?></span>
+               <?php endif; ?>
+                    </span>
+            </td>
+            <td>
+                <?php echo date('F j , Y  h:i A',$d['time']); ?>
+            </td>
+        </tr>
+
+    <?php endforeach; ?>
+                </tbody>
+            </table>
+    </div>
+    </div>
+<?php else: ?>
+    <div class="alert alert-info"><?php echo lang("donation::donors-list-is-empty") ?></div>
+<?php endif; ?>

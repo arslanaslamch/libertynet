@@ -1,0 +1,17 @@
+<?php $limit = config('number-of-commision-levels',5); ?>
+<?php if($ugc): ?>
+<?php for($i = 1;$i <= $limit; $i++): ?>
+    <div class="form-group">
+        <label> <?php echo lang("affliate::level").' '.$i; ?></label>
+        <input id="level_<?php echo $i; ?>" type="text" value="<?php echo isset($ugc['level_'.$i]) ? $ugc['level_'.$i] : 'no' ; ?>" name="val[level_<?php echo $i; ?>]" class="form-control" />
+    </div>
+<?php endfor; ?>
+
+<?php else: ?>
+    <?php for($i = 1;$i <= $limit; $i++): ?>
+        <div class="form-group">
+            <label> <?php echo lang("affliate::level").' '.$i;; ?></label>
+            <input id="level_<?php echo $i; ?>" type="text" value="<?php echo 0; ?>" name="val[level_<?php echo $i; ?>]" class="form-control" />
+        </div>
+    <?php endfor; ?>
+<?php endif; ?>

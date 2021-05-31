@@ -1,0 +1,14 @@
+<div class="box video">
+    <?php $list_type = 'list' ?>
+	<div id="videos-list-container" class="box-content clearfix <?php echo ($list_type == 'list') ? 'list-listing-container' : 'grid-listing-container' ?>">
+		<?php foreach($videos->results() as $video): ?>
+			<?php echo view('export::video/video', array('video' => $video)) ?>
+		<?php endforeach ?>
+	</div>
+	<?php if($videos->total): ?>
+	<?php else: ?>
+		<div class="box-content">
+			<div class="alert alert-info"><?php echo lang('video::no-videos-found-here') ?></div>
+		</div>
+	<?php endif ?>
+</div>

@@ -1,0 +1,122 @@
+<?php $playlist = $playlist ? $playlist : array($music['slug'] => $music);
+$options = array('nowPlaying' => $music['slug'], 'autoplay' => true); ?>
+<?php $music['entity'] = fire_hook('entity.info', $music); ?>
+<style>
+    body {
+        background-color: transparent;
+    }
+
+    div#chat-boxes-container {
+        display: none !important;
+    }
+
+    .box,
+    .music-list,
+    .body,
+    .listings,
+    .listing,
+    .item,
+    #main-wrapper {
+        background-color: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .music-info {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, .5);
+        display: inline-block;
+        line-height: 10px;
+        padding: 5px;
+    }
+
+    .music-info .artist,
+    .music-info a.title {
+        text-align: center;
+        font-weight: bold;
+        position: relative !important;
+    }
+
+    .artist {
+        bottom: 0 !important;
+    }
+
+    .p-0 {
+        padding: 0 !important;
+    }
+
+    .music-logo-div {
+        position: absolute;
+        top: 0px;
+        right: 10px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        max-height: 40px;
+    }
+
+    .middle-container.row {
+        margin: 0 !important;
+    }
+
+    .music-logo {
+        max-width: 142px;
+        max-height: 40px;
+    }
+
+    .site-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        padding: 5px;
+        color: white;
+    }
+</style>
+<div class="box p-0">
+    <div class="music-list p-0">
+        <div class="body p-0">
+            <div class="listings p-0">
+                <div class="listing row p-0">
+                    <div class="col-md-4">
+                        <div class="item">
+                            <div class="thumb">
+                                <img class="image" src="<?php echo $music['cover_art'] ? url_img($music['cover_art'], 920) : img('music::images/preview.png') ?>" alt="<?php echo $music['title'] ?> " />
+                                <?php if ($music['featured']) : ?>
+                                    <div class="featured">
+                                        <i class="ion-ios-star-outline"></i>
+                                    </div>
+                                <?php endif ?>
+                                <?php foreach ($playlist as $key => $play) {
+                                    $play['title'] = str_replace("&#039;", '', $play['title']);
+                                    $playlist[$key] = $play;
+                                } ?>
+                                <div class="list-play-button-container">
+                                    <i id="list-play-button-<?php echo $music['id'] ?>" class="list-play-button ion-play button" style=" margin-left: 0px; z-index: 999999" onclick='if(typeof music.player.nowPlaying !== "undefined" && music.player.playing && music.player.nowPlaying == "<?php echo $music['slug'] ?>"){music.updateButton(this)}else{music.player.init(<?php echo str_replace("'", '&apos;', json_encode($playlist)) ?>, <?php echo json_encode($options) ?>); this.className += " playing "; this.className = this.className.replace(/(?:^|\s)ion-play(?!\S)/g , " ion-pause ");} this.className += " playing ";'></i>
+                                </div>
+                                <div class="music-info">
+                                    <a href="<?php echo get_music_url($music) ?>" target="__blank" class="title"><?php echo $music['title'] ? $music['title'] : lang('music::untitled-music') ?></a>
+                                    <?php if ($music['artist']) : ?>
+                                        <div class="artist"><?php echo $music['artist'] ?></div>
+                                    <?php else : ?>
+                                        <small class="time muted timeago" title="<?php echo date('c', $music['time']) ?>"><?php echo date('c', $music['time']) ?></small>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="music-logo-div">
+        <?php $logo = config('site-logo');
+        $logo_url = !$logo ? img('images/logo.png') : url_img($logo); ?>
+        <a class="px-1" href="<?php echo url() ?>" target="__blank">
+            <?php if (true) : ?>
+                <div class="site-title"><?php echo config('site_title') ?></div>
+            <?php endif ?>
+        </a>
+    </div>
+</div>

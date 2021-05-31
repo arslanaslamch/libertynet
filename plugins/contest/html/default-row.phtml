@@ -1,0 +1,27 @@
+<div class="each-item clearfix contest-list">
+    <div class="left">
+        <?php if($contest['featured']): ?>
+            <span class="featured-tag"><?php echo lang('featured') ?></span>
+        <?php endif ?>
+        <a ajax="true" href="<?php echo url('contest/'.$contest['slug']) ?>" style="background-image:url(<?php echo get_contest_image($contest) ?>)"></a>
+    </div>
+    <div class="right">
+        <span class="item-title"><a ajax="true" href="<?php echo url('contest/'.$contest['slug']) ?>"><?php echo $contest['name'] ?></a></span>
+        <div class="item-info">
+							<span class="help-block" style="display: block">
+								<?php echo lang('contest::publisher') ?>: <a href="<?php echo url($contest['publisher']['id']) ?>"><?php echo $contest['publisher']['name'] ?></a>
+                                <?php echo lang('contest::on') ?> <?php echo date('M j , y  h:i A', $contest['time']) ?>
+							</span>
+        </div>
+        <p class="item-desc"><?php echo strip_tags(str_limit($contest['description'], 100)) ?></p>
+        <p>
+            <strong><?php echo $contest['views']; ?></strong> <?php echo lang('contest::views'); ?>
+            <strong><?php $likes = count_likes($refName, $refId);
+                echo $likes; ?></strong> <?php if($likes > 1) {
+                echo lang('contest::likes');
+            } else {
+                echo lang('contest::like');
+            } ?>
+        </p>
+    </div>
+</div>

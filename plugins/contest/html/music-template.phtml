@@ -1,0 +1,8 @@
+<?php if($entry['source'] == 'upload'): ?>
+    <audio controls>
+        <source src="<?php echo url($entry['file_path']); ?>" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+<?php else: ?>
+<?php echo html_entity_decode($entry['code']); ?>
+<?php endif; ?>

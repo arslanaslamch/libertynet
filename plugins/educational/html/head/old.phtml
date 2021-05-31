@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-sm-6">
+        <h3><?php _lang('educational::books')?></h3>
+    </div>
+    <div class="col-sm-6">
+        <form id="video-list-search" method="post" onsubmit=" return run_global_filter()" action="" class="form-inline pull-right">
+            <?php CSRFProtection::embed() ?>
+            <input type="hidden" class="video-type-input filter-input" data-name="type" value="<?php echo input('type','browse')?>"/>
+
+            <input value="<?php echo input('term')?>" type="text" class="form-control filter-input" data-name="term" placeholder="<?php _lang('educational::search-books')?>"/>
+            <button class="btn btn-info"><i class="ion-search"></i></button>
+        </form>
+    </div>
+</div>
+<div class="  filter-pane">
+    <select id="video-category-list" onchange="return run_global_filter()" data-name="category" class="c-select filter-input" >
+        <option <?php echo (input('category', 'all') == 'all') ? 'selected'  : null?>  value="all"><?php _lang('educational::all-categories')?></option>
+        <?php foreach($edu->get_categories() as $category):?>
+            <option <?php echo (input('category', 'all') == $category['id']) ? 'selected'  : null?> value="<?php echo $category['id']?>"><?php _lang($category['title'])?></option>
+        <?php endforeach?>
+
+    </select>
+    <select id="video-filter-select" onchange="return run_global_filter()" data-name="filter" class="c-select filter-input">
+        <option value="all"><?php _lang('all')?></option>
+        <option <?php echo (input('filter') == 'featured') ? 'selected' : null?> value="featured"><?php _lang('featured')?></option>
+        <option <?php echo (input('filter') == 'top') ? 'selected' : null?> value="top"><?php _lang('educational::top-views')?></option>
+        <option <?php echo (input('filter') == 'downloads') ? 'selected' : null?> value="featured"><?php _lang('educational::top-downloads')?></option>
+    </select>
+    <div class="list-layout-type">
+        <a href="" onclick="return change_listing_layout('#books-list-container', 'list')"><i class="ion-ios-list-outline"></i></a>
+        <a href="" onclick="return change_listing_layout('#books-list-container', 'grid')"><i class="ion-android-apps"></i></a>
+    </div>
+</div>

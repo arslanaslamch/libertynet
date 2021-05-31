@@ -1,0 +1,17 @@
+<?php $businesses = business_get_businesses(array('limit' => $settings['limit'])); ?>
+<?php if(count($businesses->results()) > 0): ?>
+    <div class="box businesses-list-widget">
+        <div class="title"><?php echo lang('business::latest-businesses') ?>
+            <a ajax="true" href="<?php echo url_to_pager('businesses', array('appends' => '')) ?>" class="more-link pull-right"><i class="ion-ios-arrow-forward"></i></a>
+        </div>
+        <div class="box-content clearfix">
+            <div class="slider-side-widget">
+                <?php foreach($businesses->results() as $business): ?>
+                    <a href="<?php echo url_to_pager('business-page', array('slug' => business_get_slug($business['id'], 'business'))) ?>" ajax="true" class="business " style="background-image: url(<?php echo $business['company_logo'] ? url_img($business['company_logo'], 920) : img('business::images/no_image.jpg') ?>)">
+                        <h6 class="name"><?php echo $business['business_name'] ?></h6>
+                    </a>
+                <?php endforeach ?>
+            </div>
+        </div>
+    </div>
+<?php endif ?>

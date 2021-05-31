@@ -1,0 +1,24 @@
+<div class="wrapper">
+	<div class="wrapper-title"><?php echo lang('creditgift::credit-sales') ?></div>
+	<div class="wrapper-content">
+		<div class="table-responsive">
+			<table class="table table-striped list-table">
+				<tr>
+					<th><?php echo lang('username') ?></th>
+					<th><?php echo lang('creditgift::unit') ?></th>
+					<th><?php echo lang('creditgift::cost') ?></th>
+					<th><?php echo lang('creditgift::paid') ?></th>
+				</tr>
+				<?php foreach($sales->results() as $sale): ?>
+					<tr>
+						<td><?php echo get_user_name($sale['user_id']); ?></td>
+						<td><?php echo $sale['unit']; ?></td>
+						<td><?php echo $sale['cost']; ?></td>
+						<td><?php echo $sale['paid']; ?></td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		</div>
+		<?php echo $sales->links(); ?>
+	</div>
+</div>

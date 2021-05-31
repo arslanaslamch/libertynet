@@ -1,0 +1,24 @@
+<div class="media media-sm">
+    <div class="media-left">
+        <div class="media-object" style="height:70px;width:50px">
+            <img
+                src="<?php echo ($book['image']) ? url_img($book['image'], 700) : get_avatar(200, $user) ?>"/>
+        </div>
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading" style="margin-top:0"><a ajax="true"
+                                                          href="<?php echo url_to_pager("single-book", array('slug' => $book['slug'], 'id' => $book['id'])); ?>"><?php echo $book['title'] ?></a>
+        </h4>
+                               <span class="help-block" style="display: block;font-size:12px">
+                                   <?php $category = $ed->get_category($book['category']); ?>
+                                   <?php _lang('educational::category') ?> : <a href="<?php echo url('books').'?category='.$book['category']; ?>"><?php echo lang($category['title']); ?> </a>
+                                </span>
+                        <span class="help-block" style="display: block;font-size:12px">
+                                    <?php _lang('educational::author') ?> : <?php echo $book['author'] ?>
+                                </span>
+                        <span class="help-block" style="display: block;font-size:12px">
+                                    <?php _lang('educational::posted-by') ?> : <a
+                                href="<?php echo profile_url(null, $user) ?>"><?php echo get_user_name($user) ?></a>
+                                </span>
+    </div>
+</div>

@@ -1,0 +1,99 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+       <?php echo lang('sms::all-users'); ?>
+    </div>
+    <div class="wrapper-content">
+        <form action="" method="get" style="margin: 20px 0">
+            <?php CSRFProtection::embed() ?>
+            <input type="text" class="form-control" name="term" value="<?php echo input('term',null); ?>" placeholder="<?php echo lang('sms::search-details')?>"/>
+
+            <button class="btn btn-sm btn-secondary" style="margin-top: 10px"><?php echo _lang('search')?></button>
+        </form>
+        <div class="result"></div>
+
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th><?php echo lang('avatar') ?></th>
+                <th><?php echo lang('sms::full-name') ?></th>
+                <th><?php echo lang('sms::phone_num') ?></th>
+                <th><?php echo lang('sms::last-active') ?></th>
+                <th><?php echo lang('sms::actions'); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($lists->results() as $r):
+                $name = $r['first_name']. ' '. $r['last_name'];
+                ?>
+                <tr class="item" id="<?php echo $r['id']; ?>">
+                    <td><?php echo $r['id']; ?></td>
+                    <td><img src="<?php echo get_avatar(200,$r) ?>" class="img img-responsive" style="height:50px;width:50px; border-radius:100%" /></td>
+                    <td><a href="<?php echo profile_url(null,$r); ?>"><?php echo $name ?></a></td>
+                    <td><?php echo $r['phone_num']; ?></td>
+                    <td><?php echo date('F j , Y  h:i A',$r['online_time']); ?></td>
+                    <td>
+                        <a data-id="<?php echo $r['phone_num']; ?>" href="#" class="show-send-modal btn btn-success btn-sm"><?php echo lang('sms::send-sms') ?></a>
+                        <a data-name="<?php echo $name; ?>" data-ph="<?php echo $r['phone_num'] ?>" data-id="<?php echo $r['id']; ?>" href="#" class="show-edit-modal btn btn-secondary btn-sm"><?php echo lang('edit') ?></a>
+                    </td>
+                </tr>
+            <?php endforeach?>
+            </tbody>
+        </table>
+
+        <?php echo $lists->links()?>
+    </div>
+</div>
+
+<div id="sendSMSModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php _lang('close')?></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form" action="">
+                    <div class="form-group">
+                        <label><?php echo lang("sms::phone-number"); ?></label>
+                        <input disabled="disabled" type="text" value="" id="phn" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label><?php echo lang("message"); ?></label>
+                        <textarea class="form-control" id="msg"></textarea>
+                        <span class="pull-right"><span id="count">0</span></span>
+                    </div>
+                    <button data-type="send" id="sendSingleMsg" class="btn btn-info"><?php echo lang("sms::send-sms"); ?></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editNumberModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php _lang('close')?></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form" action="">
+                    <div class="form-group">
+                        <input type="hidden" value="" id="uid" class="form-control" type="hidden" />
+                        <input disabled="disabled" type="text" value="" id="name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="phone_num" class="form-control"  value="" />
+                        <span class="form-help"><?php echo lang("sms::add-country-code"); ?></span>
+                    </div>
+                    <button data-type="edit" id="sendSingleMsg" class="btn btn-info"><?php echo lang("save"); ?></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

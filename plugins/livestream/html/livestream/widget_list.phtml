@@ -1,0 +1,16 @@
+<?php
+/**
+ * @var string $title
+ * @var Paginator $livestreams
+ */
+?>
+<?php if($livestreams->total): ?>
+    <div class="box media-widget">
+        <div class="title"><?php echo $title ?></div>
+        <div class="box-content livestream-widget">
+            <?php foreach($livestreams->results() as $livestream): ?>
+                <?php echo view('livestream::livestream/widget_list_item', array('livestream' => $livestream)) ?>
+            <?php endforeach ?>
+        </div>
+    </div>
+<?php endif ?>

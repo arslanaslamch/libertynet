@@ -1,0 +1,162 @@
+.onlinetv-admin-wrapper form{
+    max-width:600px;
+    margin:0 auto;
+}
+
+.onlinetv-admin-wrapper fieldset{
+    margin-bottom:20px;
+}
+
+.onlinetv-admin-wrapper fieldset label{
+    font-weight:bold;
+}
+
+.onlinetv-large-image img {
+    width: 100%;
+}
+
+.onlinetv-large-image {
+    margin-bottom: 10px
+}
+
+.onlinetv .post img {
+    max-width: 100%;
+    height: auto;
+}
+
+.onlinetv-list:hover {
+    background-color: #FAFAFA;
+}
+
+.onlinetv-no-image {
+    padding: 0 10px 0 10px !important;
+    background-color: #00CCFF;
+}
+
+.onlinetvger {
+    margin: 0 0 20px 0;
+    border-top-width: 0;
+
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.onlinetvger .card-heading {
+    padding: 0 20px;
+    margin: 0;
+}
+
+.onlinetvger.hovercard {
+    position: relative;
+    padding-top: 0;
+    overflow: hidden;
+    text-align: center;
+    background-color: rgba(214, 224, 226, 0.2);
+}
+
+.onlinetvger.hovercard .cardheader {
+    background: url("http://lorempixel.com/850/280/nature/4/");
+    background-size: cover;
+    height: 135px;
+}
+
+.onlinetvger.hovercard .avatar {
+    position: relative;
+    top: -50px;
+    margin-bottom: -50px;
+}
+
+.onlinetvger.hovercard .avatar img {
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 5px solid rgba(255, 255, 255, 0.5);
+}
+
+.box.onlinetv iframe {
+    max-width: 100%;
+    width:100% !important;
+}
+
+.url-content,.embed-content{
+    display:none;
+}
+
+
+.onlinetv-listing-container .onlinetv-grid{
+    height:330px;
+    width:205px;
+   /* width:220px;*/
+    display:inline-block;
+    border:1px solid #f2f4f6;
+    /*padding:5px;*/
+    margin-right:5px;
+    /*margin-right:10px;*/
+    margin-bottom:10px;
+    text-align:center;
+    transition:400ms;
+    overflow:hidden;
+    position:relative;
+}
+
+.onlinetv-listing-container .onlinetv-grid:hover,
+.onlinetv-listing-container .onlinetv-grid:active{
+    border:1px solid #ddd;
+    transition:400ms;
+}
+
+.onlinetv-listing-container .onlinetv-grid .left a{
+    display: block;
+    height: 160px;
+    width: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.onlinetv-listing-container .onlinetv-grid .item-title a{
+    font-size:16px !important;
+    margin-top:5px;
+    margin-bottom:5px;
+    text-align:center;
+    color: #297fc6 !important;
+}
+
+.owo-color{
+    color : green;
+}
+
+.onlinetv-listing-container .featured-tag {
+    padding: 0px 4px;
+    background-color: #0099FF;
+    font-size: 12px;
+    color: #FFFFFF;
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.tv-category a{
+    color:#fff !important;
+}
+.tv-category{
+    padding:2px 5px;
+    position:absolute;
+     color:#fff !important;
+     background:rgba(0,0,0,0.5);
+    /*background:#eee;
+    color:#555;*/
+    left:0;
+    top:0;
+    /* display:none;*/
+    /*transform: skewY(5deg);*/
+    transition:400ms;
+}

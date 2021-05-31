@@ -1,0 +1,75 @@
+<div class="box contest">
+    <div class="global-filter-container" data-url="<?php echo url('contests') ?>">
+        <form id="contest-list-search" method="post" onsubmit="return run_global_filter()" action="" class="form-inline list-search">
+            <?php CSRFProtection::embed() ?>
+            <input type="hidden" class="filter-input form-control" data-name="type" value="<?php echo input('type', 'browse') ?>"/>
+            <i class="search-icon ion-ios-search"></i>
+            <input value="<?php echo input('term') ?>" type="text" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>"/>
+        </form>
+        <div class="list-head">
+            <h3 class="heading"><?php echo $title; ?></h3>
+        </div>
+        <div class="filter-pane">
+            <select id="video-category-list" onchange="return run_global_filter()" data-name="category" class="c-select filter-input">
+                <option <?php echo (input('category', 'all') == 'all') ? 'selected' : null ?> value="all"><?php echo lang('music::all-categories') ?></option>
+                <?php foreach(get_contest_categories() as $category): ?>
+                    <?php $subCategories = get_contest_parent_categories($category['id']) ?>
+                    <?php if($subCategories): ?>
+                        <optgroup label="<?php echo lang($category['title']) ?>">
+                            <?php foreach($subCategories as $cat): ?>
+                                <option <?php echo (input('category', 'all') == $cat['id']) ? 'selected' : null ?> value="<?php echo $cat['id'] ?>"><?php echo lang($cat['title']) ?></option>
+                            <?php endforeach ?>
+                        </optgroup>
+                    <?php else: ?>
+                        <option <?php echo (input('category', 'all') == $category['id']) ? 'selected' : null ?> value="<?php echo $category['id'] ?>"><?php echo lang($category['title']) ?></option>
+                    <?php endif ?>
+                <?php endforeach ?>
+            </select>
+            <select id="video-filter-select" onchange="return run_global_filter()" data-name="filter" class="c-select filter-input">
+                <option value="all"><?php echo lang('all') ?></option>
+                <option <?php echo (input('filter') == 'top') ? 'selected' : null ?> value="top"><?php echo lang('video::top') ?></option>
+                <option <?php echo (input('filter') == 'featured') ? 'selected' : null ?> value="featured"><?php echo lang('video::featured') ?></option>
+            </select>
+        </div>
+    </div>
+    <div id="contests-list-container" class="box-content clearfix list-listing-container">
+        <?php foreach($contests->results() as $contest): ?>
+            <?php $contest = arrange_contest($contest); ?>
+            <?php $user = find_user($contest['user_id']) ?>
+            <?php $refId = $contest['id'];
+            $refName = 'contest'; ?>
+           <div class="single-contest-row" >
+               <?php if($contest['featured']): ?>
+                   <span class="contest-tag"><?php echo lang("contest::featured"); ?></span>
+               <?php endif ?>
+
+               <?php if($contest['join_fee']): ?>
+                   <span class="contest-tag premium-c"><?php echo lang("contest::premium") ?></span>
+               <?php endif; ?>
+               <div class="before-wrapper-contest">
+                   <div class="contest-image-wrapper">
+                       <span class="contest-icon"><i class="<?php echo get_contest_icon($contest); ?>"></i> </span>
+                       <a href="<?php echo url('contest/'.$contest['slug']) ?>" ajax="true" style="background-image : url(<?php echo get_contest_image($contest) ?>);"></a>
+                   </div>
+                   <div class="contest-details">
+                       <div class="contest-details-first-row">
+                           <span class=""><?php echo lang("contest::entries") ?> : <b><?php echo  getContestEntries($contest, 'all')->total; ?></b> </span>
+                           <span class=""><?php echo lang("contest::participants") ?> : <b><?php echo getContestParticipants($contest)->total; ?></b> </span>
+                           <span class=""><?php echo lang("contest::views") ?> : <b> <?php echo $contest['views']; ?></b> </span>
+                       </div>
+                       <p><a ajax="true" class="link-contest-text" style="color : <?php echo config('header-bg-color', '#4C4C4E') ?>" href="<?php echo url('contest/'.$contest['slug']); ?>"><?php echo str_limit($contest['name'],75); ?></a></p>
+                       <p><span class="help-block"><?php echo lang('contest::end') ?> : </span> <?php echo date('M j , y  h:i A', $contest['contest_end']); ?> <span class="pull-right"><?php echo contestBadgeStatus($contest,'contest') ?></span> </p>
+                       <p><span class="help-block" style="display: block"><?php echo lang('contest::publisher') ?>: <a href="<?php echo url($contest['publisher']['id']) ?>"><?php echo $contest['publisher']['name'] ?></a></span></p>
+                   </div>
+               </div>
+           </div>
+        <?php endforeach ?>
+    </div>
+    <div class="box-content">
+        <?php if($contests->total): ?>
+            <?php echo $contests->append(array('category' => input('category'), 'type' => input('type', 'browse'), 'term' => input('term'), 'filter' => input('filter', 'all')))->links() ?>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang('contest::contests-list-empty') ?></div>
+        <?php endif ?>
+    </div>
+</div>

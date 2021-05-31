@@ -1,0 +1,89 @@
+<div class="row">
+	<div class="col-md-5">
+		<h6><?php echo lang('splash-cover') ?></h6>
+	</div>
+	<div class="col-md-7">
+		<div class="theme-setting-image-container">
+			<?php $image = url_img(config('default-theme-splash-cover', $theme_relative_path.'images/splash/cover.jpg')) ?>
+			<img id="splash-cover-preview" src="<?php echo $image ?>" class="theme-setting-image-preview"/>
+			<span id="splash-cover-dimension" class="theme-setting-image-dimension"></span>
+			<span id="splash-cover-reset" class="theme-setting-image-reset reset-image-preview ion-close" data-preview="splash-cover-preview" data-original-image="<?php echo $image ?>" data-image-handle="splash-cover-input" data-dimension="splash-cover-dimension"></span>
+		</div>
+		<input id="splash-cover-input" name="default-theme-splash-cover" type="file" class="theme-setting-image-input auto-preview-image" data-preview="splash-cover-preview" data-dimension="splash-cover-dimension" data-reset="splash-cover-reset"/>
+		<input type="hidden" name="file_upload_extend[]" value="default-theme-splash-cover"/>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-5">
+		<h6><?php echo lang('splash-image') ?></h6>
+	</div>
+	<div class="col-md-7">
+		<div class="theme-setting-image-container">
+			<?php $image = url_img(config('default-theme-splash-image', $theme_relative_path.'images/splash/image.png')) ?>
+			<img id="splash-image-preview" src="<?php echo $image ?>" class="theme-setting-image-preview"/>
+			<span id="splash-image-dimension" class="theme-setting-image-dimension"></span>
+			<span id="splash-image-reset" class="theme-setting-image-reset reset-image-preview ion-close" data-preview="splash-image-preview" data-original-image="<?php echo $image ?>" data-image-handle="splash-image-input" data-dimension="splash-image-dimension"></span>
+		</div>
+		<input id="splash-image-input" name="default-theme-splash-image" type="file" class="theme-setting-image-input auto-preview-image" data-preview="splash-image-preview" data-dimension="splash-image-dimension" data-reset="splash-image-reset"/>
+		<input type="hidden" name="file_upload_extend[]" value="default-theme-splash-image"/>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-5">
+		<h6><?php echo lang('topography-image-num', array('num' => 1)) ?></h6>
+	</div>
+	<div class="col-md-7">
+		<div class="theme-setting-image-container">
+			<?php $image = url_img(config('default-theme-topography-image-1', $theme_relative_path.'images/topography/one.jpg')) ?>
+			<img id="topography-image-preview-1" src="<?php echo $image ?>" class="theme-setting-image-preview"/>
+			<span id="topography-image-dimension-1" class="theme-setting-image-dimension"></span>
+			<span id="topography-image-reset-1" class="theme-setting-image-reset reset-image-preview ion-close" data-preview="topography-image-preview-1" data-original-image="<?php echo $image ?>" data-image-handle="topography-image-input-1" data-dimension="topography-image-dimension-1"></span>
+		</div>
+		<input id="topography-image-input-1" name="default-theme-topography-image-1" type="file" class="theme-setting-image-input auto-preview-image" data-preview="topography-image-preview-1" data-dimension="topography-image-dimension-1" data-reset="topography-image-reset-1"/>
+		<input type="hidden" name="file_upload_extend[]" value="default-theme-topography-image-1"/>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-5">
+		<h6><?php echo lang('topography-image-num', array('num' => 2)) ?></h6>
+	</div>
+	<div class="col-md-7">
+		<div class="theme-setting-image-container">
+			<?php $image = url_img(config('default-theme-topography-image-2', $theme_relative_path.'images/topography/two.jpg')) ?>
+			<img id="topography-image-preview-2" src="<?php echo $image ?>" class="theme-setting-image-preview"/>
+			<span id="topography-image-dimension-2" class="theme-setting-image-dimension"></span>
+			<span id="topography-image-reset-2" class="theme-setting-image-reset reset-image-preview ion-close" data-preview="topography-image-preview-2" data-original-image="<?php echo $image ?>" data-image-handle="topography-image-input-2" data-dimension="topography-image-dimension-2"></span>
+		</div>
+		<input id="topography-image-input-2" name="default-theme-topography-image-2" type="file" class="theme-setting-image-input auto-preview-image" data-preview="topography-image-preview-2" data-dimension="topography-image-dimension-2" data-reset="topography-image-reset-2"/>
+		<input type="hidden" name="file_upload_extend[]" value="default-theme-topography-image-2"/>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-5">
+		<h6><?php echo lang('topography-image-num', array('num' => 3)) ?></h6>
+	</div>
+	<div class="col-md-7">
+		<div class="theme-setting-image-container">
+			<?php $image = url_img(config('default-theme-topography-image-3', $theme_relative_path.'images/topography/three.jpg')) ?>
+			<img id="topography-image-preview-3" src="<?php echo $image ?>" class="theme-setting-image-preview"/>
+			<span id="topography-image-dimension-3" class="theme-setting-image-dimension"></span>
+			<span id="topography-image-reset-3" class="theme-setting-image-reset reset-image-preview ion-close" data-preview="topography-image-preview-3" data-original-image="<?php echo $image ?>" data-image-handle="topography-image-input-3" data-dimension="topography-image-dimension-3"></span>
+		</div>
+		<input id="topography-image-input-3" name="default-theme-topography-image-3" type="file" class="theme-setting-image-input auto-preview-image" data-preview="topography-image-preview-3" data-dimension="topography-image-dimension-3" data-reset="topography-image-reset-3"/>
+		<input type="hidden" name="file_upload_extend[]" value="default-theme-topography-image-3"/>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-5">
+		<h6><?php echo lang('disable-avatar-mask') ?></h6>
+	</div>
+	<div class="col-md-7">
+		<p>
+			<label class="switch">
+				<input type="radio" name="val[enable-avatar-mask]" value="0" <?php echo config('enable-avatar-mask', '1') == '0' ? 'checked' : '' ?> />
+				<input type="radio" name="val[enable-avatar-mask]" value="1" <?php echo config('enable-avatar-mask', '1') == '1' ? 'checked' : '' ?> />
+				<span class="slider round"></span>
+			</label>
+		</p>
+	</div>
+</div>

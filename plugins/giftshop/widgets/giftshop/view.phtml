@@ -1,0 +1,22 @@
+<div class="box">
+    <div class="box-content">
+        <a ajax="true" href="<?php echo url_to_pager('giftshop') ?>" class=" btn btn-secondary btn-block"><?php echo lang('giftshop::all-gift') ?></a>
+        <a ajax="true" href="<?php echo url_to_pager('giftshop-mine') ?>" class=" btn btn-secondary btn-block"><?php echo lang('giftshop::my-gift') ?></a>
+    </div>
+    <ul class="menu">
+        <li><?php echo lang('giftshop::gift-categories') ?></li>
+    </ul>
+    <ul class="menu">
+        <?php $categories = get_giftshop_category() ?>
+        <?php foreach ($categories as $category): ?>
+            <?php $cat = $category['category'] ?>
+            <?php $cat_count = get_giftshop_cat_count($cat) ?>
+            <li>
+                <div style="width: calc(100% - 30px); display: inline-block;">
+                    <a ajax="true" href="<?php echo url_to_pager('giftshop-category') ?>?cat=<?php echo $category['category']; ?>"><?php echo $category['category']; ?></a>
+                </div>
+                <div style="border-radius: 13px; background-color: grey; width: 26px; color: white; text-align: center; float: right"><?php echo $cat_count ?></div>
+            </li>
+        <?php endforeach ?>
+    </ul>
+</div>

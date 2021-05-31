@@ -1,0 +1,277 @@
+<div class="box donation-new-single">
+    <?php $user = find_user($donation['user_id']);
+    $don = Donation::getInstance();
+    $category = $don->get_category($donation['category']);
+    $r = $don->amountRaised($donation['id']);
+    $donors = $don->donors($donation['id']);
+    $t = $donation['target_amount'];
+    $raised = number_format((float)$r, 2, '.', ',');
+    if($t == 0){
+        $tar = 0;
+        $p = 0;
+    }else{
+        $tar = number_format((float)$t, 2, '.', ',');
+        $p = (($r / $t) * 100);
+    }
+
+
+    $unlimited = $donation['unlimited'];
+    $expired = ($donation['expire_time'] < time()) ? true : false;
+
+    $followers = $don->getDonationFollowers($donation['id']);
+    $isf = $don->isFollowing($donation['id']);
+    ?>
+    <div class="title">
+        <?php echo $donation['title']; ?>
+        <?php if($don->canManageDonation($donation)): ?>
+            <a class="pull-right" href="<?php echo url_to_pager("more-fields").'?id='.$donation['id'].'&t=mi'; ?>"> <i class="ion-edit"></i>  <?php echo lang("donation::manage") ?></a>
+        <?php endif; ?>
+    </div>
+    <div class="box-content">
+        <p>
+            <?php echo lang("donation::created-by"); ?> <b><a
+                    href="<?php echo profile_url(null, $user); ?>"><?php echo get_user_name($user); ?></a></b>
+            <?php echo lang("donation::category"); ?> : <b><a
+                    href="<?php echo url('donations') . '?category=' . $donation['category']; ?>"><?php echo lang($category['title']); ?> </a></b>
+        </p>
+
+        <div class="box-content post">
+            <div class="blog-large-image">
+                <img class="img-responsive" src="<?php echo url_img($donation['image'], 700) ?>"/>
+            </div>
+        </div>
+
+        <!-- Donation button -->
+        <div class="donation-donate-details box-content">
+            <p>
+                <span style="color: <?php echo config("amount-raised-text-color", '#297fc6') ?>"
+                      class="donation-gotten"> <?php echo $raised ?>
+                    <small><?php echo $donation['cur']; ?></small></span>
+                <?php if($t): ?>
+                <span><?php echo lang("donation::raised-of"); ?></span>
+                <?php else :  ?>
+                    <span><?php echo lang("donation::raised"); ?></span>
+                <?php endif; ?>
+                <?php if($don->canDonate($donation)): ?>
+                <a href="<?php echo url_to_pager("single_donation_donate",array('id'=>$donation['id'])); ?>"  style="background : <?php echo config("donate-button-background-color", '#297fc6') ?>"
+                   class="btn-donate-bg pull-right"><?php echo strtoupper(lang("donation::donate")); ?></a>
+                <?php endif; ?>
+            </p>
+            <?php if($t): ?>
+            <p><span class="donation-weneed"><?php echo $tar; ?>
+                    <span> <?php echo $donation['cur']; ?>   <?php echo lang("donation::target-amount"); ?></span></span>
+            </p>
+            <?php endif; ?>
+            <?php if($t): ?>
+            <div style="background : linear-gradient(to right,  #000 <?php echo $p . '%'; ?> , #ccc 0% );"
+                 class="donation-meter"><?php echo ceil($p).'%'; ?></div>
+            <?php endif; ?>
+            <br/>
+            <?php if (!$unlimited): ?>
+                <p class="timing-donate">
+                    <span style="text-align:left"><?php echo ($expired) ? lang("donation::time-elaspsed") : $don->timeLeft($donation['expire_time']); ?></span>
+                    <span
+                        class="pull-right"><?php echo ($donation['views'] > 1) ? $donation['views'] . ' ' . strtolower(lang("donation::views")) : $donation['views'] . ' ' . strtolower(lang("donation::view")); ?></span>
+                    <span
+                        class="pull-right five-mr"><?php echo count($followers).' '.lang("donation::following"); ?></span>
+                </p>
+                <br/>
+
+            <?php else: ?>
+                <p>
+                    <?php echo lang("donation::unlimited-timing"); ?>
+                    <span
+                        class="pull-right"><?php echo ($donation['views'] > 1) ? $donation['views'] . ' ' . strtolower(lang("donation::views")) : $donation['views'] . ' ' . strtolower(lang("donation::view")); ?></span>
+                <span
+                    class="pull-right five-mr"><span id="dflc" style="margin-right: 4px;"><?php echo count($followers); ?></span><?php echo lang("donation::following"); ?></span>
+                </p>
+                <br/>
+            <?php endif; ?>
+            <div class="">
+                <?php if (plugin_loaded('sharer')) echo view('sharer::share_link', array('link' => url("donation/" . $donation['id']))); ?>
+
+                <?php if(is_loggedIn()): ?>
+                    <a href=""
+                       data-id="<?php echo $donation['id']; ?>"
+                       class="dfbtn follow-donation <?php echo ($isf) ? 'dfollowing' : 'dnotfollowing'; ?>"
+                       data-status="<?php echo ($isf) ? 1 : 0; ?>"
+                       data-unfollow="<?php echo strtolower(lang("donation::unfollow")); ?>"
+                       data-follow="<?php echo lang("donation::follow"); ?>"
+                       data-following="<?php echo lang("donation::following"); ?>"
+                        ><?php echo ($isf) ? lang("donation::following") : lang("donation::follow"); ?></a>
+                <?php endif; ?>
+            </div>
+
+        </div>
+
+        <div class="box-content donationaion-menu">
+            <a data-t="desc" href="" class="donation-smenu active"><?php echo lang("donation::description"); ?></a>
+            <a data-t="donors" href="" class="donation-smenu"><?php echo lang("donation::donors"); ?></a>
+            <a data-t="gallery" href="" class="donation-smenu"><?php echo lang("donation::gallery"); ?></a>
+            <?php if($don->canViewComments($donation)): ?>
+            <a data-t="comments" href="" class="donation-smenu"><?php echo lang("donation::comments-and-likes"); ?></a>
+            <?php endif; ?>
+        </div>
+
+        <div class="box-content ">
+            <div class="each-d-c d-desc">
+                <p><b><?php echo lang("donation::description"); ?></b></p>
+                <?php echo $donation['full_description'] ?>
+
+                <br/>
+                <?php if($donation['location']): ?>
+                    <p><b><?php echo lang("donation::location") ?> : </b><?php echo $donation['location']; ?></p>
+                <?php $key = trim(config('google-api-key', '') != '') ? '&key='.config('google-api-key', '') : '' ?>
+                    <script async defer src="https://maps.googleapis.com/maps/api/js?callback=iInitMap&v=3<?php echo $key ?>"></script>
+                    <div id="donation-map" style="height:250px" class=""></div>
+                    <script>
+                        function iInitMap() {
+                            var map = new google.maps.Map(document.getElementById('donation-map'), {
+                                zoom: 8,
+                                center: {lat: -34.397, lng: 150.644}
+                            });
+                            var geocoder = new google.maps.Geocoder();
+
+                            geocodeAddress(geocoder, map);
+                        }
+
+                        function geocodeAddress(geocoder, resultsMap) {
+                            var address = '<?php echo json_encode($donation['location']) ?>';
+                            geocoder.geocode({'address': address}, function(results, status) {
+                                if (status === google.maps.GeocoderStatus.OK) {
+                                    resultsMap.setCenter(results[0].geometry.location);
+                                    var marker = new google.maps.Marker({
+                                        map: resultsMap,
+                                        position: results[0].geometry.location
+                                        //animation: google.maps.Animation.BOUNCE
+                                    });
+                                } else {
+                                    //alert('<?php echo lang('geocode-unsuccessful') ?>: ' + status);
+                                }
+                            });
+                        }
+                    </script>
+
+
+                <?php endif; ?>
+            </div>
+            <div class="each-d-c d-donors" style="display:none">
+                    <?php echo view("donation::donors", array('donors' => $donors)); ?>
+
+            </div>
+            <div class="each-d-c d-gallery row" style="display:none">
+                <p><b><?php echo lang("donation::gallery"); ?></b></p>
+                <?php if ($donation['gallery']): ?>
+                    <div class="d-gas-single">
+                        <?php $images = perfectUnserialize($donation['gallery']);
+                        //echo '<pre>', print_r($images), '</pre>';
+                        $count = count($images);
+                        $i = 1;
+                        ?>
+                        <?php foreach ($images as $k => $image): ?>
+                        <div class="image-donation-s" style=" display : <?php echo ($i > 3) ? 'none' : ''; ?>">
+                            <a
+                                data-next="<?php echo (isset($images[$k + 1])) ? $k+1  : 0;  ?>"
+                                data-prev="<?php echo (isset($images[$k - 1])) ? $k-1  : 0;  ?>"
+                                data-image="<?php echo url_img($image, 920) ?>"
+                                data-id="<?php echo $k ?>"
+                                style="background-image : url(<?php echo url_img($image, 600) ?>);"
+                               class="photo-viewer-donation nxt-id-<?php echo $k; ?>" href="" >
+                                <!--<img src="<?php /*echo url_img($image, 600) */?>"/>-->
+                                <?php if($i == 3 && $i > 2): ?>
+                                    <span><?php echo ' +'.($count - $i); ?></span>
+                                <?php  endif; ?>
+                            </a>
+                         </div>
+                        <?php $i++;  endforeach; ?>
+                    </div>
+                <?php endif; ?>
+                <?php if ($donation['ytube']): ?>
+                    <?php $code = $don->getYoutubeCode($donation['ytube']); ?>
+                    <iframe src="<?php echo 'https://www.youtube.com/embed/' . $code ?>"
+                            frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+                <?php endif; ?>
+            </div>
+            <?php if($don->canViewComments($donation)): ?>
+            <div class="each-d-c d-comments" style="display:none">
+                <p><b><?php echo lang("donation::comments-and-likes"); ?></b></p>
+                <?php echo view("donation::comments-likes", array('refName' => 'donation', 'refId' => $donation['id'])); ?>
+            </div>
+            <?php endif; ?>
+        </div>
+
+    </div>
+</div>
+
+
+<!--<div id="donateModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php /*_lang('close') */?></span>
+                </button>
+                <h6 class="modal-title"><?php /*echo $donation['title']; */?></h6>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>-->
+<div id="donateIframe" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-body">
+                <?php echo view("donation::iframe/index",array('id'=>$donation['id'])); ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="donateInvite" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php _lang('close'); ?></span>
+                </button>
+                <h6 class="modal-title"><?php echo $donation['title']; ?></h6>
+            </div>
+            <div class="modal-body">
+                 <?php echo view("donation::invite-modal",array('donation'=>$donation)); ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal donation-viewer" id="photoViewer" data-backdrop="true" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog viewer-container" role="document">
+        <div class="modal-content clearfix" style="position: relative;">
+            <div class="viewer-left">
+                <div class="navigate nav-left">
+                        <a data-image="" data-id="" class="nav-donation" href=""><i class="ion-ios-arrow-back"></i></a>
+                </div>
+                <div class="center-do-image">
+
+                </div>
+
+                <div class="navigate nav-right">
+                        <a  data-image="" data-id="" class="nav-donation" href=""><i class="ion-ios-arrow-forward"></i></a>
+                </div>
+            </div>
+            <div class="viewer-right slimscroll" data-height="100%">
+
+            </div>
+            <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+            </button>
+        </div>
+
+    </div>
+</div>

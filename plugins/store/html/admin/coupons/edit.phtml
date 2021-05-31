@@ -1,0 +1,111 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("store::save-coupon"); ?>
+    </div>
+    <div class="wrapper-content">
+        <?php if($message): ?>
+            <div class="alert alert-danger"><?php echo $message; ?></div>
+        <?php endif;?>
+        <form action="" method="post">
+            <fieldset class="form-group">
+                <div class="col-sm-4">
+                    <label> <?php echo lang("store::coupon-code"); ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <input class="form-control" value="<?php echo (input('val.code')) ? input('val.code') : $coupon['code']?>" name="val[code]" type="text" />
+                </div>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <div class="col-sm-4">
+                    <label> <?php echo lang("store::coupon-type"); ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <select name="val[coupon_type]" class="c-select">
+                        <option <?php echo ($coupon['coupon_type'] == 'percent_off') ?  'selected' : null; ?>  value="percent_off"><?php echo lang("store::percent-off") ?></option>
+                        <option  <?php echo ($coupon['coupon_type'] == 'price_off') ?  'selected' : null; ?> value="price_off"><?php echo lang("store::price-off") ?></option>
+                    </select>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <div class="col-sm-4">
+                    <label> <?php echo lang("store::coupon-value"); ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" value="<?php echo (input('val.coupon_value')) ? input('val.coupon_value') : $coupon['coupon_value'] ?>" class="form-control" name="val[coupon_value]"  />
+                </div>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <div class="col-sm-4">
+                    <label> <?php echo lang("store::expiry-date"); ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <input id="datetimepicker_dark" type="text" class="form-control" value="<?php echo ($coupon['expiry_date']) ? date('Y/m/d h:i',$coupon['expiry_date']) :  null ;?>" name="val[expiry_date]"  />
+                </div>
+            </fieldset>
+            <fieldset>
+                <div class="col-sm-4">
+                    <label> <?php echo lang("store::status"); ?></label>
+                </div>
+                <div class="col-sm-8">
+                    <select name="val[status]" class="c-select">
+                        <option <?php echo (input('val.status') == '1') ?  'selected' : null; ?>  value="1"><?php echo ucwords(lang("active")); ?></option>
+                        <option  <?php echo (input('val.status') == '0') ?  'selected' : null; ?> value="0"><?php echo ucwords(lang("store::not-active")); ?></option>
+                    </select>
+                </div>
+            </fieldset>
+            <hr>
+
+            <fieldset class="form-group">
+                <div class="col-sm-12">
+                    <label><strong><?php echo lang("store::apply-coupon-to"); ?></strong></label>
+                    <p><?php echo lang("store::coupon-products-description") ?></p>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-5">
+                        <select class="form-control old-proudcts-container" multiple style="width: 100%; max-height: 300px;">
+                            <?php
+                            $coupon_products = unserialize($coupon['products']);
+                            $store= getCurrentUserStore();
+                            $products = getMyStoreProducts($store['s_id']);
+                            if($products->total):
+                                foreach($products->results() as $p):?>
+                                    <?php if(in_array($p['id'],$coupon_products)) continue; ?>
+                                    <option value="<?php echo $p['id'] ?>"><?php echo $p['id'].' '.ucwords($p['name']); ?></option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                    <div class="col-sm-2 coupon-add-button">
+                        <button class="btn btn-sm btn-secondary add-product-coupon"><?php echo  lang('store::add-selected') ?></button>
+                        <button class="btn btn-sm btn-secondary remove-product-coupon"><?php echo  lang('store::remove-selected') ?></button><br/>
+                        <button class="btn btn-sm btn-secondary add-all-product-coupon"><?php echo  lang('store::add-all') ?></button>
+                        <button class="btn btn-sm btn-secondary remove-all-products-coupon"><?php echo  lang('store::remove-all') ?></button>
+                    </div>
+
+                    <div class="col-sm-5">
+                        <select id="coupon_products_selected_container" class="form-control"  multiple name="val[products][]" style="width: 100%;max-height: 300px">
+                            <?php
+                            $coupon_products = unserialize($coupon['products']);
+                            $store= getCurrentUserStore();
+                            $products = getMyStoreProducts($store['s_id']);
+                            if($products->total):
+                                foreach($products->results() as $p):?>
+                                    <?php if(!in_array($p['id'],$coupon_products)) continue; ?>
+                                    <option value="<?php echo $p['id'] ?>"><?php echo $p['id'].' '.ucwords($p['name']); ?></option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <input type="hidden" value="update_coupon" name="val[save_type]" />
+                <button type="submit" class="btn btn-info btn-lg"><?php echo lang("store::save-coupon") ?></button>
+            </fieldset>
+        </form>
+    </div>
+</div>

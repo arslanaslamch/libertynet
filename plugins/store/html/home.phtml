@@ -1,0 +1,62 @@
+<?php echo view("store::store-top-menu"); ?>
+<?php echo view("store::top-with-categories"); ?>
+<div class="box">
+    <div class="global-filter-container" data-url="data-url="<?php echo url('stores');  ?>">
+        <form id="blog-list-search" method="post" onsubmit="return run_global_filter()" action="" class="form-inline list-search">
+            <?php CSRFProtection::embed() ?>
+            <input type="hidden" class="filter-input form-control" data-name="type" value="<?php echo input('type', 'browse') ?>"/>
+            <i class="search-icon ion-ios-search"></i>
+            <input value="<?php echo input('term') ?>" type="text" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>"/>
+        </form>
+        <div class="list-head">
+            <h3 class="heading"><?php echo ucwords(lang('store::stores')); ?></h3>
+        </div>
+        <div class="filter-pane">
+            <select id="video-filter-select" onchange="return run_global_filter()" data-name="filter" class="c-select filter-input">
+                <option value="all"><?php echo lang('all') ?></option>
+                <option <?php echo (input('filter') == 'top') ? 'selected' : null ?> value="top"><?php echo lang('video::top') ?></option>
+                <option <?php echo (input('filter') == 'featured') ? 'selected' : null ?> value="featured"><?php echo lang('video::featured') ?></option>
+            </select>
+        </div>
+    </div>
+    <div id="products-list-container" class="box-content clearfix list-listing-container">
+        <?php foreach($stores->results() as $p):$user = find_user($p['user_id'])?>
+            <div class="each-item clearfix">
+                <div class="left">
+                    <?php if($p['featured']):?>
+                        <span class="featured-tag"><?php _lang('featured')?></span>
+                    <?php endif?>
+                    <a ajax="true" href="<?php echo url('store/'.$p['slug'])?>" style="background-image:url(<?php echo getStoreLogo($p) ?>)"></a>
+                </div>
+
+                <div class="right">
+                    <span class="item-title"><a ajax="true" href="<?php echo url('store/'.$p['slug'])?>"><?php echo $p['name']?></a> <?php echo verify_badge($p); ?></span>
+                    <p class="item-desc"><?php echo html_entity_decode(str_limit($p['describ'], 100))?></p>
+                    <div class="item-info">
+                        <span class="help-block" style="display: block">
+                                    <?php _lang('store::created-by')?> : <a href="<?php echo profile_url(null, $user)?>"><?php echo get_user_name($user)?></a>
+                            <?php _lang('store::on')?> <?php echo date('M j , Y  h:i A', $p['time']); ?>
+                                </span>
+
+                    </div>
+
+                </div>
+            </div>
+
+        <?php endforeach?>
+
+
+
+    </div>
+
+    <div class="box-content">
+        <?php if($stores->total):?>
+
+            <?php echo $stores->append(array('category' => input('category'), 'type' => input('type', 'browse'), 'term' => input('term'), 'filter' => input('filter', 'all')))->links()?>
+        <?php else:?>
+
+            <div class="alert alert-info"><?php _lang('store::store-list-empty')?></div>
+        <?php endif?>
+    </div>
+
+</div>

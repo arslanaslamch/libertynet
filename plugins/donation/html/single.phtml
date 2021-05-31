@@ -1,0 +1,100 @@
+<?php  $don = Donation::getInstance();
+$settings = $don->getSettings($donation['user_id']);
+?>
+<div class="box">
+    <div class="title">
+        <?php if(config('show-who-created-donation',1)): ?>
+                <?php $user = find_user($donation['user_id']); ?>
+                <span><?php echo strtolower(lang('donation::added-by')); ?> : </span><a href="<?php echo profile_url(null,$user) ?>"><?php echo get_user_name($user) ?></a>
+        <?php endif; ?>
+        <?php if($don->canManageDonation($donation)): ?>
+        <a class="pull-right" href="<?php echo url_to_pager("manage_donation",array('id'=>$donation['id'])); ?>"> <i class="ion-edit"></i>  <?php echo lang("donation::manage") ?></a>
+        <?php endif; ?>
+    </div>
+    <div class="box-content">
+        <div class="container">
+            <div class="col-sm-5 lhs-donate">
+                <?php
+                $raised = number_format((float)$don->amountRaised($donation['id']),2,'.',',');
+                $tar = number_format((float)$donation['target_amount'],2,'.',',');
+                $expired = ($donation['expire_time'] < time()) ? true : false;
+                ?>
+                <div class="background-image-donate" style="background-image: url(<?php echo url_img($donation['image'],700) ?>)"></div>
+                <p class="amount-raised-btnlike"><b><?php echo lang('donation::raisedd') ?> - <?php echo config('currency-sign','$') ?><?php echo $raised; ?></b></p>
+                <p class="timing-donate"><?php echo ($expired) ? lang("donation::time-elaspsed") : $don->timeLeft($donation['expire_time']); ?></p>
+                <p class="amount-raised-btnlike"><b><?php echo config('currency-sign','$') ?><?php echo $raised; ?> <?php echo ' / '.config('currency-sign','$').$tar; ?></b></p>
+                <?php if($expired): ?>
+                    <button disabled class="btn btn-block btn-danger"><?php echo strtolower(lang("donation::time-elaspsed")); ?></button>
+                <?php else: ?>
+                    <button data-title="<?php echo $donation['title']; ?>"
+                            data-id="<?php echo $donation['id']; ?>"
+                            id="donate-now"
+                            class="btn btn-block btn-info"><?php echo lang("donation::donate") ?></button>
+                <?php endif; ?>
+
+                <br/>
+            </div>
+            <div class="">
+                <h5><b><?php echo $donation['title']; ?></b></h5>
+                <?php $category = $don->get_category($donation['category']); ?>
+                <p><?php echo lang("donation::category"); ?> : <a href="<?php echo url('donations').'?category='.$donation['category']; ?>"><?php echo lang($category['title']); ?> </a></p>
+
+                <?php if(config('enable-donation-sharing',1)): ?>
+                <p>
+                    <?php if(plugin_loaded('sharer')) echo view('sharer::share_link', array('link' => url("donation/".$donation['id']))); ?>
+                </p>
+                <?php endif; ?>
+
+                <p style="font-size:14px"><?php echo nl2br($donation['description']); ?></p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="donateModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php _lang('close')?></span>
+                </button>
+                <h6 class="modal-title"></h6>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="<?php echo url_to_pager("donate-now").'?type=request'; ?>" class="">
+                    <?php if($donation['predefined']): ?>
+                        <?php $predfined = perfectUnserialize($donation['predefined']); ?>
+                        <?php foreach($predefined as $pred): ?>
+                            <?php endforeach; ?>
+                     <?php endif; ?>
+                    <div class="form-group">
+                        <input type="hidden" id="did" name="val[did]" value="" />
+                        <input id="damt" type="number" class="form-control" name="val[amount]" placeholder="<?php echo lang('donation::amount') ?>" required="" />
+                    </div>
+                    <div class="form-group">
+                        <select id="pmthody" class="form-control" name="val[method]">
+                            <option value="paypal">Paypal</option>
+                            <option value="stripe">Stripe</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-sm btn-info "><?php echo lang('donation::donate'); ?></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="msg-cannot" value="<?php echo lang("donation::user-cannot-receive"); ?>" />
+<?php if($settings['paypal_email']): ?>
+<input type="hidden" id="paypal-pay" value="<?php echo lang("donation::user-cannot-receive"); ?>" />
+<?php endif; ?>
+
+
+<?php if($settings['publishable_key'] && ($settings['secret_key'])): ?>
+<div id="donation-stripe" style="display:none">
+
+</div>
+<?php endif; ?>

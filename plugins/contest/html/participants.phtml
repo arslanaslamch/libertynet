@@ -1,0 +1,20 @@
+<?php $parts = getContestParticipants($contest); ?>
+<div class="box">
+    <div class="title">
+        <?php echo lang("contest::participants"); ?>
+        <span class="pull-right"><?php echo $parts->total ?> <?php echo lang("contest::participants-with-c"); ?></span>
+    </div>
+    <div class="box-content">
+
+        <?php if($parts->total): ?>
+        <?php foreach($parts->results() as $p): ?>
+            <div class="each-particpant-contest" title="<?php echo get_user_name($p); ?>">
+                <a ajax="true" href="<?php echo profile_url(null,$p) ?>"><img src="<?php echo get_avatar(200,$p) ?>" /></a>
+            </div>
+        <?php endforeach; ?>
+        <?php else: ?>
+        <div class="alert alert-info"><?php echo lang("contest::participant-list-is-empty-join-participate") ?></div>
+        <?php endif; ?>
+    </div>
+
+</div>

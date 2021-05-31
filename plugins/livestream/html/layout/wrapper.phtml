@@ -1,0 +1,21 @@
+<?php
+/**
+ * @var string $title
+ * @var string $description
+ * @var string $content
+ * @var array $links
+ * */
+?>
+<div class="box livestream-wrapper">
+    <div class="title clearfix">
+        <?php echo $title; ?>
+        <?php if(isset($links)): ?>
+            <?php foreach ($links as $link): ?>
+                <a class="btn btn-sm btn-<?php echo $link['type'] ?><?php echo $link['confirm'] ? ' confirm' : '' ?>" <?php echo $link['ajax'] ? ' ajax="true"' : '' ?> href="<?php echo $link['url'] ?>" <?php echo !$link['modal'] ?: 'data-toggle="modal" data-target="#livestream-modal"' ?> data-title="<?php echo $link['title'] ?>"><?php echo $link['title'] ?></a>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+    <div class="box-content livestream-content main">
+        <?php echo $content; ?>
+    </div>
+</div>

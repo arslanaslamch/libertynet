@@ -1,0 +1,52 @@
+<div class="contact box" style="background-image: url(<?php echo url_img(config('default-theme-splash-cover','themes/default/images/splash/cover.jpg')) ?>)">
+	<div class="title"><?php echo lang('contact::contact-form-message') ?></div>
+    <div class="box-content">
+    	<form action="" method="post" class="row">
+		<?php if($message): ?>
+			<div class="alert alert-success"><?php echo $message ?></div><?php endif ?>
+		<?php echo CSRFProtection::embed() ?>
+			<div class="col-md-6">
+				<div class="field">
+					<input name='val[name]' type="text" required class="form-control" placeholder="<?php echo lang('contact::name') ?>">
+				</div>
+				<div class="field">
+					<input name='val[email]' type="email" required class="form-control" placeholder="<?php echo lang('contact::email') ?>">
+				</div>
+				<div class="field">
+					<input name='val[subject]' type="text" required class="form-control" placeholder="<?php echo lang('contact::subject') ?>">
+				</div>
+				<div class="field">
+					<textarea id="contact-message" name='val[message]' class="form-control ckeditor" placeholder="<?php echo lang('contact::message') ?>"></textarea>
+				</div>
+                <?php fire_hook('contact-us.footer'); ?>
+                <div class="field">
+                    <?php if(get_setting("enable-captcha")): ?>
+                        <?php if(get_setting("enable-captcha") == '1'): ?>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input class="form-control" type="text" placeholder="<?php echo lang('enter-text-below') ?>" name="captcha" id="captcha-input"/>
+                                </div>
+                                <div class="col s6">
+                                    <img id="captcha-image" src="<?php echo url("captcha.php") ?>"/>
+                                    <a href="#" onclick="document.getElementById('captcha-image').src='<?php echo url('captcha.php') ?>?' + Math.random(); document.getElementById('captcha-input').focus();">
+                                        <i class="ion-ios-reload"></i>
+                                    </a>
+                                    <br/>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <div class="g-recaptcha" data-sitekey="<?php echo config('recaptcha-key'); ?>"></div>
+                            <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=en"></script>
+                        <?php endif ?>
+                    <?php endif ?>
+                </div>
+                <div class="submit">
+					<button id="contact-us" type="submit" name="reply" class="btn btn-info"><?php echo lang('contact::send') ?> </button>
+				</div>
+			</div>
+			<div class="col-md-6">
+                <img src="<?php echo url_img(config('default-theme-splash-image','themes/default/images/splash/image.png')) ?>" alt="image" class="image" />
+			</div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,248 @@
+<?php echo view("affliate::tm"); ?>
+
+<div class="box">
+    <div class="title"><?php echo lang("affliate::my-requests"); ?></div>
+    <div class="box-content">
+        <?php if ($message): ?>
+            <?php echo view("affliate::alert", array('message' => $message)); ?>
+        <?php endif; ?>
+        <div class="container row">
+            <div class="contact-wrapper">
+                <p class="title-row"><b><?php echo lang("affliate::contact-information"); ?></b> <span
+                        class="pull-right"><a class="btn" id="modify-aff-c-info" href=""><i
+                                class="ion-edit"></i></a></span></p>
+
+                <div class="c-contact-wrapper">
+                    <div class="container row">
+                        <div class="col-sm-6">
+                            <p><?php echo lang("affliate::contact-name"); ?> : <b><?php echo $info['name']; ?></b></p>
+
+                            <p><?php echo lang("affliate::contact-address"); ?> : <b><?php echo $info['address']; ?></b>
+                            </p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p><?php echo lang("affliate::contact-email"); ?> : <b><?php echo $info['email']; ?></b></p>
+
+                            <p><?php echo lang("affliate::contact-phone"); ?> : <b><?php echo $info['phone']; ?></b></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Balance-->
+                <?php
+                $minimum = config("aff-minimum-points-request",1);
+                $max = config("aff-maximum-points-request",1000);
+                ?>
+                <p class="title"><?php echo lang("affliate::balance"); ?></p>
+
+                <p><b><?php echo lang("affliate::currency") ?> : </b> <?php echo config("default-currency"); ?>
+
+                <span class="pull-right"><b><?php echo lang("affliate::minimum-request-point"); ?></b> : <?php echo $minimum.' '.lang("affliate::points-count") ?></span>
+                </p>
+
+                <p><b> <?php echo lang("affliate::ponints-conversion-rate") ?>
+                        : </b> <?php echo config("aff-conversion-rate",1) . lang("affliate::points-count"); ?> =
+                    1 <?php echo config("default-currency"); ?>
+                    <span class="pull-right"><b><?php echo lang("affliate::max-request-point"); ?></b> : <?php echo $max.' '.lang("affliate::points-count") ?></span>
+                </p>
+
+                <div class="container row">
+                    <div class="col-sm-3 single-request-box">
+                        <h4 class="srbt"><?php echo aff_percent(get_aff_earnings('all',null),false); ?></h4>
+
+                        <p><span data-placement="bottom" title="<?php echo lang("affliate::total-earnings-desc"); ?>"
+                                 data-toggle="tooltip"><b> <?php echo lang("affliate::total-earnings"); ?> </b></span>
+                        </p>
+                    </div>
+                    <div class="col-sm-3 single-request-box">
+                        <?php $av = aff_percent(get_aff_earnings('available',null),false); ?>
+                        <h4 class="srbt"><?php echo $av; ?></h4>
+
+                        <p><span data-placement="bottom" title="<?php echo lang("affliate::available-points-desc"); ?>"
+                                 data-toggle="tooltip"
+                                 class=""><b> <?php echo lang("affliate::available-points"); ?> </b></span></p>
+                    </div>
+
+                    <div class="col-sm-3 single-request-box">
+                        <h4 class="srbt"><?php echo aff_percent(get_aff_earnings('pending',null),false); ?></h4>
+
+                        <p>
+                            <span data-placement="bottom" title="<?php echo lang("affliate::pending-points-desc"); ?>"
+                                  data-toggle="tooltip"><b> <?php echo lang("affliate::pending-points"); ?> </b></span>
+                        </p></div>
+                    <div class="col-sm-3 single-request-box">
+                        <h4 class="srbt"><?php echo aff_percent(get_aff_earnings('received',null),false); ?></h4>
+
+                        <p>
+                            <span data-placement="bottom" title="<?php echo lang("affliate::recieved-points-desc"); ?>"
+                                  data-toggle="tooltip"><b> <?php echo lang("affliate::recieved-points"); ?> </b></span>
+                        </p>
+                    </div>
+                </div>
+                <br/><br/>
+                <!-- Manage Requests -->
+                <p class="title"><?php echo lang("affliate::manage-requests"); ?></p>
+
+                <div class="c-contact-wrapper">
+                    <div class="container row">
+                        <div class="col-sm-4">
+                            <?php $from = (input('val.from_date')) ? input('val.from_date') : date('m/d/Y', (strtotime('-6 days'))); ?>
+                            <?php $end = (input('val.end_date')) ? input('val.end_date') : date('m/d/Y', time()); ?>
+                            <div class="form-group">
+                                <label><?php echo lang("affliate::request-from"); ?></label>
+                                <input autocomplete="off" class="form-control" id="startDate" name="val[from_date]"
+                                       value="<?php echo $from ?>"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label><?php echo lang("affliate::request-to"); ?></label>
+                                <input autocomplete="off" class="form-control" id="endDate" name="val[end_date]"
+                                       value="<?php echo $end; ?>"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <label style="color: #f2f4f6">.</label>
+                            <button data-ad="no"
+                                class="btn btn-block btn-info search-request"><?php echo lang("affliate::search"); ?></button>
+                            <?php if($av > $minimum): ?>
+                            <button
+                                class="btn btn-block btn-secondary request-m-button"><?php echo lang("affliate::request-money"); ?></button>
+                            <?php else: ?>
+                                <button
+                                    class="btn btn-block btn-secondary disabled" disabled><?php echo lang("affliate::insufficient-point-to-request"); ?></button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <br/>
+
+                <div class="container row" style="clear:both">
+                    <div class="col-sm-12" id="request-manager">
+                        <table id="requstTable" class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th><?php echo lang("affliate::request-date"); ?></th>
+                                <th><?php echo lang("affliate::amount"); ?></th>
+                                <th><?php echo lang("affliate::request-points"); ?></th>
+                                <th><?php echo lang("affliate::request-message"); ?></th>
+                                <th><?php echo lang("affliate::response-date"); ?></th>
+                                <th><?php echo lang("affliate::response-message"); ?></th>
+                                <th><?php echo lang("affliate::status"); ?></th>
+                                <th><?php echo lang("affliate::action"); ?></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php echo view("affliate::request-row", array('from' => $from, 'end' => $end,'admin'=>'no')); ?>
+                            </tbody>
+                        </table>
+                        <div class="indicator" ><img src="<?php echo img('images/loading.gif')?>"/></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Request Money-->
+<div id="RequestAff" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php _lang('close') ?></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form" action="" method="post">
+                    <?php CSRFProtection::embed(); ?>
+                    <div class="form-group">
+                        <label><?php echo lang("affliate::points") ?></label>
+                        <input id="pnt" max="<?php echo $max; ?>" class="form-control" min="1" value="1" name="val[pnt]" type="number"/>
+                    </div>
+                    <div class="form-group">
+                        <label><?php echo lang("affliate::message-optional") ?></label>
+                        <textarea class="form-control" id="msg" name="val[msg]"></textarea>
+                    </div>
+                    <?php echo fire_hook("emoney.affiliate.option.here",null,array()); ?>
+                    <div class="form-group">
+                        <button class="btn btn-info submit-money-request"><?php echo lang("affliate::submit"); ?></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--contact Edit -->
+<div id="ContactEditModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><?php _lang('close') ?></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container row">
+                    <form class="form" action="" method="post">
+                        <?php CSRFProtection::embed(); ?>
+                        <div class="col-sm-12">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><?php echo lang("affliate::contact-name") ?></label>
+                                    <input class="form-control" value="<?php echo $info['name']; ?>" name="val[name]"
+                                           type="text"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><?php echo lang("affliate::contact-email"); ?></label>
+                                    <input class="form-control" value="<?php echo $info['email']; ?>" name="val[email]"
+                                           type="text"/>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+
+                        <div class="col-sm-12">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><?php echo lang("affliate::contact-address"); ?></label>
+                                    <input class="form-control" value="<?php echo $info['address']; ?>"
+                                           name="val[address]" type="text"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><?php echo lang("affliate::contact-phone"); ?></label>
+                                    <input class="form-control" value="<?php echo $info['phone']; ?>" name="val[phone]"
+                                           type="text"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><?php echo lang("affliate::additional-information"); ?></label>
+                                    <textarea class="form-control"
+                                              name="val[add_info]"><?php echo $info['add_info']; ?></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <br/>
+
+                        <div class="col-sm-12">
+                            <div class="col-sm-12">
+                                <button class="btn btn-info"><?php echo lang("affliate::save-chnages") ?></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

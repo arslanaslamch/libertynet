@@ -1,0 +1,70 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("supportsystem::manage-moderators"); ?><br/>
+        <small><?php echo lang("supportsystem::manage-moderators-desc"); ?></small>
+    </div>
+    <div class="wrapper-content">
+        <form action="" method="post" style="margin: 20px 0">
+            <?php CSRFProtection::embed() ?>
+            <h6><?php echo lang("supportsystem::choose-moderators") ?></h6>
+            <div class="mail-to-selectors" id="mail-selected-members" style="display: block">
+                <div class="">
+                    <input onkeyup="suggest_mail_users(this)" type="text" placeholder="Type member name"/>
+                </div>
+                <div class="user-suggestion"></div>
+            </div>
+            <button class="btn btn-sm btn-secondary" type="submit" style="margin-top: 5px">
+                <?php echo lang('supportsystem::save-moderator') ?>
+            </button>
+        </form>
+        <hr/>
+        <div class="list-table-container">
+            <div class="table-responsive">
+                <table class="table table-striped list-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th><?php echo lang('name') ?></th>
+                        <th><?php echo lang('supportsystem::avatar') ?></th>
+                        <!--<th><?php /*echo lang('supportsystem::article-category') */?></th>-->
+                        <th><?php echo lang('supportsystem::moderator-since') ?></th>
+                        <th><?php echo lang('actions') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php $i = 1; ?>
+                    <?php foreach($moderators->results() as $moderator): ?>
+                        <tr class="item" id="<?php echo $moderator['id'] ?>">
+                            <?php
+                            $user = find_user($moderator['user_id']);
+                            ?>
+                            <td><?php echo $i; ?></td>
+
+                            <td>
+                                <a ajax="true" href="<?php echo profile_url(null,$user); ?>">
+                                    <?php echo get_user_name($user); ?>
+                                </a>
+                            </td>
+                            <td>
+                                <a ajax="true" href="<?php echo profile_url(null,$user); ?>">
+                                    <img src="<?php echo get_avatar(200,$user) ?>" style="height:50px; border-radius: 100%;margin-right:5px;"/>
+                                </a>
+                            </td>
+
+                            <td>
+                                <?php echo date('d F Y  g:ia', $moderator['time']) ?>
+                            </td>
+
+                            <td>
+                                <a class="admin-confirm ion-android-delete btn btn-danger" href="<?php echo url_to_pager('admincp-support-system-moderator').'?action=delete&id='.$moderator['user_id'] ?>"></a>
+                            </td>
+
+                        </tr>
+                    <?php $i++; endforeach ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <?php echo $moderators->links() ?>
+    </div>
+</div>

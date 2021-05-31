@@ -1,0 +1,27 @@
+<form class="form ajax-form"
+      enctype="multipart/form-data"
+      id="ss-reply-form"
+      method="post"
+      action="<?php echo url_to_pager("supportsystem-reply-page") ?>">
+    <div class="field">
+        <div class="bottom">
+            <textarea name="val[content]" class="form-control ss-min-heght"
+                      placeholder=""><?php echo input('val.content', null, false) ?></textarea>
+        </div>
+    </div>
+    <input type="hidden" value="user-<?php echo get_userid() ?>" name="val[entity]"/>
+    <input type="hidden" value="<?php echo $ticket['id']; ?>" name="val[ticket_id]"/>
+    <input type="hidden" value="<?php echo $ticket['user_id']; ?>" name="val[owner]"/>
+    <br/>
+    <div class="field">
+        <div class="bottom">
+            <button type="button" onclick="return choose_ss_file()"
+                    class="btn btn-secondary"><?php echo lang("supportsystem::attach-files"); ?></button>
+            <button type="button" onclick="return ss_ticket_submit_reply(this)" class="pull-right btn btn-info">Send
+                Reply
+            </button>
+            <input type="file" name="file[]" multiple id="ss-type-file" class="form-control"
+                   style="visibility: hidden"/>
+        </div>
+    </div>
+</form>

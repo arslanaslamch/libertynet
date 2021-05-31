@@ -1,0 +1,16 @@
+<?php $ur = (isset($ur)) ? $ur : 2; //user role?>
+<?php $levels = config('number-of-commision-levels',5); ?>
+<?php $cls = get_commissions_list();
+foreach($cls as $k=>$txt):
+    $commsion = get_user_group_commission($ur,toAscii($txt));
+    ?>
+    <tr>
+        <td><?php echo $txt; ?></td>
+        <?php for($i =1; $i <= $levels; $i++): ?>
+            <td><?php echo aff_percent((isset($commsion['level_'.$i])) ? $commsion['level_'.$i] : '0'); ?></td>
+        <?php endfor; ?>
+
+    </tr>
+<?php endforeach; ?>
+
+</tbody>

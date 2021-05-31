@@ -1,0 +1,67 @@
+<?php $filter = input('val', $_GET); ?>
+<div class="box px-4 py-4">
+	<form action="" method="post">
+		<?php CSRFProtection::embed() ?>
+		<div class="form-group">
+			<label><?php echo lang('max-miles') . " (0-" . config('max-miles') . " " . lang("matchmaker::" . config('default-unit')) . ")"; ?></label>
+			<input type="range" name="val[miles]" id="max-miles" data-show="maxMiles" value="<?php echo isset($filter['miles']) ?  $filter['miles']  : config("default-miles") ?>" class=" form-control-range" min="0" max="<?= config('max-miles'); ?>">
+			<span class="help-block">
+				<span id="maxMiles">
+					<?php echo isset($filter['miles']) ?  $filter['miles']  : config("default-miles") ?>
+				</span> <?= lang("matchmaker::" . config('default-unit')); ?></span>
+		</div>
+
+		<div class="form-group">
+			<label><?php echo lang('gender') ?></label>
+			<select name="val[gender]" class="form-control filter-input">
+				<option value="both" <?php if (isset($filter['gender']) && $filter['gender'] == 'both') : ?>selected<?php endif ?>><?php echo lang('both') ?></option>
+				<?php $genders = get_genders(); ?>
+				<?php foreach ($genders as $gender) : ?>
+					<option <?php echo isset($filter['gender']) && $filter['gender'] == $gender ? 'selected' : '' ?> value="<?php echo $gender ?>"><?php echo lang($gender) ?></option>
+				<?php endforeach; ?>
+				<?php fire_hook('people.gender', $filter, array($filter)); ?>
+			</select>
+		</div>
+
+		<!--<div class="row form-group">
+				<div class="col-sm-4"><?php echo lang('online-status') ?></div>
+				<div class="col-sm-8">
+					<select name="val[online_status]" class="form-control filter-input">
+						<option value="both" <?php if (isset($filter['online_status']) && $filter['online_status'] == 'both') : ?>selected<?php endif ?>><?php echo lang('both') ?></option>
+						<option value="online" <?php if (isset($filter['online_status']) && $filter['online_status'] == 'online') : ?>selected<?php endif ?>><?php echo lang('online') ?></option>
+						<option value="offline" <?php if (isset($filter['online_status']) && $filter['online_status'] == 'offline') : ?>selected<?php endif ?>><?php echo lang('offline') ?></option>
+					</select>
+				</div>
+		</div>-->
+
+
+		<div class="form-group">
+			<label><?php echo lang('max-age') ?> (18 - 100)</label>
+			<div class="age-slider">
+				<input type="range" name="val[min_age]" id="min-age" data-show="minAge" value="<?php echo isset($filter['min_age']) ?  $filter['min_age']  : 18 ?>" min="18" max="100">
+				<input type="range" name="val[max_age]" id="max-age" data-show="maxAge" value="<?php echo isset($filter['max_age']) ?  $filter['max_age']  : 100 ?>" min="18" max="100">
+			</div>
+			<span class="help-block" id="age">
+				<?= lang('min-age') . " : "; ?><span id="minAge"><?= isset($filter['min_age']) ?  $filter['min_age']  : 18; ?></span>
+				<?= lang('max-age') . " : "; ?><span id="maxAge"><?= isset($filter['max_age']) ?  $filter['max_age']  : 100; ?>
+				</span>
+			</span>
+		</div>
+		<div class="row form-group button">
+			<div class="col-sm-12">
+				<input value="<?php echo lang('search') ?>" class="btn btn-secondary" name="val[submit]" type="submit">
+			</div>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript">
+	var sliders = document.querySelectorAll("input[type='range']");
+	sliders.forEach(element => {
+		if (element.dataset.show != undefined) {
+			element.oninput = function() {
+				document.getElementById(element.dataset.show).innerHTML = element.value;
+			}
+		}
+	});
+</script>

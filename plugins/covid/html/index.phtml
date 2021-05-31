@@ -1,0 +1,99 @@
+<div class="box">
+    <div class="title"><?php echo lang('covid::covid-19-statistics'); ?>
+        <span class="pull-right"><?php echo lang('covid::source') ?> : <em>https://covid19api.com</em></span>
+    </div>
+    <div class="box-content">
+        <?php //echo '<pre>', print_r($results), '</pre>';?>
+        <div class="box-content">
+            <div class="global-filter-container" data-url="<?php echo url_to_pager('covid-page') ?>">
+                <h2 class="inline-block"> <?php echo $title ?> </h2>
+                    <select onchange="return run_global_filter()" data-name="filter"
+                            class="c-select filter-input pull-right">
+                        <option <?php echo input('filter','all') == 'all'  ? 'selected' : null; ?> value="all"><?php echo lang('covid::world') ?></option>
+                        <option <?php echo input('filter','all') == 'africa'  ? 'selected' : null; ?> value="africa"><?php echo lang('covid::africa') ?></option>
+                        <option <?php echo input('filter','all') == 'europe'  ? 'selected' : null; ?> value="europe"><?php echo lang('covid::europe'); ?></option>
+                        <option <?php echo input('filter','all') == 'north-america'  ? 'selected' : null; ?> value="north-america"><?php echo lang('covid::north-america') ?></option>
+                        <option <?php echo input('filter','all') == 'asia'  ? 'selected' : null; ?> value="asia"><?php echo lang('covid::asia') ?></option>
+                        <option <?php echo input('filter','all') == 'south-america'  ? 'selected' : null; ?> value="south-america"><?php echo lang('covid::south-america') ?></option>
+                        <option <?php echo input('filter','all') == 'oceania'  ? 'selected' : null; ?> value="oceania"><?php echo lang('covid::oceania'); ?></option>
+                    </select>
+            </div>
+        </div>
+        <?php if ($results): ?>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-6 each-box-world-count">
+                        <img class="covid-icon" src="<?php echo img('covid::images/emoticons/disappointed.svg'); ?>"/>
+                        <h4><?php echo covid_number_format($results['Global']['NewConfirmed']); ?></h4>
+                        <h6><?php echo lang('covid::new-confirmed-cases'); ?></h6>
+                    </div>
+                    <div class="col-sm-6 each-box-world-count">
+                        <img class="covid-icon" src="<?php echo img('covid::images/emoticons/neutralface.svg'); ?>"/>
+                        <h4><?php echo covid_number_format($results['Global']['TotalConfirmed']); ?></h4>
+                        <h6><?php echo lang('covid::total-confirmed-cases') ?></h6>
+                    </div>
+                    <div class="col-sm-6 each-box-world-count">
+                        <img class="covid-icon" src="<?php echo img('covid::images/emoticons/crying.svg'); ?>"/>
+                        <h4><?php echo covid_number_format($results['Global']['NewDeaths']); ?></h4>
+                        <h6><?php echo lang('covid::new-deaths') ?></h6>
+                    </div>
+                    <div class="col-sm-6 each-box-world-count">
+                        <img class="covid-icon" src="<?php echo img('covid::images/emoticons/crying.svg'); ?>"/>
+                        <h4><?php echo covid_number_format($results['Global']['TotalDeaths']); ?></h4>
+                        <h6><?php echo lang('covid::total-deaths'); ?></h6>
+                    </div>
+                    <div class="col-sm-6 each-box-world-count">
+                        <img class="covid-icon" src="<?php echo img('covid::images/emoticons/grin.svg'); ?>"/>
+                        <h4><?php echo covid_number_format($results['Global']['NewRecovered']); ?></h4>
+                        <h6><?php echo lang('covid::new-recovered'); ?> </h6>
+                    </div>
+                    <div class="col-sm-6 each-box-world-count">
+                        <img class="covid-icon" src="<?php echo img('covid::images/emoticons/grin.svg'); ?>"/>
+                        <h4><?php echo covid_number_format($results['Global']['TotalRecovered']); ?></h4>
+                        <h6><?php echo lang('covid::total-recovered'); ?></h6>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <div class="box-content">
+                    <table class="table table-bordered table-striped  covid-table">
+                        <thead>
+                        <tr>
+                            <th style="min-width: 150px">Country</th>
+                            <th>Country Code</th>
+                            <th>New Confirmed</th>
+                            <th>Total Confirmed</th>
+                            <th>New Deaths</th>
+                            <th>Total Deaths</th>
+                            <th>New Recovered</th>
+                            <th>Total Recovered</th>
+                            <th style="min-width: 150px">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($results['Countries'] as $k => $country): ?>
+                            <tr>
+                                <td><?php echo $country['Country'] ?></td>
+                                <td><?php echo $country['CountryCode'] ?></td>
+                                <td class="covid-nc"><?php echo covid_number_format($country['NewConfirmed']); ?></td>
+                                <td><?php echo covid_number_format($country['TotalConfirmed']); ?></td>
+                                <td class="covid-nd"><?php echo covid_number_format($country['NewDeaths']); ?></td>
+                                <td><?php echo covid_number_format($country['TotalDeaths']) ?></td>
+                                <td><?php echo covid_number_format($country['NewRecovered']); ?></td>
+                                <td><?php echo covid_number_format($country['TotalRecovered']) ?></td>
+                                <td><?php echo date('d-F-Y : g:ia', strtotime($country['Date'])); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <?php else: ?>
+            <div class="box-content">
+                <div class="alert alert-info">
+                    <?php echo lang("covid::timeout-please-try-reloading"); ?>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

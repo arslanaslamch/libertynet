@@ -1,0 +1,8 @@
+<?php if (is_loggedIn()): ?>
+    <?php if (config('who_admin_only', 0) && is_admin()): ?>
+        <?php echo view('whos_online::widget', array('limit' => $limit)); ?>
+        <?php elseif
+        (!config('who_admin_only', 0)): ?>
+        <?php echo view('whos_online::widget', array('limit' => $limit)); ?>
+<?php endif; ?>
+<?php endif; ?>

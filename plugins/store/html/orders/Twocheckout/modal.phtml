@@ -1,0 +1,35 @@
+
+<div data-type="hide" class="TwoCheckout" style="display: none">
+    <div class="container">
+        <form id="myCCForm" action="<?php echo url_to_pager("orders-payment-2checkout"); ?>" method="post">
+
+            <input id="token" name="token" type="hidden" value="">
+            <input type="hidden" value="<?php echo config('Two-checkout-publishable-key','') ?>" id="TC_Pubkey" />
+            <input type="hidden" value="<?php echo config('Two-checkout-seller-ID','') ?>" id="TC_seller_id" />
+            <div class="form-group">
+                <label>
+                    <span><?php echo lang("store::card-num") ?></span>
+                </label>
+                <input class="form-control" id="ccNo" onkeyup="return numbersOnly(this)" type="text" size="20" value="" autocomplete="off" required/>
+            </div>
+            <div class="form-group">
+                <label style="display: block">
+                    <span><?php echo lang('store::exipiration-date') ?></span>
+                </label>
+                <input class="form-control" onkeyup="return numbersOnly(this)" style="max-width: 70px; display: inline" type="text" placeholder="MM" size="2" id="expMonth" required/>
+
+                <input class="form-control" onkeyup="return numbersOnly(this)" style="max-width: 90px; display: inline" type="text" size="2" placeholder="YYYY" id="expYear" required/>
+            </div>
+            <div class="form-group">
+                <label>
+                    <span><?php echo lang("store::cvc") ?></span>
+                </label>
+                <input class="form-control" style="max-width: 90px" id="cvv" onkeyup="return numbersOnly(this)" size="4" type="text" value="" autocomplete="off" required/>
+            </div>
+            <input type="submit" id="TwoCheckoutBtn" class="btn payment-btn btn-success btn-sm" value="<?php echo lang("store::submit-payment") ?>">
+            <img  src="<?php echo img('images/loading.gif')?>" style="display: none;height: 30px;width: 30px;float: right; margin-right: 5px" class="indicator"/>
+        </form>
+
+    </div>
+</div>
+

@@ -1,0 +1,4 @@
+<?php $limit = config('livestream-ongoing-widget-list-limit', 5);  $livestreams = Livestream::getLivestreams(array('status' => 1), $limit); ?>
+<div class="livestream-content livestream-widget livestream-ongoing">
+    <?php echo view('livestream::livestream/widget_list', array('title' => lang('livestream::ongoing-livestreams'), 'livestreams' => $livestreams)) ?>
+</div>

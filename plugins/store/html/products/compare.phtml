@@ -1,0 +1,106 @@
+<div class="box">
+    <div class="title"><?php echo ucwords(lang("store::compare-products")); ?>
+	<span class="pull-right"><a href="" class="btn btn-sm btn-info clear-compare"><?php echo lang("store::clear-list"); ?></a></span></div>
+    <div class="box-content" id="single-compare">
+        <?php if($products): ?>
+             <table class="table table-bordered">
+                  
+				      <tr>
+					      <td></td>
+						  <?php foreach($products as $p): 
+						   $item = getSingleProduct($p);?>	      
+						     <td class="pid-compare-trace-<?php echo $item['id']; ?>"><span data-p="<?php echo $item['id']; ?>" class="remove-compare-icon"><i class="text-danger ion-ios-close"></i> <?php echo lang("store::remove"); ?></span></td>
+						  <?php endforeach; ?>
+					  </tr>
+				  
+				  
+				      <tr>
+					      <td></td>
+						  <?php foreach($products as $p): 
+						   $item = getSingleProduct($p);
+						    $img = ($item['main_photo']) ? url_img($item['main_photo']) : img("store::images/comingsoon.png");
+						  ?>	      
+						     <td class="pid-compare-trace-<?php echo $item['id']; ?>"><img style="height:150px;width:150px" class="img img-responsive" src="<?php echo $img; ?>"/>
+						     <?php if(!isOutofStock($item)): ?>
+							    <br/>
+                                <a href="<?php echo url('store/product/'.$item['slug']); ?>" style="background: none !important;color: <?php echo config('button-bg-color','#F62459') ?> !important" class="btn btn-sm btn-info"><?php echo lang('store::view'); ?></button>
+                            <?php endif; ?>
+							</td>
+						  <?php endforeach; ?>
+					  </tr>
+					  
+                        <tr>	
+                            <td><?php echo lang("store::name"); ?></td>	
+						    <?php foreach($products as $p): 
+						        $item = getSingleProduct($p);?>
+                                <td class="pid-compare-trace-<?php echo $item['id']; ?>"><b><?php echo $item['name']; ?></b></td>							
+						     <?php endforeach; ?>
+						</tr>
+						<tr>	
+                            <td><?php echo lang("store::price"); ?></td>	
+						    <?php foreach($products as $p): 
+						        $item = getSingleProduct($p);?>
+                                <td class="pid-compare-trace-<?php echo $item['id']; ?>"><?php echo config('currency-sign','$').number_format((float)getProductPrice($item),'2','.',',');   ?>
+								<small style="color: #aaa;text-decoration: line-through"><?php echo (getProductDiscountedPrice($item)) ? config('currency-sign','$').number_format((float)getProductDiscountedPrice($item),'2','.',',') : '' ?></small></td>							
+						     <?php endforeach; ?>
+						</tr>
+						<tr>	
+                            <td><?php echo lang("store::pay-on-delivery"); ?></td>	
+						    <?php foreach($products as $p): 
+						        $item = getSingleProduct($p);?>
+                                <td class="pid-compare-trace-<?php echo $item['id']; ?>"> <?php echo compare_mark($item,'pay_on_delivery'); ?></td>							
+						     <?php endforeach; ?>
+						</tr>
+						<tr>	
+                            <td><?php echo lang("store::available-quantity"); ?></td>	
+						    <?php foreach($products as $p): 
+						        $item = getSingleProduct($p);?>
+                                <td class="pid-compare-trace-<?php echo $item['id']; ?>"> <?php echo $item['quantity']; ?></td>							
+						     <?php endforeach; ?>
+						</tr>
+						<tr>	
+                            <td><?php echo lang("store::additional-attributes"); ?></td>	
+						    <?php foreach($products as $p): ?>
+							<td class="pid-compare-trace-<?php echo $item['id']; ?>">
+							<?php
+						        $item = getSingleProduct($p);
+								$labels = perfectUnserialize($item['labels']);
+								if($labels):
+								foreach($labels as $k=>$v){
+									if($k == '') continue;
+									echo $k.' => '.$v.'     '.'<br/>';
+								}
+								?>
+								
+								<?php else: ?>
+								<?php echo ""; ?>
+								<?php endif; ?>
+                             </td>  						
+						     <?php endforeach; ?>
+						</tr>
+						<tr>	
+                            <td><?php echo lang("store::views"); ?></td>	
+						    <?php foreach($products as $p): 
+						        $item = getSingleProduct($p);?>
+                                <td class="pid-compare-trace-<?php echo $item['id']; ?>"> <?php echo ($item['views'] > 1) ? $item['views'].' '.lang("store::views") : $item['views'].' '.lang("store::view"); ?></td>							
+						     <?php endforeach; ?>
+						</tr>
+						<tr>	
+                            <td><?php echo lang("store::store"); ?></td>	
+						    <?php foreach($products as $p): 
+							$item = getSingleProduct($p);
+						     $storeDetails = lpGetStoreById($item['store_id'],null);
+                             ?>
+                                <td class="pid-compare-trace-<?php echo $item['id']; ?>"> <?php echo $storeDetails['name']; ?> </td>							
+						     <?php endforeach; ?>
+						</tr>
+						
+				  
+						  
+						  
+             </table>
+        <?php else: ?>
+        <div class="alert alert-info"><?php echo lang("store::no-products-added-to-be-compared"); ?></div>
+        <?php endif; ?>
+    </div>
+</div>

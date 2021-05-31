@@ -1,0 +1,27 @@
+<?php if(isset(app()->quiz)): ?>
+    <?php $quizes = get_quizes('related', null, null, null, $limit, null, app()->quiz); ?>
+    <?php if($quizes->total): ?>
+        <div class="box media-widget">
+            <div class="title">
+                <?php echo lang('quiz::related-quizes') ?>
+                <a ajax="true" href="<?php echo url('quizes') ?>"><i class="ion-ios-arrow-forward pull-right"></i></a>
+            </div>
+            <div class="box-content">
+                <?php foreach($quizes->results() as $quiz): $quiz = arrange_quiz($quiz); $user = find_user($quiz['user_id']) ?>
+                    <div class="item">
+                        <div class="left">
+                            <a ajax="true" href="<?php echo url_to_pager('quiz-page', array('slugs' => $quiz['slug'])) ?>">
+                                <div class="thumb" style="background: url(<?php echo $quiz['image'] ? url_img($quiz['image'], 700) : get_avatar(200, $user) ?>) center; background-size: cover;"></div>
+                            </a>
+                        </div>
+                        <div class="right">
+                            <a ajax="true" href="<?php echo url_to_pager('quiz-page', array('slugs' => $quiz['slug'])) ?>" class="media-heading title"><?php echo $quiz['title'] ?></a>
+                            <a ajax="true" href="<?php echo url($quiz['publisher']['id']) ?>" class="user"><?php echo $quiz['publisher']['name'] ?></a>
+                            <div class="info"><?php echo $quiz['views'] ?> <?php echo lang('quiz::views') ?></div>
+                        </div>
+                    </div>
+                <?php endforeach ?>
+            </div>
+        </div>
+    <?php endif ?>
+<?php endif ?>

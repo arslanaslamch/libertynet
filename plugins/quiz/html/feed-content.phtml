@@ -1,0 +1,60 @@
+<div id="quizes-list-container" class="box-content clearfix list-listing-container">
+        <?php $quiz = arrange_quiz($quiz); ?>
+        <?php $user = find_user($quiz['user_id']) ?>
+        <?php $refId = $quiz['id'];
+        $refName = 'quiz'; ?>
+        <div class="each-item clearfix blog-list">
+            <?php if($quiz['image']): ?>
+                <div class="left">
+                    <?php if($quiz['featured']): ?>
+                        <span class="featured-tag"><?php echo lang('featured') ?></span>
+                    <?php endif ?>
+                    <a ajax="true" href="<?php echo url('quiz/'.$quiz['slug']) ?>" style="background-image:url(<?php echo ($quiz['image']) ? url_img($quiz['image'], 700) : get_avatar(200, $user) ?>)"></a>
+                </div>
+                <div class="right">
+                    <span class="item-title"><a ajax="true" href="<?php echo url('quiz/'.$quiz['slug']) ?>"><?php echo $quiz['title'] ?></a></span>
+                    <div class="item-info">
+							<span class="help-block" style="display: block">
+								<?php echo lang('quiz::publisher') ?>: 
+									<a href="<?php echo url($quiz['publisher']['id']) ?>"><?php echo $quiz['publisher']['name'] ?></a>
+                                <?php echo lang('quiz::on') ?> <?php echo date('M j , y  h:i A', $quiz['time']) ?>
+							</span>
+                    </div>
+                    <p class="item-desc"><?php echo str_limit(strip_tags($quiz['content']), 100) ?></p>
+                    <p>
+						<strong><?php echo count_quiz_participants($quiz['id']); ?></strong> <?php echo lang('quiz::participants'); ?>
+                        <strong><?php echo $quiz['views']; ?></strong> <?php echo lang('quiz::views'); ?>
+                        <strong><?php $likes = count_likes($refName, $refId);
+                            echo $likes; ?></strong> <?php if($likes > 1) {
+                            echo lang('quiz::likes');
+                        } else {
+                            echo lang('quiz::like');
+                        } ?>
+                    </p>
+                </div>
+            <?php else: ?>
+                <div class="right" style="width: 97% !important;">
+                    <span class="item-title">
+					<a ajax="true" href="<?php echo url('quiz/'.$quiz['slug']) ?>"><strong><?php echo $quiz['title'] ?></strong></a> </span>
+                    <div class="item-info">
+							<span class="help-block" style="display: block">
+								<?php echo lang('quiz::publisher') ?>: 
+									<a href="<?php echo url($quiz['publisher']['id']) ?>"><?php echo $quiz['publisher']['name'] ?></a>
+								<?php echo lang('quiz::on') ?> <?php echo date('M j , y  h:i A', $quiz['time']) ?>
+							</span>
+                    </div>
+                    <p class="item-desc"><?php echo str_limit(strip_tags($quiz['content']), 250) ?></p>
+                    <p>
+						<strong><?php echo count_quiz_participants($quiz['id']); ?></strong> <?php echo lang('quiz::participants'); ?>
+                        <strong><?php echo $quiz['views']; ?></strong> <?php echo lang('quiz::views'); ?>
+                        <strong><?php $likes = count_likes($refName, $refId);
+                            echo $likes; ?></strong> <?php if($likes > 1) {
+                            echo lang('quiz::likes');
+                        } else {
+                            echo lang('quiz::like');
+                        } ?>
+                    </p>
+                </div>
+            <?php endif; ?>
+        </div>
+</div>

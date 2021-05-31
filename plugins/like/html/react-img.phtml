@@ -1,0 +1,23 @@
+<?php $like = get_type_like($type, $type_id) ?>
+<?php $code = $like['like_type']; ?>
+<?php $image = get_react_image($code); ?>
+<?php $hide_icon = isset($hide_icon) ? $hide_icon : false; ?>
+<?php $hide_count = isset($hide_count) ? $hide_count : false; ?>
+<?php $array = array('0' => 'dislike', '1' => 'like', '4' => 'love', '5' => 'haha', '7' => 'wow', '8' => 'sad', '9' => 'angry'); ?>
+<?php $name = isset($code) && isset($array[$code]) ? $array[$code] : 'like'; ?>
+<div class="react-image-container <?php echo $name == 'dislike' ? '' : strtolower($name) ?>">
+    <?php if($code): ?>
+        <?php if(!$hide_count): ?>
+            <?php $reactors_count = count_reactors($type, $type_id); if ($reactors_count != 0) echo $reactors_count;?>
+        <?php endif; ?>
+        <?php if(!$hide_icon): ?>
+            <img src="<?php echo $image; ?>" />
+        <?php endif; ?>
+        <span class="hidden-md-down"><?php echo lang('like::'.$name) ?></span>
+    <?php else: ?>
+        <?php if(!$hide_icon): ?>
+            <i class="fa fa-thumbs-o-up font-awesome-i"></i>
+        <?php endif; ?>
+        <span class="hidden-md-down"><?php echo lang('like::like') ?></span>
+    <?php endif; ?>
+</div>

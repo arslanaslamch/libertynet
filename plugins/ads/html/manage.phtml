@@ -1,0 +1,88 @@
+<div class="box">
+    <div class="ads-list">
+        <div class="head">
+            <div class="cover" style="background-image: url(<?php echo url_img(config('ads-list-cover', 'plugins/ads/images/cover.jpg'), 920); ?>)">
+                <div class="title"><?php echo lang('ads::ads') ?></div>
+                <div class="actions">
+                    <?php if(user_has_permission('can-create-ads')): ?>
+                        <a href="<?php echo url_to_pager('ads-create') ?>" ajax="true" class="btn btn-block btn-info action-button">
+                            <i class="ion-plus"></i>
+                            <?php echo lang('ads::create-ads') ?>
+                        </a>
+                    <?php endif ?>
+                </div>
+            </div>
+            <div class="ads-global-statistics">
+                <li>
+                    <span><?php echo count_user_ads_total('impressions') ?></span>
+                    <?php echo lang('ads::impressions') ?>
+                </li>
+
+                <li>
+                    <span><?php echo count_user_ads_total('clicks') ?></span>
+                    <?php echo lang('ads::clicks') ?>
+                </li>
+
+                <li>
+                    <span><?php echo count_user_ads_total('views') ?></span>
+                    <?php echo lang('ads::views') ?>
+                </li>
+            </div>
+        </div>
+        <div class="body">
+            <div class="listings">
+                <div class="listing">
+                    <div class="table-responsive">
+                        <div class="list-table-container">
+                            <div class="table-responsive">
+                                <table class="table list-table">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 5%">ID</th>
+                                        <th style="width: 15%"><?php echo lang('ads::campaign-name') ?></th>
+                                        <th style="width: 10%"><?php echo lang('ads::campaign-type') ?></th>
+                                        <th style="width: 10%"><?php echo lang('ads::bid-type') ?></th>
+                                        <th style="width: 15%"><?php echo lang('ads::plan') ?></th>
+                                        <th style="width: 5%"><?php echo lang('ads::usage') ?></th>
+                                        <th style="width: 5%"><?php echo lang('ads::impressions') ?></th>
+                                        <th style="width: 5%"><?php echo lang('ads::clicks') ?></th>
+                                        <th style="width: 5%"><?php echo lang('ads::paid') ?></th>
+                                        <th style="width: 5%"><?php echo lang('ads::status') ?></th>
+                                        <th style="width: 20%"><?php echo lang('actions') ?></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach (get_user_ads() as $ads): ?>
+                                        <tr>
+                                            <td><?php echo $ads['ads_id'] ?></td>
+                                            <td><?php echo $ads['name'] ?></td>
+                                            <td><?php echo $ads['ads_class'] ?></td>
+                                            <td><?php echo ($ads['plan_type'] == 1) ? lang('ads::clicks') : lang('ads::impression') ?></td>
+                                            <td><?php
+                                                $plan = get_plan($ads['plan_id']);
+                                                if ($plan) echo lang($plan['name']);
+                                                ?></td>
+                                            <td><?php echo $ads['quantity'] ?></td>
+                                            <td><?php echo $ads['impression_stats'] ?></td>
+                                            <td><?php echo $ads['clicks_stats'] ?></td>
+                                            <td><?php echo ($ads['paid'] == 1) ? lang('yes') : lang('no') ?></td>
+                                            <td><?php echo ($ads['status'] == 1) ? lang('active') : '' ?></td>
+                                            <td>
+                                                <a ajax="true" href="<?php echo url_to_pager('ads-edit', array('id' => $ads['ads_id'])) ?>"><?php echo lang('edit') ?></a>
+												<?php if(!$ads['status']): ?>
+													<a ajax="true" href="<?php echo url_to_pager('ads-activate', array('id' => $ads['ads_id'])) ?>"><?php echo lang('ads::activate') ?></a>
+												<?php endif; ?>
+                                                <a href="<?php echo url_to_pager('ads-delete', array('id' => $ads['ads_id'])) ?>"><?php echo lang('delete') ?></a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

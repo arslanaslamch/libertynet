@@ -1,0 +1,27 @@
+<div class="box-content">
+    <div class="col-sm-12" style="padding: 0;">
+        <div class="col-sm-6">
+            <div class="contest-iframe-wrapper">
+                <textarea class="form-control"><iframe src="<?php echo url_to_pager("contest-promoted-iframe") . '?contest_id=' . $contest['id'] . '&img=1&desc=1' ?>" scrolling="no" frameborder="0" style="border:none;overflow: hidden;width: 300px;height: 600px" allowtransparency="true"></iframe></textarea>
+
+                <p><input checked type="checkbox"
+                          id="change-photo-p-contest"/><b><?php echo lang("contest::show-image"); ?></b></p>
+                <p><input checked type="checkbox"
+                          id="change-description-p-contest"/><b><?php echo lang("contest::show-description"); ?></b></p>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="contest-promote-preview">
+                <div style="" class="contest-promote-preview-bf">
+                    <div class="contest-image-promote"
+                         style="background-image : url(<?php echo get_contest_image($contest) ?>)"></div>
+                    <p><a style="color : <?php echo config('header-bg-color', '#4C4C4E'); ?>"
+                          href="<?php echo contestUrl($contest); ?> "><?php echo $contest['name']; ?></a></p>
+                    <p class="sub-contest-description"><?php echo str_limit(strip_tags($contest['description']), 80); ?></p>
+                </div>
+                <p><a class="btn btn-block btn-info btn-lg"
+                       href="<?php echo contestUrl($contest) ?>"><?php echo lang("contest::join-contest") ?></a></p>
+            </div>
+        </div>
+    </div>
+</div>

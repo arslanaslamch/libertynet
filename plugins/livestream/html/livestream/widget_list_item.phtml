@@ -1,0 +1,18 @@
+<?php
+/**
+ * @var array $livestream
+ */
+ $host = Livestream::getHost($livestream);
+?>
+<div class="item">
+    <div class="left">
+        <a ajax="true" href="<?php echo url_to_pager('livestream-view', array('slug' => $livestream['slug'])) ?>">
+            <div class="thumb" style="background: url(<?php echo $livestream['image'] ? url_img($livestream['image'], 75) : img('livestream::images/no_image.png', 75) ?>) center; background-size: cover;"></div>
+        </a>
+    </div>
+    <div class="right">
+        <a ajax="true" href="<?php echo url_to_pager('livestream-view', array('slug' => $livestream['slug'])) ?>" class="media-heading title"><?php echo $livestream['title'] ?></a>
+        <a ajax="true" href="<?php echo $host['link'] ?>" class="user"><?php echo $host['name'] ?></a>
+        <div class="info"><?php echo $livestream['views'] ?> <?php echo lang('livestream::views') ?></div>
+    </div>
+</div>

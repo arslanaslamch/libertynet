@@ -1,0 +1,56 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("mailautomation::recently-sent") ?>
+    </div>
+    <div class="wrapper-content">
+        <div class="list-table-container">
+            <div class="table-responsive">
+                <table class="table table-striped list-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th style=""><?php echo lang('mailautomation::subject') ?></th>
+                        <th style=""><?php echo lang('mailautomation::user'); ?></th>
+                        <th style=""><?php echo lang('status') ?></th>
+                        <th style=""><?php echo lang('mailautomation::date-time') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php if ($stats->total): ?>
+                        <?php foreach ($stats->results() as $a):
+                            $user = find_user($a['user_id']);
+                            ?>
+                            <tr class="item">
+
+                                <td><?php echo $a['id']; ?></td>
+                                <td>
+                                    <?php echo $a['subject'] ?>
+                                </td>
+
+                                <td>
+                                    <img src="<?php echo get_avatar(200,$user); ?>"
+                                         style="height:50px; width : 50px; border-radius: 100%;"/> <?php echo get_user_name($user); ?>
+                                </td>
+                                <td style="font-size:14px">
+                                    <?php echo maStatus($a); ?>
+                                </td>
+                                <td>
+                                    <?php echo date('M j , Y  h:i A', $a['time']) ?>
+                                </td>
+
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="7"><span
+                                    class="text-info"><?php echo lang("mailautomation::no-stats"); ?></span></td>
+                        </tr>
+                    <?php endif; ?>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <?php echo $stats->links() ?>
+    </div>
+</div>

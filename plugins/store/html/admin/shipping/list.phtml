@@ -1,0 +1,50 @@
+<div class="box">
+    <div class="title">
+        <?php echo lang("store::shipping-settings") ?>
+    </div>
+    <div class="box-content">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th><?php echo lang('store::store-owner') ?></th>
+                <th><?php echo lang('store::store-name')?></th>
+                <th><?php echo lang("store::zone"); ?></th>
+                <th><?php echo lang("store::regions"); ?></th>
+                <th><?php echo lang("store::shipping-method"); ?></th>
+                <th><?php echo lang("store::amount"); ?></th>
+                <th><?php echo lang("store::action"); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+                <?php if($shipping): ?>
+                <?php foreach($shipping as $s):
+                    $user = find_user($s['user_id']);
+                    $store= lpGetStoreById($s['store_id']);
+                        ?>
+                <tr>
+                    <td><a href="<?php echo profile_url(null,$user) ?>"><?php echo get_user_name($user); ?></a> </td>
+                    <td><a href="<?php echo url_to_pager('store-profile',array('slug'=>$store['slug'])) ?>"><?php echo $store['name']; ?></a> </td>
+                    <td><?php echo $s['zone']; ?></td>
+                    <td><?php
+                        $countries = unserialize($s['regions']);
+                        foreach($countries as $c){
+                            echo '<span class="country-regions">'.ucwords($c).'</span>';
+                        }
+                        //echo $s['amount']; ?>
+                    </td>
+                    <td><?php echo ($s['shipping_method'] == 'flat-rate') ? lang("store::flat-rate") : lang("store::free-shipping"); ?></td>
+                    <td><?php echo ($s['amount']) ? formatPriceNumber($s['amount']) : lang('store::free-shipping'); ?></td>
+                    <td>
+                        <a ajax="true" class="btn btn-secondary" href="<?php echo url_to_pager('admin-shipping-manage').'?id='.$s['id'].'&action=edit'; ?>" ><?php echo lang("edit") ?></a>
+                        <a ajax="true" class="btn btn-danger" href="<?php echo url_to_pager('admin-shipping-manage').'?id='.$s['id'].'&action=edit';?>"><?php echo lang('delete'); ?></a>
+                    </td>
+
+                </tr>
+                 <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><div class="alert alert-info"><?php echo lang("store::no-shipping-settings-found") ?></div></tr>
+                <?php endif ?>
+            </tbody>
+        </table>
+    </div>
+</div>

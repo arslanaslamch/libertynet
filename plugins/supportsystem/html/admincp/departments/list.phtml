@@ -1,0 +1,73 @@
+<div class="wrapper">
+	<div class="wrapper-title">
+		<?php echo $title; ?>
+		<a class="btn btn-sm btn-danger pull-right"
+		   href="<?php echo url_to_pager('admincp-add-ss-departments').'?type='.$type; ?>"><i class="ion-plus"></i> <?php echo lang('add') ?></a>
+	</div>
+	<div class="wrapper-content">
+		<div class="list-table-container">
+			<!--<div class="row list-table-select-actions hide" data-group="users">
+				<div class="col-sm-12">
+					<a href="<?php /*echo url_to_pager('admin-video-batch-action') */?>?action=delete_cat"
+					   class="action-link list-table-select-action" data-group="users"><?php /*echo lang('delete') */?></a>
+				</div>
+			</div>-->
+			<div class="table-responsive">
+				<table class="table table-striped list-table">
+					<thead>
+					<tr>
+						<th>
+							<div class="list-table-select" data-group="users"
+							     data-id="0"></div>
+						</th>
+						<th style="width: 5%">ID</th>
+						<th style="width: 55%"><?php echo lang('title') ?></th>
+						<th style="width: 40%"><?php echo lang('actions') ?></th>
+					</tr>
+					</thead>
+					<tbody data-url="<?php echo url_to_pager('admincp-manage-tickets-departments').'?action=order&id='.input('id').'&type='.$type; ?>"
+					       class="admincp-sortable">
+                    <?php $counter = 1; ?>
+					<?php foreach($categories as $category): ?>
+						<tr class="item" id="<?php echo $category['id'] ?>">
+							<th>
+								<div class="list-table-select" data-group="users"
+								     data-id="<?php echo $category['id'] ?>"></div>
+							</th>
+							<td><?php echo $counter ?></td>
+							<td>
+
+								<?php if(!input('id')): ?>
+									<a href="<?php echo url_to_pager('admincp-list-tickets-departments').'?id='.$category['id'].'&type='.$type ?>"><?php echo lang($category['title']) ?></a>
+								<?php else: ?>
+									<?php echo lang($category['title']) ?>
+								<?php endif ?>
+							</td>
+
+							<td>
+								<div class="dropdown actions">
+									<a href="#" data-toggle="dropdown">
+										<i class="ion-android-settings"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right">
+										<?php if(!input('id')): ?>
+											<a ajax="true" class="ion-android-apps"
+											   href='<?php echo url_to_pager('admincp-list-tickets-departments').'?id='.$category['id'].'&type='.$type ?>'></a>
+											|
+										<?php endif; ?>
+										<a ajax="true" class="ion-edit"
+										   href='<?php echo url_to_pager('admincp-manage-tickets-departments').'?action=edit&id='.$category['id'].'&type='.$type ?>'></a>
+										|
+										<a ajax="true" class="admin-confirm ion-android-delete"
+										   href="<?php echo url_to_pager('admincp-manage-tickets-departments').'?action=delete &id='.$category['id'].'&type='.$type ?>"></a>
+									</div>
+								</div>
+							</td>
+						</tr>
+					<?php $counter++; endforeach ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

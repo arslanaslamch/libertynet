@@ -1,0 +1,38 @@
+<div class="panel-container card account-verify-wrapper" data-verify-type="<?php echo $type ?>">
+    <div class="pane-title">
+        <?php $logo = config('site-logo'); $logo_url = !$logo ? img('images/logo.png') : url_img($logo); ?>
+        <a href="<?php echo url() ?>"><img class="logo" src="<?php echo $logo_url ?>" /></a>
+    </div>
+    <div class="title">
+        <span><?php echo $mode == 'activate' ? lang('activate-your-account') : lang('verify-your-id') ?></span>
+    </div>
+    <div class="card-block">
+        <div><img src="<?php echo get_avatar(75, $user) ?>" /></div>
+        <div><?php echo get_user_name($user) ?></div>
+        <?php if(in_array($type, array('phone_no', 'email'))): ?>
+            <?php echo view('account/verify/'.$type, array($type => $id, 'status' => $status, 'message' => $message)) ?>
+        <?php else: ?>
+            <div class="security-question-verify">
+                <?php if($status): ?>
+                    <p class="message text-success"><?php echo $message ?></p>
+                <?php else: ?>
+                    <p class="message text-danger"><?php echo $message ?></p>
+                <?php endif ?>
+                <form method="post" action="" class="phone-no-verify-form wrapper-form">
+                    <?php CSRFProtection::embed() ?>
+                    <div class="field">
+                        <div class="top">
+                            <label class="control-label"><?php echo $id ?></label>
+                        </div>
+                        <div class="bottom">
+                            <input value="<?php echo input('val.answer') ?>" type="text" name="val[answer]" class="form-control" style="max-width: 200px" />
+                        </div>
+                    </div>
+                    <div class="submit">
+                        <button class="btn btn-lg btn-info action-button"><?php echo lang('submit') ?></button>
+                    </div>
+                </form>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

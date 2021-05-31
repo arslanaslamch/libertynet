@@ -1,0 +1,29 @@
+<?php $playlist = $playlist ? $playlist : array($playlist['slug'] => $playlist); $options = array('nowPlaying' => $playlist['slug'], 'autoplay' => true); ?>
+<?php $owner = get_playlist_owner($playlist); ?>
+<div class="item">
+    <a href="<?php echo get_playlist_url($playlist) ?>" ajax="true" class="thumb">
+        <img class="image" src="<?php echo img('music::images/playlist.png') ?>" alt="<?php echo $playlist['title'] ?> "/>
+        <?php if($playlist['featured']): ?>
+            <div class="featured">
+                <i class="ion-ios-star-outline"></i>
+            </div>
+        <?php endif ?>
+        <a href="<?php echo get_playlist_url($playlist) ?>" ajax="true" class="title"><?php echo $playlist['title'] ? $playlist['title'] : lang('music::untitled-playlist') ?></a>
+        <small class="time muted timeago" title="<?php echo date('c', $playlist['time']) ?>"><?php echo date('c', $playlist['time']) ?></small>
+    </a>
+    <div class="details">
+        <div class="stat">
+            <div class="left">
+                <div class="user">
+                    <a ajax="true" href="<?php echo url($owner['link']) ?>" class="name"><?php echo $owner['name'] ?></a>
+                </div>
+                <div class="count play"><?php echo $playlist['play_count']; ?> <?php echo $playlist['play_count'] > 1 ? lang('music::plays') : lang('music::play') ?></div>
+            </div>
+            <div class="right">
+                <div class="actions">
+                    <span class="playlist-social-share-link"><?php if($playlist['privacy'] == 1 && plugin_loaded('sharer')) echo view('sharer::share_link', array('link' => url_to_pager('music-playlist-page', array('id' => $playlist['slug'])))) ?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

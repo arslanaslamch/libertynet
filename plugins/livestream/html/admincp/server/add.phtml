@@ -1,0 +1,67 @@
+<?php
+/**
+ * @var array $server
+ */
+$server = (array)$server;
+$server['type'] = isset($server['type']) ? $server['type'] : 'stun';
+?>
+<form method="post" action="<?php echo url_to_pager('admin-livestream-server-add') ?>" enctype="multipart/form-data" class="livestream-form wrapper-form" data-server-type="<?php echo $server['type'] ?>">
+    <?php CSRFProtection::embed() ?>
+    <div class="form-group row">
+        <div class="col-md-4">
+            <label class="form-control-label"><?php echo lang('livestream::type') ?></label>
+        </div>
+        <div class="col-md-8">
+            <select name="server[type]" title="<?php echo lang('livestream::server-type') ?>" class="form-control server-input-type" required>
+                <option value="stun" <?php echo isset($server['type']) && $server['type'] == 'stun' ? 'selected' : '' ?>>STUN</option>
+                <option value="turn" <?php echo isset($server['type']) && $server['type'] == 'turn' ? 'selected' : '' ?>>TURN</option>
+                <option value="twilio" <?php echo isset($server['type']) && $server['type'] == 'twilio' ? 'selected' : '' ?>>TWILIO</option>
+                <option value="xirsys" <?php echo isset($server['type']) && $server['type'] == 'xirsys' ? 'selected' : '' ?>>XIRSYS</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row server-type-stun server-type-turn server-type-xirsys">
+        <div class="col-md-4">
+            <label class="form-control-label"><?php echo lang('livestream::url') ?></label>
+        </div>
+        <div class="col-md-8">
+            <input type="text" name="server[url]" value="<?php echo isset($server['url']) ? $server['url'] : '' ?>" placeholder="<?php echo lang('livestream::server-url') ?>" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group row server-type-turn server-type-twilio server-type-xirsys">
+        <div class="col-md-4">
+            <label class="form-control-label server-type-turn"><?php echo lang('livestream::username') ?></label>
+            <label class="form-control-label server-type-twilio"><?php echo lang('livestream::account-sid') ?></label>
+            <label class="form-control-label server-type-xirsys"><?php echo lang('livestream::identity') ?></label>
+        </div>
+        <div class="col-md-8">
+            <input type="text" name="server[username]" value="<?php echo isset($server['username']) ? $server['username'] : '' ?>" placeholder="<?php echo lang('livestream::username') ?>" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group row server-type-turn server-type-twilio server-type-xirsys">
+        <div class="col-md-4">
+            <label class="form-control-label server-type-turn"><?php echo lang('livestream::credential') ?></label>
+            <label class="form-control-label server-type-twilio"><?php echo lang('livestream::auth-token') ?></label>
+            <label class="form-control-label server-type-xirsys"><?php echo lang('livestream::secret') ?></label>
+        </div>
+        <div class="col-md-8">
+            <input type="text" name="server[credential]" value="<?php echo isset($server['credential']) ? $server['credential'] : '' ?>" placeholder="<?php echo lang('livestream::credential') ?>" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            <label class="form-control-label"><?php echo lang('livestream::status') ?></label>
+        </div>
+        <div class="col-md-8">
+            <select name="server[active]" title="<?php echo lang('livestream::server-status') ?>" class="form-control">
+                <option value="1" <?php echo isset($server['active']) && $server['active'] ? 'selected' : '' ?>><?php echo lang('livestream::active') ?></option>
+                <option value="0" <?php echo isset($server['active']) && !$server['active'] ? 'selected' : '' ?>><?php echo lang('livestream::inactive') ?></option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row submit">
+        <div class="col-md-12">
+            <input type="submit" value="<?php echo lang('livestream::add') ?>" class="btn btn-lg btn-info" />
+        </div>
+    </div>
+</form>

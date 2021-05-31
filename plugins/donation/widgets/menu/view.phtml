@@ -1,0 +1,20 @@
+<div class="box">
+    <div class="box cdonation-menu">
+        <?php if(is_loggedIn() and user_has_permission('can-create-new-donation') and config('allow-members-create-donations', true)):?>
+            <div class="box-content">
+                <a  href="<?php echo url_to_pager("create-donation"); ?>"  class="btn btn-info btn-block"> <i class="ion-plus"></i> <?php _lang('donation::create-a-campaign')?></a>
+            </div>
+        <?php endif?>
+        <ul class="menu">
+            <li class="<?php echo (input('type') == 'all') ? 'active ' : ''; ?>"><a href="<?php echo url('donations?type=all')?>" ajax="true" ><?php _lang('donation::browse-donations')?></a></li>
+            <?php if(is_loggedIn()):?>
+                <li class="<?php echo (input('type') == 'mine') ? ' active ' : ''; ?>"><a href="<?php echo url('donations?type=mine')?>" ajax="true" ><?php _lang('donation::my-campaigns')?></a></li>
+                <li class="<?php echo (input('type') == 'friends') ? ' active ' : ''; ?>"><a href="<?php echo url('donations?type=friends')?>" ajax="true" ><?php _lang('donation::friends-campaign')?></a></li>
+                <li class="<?php echo (input('type') == 'donated') ? ' active ' : ''; ?>"><a href="<?php echo url('donations?type=donated'); ?>" ajax="true" ><?php _lang('donation::my-donated-campaigns')?></a></li>
+            <?php endif?>
+            <li class="<?php echo (input('type') == 'featured') ? ' active ' : ''; ?>"><a  href="<?php echo url('donations?type=featured');; ?>" ajax="true" ><?php _lang('donation::featured-campaigns')?></a></li>
+            <li class="<?php echo (input('type') == 'expired') ? ' active ' : ''; ?>" ><a  href="<?php echo url('donations?type=expired');;?>" ajax="true" ><?php _lang('donation::expired-campaigns')?></a></li>
+            <li class="<?php echo (input('type') == 'closed') ? ' active ' : ''; ?>" ><a  href="<?php echo  url('donations?type=closed');; ?>" ajax="true" ><?php _lang('donation::closed-campaigns')?></a></li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,3 @@
+<a class="media" href="<?php echo url_to_pager('ads-activate', array('id' => $ads['ads_id'])) ?>?action=paypal<?php echo (config('enable-paypal-sandbox', true)) ? '&sandbox=1' : '&sandbox=0'?>">
+    <img src="<?php echo img('donation::images/paypal-donate.png')?>"/>
+</a>

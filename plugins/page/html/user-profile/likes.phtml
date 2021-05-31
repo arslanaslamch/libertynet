@@ -1,0 +1,23 @@
+<div class="box">
+    <div class="title"><?php echo lang('page::pages') ?></div>
+    <div class="page-list">
+        <div class="body">
+            <div class="listings">
+                <div class="listing row">
+                    <?php foreach($pages->results() as $page): ?>
+                        <div class="col-md-6">
+                            <?php echo view('page::display', array('page' => $page)) ?>
+                        </div>
+                    <?php endforeach ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-content">
+        <?php if(!$pages->total): ?>
+            <?php echo lang('page::no-page-found') ?>
+        <?php else: ?>
+            <?php echo $pages->append(array('term' => input('term'), 'type' => input('type', 'browse'), 'filter' => input('filter')))->links(true) ?>
+        <?php endif ?>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="box">
+    <div class="title">
+        <?php echo lang('store::store-manager') ?>
+    </div>
+    <div class="box-content">
+        <div class="container">
+        <div class="row">
+        <div class="col-sm-12 nop">
+            <div class="col-sm-12 nop">
+                <div class="panel">
+
+                        <div style="float: right"
+                             class="badge badge-<?php echo ($seller['status']) ? 'success' : 'danger'; ?>"><?php echo ($seller['status']) ? lang("store::approved") : lang('store::not-approved') ?></div>
+
+                    <div class="panel-content">
+                        <p><strong><?php echo lang('store::store-name'); ?> : </strong> <?php echo $seller['name'] ?>
+                        </p>
+                        <?php if($seller['website']): ?>
+                        <p><strong><?php echo lang('store::website'); ?>
+                                : </strong> <?php echo urldecode($seller['website']); ?> </p>
+                        <?php endif; ?>
+
+                        <?php if($seller['corporate_email']): ?>
+                        <p><strong><?php echo lang('paypal-corporate-email'); ?>
+                                : </strong> <?php echo $seller['corporate_email'] ?> </p>
+                        <?php endif; ?>
+                        <p><strong><?php echo lang('store::cname'); ?> : </strong> <?php echo $seller['cname'] ?> </p>
+
+                        <p><strong><?php echo lang('store::email'); ?> : </strong> <?php echo $seller['email'] ?> </p>
+
+                        <p><strong><?php echo lang('store::phone'); ?> : </strong> <?php echo $seller['phone'] ?> </p>
+
+                        <p><strong><?php echo lang('store::address'); ?> : </strong> <?php echo $seller['address'] ?>
+                        </p>
+
+                        <p><strong><?php echo lang('store::location'); ?> : </strong> <?php echo ucwords($seller['location']) ?>
+                        </p>
+                        <p><strong><?php echo lang('store::desc'); ?>
+                                : </strong> <?php echo html_entity_decode($seller['describ']); ?> </p>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        </div>
+    </div>
+</div>
+</div>

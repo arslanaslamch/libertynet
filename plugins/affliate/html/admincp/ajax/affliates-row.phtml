@@ -1,0 +1,26 @@
+<?php $affs = get_all_affliates($from,$end,$name,$st);
+if($affs->total):
+    ?>
+    <?php foreach($affs->results() as $a):
+    $user = find_user($a['user_id']);
+    ?>
+    <tr class="item" id="aff-<?php echo $a['id']?>">
+        <td><?php echo $a['id']?></td>
+        <td><a href="<?php echo profile_url(null,$user); ?>"><img style="height:30px;width:30px;" src="<?php echo get_avatar(200,$user); ?>" /> <?php echo get_user_name($user); ?></a></td>
+        <td><?php echo $a['name']; ?></td>
+        <td><?php echo $a['email']; ?></td>
+        <td><?php echo $a['address']; ?></td>
+        <td><?php echo $a['phone']; ?></td>
+        <td id="stat-<?php echo $a['id']; ?>"><?php echo ($a['status'] == 1) ? lang('yes') : lang('no'); ?></td>
+        <td>
+            <?php if(!$a['status']): ?>
+                <a data-message="<?php echo lang("affliate::are-sure-you-want-to-approve"); ?>" data-yes="<?php echo lang('yes'); ?>" class="btn btn-sm btn-success approve-aff" data-id="<?php echo $a['id']; ?>" href=""><?php _lang('approve')?></a>
+            <?php endif; ?>
+            <a data-message="<?php echo lang("affliate::are-sure-you-want-to-delete"); ?>" class="btn btn-sm btn-danger delete-aff" data-id="<?php echo $a['id']; ?>" href=""><?php _lang('delete')?></a>
+            <a class="btn btn-sm  btn-primary" onclick="return show_aff_details(<?php echo $a['user_id']; ?>)" data-id="<?php echo $a['user_id']; ?>" href=""><?php _lang('affliate::view-details')?></a>
+        </td>
+    </tr>
+<?php endforeach?>
+<?php else: ?>
+    <tr><td colspan="10"><?php echo lang("affliate::no-record-found"); ?></td> </tr>
+<?php endif; ?>

@@ -1,0 +1,19 @@
+<div class="box by-month-side">
+    <div class="title"><?php echo lang("birthday::by-month"); ?>
+        <span class="pull-right">
+            <label class="birthday-toggle">
+            <input type="checkbox" <?php echo (session_get('b-filter-status',0)) ? 'checked' : null; ?> style="visibility: hidden"/>
+                <span class="slider-b"></span>
+    </label>
+    </span>
+        <span class="pull-right" style="margin-right: 5px">Friends Only</span>
+    </div>
+    <ul class="menu">
+        <?php foreach (Birthday::getMonths() as $key => $str): ?>
+            <li class="<?php echo (input('m') == $key) ? 'active' : ''; ?>">
+                <a ajax="true"
+                   href="<?php echo url_to_pager("birthdays") . '?m=' . $key; ?>"><?php echo ucwords(lang('birthday::'.$str)); ?></a>
+            </li>
+        <?php endforeach ?>
+    </ul>
+</div>

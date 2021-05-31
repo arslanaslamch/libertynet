@@ -1,0 +1,77 @@
+<div class="wrapper">
+	<div class="wrapper-title">
+
+            <a class="btn btn-danger btn-lg" href="<?php echo url_to_pager("admincp-contest-add"); ?>"> + <?php echo lang("contest::start-a-contest"); ?></a>
+
+        <span class="pull-right"> Manage contests</span>
+	</div>
+	<div class="wrapper-content">
+		<form action="" method="get" style="margin: 20px 0">
+			<?php CSRFProtection::embed() ?>
+			<input autocomplete="off" type="text" class="form-control" name="term" value="<?php echo input('term'); ?>" placeholder="<?php echo lang('contest::search-contest') ?>"/>
+
+			<button class="btn btn-sm btn-secondary" style="margin-top: 10px"><?php echo lang('search') ?></button>
+		</form>
+		<div class="list-table-container">
+			<div class="table-responsive">
+				<table class="table table-striped list-table">
+					<thead>
+					<tr>
+
+						<th>ID</th>
+						<th><?php echo lang('title') ?></th>
+						<th><?php echo lang('contest::By') ?></th>
+						<th><?php echo lang('contest::type') ?></th>
+						<th><?php echo lang('featured') ?></th>
+						<th><?php echo lang('contest::contest-status') ?></th>
+						<th><?php echo lang('contest::voting-status') ?></th>
+						<th><?php echo lang('contest::entries-status') ?></th>
+						<th style="width: 20%"><?php echo lang('actions') ?></th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php foreach($contests->results() as $contest): ?>
+						<?php $contest = arrange_contest($contest); ?>
+						<tr class="item" id="<?php echo $contest['id'] ?>">
+
+							<td><?php echo $contest['id'] ?></td>
+							<td>
+								<a href="<?php echo url('contest/'.$contest['slug']) ?>"><?php echo lang($contest['name']) ?></a>
+							</td>
+							<td>
+                                <a href="<?php echo url($contest['publisher']['id']) ?>"> <img src="<?php echo $contest['publisher']['avatar'] ?>" style="height: 50px;width: 50px; border-radius: 100%" title="<?php echo $contest['publisher']['name'] ?>" /></a>
+							</td>
+                            <td><b><?php echo ucwords($contest['type']); ?></b></td>
+
+							<td>
+                                <label class="switch">
+                                    <input type="radio" data-cid="<?php echo $contest['id'] ?>" name="val[featured_<?php echo $contest['id'] ?>]" value="0" <?php echo ($contest['featured'] == 0) ? 'checked' : ''; ?>>
+                                    <input type="radio" data-cid="<?php echo $contest['id'] ?>" name="val[featured_<?php echo $contest['id']; ?>]" value="1" <?php echo ($contest['featured'] == 1) ? 'checked' : ''; ?>>
+                                    <span class="contest-slider round"></span>
+                                </label>
+							</td>
+							<td>
+								<?php echo contestBadgeStatus($contest,'contest') ?>
+							</td>
+                            <td>
+								<?php echo contestBadgeStatus($contest,'voting') ?>
+							</td>
+                            <td>
+								<?php echo contestBadgeStatus($contest,'entries') ?>
+							</td>
+
+							<td>
+                                <a style="color : #fff;text-decoration: none" class="btn btn-sm btn-secondary" href="<?php echo url_to_pager("admincp-contest-manage").'?action=edit&id='.$contest['id']; ?>"><i class="ion-edit"></i> <?php echo lang("edit"); ?></a>
+                                <a style="color : #fff;text-decoration: none" class="btn btn-sm btn-secondary" href="<?php echo url_to_pager("admincp-contests-entries-manage").'?id='.$contest['id'];?>"><i class="ion-gear-a"></i> <?php echo lang("contest::manage-entries"); ?></a>
+							</td>
+
+
+						</tr>
+					<?php endforeach ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<?php echo $contests->links() ?>
+	</div>
+</div>

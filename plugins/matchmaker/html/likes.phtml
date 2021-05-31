@@ -1,0 +1,70 @@
+<div class="box matchmaker">
+    <div id="encounters" class="">
+        <h4 class="box-title"><?= ucfirst(lang("matchmaker::likes")); ?></h4>
+        <div id="noEncounters">
+            <?= view("matchmaker::none", ['text' => lang('matchmaker::viewed-all-likes-on-page')]); ?>
+        </div>
+        <?php if (!$likes->total || empty($likes->results())) : ?>
+            <?= view("matchmaker::none", ['text' => lang('matchmaker::no-likes')]); ?>
+        <?php else : ?>
+            <div class="row no-gutters px-3 py-2">
+                <?php foreach ($likes->results() as $like) : ?>
+                    <?php $user = $like['user']; ?>
+                    <?php $order = rand(1111, 99999999); ?>
+                    <div class="col-lg-4 box encounter mb-1" data-type="encounter" id="encounter-<?= $order; ?>">
+                        <div class="flex-center encounter-body">
+                            <?php $gender = (isset($user['gender']) and $user['gender']) ? $user['gender'] : null ?>
+                            <?php $gender_image = ($gender) ? img("images/avatar/{$gender}.png") : img("images/avatar.png") ?>
+                            <?php $user_image = $user['avatar'] ? url_img($user['avatar'], 200) : $gender_image ?>
+                            <?php $user_name = trim($user['first_name'] . $user['last_name']) == '' ? $user['username'] : $user['first_name'] . ' ' . $user['last_name'] ?>
+                            <?php $online_status = $user['online_time'] > (time() - 50) ? 'enc-online' : 'enc-offline' ?>
+
+                            <div class="enc-img-con">
+                                <img class="image" src="<?php echo $user_image ?>" alt="<?php echo $user_name ?> " />
+                            </div>
+                            <div class="details">
+                                <h6 class="title my-2 d-flex align-items-center">
+                                    <div class="text-center mr-1"><?php echo $user_name ?></div>
+                                    <div class="<?= $online_status; ?>"></div>
+                                </h6>
+                                <div class="distance text-center">
+                                    <?php if ($user['distance'] >= 0) : ?>
+                                        <?= round($user['distance'], 2) . " " . lang("matchmaker::" . config('default-unit')) . " " . lang("matchmaker::away"); ?>
+                                    <?php else : ?>
+                                        <?php echo lang("matchmaker::no-location-specified"); ?>
+                                    <?php endif; ?>
+                                    <div><?php echo lang("matchmaker::liked-d-ago", ['d' => timeAgoMin(strtotime($like['liked_at']))]); ?></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="flex-bottom py-2 px-2 w-100 encounter-footer flex-center">
+                            <button class="round-box mx-3 text-lg text-danger likeUser" data-id="<?= $user['id']; ?>" data-order="encounter-<?= $order; ?>">
+                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <?php if ($likes->total > 12) echo $likes->links(); ?>
+        <?php endif; ?>
+    </div>
+    <div id="matched" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg1">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="enc-img-con">
+                        <img class="image" src="" alt="user pic" id="matchedImg" />
+                    </div>
+                    <?= lang('matchmaker::have-matched'); ?> <span id="matchedUser"></span>
+                </div>
+                <div class="modal-footer d-flex">
+                    <button type="button" class="btn btn-light mx-2" data-dismiss="modal"><?= lang("matchmaker::close"); ?></button>
+                    <a href="#" id="matchedLink" class="btn btn-primary"><?= lang('matchmaker::view-profile'); ?></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

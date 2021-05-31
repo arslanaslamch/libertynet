@@ -1,0 +1,48 @@
+<div class="panel-container card" id="sms-overall">
+    <div class="title"><?php echo lang('sms::reset_password_by_sms') ?></div>
+    <div class="card-block">
+        <form id="sms-form" action="" method="post">
+
+            <fieldset>
+                <label for="input-number"><?php echo lang('sms::mobile-number') ?></label>
+                <input id="error_message" type="hidden" value="<?php echo lang('sms::error-msg') ?>">
+                <input id="hidden" type="hidden" name="val[phone_num]">
+                <input id="translatedcode" type="hidden" value="<?php echo lang('sms::send-code');?>">
+                <input id="location" value="recover" type="hidden" />
+                <input onkeyup="numbersOnly(this)" id="input-number" name="full" type="tel"
+                       class="form-control inline-form"/>
+                <span style="display: none" id="change_number" class="form-help"><a href="#" onclick="return change_number()"><?php echo lang('sms::change-number') ?></a></span>
+                <br/><br/>
+                <input data-sending="<?php echo lang('sms::sending'); ?>" type="button" id="submit_sms"
+                       onclick="return send_code_forgot_password()" value="<?php echo lang('sms::send-code') ?>"
+                       class="btn btn-block btn-sm btn-info inline-form">
+            </fieldset>
+            <div id="confirm" style="display: none">
+                <fieldset>
+                    <label for="input-number"><?php echo lang('sms::confirmation-code') ?></label>
+
+                    <input id="code" type="text" class="form-control inline-form" placeholder="e.g 2efceffa23aateaiacrr"/>
+                    <br/>
+                    <input type="button" onclick="return verify_code_forgot_sms()"
+                           value="<?php echo lang('sms::confirm') ?>"
+                           class="btn btn-block btn-sm btn-info inline-form">
+                </fieldset>
+                <br/>
+
+
+            </div><br/>
+
+            <!--
+        <fieldset>
+            <label for="input-number"><?php echo lang('sms::mobile-number') ?></label>
+            <input id="hidden" type="hidden" name="val[phone_num]">
+            <input id="error_message" type="hidden" value="<?php echo lang('sms::error-msg') ?>">
+            <input id="btn-name" type="hidden" value="<?php echo lang('sms::send-my-details') ?>">
+            <input onkeyup="numbersOnly(this)" id="input-number" name="full" type="tel" class="form-control inline-form" />
+            <br/><br/>
+            <input data-sending="<?php echo lang('sms::sending'); ?>" type="button" id="submit_sms" onclick="return send_login_details()" value="<?php echo lang('sms::send-my-details') ?>" class="btn btn-block btn-sm btn-info inline-form">
+        </fieldset>
+       -->
+        </form>
+      </div>
+    </div>

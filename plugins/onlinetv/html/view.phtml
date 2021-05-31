@@ -1,0 +1,134 @@
+<?php $refId = $onlinetv['id'];
+$refName = 'onlinetv';
+$user = find_user($onlinetv['user_id']); ?>
+<div class="box onlinetv">
+	<div class="title">
+		<div style="width:80%">
+			<?php echo $onlinetv['name'] ?>
+			<div class="action">
+				<?php if(is_onlinetv_owner($onlinetv)): ?>
+					<a href="<?php echo url('onlinetv/manage?type=edit&id='.$onlinetv['id']) ?>" class="btn btn-secondary btn-sm action-button" ajax="true"><?php echo lang('onlinetv::edit-onlinetv') ?></a>
+				<?php elseif(is_loggedIn() and plugin_loaded('report')): ?>
+					<a data-type="onlinetv" data-link="<?php echo url_to_pager('onlinetv-page', array('slugs' => $onlinetv['slug'])) ?>" class="report-btn btn btn-secondary" href=""><i class="ion-flag"></i></a>
+				<?php endif ?>
+			</div>
+		</div>
+	</div>
+
+	<div class="box-content post">
+        <?php if($onlinetv['description']): ?>
+        <div class="box-content"><?php echo $onlinetv['description']; ?></div>
+        <?php endif; ?>
+        <?php if($onlinetv['source_embed']): ?>
+            <?php echo html_entity_decode($onlinetv['source_embed']); ?>
+        <?php else: ?>
+            <div class="feed-video-embed-container internal-video" id="feed-video-embed-container-<?php echo $onlinetv['id']; ?>">
+                <!--<iframe id="feed-video-embed-<?php /*echo $onlinetv['id']; */?>" class="player" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"
+                        src="<?php /*echo urldecode($onlinetv['source_url']) */?>"></iframe>-->
+
+                <!--mod start-->
+
+                <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
+
+                <video id="tv-video" width="600" height="400" class="video-js vjs-default-skin" controls>
+                    <source
+                            src="<?php echo urldecode($onlinetv['source_url']) ?>"
+                            type="application/x-mpegURL">
+                </video>
+
+                <script src="https://unpkg.com/video.js/dist/video.js"></script>
+                <script src="https://unpkg.com/videojs-flash/dist/videojs-flash.js"></script>
+                <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
+
+                <!--
+                  -- Now, initialize your player. That's it!
+                  -->
+                <script>
+                        var player = window.player = videojs('tv-video');
+                        // hook up the video switcher
+                        player.play();
+                </script>
+                <!--mod end-->
+            </div>
+        <?php endif ?>
+	</div>
+    <div class="clearfix box-content">
+        <!--<div style="float: left; padding: 0px 8px">
+            <img style="border-radius: 50%; float: left;" src="<?php /*echo get_avatar(75, $user) */?>" width="45" height="45"/>
+        </div>-->
+        <p><b><?php echo lang("onlinetv::tv-information"); ?></b></p>
+        <div>
+            <div>
+                <?php echo lang('onlinetv::By') ?>:
+                <a ajax="true" href="<?php echo url($onlinetv['publisher']['id']) ?>"><?php echo $onlinetv['publisher']['name'] ?></a>
+            </div>
+            <div>
+                <?php echo lang('onlinetv::category'); ?>:
+                <?php $category = get_onlinetv_category($onlinetv['category_id']); ?>
+                <a href="<?php echo url('onlinetvs').'?category='.$onlinetv['category_id']; ?>" ajax="true"><?php echo lang($category['title']); ?></a>
+            </div>
+            <div>
+                <?php echo lang('onlinetv::date'); ?>:
+                <?php echo date('M j , Y ', $onlinetv['time']); ?><br/>
+            </div>
+
+        </div>
+    </div>
+	<div class="feed-footer">
+		<ul class=" feed-footer-menu clearfix">
+			<?php if(plugin_loaded('like')): ?>
+				<?php load_functions('like::like'); ?>
+				<?php echo view('like::like-footer', array('type' => $refName, 'typeId' => $refId)); ?>
+			<?php endif ?>
+			<li class="onlinetv-social-share"><?php echo plugin_loaded('sharer') ? view('sharer::share_link', array('link' => url("onlinetv/".$onlinetv['slug']))) : '' ?></li>
+			<?php fire_hook('more-feed-footer', null, array($refName, $refId)); ?>
+			<li class="pull-right">
+				<ul class="feed-statistics">
+					<?php if(plugin_loaded('like')): ?>
+						<li>
+							<a onclick="return show_likes('<?php echo $refName ?>', '<?php echo $refId ?>')" href="">
+								<i class="fa fa-thumbs-o-up"></i>
+								<span class="like-count-<?php echo $refName ?>-<?php echo $refId ?>"><?php echo count_likes($refName, $refId) ?></span>
+							</a>
+						</li>
+						<?php if(config('enable-dislike', false)): ?>
+							<li>
+								<a onclick="return show_dislikes('<?php echo $refName ?>', '<?php echo $refId ?>')" href="">
+									<i class="ion-thumbsdown"></i>
+									<span class="dislike-count-<?php echo $refName ?>-<?php echo $refId ?>"><?php echo count_dislikes($refName, $refId) ?></span>
+								</a>
+							</li>
+						<?php endif ?>
+					<?php endif ?>
+					<?php if(plugin_loaded('comment')): ?>
+						<?php load_functions('comment::comment') ?>
+						<?php $countComments = count_comments($refName, $refId); ?>
+						<li>
+							<i class="ion-chatbubbles"></i>
+							<span class="comment-count-<?php echo $refName ?>-<?php echo $refId ?>"><?php echo ($countComments) ? $countComments : null ?></span>
+						</li>
+					<?php endif ?>
+					<?php fire_hook('more-feed-footer-count', null, array($refName, $refId)); ?>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="box">
+	<div class="box-content feed-footer">
+		<?php if(plugin_loaded('comment')): ?>
+			<div class="feed-comment-container">
+				<?php if($countComments > config('feed-comment-limit', 3)): ?>
+					<a id="comment-view-more-button-<?php echo $refName ?>-<?php echo $refId ?>" class="comment-view-more-button comment-view-more-button-<?php echo $refName ?>-<?php echo $refId ?>" onclick="return show_more_comment('<?php echo $refName ?>', '<?php echo $refId ?>', 'comment-view-more-indicator-<?php echo $refId ?>')" href=""><?php echo lang('view-previous-comments') ?></a>
+					<img class="comment-view-more-indicator" id="comment-view-more-indicator-<?php echo $refId ?>" src="<?php echo img('images/loading.gif') ?>"/>
+				<?php endif ?>
+				<div data-offset="<?php echo config('feed-comment-limit', 3) ?>" data-limit="<?php echo config('feed-comment-limit', 3) ?>" class="comment-lists comment-lists-<?php echo $refName ?>-<?php echo $refId ?>" id="">
+					<?php foreach(get_comments($refName, $refId, config('feed-comment-limit', 3), 0) as $comment): ?>
+						<?php echo view('comment::display', array('comment' => $comment)) ?>
+					<?php endforeach; ?>
+				</div>
+				<?php echo view('comment::editor', array('typeId' => $onlinetv['id'], 'type' => 'onlinetv', 'textLimit' => (config('enable-feed-text-limit', false)) ? config('maximum-feed-text-limit', 150) : false)) ?>
+			</div>
+		<?php endif ?>
+	</div>
+</div>

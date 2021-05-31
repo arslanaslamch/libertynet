@@ -1,0 +1,14 @@
+<div class="box-content">
+    <div class="title"><?php echo $entry['title']; ?></div>
+    <div class="box-content post">
+        <?php if($entry['image']): ?>
+            <div class="blog-large-image">
+                <img src="<?php echo url_img($entry['image'], 700) ?>"/>
+            </div>
+        <?php endif ?>
+
+        <?php echo $entry['content'] ?>
+    </div>
+</div>
+<?php echo view("contest::footer-like",array('refName'=>$entry['ref_name'],'refId'=>$entry['id'])); ?>
+

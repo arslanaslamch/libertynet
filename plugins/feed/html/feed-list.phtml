@@ -1,0 +1,33 @@
+<?php 
+$listData = perfectUnserialize($list['list']);
+$items = $listData['items'];
+$backgroundStyle = $listData['background'];
+$listType = $listData['list_type'];
+$icon = $listData['icon'];
+$title = $listData['title'];
+$i = 1;
+$listClass = "list-option-ol";
+if ($listType =="ul") {
+	$listClass = "list-option-ul";
+}
+ ?>
+<?php if ($listData): ?>
+    <div class="feed-list-option-container feed-view-list-option-container">
+        <div class="feed-list-option-background" style="<?php echo $backgroundStyle; ?>">
+            <div class="feed-list-option-title">
+                <span class="list-icon"> <i style="color:yellow" class="<?php echo $icon; ?>"></i> </span>
+                <span class="list-option-title-f"><?php echo stripslashes($title); ?></span>
+            </div>
+            <div class="list-options-container">
+                <div class="list-options">
+                    <?php foreach ($items as $key => $item): ?>
+                        <div class="list-option">
+                            <span class="list-option-span <?php echo $listClass; ?>"><?php if($listType == "ol") { echo $i;} ?></span>
+                            <span class="list-option-display"> <?php echo stripslashes($item); ?></span>
+                        </div>
+                        <?php $i++; endforeach;?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif;?>

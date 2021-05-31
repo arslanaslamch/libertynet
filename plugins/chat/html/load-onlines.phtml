@@ -1,0 +1,44 @@
+<?php if(count($users) > 0): ?>
+	<?php foreach($users as $user):
+        $uids = array($user['id']);
+        $u = fire_hook('conversation.second.user', $uids, array('user', get_userid()));
+        $cid = get_conversation_id($u, true, 'user', get_userid());
+        $conversation = $cid ? get_conversation($cid) : null;
+        $color = '';
+        if ($conversation && ($conversation['color1'] || $conversation['color2'])) {
+            if ($conversation['user1'] == get_userid()) $color = $conversation['color1'];
+            if ($conversation['user2'] == get_userid()) $color = $conversation['color2'];
+        }
+        if ($color == '') {
+            $color = GenerateRandomColor();
+            $conversation = get_conversation($cid);
+            if (!$conversation || $conversation) {
+                $field = 'color1';
+                if ($conversation['user2'] == get_userid()) $field = 'color2';
+                $updateConversation = update_conversation(array($field => $color), $cid);
+            }
+        }
+        ?>
+		<a onclick="return Chat.open(null, '<?php echo $user['id'] ?>', '<?php echo htmlentities(addslashes(get_user_name($user))) ?>', '<?php echo get_avatar(75, $user) ?>', null, null, this)" href="#" data-color="<?php echo  $color; ?>">
+			<div class="media media-sm">
+				<div class="media-left">
+					<div class="media-object <?php echo config('enable-avatar-mask', true) ? 'disable-avt-msk-chat' : '' ?>">
+						<img src="<?php echo get_avatar(75, $user) ?>" class="avatar-mask"/>
+					</div>
+				</div>
+				<div class="media-body">
+					<h6 class="media-heading"><?php echo ucwords(strtolower(get_user_name($user))) ?></h6>
+					<?php if(user_is_online($user)): ?>
+						<span class="online-status <?php echo get_online_status_icon($user) ?>"></span>
+					<?php else: ?>
+						<span class="action"><?php echo timeAgoMin($user['online_time']) ?></span>
+					<?php endif ?>
+
+				</div>
+			</div>
+		</a>
+	<?php endforeach ?>
+
+<?php else: ?>
+	<div style="padding: 10px"><?php echo lang('chat::no-friends-online') ?></div>
+<?php endif ?>

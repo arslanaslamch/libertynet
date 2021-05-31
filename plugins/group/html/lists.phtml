@@ -1,0 +1,162 @@
+<div class="box">
+    <div class="group-list">
+        <div class="head">
+            <div class="cover" style="background-image: url(<?php echo url_img(config('group-list-cover', 'plugins/group/images/cover.jpg'), 920); ?>)">
+                <div class="title"><?php echo lang('group::groups') ?></div>
+                <div class="actions">
+                    <?php if(user_has_permission('can-create-group')): ?>
+                        <a href="<?php echo url_to_pager('group-create') ?>" class="btn btn-block btn-info action-button" data-toggle="modal" data-target="#group-create-modal">
+                            <i class="ion-plus"></i>
+                            <?php echo lang('group::create-group') ?>
+                        </a>
+                        <div id="group-create-modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog modal-lg1">
+                                <div class="modal-content">
+                                    <form action="<?php echo url('group/create') ?>" method="post" enctype="multipart/form-data" class="ajax-form">
+                                        <div class="modal-form-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <p class="modal-title pull-left" id="create-body"> <?php echo lang('group::create-group') ?> </p>
+                                        </div>
+                                        <div class="modal-body">
+                                            <?php CSRFProtection::embed() ?>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('group::group-title') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <input value="<?php echo input('val.title') ?>" type="text" name="val[title]" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label "><?php echo lang('group::description') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <textarea name="val[description]" class="form-control auto-grow-input"><?php echo input('val.description') ?></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label "><?php echo lang('profile-cover') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <div class="magic-input-image-preview" data-name="group_logo">
+                                                        <span class="dimension"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label "><?php echo lang('category') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <div class="magic-select" data-name="val[category_id]" data-width="200px">
+                                                        <div class="magic-select-toggle">
+                                                            <?php echo lang('select-category') ?>
+                                                        </div>
+                                                        <div class="magic-select-content">
+                                                            <?php $categories = get_group_categories(); ?>
+                                                            <?php foreach($categories as $category): ?>
+                                                                <div class="magic-select-option" data-value="<?php echo $category['id'] ?>">
+                                                                    <?php echo lang($category['title']) ?>
+                                                                </div>
+                                                            <?php endforeach ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php fire_hook("create.group.extension") ?>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label "><?php echo lang('privacy') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <?php fire_hook('privacy.select', 'group', array()); ?>
+                                                    <div class="help-block">
+                                                        <div>
+                                                            <strong><?php echo lang('public') ?>: </strong>
+                                                            <?php echo lang('group::group-public-note') ?>
+                                                        </div>
+                                                        <div>
+                                                            <strong><?php echo lang('private') ?>: </strong>
+                                                            <?php echo lang('group::group-private-note') ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer create-footer" id="create-footer">
+                                            <div class="submit">
+                                                <input type="submit" value="<?php echo lang('group::create-group') ?>" class="btn btn-info action-button"/>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif ?>
+                </div>
+            </div>
+            <div class="links">
+                <div class="link <?php echo input('category') ? '' : 'active' ?>">
+                    <a ajax="true" href="<?php echo url_to_pager('group-manage') ?>"><?php echo lang('group::groups') ?></a>
+                </div>
+                <div class="link <?php if(input('category')) echo "active" ?>">
+                    <a ajax="true" href="<?php echo url_to_pager('group-manage')?>?category=discover"><?php echo lang('group::discover') ?></a>
+                </div>
+                <div class="link <?php if(input('type') == 'yours') echo "active" ?>">
+                    <a ajax="true" href="<?php echo url_to_pager('group-manage') ?>?type=yours"><?php echo lang('group::groups-created') ?></a>
+                </div>
+                <div class="link <?php if(input('type') == 'member') echo "active" ?>">
+                    <a ajax="true" href="<?php echo url_to_pager('group-manage') ?>?type=member"><?php echo lang('group::groups-belong') ?></a>
+                </div>
+            </div>
+            <div class="filters global-filter-container filter-pane" data-url="<?php echo url('groups') ?>">
+                <div class="left">
+                    <i class="icon ion-android-options"></i>
+                    <select id="group-category-list" onchange="return run_global_filter()" data-name="category" class="c-select filter-input">
+                        <option <?php echo (input('category', 'all') == 'all') ? 'selected' : null ?> value="all"><?php echo lang('group::all-categories') ?></option>
+                        <?php foreach(get_group_categories() as $category): ?>
+                            <option <?php echo (input('category', 'all') == $category['id']) ? 'selected' : null ?> value="<?php echo $category['id'] ?>"><?php echo lang($category['title']) ?></option>
+                        <?php endforeach ?>
+                    </select>
+                    <select id="group-filter-select" onchange="return run_global_filter()" data-name="filter" class="c-select filter-input">
+                        <option value="all"><?php echo lang('all') ?></option>
+                        <option <?php echo (input('filter') == 'top') ? 'selected' : null ?> value="top"><?php echo lang('top') ?></option>
+                        <option <?php echo (input('filter') == 'featured') ? 'selected' : null ?> value="featured"><?php echo lang('featured') ?></option>
+                    </select>
+                </div>
+                <div class="right">
+                    <form id="group-list-search" method="post" onsubmit="return run_global_filter()" action="" class="search form-inline list-search">
+                        <?php CSRFProtection::embed() ?>
+                        <input type="hidden" class="filter-input form-control" data-name="type" value="<?php echo input('type', 'recommend') ?>"/>
+                        <input type="search" value="<?php echo input('term') ?>" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>" />
+                        <button type="submit">
+                            <i class="search-icon icon ion-ios-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="listings">
+                <div class="listing row">
+                    <?php foreach($groups->results() as $group): ?>
+                        <div class="col-md-6">
+                            <?php echo view('group::display', array('group' => $group)) ?>
+                        </div>
+                    <?php endforeach ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-content">
+        <?php if(!$groups->total): ?>
+            <div class="alert alert-info">
+                <?php echo lang('group::no-group-found') ?>
+            </div>
+        <?php else: ?>
+            <?php echo $groups->append(array('term' => input('term'), 'type' => input('type', 'recommend'), 'filter' => input('filter')))->links(true) ?>
+        <?php endif ?>
+    </div>
+</div>

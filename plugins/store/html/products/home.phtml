@@ -1,0 +1,127 @@
+<?php echo view("store::store-top-menu"); ?>
+<div class="col-sm-12">
+    <div class="row">
+        <div class="col-sm-3 nop">
+            <div class="box">
+                <div class="box-content nop">
+                    <div class="side-bar-categories-store-product-home">
+                        <ul class="menu-categories-store no-margin-left-right">
+                            <li class="class-header-store-cat"><a ajax="true" href="<?php echo url('store/products'); ?>">
+                                <?php echo lang("store::all-products"); ?>
+                                </a></li>
+                            <?php
+                            $categories = lp_store_categories('get_categories');
+                            foreach ($categories as $category): ?>
+                                <li class="parent-side-bar-cmenu <?php echo (store_is_parent_category_active($category) || ($ps == $category['id'])) ? 'active cat-show-below-me' : ''; ?>">
+                                    <a ajax="true"
+                                       href="<?php echo url_to_pager('products-categories-home',
+                                           array('slugs' => $category['id'] . '_' . toAscii(lang($category['title'])))); ?>">
+                                        <?php echo strtoupper(lang($category['title'])); ?>
+                                        <i class="<?php echo (store_is_parent_category_active($category)) ? 'ion-arrow-up-b' : 'ion-arrow-down-b'; ?>"></i>
+                                    </a>
+                                    <?php
+                                    $subcategories = get_store_subcategories($category['id']);
+                                    //echo print_r($ps);
+                                    if ($subcategories): ?>
+                                        <ul style="display: <?php echo (store_is_parent_category_active($category) || ($ps == $category['id'])) ? 'block' : 'none'; ?>">
+                                            <?php foreach ($subcategories as $sb): ?>
+                                                <li>
+                                                    <a class="<?php echo (input('category') == lang($sb['title'])) ? 'active' : ''; ?>"
+                                                       ajax="true"
+                                                       href="<?php echo url_to_pager('products-categories-home', array('slugs' => $sb['id'] . '_' . toAscii(lang($category['title'])) . '_' . toAscii(lang($sb['title'])))); ?>">
+                                                        <?php _lang($sb['title']); ?>
+                                                        <input type="checkbox" <?php echo ($sb['id']  == $cid) ? 'checked' : ''; ?> class="can-be-checked-store" />
+                                                        <span><?php  echo getProductsCatCount($sb); ?></span>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    <?php endif; ?>
+                                </li>
+                            <?php endforeach ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9" style="padding-right:0">
+            <div class="box">
+                <div class="global-filter-container" data-url="<?php echo url('store/products') ?>">
+                <form id="blog-list-search" method="post" onsubmit="return run_global_filter()" action=""
+                      class="form-inline list-search">
+                    <?php CSRFProtection::embed() ?>
+                    <input type="hidden" class="filter-input form-control" data-name="type"
+                           value="<?php echo input('type', 'browse') ?>"/>
+                    <i class="search-icon ion-ios-search"></i>
+                    <input value="<?php echo input('term') ?>" type="text" class="form-control search-box filter-input"
+                           data-name="term" placeholder="<?php echo _lang('store::find-products') ?>"/>
+                </form>
+                <div class="list-head">
+                    <h3 class="heading"><?php _lang('store::products');
+                        if (isset($append)) {
+                            echo $append;
+                        }
+                        ?></h3>
+                </div>
+                <div class="filter-pane">
+                    <select id="video-filter-select" onchange="return run_global_filter()" data-name="filter"
+                            class="c-select filter-input">
+                        <option value="all"><?php _lang('all') ?></option>
+                        <option <?php echo (input('filter') == 'top') ? 'selected' : null ?>
+                                value="top"><?php _lang('store::top') ?></option>
+                        <option <?php echo (input('filter') == 'featured') ? 'selected' : null ?>
+                                value="featured"><?php _lang('store::featured') ?></option>
+                    </select>
+                    <span><?php echo lang("store::sort-by"); ?></span>
+                    <select id="video-filter-select" onchange="return run_global_filter()" data-name="sort"
+                            class="c-select filter-input">
+                        <option value="newest"><?php echo ucfirst(lang('store::newest')); ?></option>
+                        <option <?php echo (input('sort') == 'price_high_to_low') ? 'selected' : null ?>
+                                value="price_high_to_low"><?php _lang('store::price-high-to-low') ?></option>
+                        <option <?php echo (input('sort') == 'price_low_to_high') ? 'selected' : null ?>
+                                value="price_low_to_high"><?php _lang('store::price-low-to-high') ?></option>
+                    </select>
+                </div>
+            </div>
+            <div id="products-list-container" class="box-content clearfix grid-listing-container">
+                <?php foreach ($products->results() as $p):$user = find_user($p['user_id']);
+                    $productStoreOwner = lpGetStoreById($p['store_id']);
+                    ?>
+                       <?php echo view("store::products/product-box",array('p'=>$p,'user'=>$productStoreOwner)); ?>
+                <?php endforeach ?>
+
+
+            </div>
+            <div class="box-content">
+                <?php if ($products->total): ?>
+                    <?php echo $products->append(array('category' => input('category'), 'type' => input('type', 'browse'), 'term' => input('term'), 'filter' => input('filter', 'all')))->links() ?>
+                <?php else: ?>
+                    <div class="alert alert-info"><?php _lang('store::products-list-empty') ?></div>
+                <?php endif ?>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div id="quickStoreView" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLikesModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					<span class="sr-only"><?php echo lang('close') ?></span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="indicator">
+					<img src="<?php echo img('images/loading.gif') ?>"/>
+				</div>
+				<div class="product-qfback">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

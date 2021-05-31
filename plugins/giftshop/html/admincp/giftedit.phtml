@@ -1,0 +1,45 @@
+<div class="wrapper">
+	<div class="wrapper-title">
+		<a ajax="true" href="<?php echo url_to_pager('admincp-giftshop') ?>">
+			<h4><?php echo lang('giftshop::edit-gift') ?></h4>
+		</a>
+	</div>
+	<div class="wrapper-content">
+		<?php foreach($edits
+
+		as $edit): ?>
+		<form enctype="multipart/form-data" class="wrapper-form" action="" method="post">
+			<?php CSRFProtection::embed() ?>
+			<div>
+				<label><?php echo lang('giftshop::name') ?>:</label>
+				<input type="hidden" name="val[image]" value="<?php echo $edit['image'] ?>">
+				<input id="inputsm" class="form-control" type="text" name="val[name]" value="<?php echo $edit['name'] ?>" required="">
+			</div>
+			<div>
+				<label><?php echo lang('giftshop::category') ?>:</label><br/>
+				<select class="c-select" name="val[category]" required="required">
+					<?php foreach($cats as $cat): ?>
+						<option value="<?php echo $cat['category'] ?>" <?php if($cat['category'] == $edit['category']) {
+							echo "selected='selected'";
+						} ?>><?php echo $cat['category'] ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<div>
+				<label><?php echo lang('giftshop::price') ?>:</label>
+				<input id="inputsm" class="form-control input-sm" type="number" name="val[price]" value="<?php echo $edit['price'] ?>" required="">
+			</div>
+			<div>
+				<label><?php echo lang('giftshop::image') ?>:</label>
+				<input id="inputsm" class="form-control input-sm" type="file" name="image" required/>
+			</div>
+			<?php endforeach; ?>
+			<div>
+				<label><?php echo lang('giftshop::description') ?>:</label>
+				<input id="inputsm" class="form-control input-sm" type="text" name="val[description]" value="<?php echo $edit['description'] ?>" required="">
+			</div>
+			<br/>
+			<button class="btn btn-info" style="margin-top: 20px"><?php echo lang("edit") ?></button>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,36 @@
+<div class="wrapper">
+    <div class="wrapper-title"><?php echo lang("store::store-details") ?></div>
+    <div class="wrapper-content" style="border: 1px solid #ccc;margin-bottom: 50px">
+        <div class="container">
+            <h2 style="font-family:'Open Sans', 'Segoe UI', Tahoma, Arial, sans-serif; margin: 20px auto; display: block"><?php echo $store['name']; ?></h2>
+                <?php if($settings['payment_type'] == 'Wire Transfer'):?>
+
+            <h4 class="order-subtitle-header"> Wire Transfer Account Details</h4>
+            <h5><?php echo lang("store::bank-details") ?></h5>
+                    <p><strong><?php echo lang("store::bank-swift-code"); ?> : </strong> <?php echo $settings['swift_code']; ?> </p>
+                    <p><strong><?php echo lang('store::bank_name');?> : </strong> <?php echo  $settings['bank_name']?> </p>
+                    <p><strong><?php echo lang('store::bank_address');?> : </strong> <?php echo $settings['bank_address']?> </p>
+            <hr/>
+            <h5><?php echo lang('store::account-holder-information'); ?></h5>
+                    <p><strong><?php echo lang('store::account-number');?> : </strong> <?php echo $settings['account_number'];?> </p>
+                    <p><strong><?php echo lang('store::account-name');?> : </strong> <?php echo $settings['account_name']; ?> </p>
+                    <p><strong><?php echo lang('store::address');?> : </strong> <?php echo $settings['address']; ?>
+                    <p><strong><?php echo lang('store::phone');?> : </strong> <?php echo $settings['phone']; ?>
+                    <p><strong><?php echo lang('store::city_state');?> : </strong> <?php echo $settings['city_state']?>
+                    <p><strong><?php echo lang('store::country');?> : </strong> <?php echo $settings['country']?>
+                    <p><strong><?php echo lang("store::additional-information");?> : </strong> <?php echo $settings['add_info']; ?>
+
+               <?php elseif($settings['payment_type'] == 'Skrill'): ?>
+                    <h4 class="order-subtitle-header"> Skrill Account Details</h4>
+
+                    <p><strong><?php echo lang("store::skrill_email_address") ?></strong> : <?php echo $settings['skrill_email']; ?></p>
+
+                 <?php elseif($settings['payment_type'] == 'Paypal'): ?>
+                    <h4 class="order-subtitle-header">Paypal Account Details</h4>
+                    <p><strong><?php echo lang("store::paypal_email_address") ?></strong> : <?php echo $settings['paypal_email'] ?></p>
+
+                <?php endif; ?>
+
+            </div>
+        </div>
+    </div>

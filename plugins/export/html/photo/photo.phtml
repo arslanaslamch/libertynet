@@ -1,0 +1,17 @@
+<div id="photos-list-container" class="box box-content clearfix list-listing-container">
+	<div class="global-filter-container" data-url="">
+		<div class="row">
+			<div class="col-sm-6">
+				<h3><?php echo lang('photo::photos') ?></h3>
+			</div>
+		</div>
+	</div>
+	<div id="photos-list" class="photos-list photo-directory" data-type="all" data-offset="0" style="margin: 0px;box-shadow: 0px 0px 0px #FFFFFF;border-radius: 0px;border: none;">
+		<?php foreach($photos as $photo): ?>
+			<?php $user = find_user($photo['user_id']); $username = $user['username']; $first_name = $user['first_name']; $last_name = $user['last_name']; $user_name = "$first_name $last_name"; $user_name = trim($user_name) == '' ? $username : $user_name; ?>
+			<div class="photo">
+				<a data-image="<?php echo url_img($photo['path'], 920) ?>" data-id="<?php echo $photo['id'] ?>" class="image photo-viewer" style="background-image:url(<?php echo url_img($photo['path'], 600) ?>)" href=""></a>
+			</div>
+		<?php endforeach ?>
+	</div>
+</div>

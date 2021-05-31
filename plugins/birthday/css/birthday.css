@@ -1,0 +1,313 @@
+.img-circle-wrapper{
+    position:relative;
+    height: 300px;
+    width : 200px;
+    float: left;
+    display: inline-block;
+    border-radius : 8px;
+    border: 1px solid #eee;
+    text-align: center;
+    margin: 5px;
+    transition : background 400ms ease-in-out;
+}
+
+.img-circle-wrapper:hover{
+    background: #f2f4f6;
+    transition : background 400ms ease-in-out;
+}
+
+.birth-name a{
+    display:block;
+    font-size: 14px;
+    color : #2196F3;
+}
+
+.birth-icon-and-date{
+    font-size: 14px;
+    display: block;
+    padding-top: 5px;
+    margin-bottom: 15px;
+}
+
+.cake-icon{
+    height:25px;
+    width :25px;
+    display: inline-block;
+    position:relative;
+    top : -3px;
+}
+.img-circle-wrapper .img-circle-wrapper-cover-to-content{
+    padding: 10px;
+    z-index: 9999;
+    border: red;
+}
+
+
+.img-circle-wrapper img.img-user-birth{
+    height: 150px;
+    width: 150px;
+    border-radius: 100%;
+    margin-bottom: 10px;
+}
+
+.img-circle-wrapper .friend-btn-birth a{
+    border-radius : 5px !important;
+    background:transparent !important;
+    color :  #555;
+    border : 1px solid #555;
+}
+
+.by-month-side .menu{
+    margin:0 !important;
+}
+
+.birthday-home .list-head{
+    padding: 15px;
+    border-bottom :1px solid #eee;
+    margin: 0;
+}
+
+.birthday-home .list-head h3{
+    margin: 0;
+}
+
+
+/*** background **/
+.today-birthday-cover{
+    position:relative;
+    min-height : 600px;
+    background : #BB024C;
+    padding: 5px;
+}
+.celebrant-img{
+    height: 70%;
+    width : 70%;
+    margin: 0 auto;
+    display:block;
+}
+
+/** celebrant start **/
+.today-birthday-cover{
+    margin: 0 auto;
+    display: block;
+    text-align:center;
+}
+.img-circle-wrapper-celebrant{
+   height: 200px;
+    width : 200px;
+    display : inline-block;
+    margin: 5px;
+}
+.img-user-birth-celebrant{
+    height: 150px;
+    width : 150px;
+    border-radius : 100%;
+    border: 5px solid #fff;
+    display:block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.birth-name-celebrant{
+    display:block;
+    text-align : center;
+}
+.birth-name-celebrant a {
+    font-size : 16px;
+    color : #fff;
+}
+
+.birth-name-celebrant a:hover{
+    color : #fff;
+}
+.top-title-birthday{
+    font-size: 22px;
+    color :#fff;
+    text-align: center;
+    padding-bottom : 5px;
+    border-bottom: 2px dotted #eee;
+    max-width : 200px;
+    margin: 20px auto;
+    font-style : italic;
+}
+
+.today-birthday-cover .sub-content-today-b{
+    text-align : left;
+    display:block;
+}
+
+.today-birthday-cover .sub-content-today-b i{
+    font-size :16px;
+    margin-right: 5px;
+}
+
+.today-birthday-cover .birth-icon-and-date{
+    font-size: 14px;
+    color : red;
+    font-style : italic;
+    margin: 0;
+}
+
+.b-wish-s,
+.b-wish-s a,
+.b-wish-s a:hover,
+.b-wish-s a:active{
+    color: #fff;
+    font-size: 14px;
+}
+
+/** celebrant end **/
+/** Modal start **/
+#BirthdayModal .indicator {
+    display: none;
+    margin: 10px auto;
+}
+
+#BirthdayModal .indicator img {
+    width: 30px;
+    margin: auto;
+    display: block;
+}
+
+#BirthdayModal .user-lists {
+    max-height: 400px;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+#BirthdayModal .wish-content{
+    min-height: 80px;
+    background: #f2f4f6;
+    border-radius : 5px;
+    margin-bottom : 10px;
+}
+
+#BirthdayModal .btn-block{
+    max-width : 200px;
+    margin: 0 auto;
+}
+/** Modal end **/
+
+.birthday-image-icon{
+    height: 30px;
+    width : 30px;
+}
+
+.title-ws{
+    color : #BB024C !important;
+}
+
+/*** profile birthday ***/
+.profile-wish-wrapper-box{
+    text-align: center;
+}
+
+.image-happy-birthday{
+    height: 200px;
+    width: 100%;
+}
+
+.have-birthday-today{
+    display:block;
+    text-align: center;
+    font-size: 14px;
+}
+
+.btn-celebrate{
+    max-width: 200px;
+    text-align: center;
+    display:block;
+    margin: auto;
+}
+
+.icon-b-text{
+    height: 20px;
+    width : 20px;
+    position:relative;
+    top : -4px;
+}
+
+/*** admincp ***/
+.birthday-form-wrapper{
+    max-width : 400px;
+    display:block;
+    margin :0 auto;
+}
+
+.birthday-form-wrapper textarea{
+    height: 120px;
+    border-radius: 5px;
+
+}
+
+/**** profile birthday ****/
+
+
+.birthday-images-wrapper{
+    position:absolute;
+    top :0;
+    width : 100%;
+    display:none;
+}
+
+
+
+.birthday-images-wrapper img{
+    /*width : 15%;
+    height : 15%;*/
+    max-width : 100px;
+    display:inline-block;
+    position:relative;
+    opacity : 0.5;
+    float: left;
+    z-index: 9999;
+
+}
+
+/*** Button Start**/
+/* Hide default input */
+.toggle input {
+    display: none;
+}
+
+/* The container and background */
+.birthday-toggle {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 30px;
+}
+.slider-b {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    transition: all 0.4s;
+}
+
+/* The sliding button */
+.slider-b:before {
+    position: absolute;
+    content: "";
+    width: 24px;
+    height: 24px;
+    left: 2px;
+    top: 2px;
+    background-color: #eee;
+    border-radius: 24px;
+    transition: all 0.4s;
+}
+
+/* On checked */
+input:checked + .slider-b {
+    background-color: #4CAF50;
+}
+input:checked + .slider-b:before {
+    transform: translateX(18px);
+}
+/** Button End **/

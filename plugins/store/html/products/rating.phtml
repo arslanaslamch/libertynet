@@ -1,0 +1,32 @@
+<?php
+ $product_id = $id;
+ $ratings = getItemRatings('product',$product_id);
+$avg = 0;
+$allRaters = 0;
+if($ratings){
+    $allRaters = count($ratings);
+    $avg = array_sum($ratings)/$allRaters;
+}
+
+$counts = array_count_values($ratings);
+?>
+<div class="container">
+<div class="row">
+<div class="col-sm-12">
+    <div class="col-sm-6" style="text-align: center">
+        <h5><?php echo lang('store::average-rating'); ?></h5>
+        <div class="star-holder">
+            <i class="ion-star"></i>
+            <span><?php echo $avg; ?></span>
+        </div>
+        <span> <?php echo lang('store::based-on') ?> <?php echo ($allRaters > 1) ? $allRaters.' '.lang('store::ratings') :  $allRaters.' '.lang('store::rating') ?></span>
+    </div>
+    <div class="col-sm-6">
+        <p>5 <?php echo lang("store::stars"); ?> <span class="<?php echo (isset($counts[5])) ? 'background-star-color' : 'background-default-color'; ?>"></span> (<?php echo (isset($counts[5])) ? $counts[5] : 0; ?>)</p>
+        <p>4 <?php echo lang("store::stars"); ?> <span class="<?php echo (isset($counts[4])) ? 'background-star-color' : 'background-default-color'; ?>"></span> (<?php echo (isset($counts[4])) ? $counts[4] : 0; ?>)</p>
+        <p>3 <?php echo lang("store::stars"); ?> <span class="<?php echo (isset($counts[3])) ? 'background-star-color' : 'background-default-color'; ?>"></span> (<?php echo (isset($counts[3])) ? $counts[3] : 0; ?>)</p>
+        <p>2 <?php echo lang("store::stars"); ?> <span class="<?php echo (isset($counts[2])) ? 'background-star-color' : 'background-default-color'; ?>"></span> (<?php echo (isset($counts[2])) ? $counts[2] : 0; ?>)</p>
+        <p>1 <?php echo lang("store::star"); ?> <span class="<?php echo (isset($counts[1])) ? 'background-star-color' : 'background-default-color'; ?>"></span> (<?php echo (isset($counts[1])) ? $counts[1] : 0; ?>)</p>
+    </div>
+</div>
+    </div></div>

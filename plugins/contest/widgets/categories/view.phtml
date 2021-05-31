@@ -1,0 +1,16 @@
+<?php $cats = get_contest_categories(); ?>
+<div class="box">
+	<div class="title">
+		<?php echo lang('contest::categories') ?>
+	</div>
+	<ul class="menu">
+        <?php $i = 0; ?>
+		<?php foreach($cats as $cat): ?>
+			<li>
+				<a href="<?php echo url('contests') ?>?category=<?php echo $cat['id']; ?>"
+				   ajax="true"><?php echo lang($cat['title']) ?></a>
+			</li>
+        <?php if($limit == $i) break; ?>
+		<?php $i++; endforeach ?>
+	</ul>
+</div>

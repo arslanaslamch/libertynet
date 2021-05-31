@@ -1,0 +1,99 @@
+<div class="box">
+    <div class="blog-list">
+        <div class="head">
+            <div class="cover" style="background-image: url(<?php echo url_img(config('blog-list-cover', 'plugins/blog/images/cover.jpg'), 920); ?>)">
+                <div class="title"><?php echo lang('blog::blog') ?></div>
+            </div>
+            <div class="filters global-filter-container filter-pane" data-url="<?php echo url('blogs') ?>">
+                <div class="left">
+                    <i class="icon ion-android-options"></i>
+                    <select id="blog-category-list" onchange="return run_global_filter()" data-name="category" class="c-select filter-input">
+                        <option <?php echo (input('category', 'all') == 'all') ? 'selected' : null ?> value="all"><?php echo lang('blog::all-categories') ?></option>
+                        <?php foreach(get_blog_categories() as $category): ?>
+                            <?php $subCategories = get_blog_parent_categories($category['id']) ?>
+                            <?php if($subCategories): ?>
+                                <optgroup label="<?php echo lang($category['title']) ?>">
+                                    <?php foreach($subCategories as $cat): ?>
+                                        <option <?php echo (input('category', 'all') == $cat['id']) ? 'selected' : null ?> value="<?php echo $cat['id'] ?>"><?php echo lang($cat['title']) ?></option>
+                                    <?php endforeach ?>
+                                </optgroup>
+                            <?php else: ?>
+                                <option <?php echo (input('category', 'all') == $category['id']) ? 'selected' : null ?> value="<?php echo $category['id'] ?>"><?php echo lang($category['title']) ?></option>
+                            <?php endif ?>
+                        <?php endforeach ?>
+                    </select>
+                    <select id="blog-filter-select" onchange="return run_global_filter()" data-name="filter" class="c-select filter-input">
+                        <option value="all"><?php echo lang('all') ?></option>
+                        <option <?php echo (input('filter') == 'top') ? 'selected' : null ?> value="top"><?php echo lang('blog::top') ?></option>
+                        <option <?php echo (input('filter') == 'featured') ? 'selected' : null ?> value="featured"><?php echo lang('blog::featured') ?></option>
+                    </select>
+                </div>
+                <div class="right">
+                    <form id="blog-list-search" method="post" onsubmit="return run_global_filter()" action="" class="search form-inline list-search">
+                        <?php CSRFProtection::embed() ?>
+                        <input type="search" value="<?php echo input('term') ?>" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>" />
+                        <button type="submit">
+                            <i class="search-icon icon ion-ios-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="listings">
+                <div class="listing">
+                    <?php foreach($blogs->results() as $blog): ?>
+                        <?php $blog = arrange_blog($blog); ?>
+                        <?php $user = find_user($blog['user_id']) ?>
+                        <?php $refId = $blog['id']; $refName = 'blog'; ?>
+                        <div class="item">
+                            <div class="top">
+                                <small class="time muted"><?php echo date('M j , y  h:i A', $blog['time']) ?></small>
+                            </div>
+                            <a ajax="true" href="<?php echo url('blog/'.$blog['slug']) ?>" class="thumb">
+                                <img class="image" src="<?php echo $blog['image'] ? url_img($blog['image'], 700) : get_avatar(200, $user) ?>" alt="<?php echo $blog['title'] ?> "/>
+                                <?php if($blog['featured']): ?>
+                                    <div class="featured">
+                                        <i class="ion-ios-star-outline"></i>
+                                    </div>
+                                <?php endif ?>
+                            </a>
+                            <div class="details">
+                                <a ajax="true" href="<?php echo url('blog/'.$blog['slug']) ?>" class="title"><?php echo $blog['title'] ?></a>
+                                <p class="description"><?php echo str_limit(strip_tags($blog['content']), 100) ?></p>
+                                <div class="stat">
+                                    <div class="left">
+                                        <div class="user">
+                                            <div class="avatar">
+                                                <img src="<?php echo get_avatar(200, $user) ?>" alt="<?php echo $blog['publisher']['name'] ?>"/>
+                                            </div>
+                                            <a ajax="true" href="<?php echo url($blog['publisher']['id']) ?>" class="name"><?php echo $blog['publisher']['name'] ?></a>
+                                        </div>
+                                        <div class="count view"><?php echo $blog['views']; ?> <?php echo lang('blog::views'); ?></div>
+                                        <div class="count like">
+                                            <?php $likes = count_likes($refName, $refId); ?>
+                                            <?php echo $likes; ?>
+                                            <?php echo $likes > 1 ? lang('blog::likes') : lang('blog::like'); ?>
+                                        </div>
+                                    </div>
+                                    <div class="right">
+                                        <div class="actions">
+                                            <a ajax="true" href="<?php echo url('blog/'.$blog['slug']) ?>" class="view"><?php echo lang('blog::continue-reading'); ?></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-content">
+        <?php if($blogs->total): ?>
+            <?php echo $blogs->append(array('category' => input('category'), 'type' => input('type', 'browse'), 'term' => input('term'), 'filter' => input('filter', 'all')))->links() ?>
+        <?php else: ?>
+            <div class="alert alert-info"><?php echo lang('blog::blogs-list-empty') ?></div>
+        <?php endif ?>
+    </div>
+</div>

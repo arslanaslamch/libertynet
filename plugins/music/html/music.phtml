@@ -1,0 +1,50 @@
+<?php $playlist = $playlist ? $playlist : array($music['slug'] => $music);
+$options = array('nowPlaying' => $music['slug'], 'autoplay' => true); ?>
+<?php $music['entity'] = fire_hook('entity.info', $music); ?>
+<div class="item">
+    <div class="thumb">
+        <img class="image"
+            src="<?php echo $music['cover_art'] ? url_img($music['cover_art'], 920) : img('music::images/preview.png') ?>"
+            alt="<?php echo $music['title'] ?> " />
+        <?php if ($music['featured']) : ?>
+        <div class="featured">
+            <i class="ion-ios-star-outline"></i>
+        </div>
+        <?php endif ?>
+        <?php foreach ($playlist as $key => $play) {
+            $play['title'] = str_replace("&#039;", '', $play['title']);
+            $playlist[$key] = $play;
+        } ?>
+        <div class="list-play-button-container">
+            <i id="list-play-button-<?php echo $music['id'] ?>" class="list-play-button ion-play button"
+                style=" margin-left: 0px; z-index: 999999"
+                onclick='if(typeof music.player.nowPlaying !== "undefined" && music.player.playing && music.player.nowPlaying == "<?php echo $music['slug'] ?>"){music.updateButton(this)}else{music.player.init(<?php echo str_replace("'", '&apos;', json_encode($playlist)) ?>, <?php echo json_encode($options) ?>); this.className += " playing "; this.className = this.className.replace(/(?:^|\s)ion-play(?!\S)/g , " ion-pause ");} this.className += " playing ";'></i>
+        </div>
+        <a href="<?php echo get_music_url($music) ?>" ajax="true"
+            class="title"><?php echo $music['title'] ? $music['title'] : lang('music::untitled-music') ?></a>
+        <?php if ($music['artist']) : ?>
+        <div class="artist"><?php echo $music['artist'] ?></div>
+        <?php else : ?>
+        <small class="time muted timeago"
+            title="<?php echo date('c', $music['time']) ?>"><?php echo date('c', $music['time']) ?></small>
+        <?php endif; ?>
+    </div>
+    <div class="details">
+        <div class="stat">
+            <div class="left">
+                <div class="user">
+                    <a ajax="true" href="<?php echo url($music['entity']['id']) ?>"
+                        class="name"><?php echo $music['entity']['name'] ?></a>
+                </div>
+                <div class="count play"><?php echo $music['play_count']; ?>
+                    <?php echo $music['play_count'] > 1 ? lang('music::plays') : lang('music::play') ?></div>
+            </div>
+            <div class="right">
+                <div class="actions">
+                    <span
+                        class="music-social-share-link"><?php if ($music['privacy'] == 1 && plugin_loaded('sharer')) echo view('sharer::share_link', array('link' => url('music/' . $music['slug']))) ?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

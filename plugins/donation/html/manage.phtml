@@ -1,0 +1,77 @@
+<div class="box">
+    <div class="title"><?php echo lang("donation::manage"); ?></div>
+    <div class="box-content">
+        <div class="container">
+            <div class="form-roller-donation">
+                <?php if($message): ?>
+                    <?php echo view("donation::alert",array('message'=>$message)) ?>
+                <?php endif; ?>
+                <form class="form" action="" method="post" enctype="multipart/form-data">
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="title"><b><?php echo lang("donation::title") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input id="title" type="text" name="val[title]" value="<?php echo (input('val.title')) ? input('val.title') : $d['title']; ?>"  class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="description"><b><?php echo lang("donation::description") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <textarea id="description" name="val[description]" class="form-control"><?php echo (input('val.description')) ? input('val.description') : $d['description']; ?></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="don-category"><b><?php echo lang("donation::category") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <?php $don = Donation::getInstance(); ?>
+                            <select id="don-category" name="val[category]" class="form-control">
+                                <?php foreach($don->get_categories() as $category): ?>
+                                    <option <?php echo ($d['category'] == $d['category']) ? ' selected ' : ''; ?> value="<?php echo $category['id']; ?>"><?php echo lang($category['title']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="target_amount"><b><?php echo lang("donation::target-amount") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input id="target_amount" placeholder="<?php echo config('default-currency'); ?>" type="text" name="val[target_amount]" value="<?php echo (input('val.target_amount')) ? input('val.target_amount') : $d['target_amount']; ?>"  class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="exdonation"><b><?php echo lang("donation::expiration-date") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input id="exdonation" type="text" name="val[expire_time]" value="<?php echo (input('val.expire_time')) ? input('val.expire_time') : date('m/d/Y',$d['expire_time']); ?>"  class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            <label for="photo"><b><?php echo lang("donation::photo") ?></b></label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input id="photo" accept="image/*" type="file" name="photo" class="form-control" />
+                            <br/>
+                            <img src="<?php echo url_img($d['image'],700) ?>" style="height: 40px;width: 40px" />
+                            <br/>
+                        </div>
+                    </div>
+                    <input type="hidden" name="val[image]" value="<?php echo $d['image']; ?>" />
+                    <div class="form-group row">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <button type="submit" class="btn btn-info"><?php echo lang("save"); ?></button>
+                            <a  href="javascript::void()" onclick="return confirm.url('<?php echo url_to_pager("manage_donation",array('id'=>$d['id'])).'?action=delete'; ?>')" class="btn btn-danger pull-right"><?php echo lang("delete"); ?></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

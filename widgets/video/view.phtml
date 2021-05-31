@@ -1,0 +1,29 @@
+<?php 
+	$width = $width ? $width : '100%';
+	$height = $height ? $height : '300';
+	$video = video_url_details(array(
+		'type' => 'video',
+		'title' => '',
+		'description' => '',
+		'link' => $uri,
+		'image' => '',
+		'code' => '',
+		'provider' => '',
+		'provider-url' => '',
+		'imageWidth' => ''
+	));
+
+	if(!preg_match('/height=("|\')?\d+("|\')?/i', $video['code'])) {
+		$video['code'] = preg_replace('/ height=("|\')?\d+("|\')?/i', ' height="'.$height.'"', $video['code']);
+	} else {
+		$video['code'] = preg_replace('/<iframe /i', '<iframe height="'.$height.'" ', $video['code']);
+	}
+
+	if(preg_match('/width=("|\')?\d+("|\')?/i', $video['code'])) {
+		$video['code'] = preg_replace('/ width=("|\')?\d+("|\')?/i', ' width="'.$width.'"', $video['code']);
+	} else {
+		$video['code'] = preg_replace('/<iframe /i', '<iframe width="'.$width.'" ', $video['code']);
+	}
+
+	echo $video['code'];
+?>

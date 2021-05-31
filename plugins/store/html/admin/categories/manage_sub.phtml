@@ -1,0 +1,45 @@
+<div class="wrapper">
+    <?php if(empty($category)): ?>
+        <div class="wrapper-title alert-danger">
+            <?php echo $message; ?>
+        </div>
+    <?php else: ?>
+    <div class="wrapper-title">
+        <?php _lang('store::manage_subcategory-of')?> <?php  _lang($category['title']);?>
+    </div>
+    <div class="wrapper-content">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th><?php _lang('title')?></th>
+                <th><?php _lang('image')?></th>
+                <th><?php _lang('actions')?></th>
+            </tr>
+            </thead>
+            <?php $categories = get_store_subcategories($category['id']); ?>
+            <?php if(!empty($categories)): ?>
+                <tbody data-url="<?php echo url_to_pager('admin-store-categories-manager').'?action=order'?>" class="admincp-sortable" style="position: relative">
+                <?php foreach($categories as $category):?>
+                    <tr style="" class="item" id="<?php echo $category['id']?>">
+                        <td style="width: 10%"><?php echo $category['id']?></td>
+                        <td style="width: 30%"><?php _lang($category['title']) ?></td>
+                        <td style="width: 20%"><img src="<?php echo storeCategoryImage($category); ?>" style="height:50px;width:50px" /></td>
+
+                        <td style="width: 20%">
+                            <a class="btn btn-sm btn-warning" href="<?php echo url_to_pager('admin-store-categories-manager').'?action=edit&slug='.$category['slug'] ?>"><?php _lang('edit')?></a>
+                            <a class="btn btn-sm btn-danger admin-confirm" href="<?php echo url_to_pager('admin-store-categories-manager').'?action=delete&slug='.$category['slug']?>"><i class="ion-android-delete"></i></a>
+                        </td>
+                    </tr>
+                <?php endforeach?>
+
+                </tbody>
+
+            <?php else: ?>
+                <div class="alert alert-info"><?php echo lang('store::no-category-found'); ?></div>
+            <?php endif; ?>
+
+        </table>
+    </div>
+    <?php endif ?>
+</div>

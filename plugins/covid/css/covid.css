@@ -1,0 +1,33 @@
+.each-box-world-count{
+    padding : 20px 10px ;
+    border : 2px solid #f3f4f6;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.covid-nd{
+    background-color : #E80000;
+    color : #fff;
+}
+
+.covid-nc{
+    background-color: #FFF1A1;
+}
+
+/*.covid-table thead th{
+    min-width: 100px;
+    text-align: center;
+}*/
+
+.covid-table tbody td{
+    font-weight: bold;
+}
+
+.inline-block{
+    display:inline-block;
+}
+
+.covid-icon{
+    height:50px;
+    margin-bottom: 10px;
+}

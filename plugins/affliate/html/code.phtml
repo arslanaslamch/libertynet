@@ -1,0 +1,20 @@
+<?php echo view("affliate::tm"); ?>
+<div class="box">
+    <div class="title"><?php echo lang("affliate::code"); ?></div>
+    <div class="box-content">
+        <div class="container">
+            <div id="copy-codey">
+                <?php
+                $banner = get_aff_banner_img();
+                $location = get_url_affliate_link();
+                ?>
+                <textarea type="text" id="aff-code-txt" rows="6" class="form-control" readonly="">&lt;div style="position:relative;width: 550px"&gt;&lt;iframe frameborder="0"  title="<?php echo get_setting("site_title", "crea8socialPRO"); ?>"src="<?php echo $banner; ?>" scrolling="no" width="550" height ="340"&gt;&lt;/iframe&gt;&lt;a style="position:absolute; top:0; left:0; display:inline-block; z-index:5;width:550px;height:340px" target="_blank" href="<?php echo $location; ?>"&gt;&lt;/a&gt;&lt;/div&gt;</textarea>
+            </div>
+            <br/>
+            <div>
+                <button class="btn btn-info preview-code" id=""><?php echo strtoupper(lang("affliate::preview")); ?></button>
+                <button data-id="aff-code-txt" class="btn btn-secondary clipborad"><?php echo strtoupper(lang("affliate::copy-to-clipboard")); ?></button>
+            </div>
+        </div>
+    </div>
+</div>

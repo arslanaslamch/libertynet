@@ -1,0 +1,25 @@
+<?php
+return array(
+    'api-key' => 'Api Key',
+	'centigrade' => 'Centigrade',
+	'enable-background' => 'Enable Background',
+	'animate-background' => 'Animate Background',
+	'fahrenheit' => 'Fahrenheit',
+	'forecast' => 'Forecast',
+	'humidity' => 'Humidity',
+	'today-weather' => 'Today\'s Weather',
+	'temperature-unit' => 'Temperature Unit',
+	'weather-forecast' => 'Weather Forecast',
+	'weather' => 'Weather',
+	'weather-settings' => 'Weather Settings',
+	'wind' => 'Wind',
+	'monday' => 'Monday',
+	'tuesday' => 'Tuesday',
+	'wednesday' => 'Wednesday',
+	'thursday' => 'Thursday',
+	'friday' => 'Friday',
+	'precipitation' => 'Precipitation',
+	'pressure' => 'Pressure',
+	'saturday' => 'Saturday',
+	'sunday' => 'Sunday'
+);

@@ -1,0 +1,71 @@
+<div class="box">
+	<div class="box-content" style="margin: 5% 15%">
+		<h6><?php echo lang('auction::transaction-details') ?></h6>
+		<p>
+			<strong><?php echo lang('auction::warning') ?></strong>
+		</p>
+		<?php $cart_bid = proceed_payment($a_id); ?>
+		<?php $auction_detail = get_auction($cart_bid['auction_id']); ?>
+		<?php $get_approved = auction_select_approve($a_id, 1); ?>
+		<?php $approved = count($get_approved); ?>
+        <div class="list-table-container">
+            <div class="table-responsive">
+		        <table class="table list-table">
+			<tbody>
+			<tr>
+				<td><?php echo lang('auction::name') ?></td>
+				<td><?php echo $auction_detail['title'] ?></td>
+			</tr>
+			<tr>
+				<td><?php echo lang('auction::description') ?></td>
+				<td><?php echo $auction_detail['description'] ?></td>
+			</tr>
+			<tr>
+				<td><?php echo lang('auction::quantity') ?></td>
+				<td><?php echo $auction_detail['quantity'] ?></td>
+			</tr>
+			<tr>
+				<td><?php echo lang('auction::price') ?></td>
+				<td><?php echo $cart_bid['price'] ?></td>
+			</tr>
+			</tbody>
+		</table>
+            </div>
+        </div>
+		<?php if($a_id && $approved > 0): ?>
+		<div class="" id="auction-description">
+			<h3> Sellers Contact </h3>
+			<div class="row box-content">
+				<div class="col-sm-3">Name:</div>
+				<div class="col-sm-5"> <?php $name = find_user($auction_detail['user_id']);
+					echo $name['first_name']." ".$name['last_name'] ?></div>
+			</div>
+			<div class="row box-content">
+				<div class="col-sm-3">Email:</div>
+				<div class="col-sm-5"> <?php $name = find_user($auction_detail['user_id']);
+					echo $name['email_address'] ?></div>
+			</div>
+			<div class="row box-content">
+				<div class="col-sm-3">Phone number:</div>
+				<div class="col-sm-5"> <?php echo $auction_detail['mobile'] ?></div>
+			</div>
+			<h4> Auction Details</h4>
+			<div class="row box-content">
+				<div class="col-sm-3"><?php echo lang('auction::auction-desciption') ?></div>
+				<div class="col-sm-5"> <?php echo $auction_detail['description']; ?></div>
+			</div>
+			<div class="row box-content">
+				<div class="col-sm-3">
+					<i class="fa fa-ship" aria-hidden="true"></i><?php echo lang('auction::shipment-details') ?>
+				</div>
+				<div class="col-sm-5"><?php echo $auction_detail['ship_details']; ?></div>
+			</div>
+			<div class="row box-content">
+				<div class="col-sm-3">
+					<i class="ion-ios-location">&nbsp;</i><?php echo lang('auction::location') ?>
+				</div>
+				<div class="col-sm-5"><?php echo ucfirst($auction_detail['country']); ?>-><?php echo ucfirst($auction_detail['state']); ?>-><?php echo ucfirst($auction_detail['city']); ?></div>
+			</div>
+			<?php endif; ?>
+		</div>
+	</div>

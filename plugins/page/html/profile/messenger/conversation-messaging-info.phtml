@@ -1,0 +1,23 @@
+<?php if ($conversation): ?>
+    <div class="image">
+        <?php if ($conversation['type'] == 'single'): ?>
+            <img src="<?php echo $conversation['avatar'] ?>" />
+        <?php else: ?>
+            <img src="<?php echo $conversation['avatars'][0] ?>" />
+            <?php if (isset($conversation['avatars'][1])): ?>
+                <img src="<?php echo $conversation['avatars'][1] ?>" />
+            <?php else: ?>
+                <img src="<?php echo get_avatar(75) ?>" />
+            <?php endif ?>
+        <?php endif ?>
+    </div>
+    <a class="name" href="#!"><?php echo $conversation['title'] ?></a>
+    <?php if ($conversation['type'] == 'single'): ?>
+        <div class="relationship">
+            <i class="ion-social-rss"></i> <?php echo count(get_followers($user['id'])) ?> <?php echo lang('followers') ?>
+        </div>
+        <?php if ($user['country']): ?>
+            <div class="location"><i class="ion-ios-location"></i> <?php echo ucwords($user['country']) ?></div>
+        <?php endif ?>
+    <?php endif ?>
+<?php endif ?>

@@ -1,0 +1,222 @@
+<?php $week = array('SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI', 'SAT') ?>
+<?php $event_type = isset(app()->eventType) ? app()->eventType : null; ?>
+<div class="box">
+    <div class="event-list">
+        <div class="head">
+            <div class="cover" style="background-image: url(<?php echo url_img(config('event-list-cover', 'plugins/event/images/cover.jpg'), 920); ?>)">
+                <div class="title"><?php echo lang('event::events') ?></div>
+                <div class="actions">
+                    <?php if(is_loggedIn() && can_create_event()): ?>
+                        <a href="<?php echo url_to_pager('event-create') ?>" class="btn btn-block btn-info action-button" data-toggle="modal" data-target="#event-create-modal">
+                            <i class="ion-plus"></i>
+                            <?php echo lang('event::create-event') ?>
+                        </a>
+                        <div id="event-create-modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog modal-lg1">
+                                <div class="modal-content">
+                                    <div class="modal-form-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <p class="modal-title pull-left"><?php echo lang('event::add-event') ?></p>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="<?php echo url_to_pager('event-create') ?>" method="post" enctype="multipart/form-data" class="ajax-form">
+                                            <?php CSRFProtection::embed() ?>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('event::event-category') ?></label><br/>
+                                                </div>
+                                                <div class="bottom">
+                                                    <div class="magic-select event-category" data-name="val[category]" data-width="200px">
+                                                        <?php $categories = get_event_categories(); ?>
+                                                        <div class="magic-select-toggle">
+                                                            <?php echo lang('select-category') ?>
+                                                        </div>
+                                                        <div class="magic-select-content">
+                                                            <?php foreach($categories as $category): ?>
+                                                                <div class="magic-select-option" data-value="<?php echo $category['id'] ?>">
+                                                                    <?php echo lang($category['title']) ?>
+                                                                </div>
+                                                            <?php endforeach ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('event::event-title') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <input value="<?php echo input('val.title') ?>" type="text" name="val[title]" class="form-control" placeholder="<?php echo lang('event::event-title') ?>"/>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('event::description') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <textarea name="val[description]" class="form-control auto-grow-input<?php fire_hook('event.form.description.class') ?>" data-height="55px" placeholder="<?php echo lang('event::event-title') ?>"><?php echo input('val.description') ?></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('profile-cover') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <div style="width:100% !important; height:200px; background-position: 0px 0px" class="magic-input-image-preview" data-name="cover_art">
+                                                        <span class="dimension"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('privacy') ?></label><br/>
+                                                </div>
+                                                <div class="bottom">
+                                                    <?php fire_hook('privacy.select', 'event'); ?>
+                                                </div>
+                                            </div>
+                                            <?php echo fire_hook("event.host.html",view("event::host")) ?>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('event::location') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <input id="feed-editor-geocomplete" value="<?php echo input('val.location') ?>" type="text" name="val[location]" placeholder="<?php echo lang('event::location') ?>" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('event::address') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <textarea name="val[address]" class="form-control auto-grow-input" data-height="55px" placeholder="<?php echo lang('event::address') ?>"><?php echo input('val.address') ?></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="top">
+                                                    <label class="control-label"><?php echo lang('event::event-time') ?></label>
+                                                </div>
+                                                <div class="bottom">
+                                                    <input type="text" name="val[start_time]" class="<?php echo fire_hook('event.date.picker','datetimepicker') ?> form-control" placeholder="<?php echo lang('event::start-time') ?>"/>
+                                                    <?php echo lang('to') ?>
+                                                    <input type="text" name="val[end_time]" class="<?php echo fire_hook('event.date.picker','datetimepicker') ?> form-control" placeholder="<?php echo lang('event::end-time') ?>"/>
+                                                </div>
+                                            </div>
+                                            <?php fire_hook('more.event.fields', null, array()); ?>
+                                            <div class="modal-footer">
+                                                <div class="submit">
+                                                    <button class="btn btn-info"><?php echo lang('event::create-event') ?></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif ?>
+                </div>
+            </div>
+            <div class="links">
+                <div class="link <?php echo ($event_type == 'upcoming') ? 'active' : null ?>">
+                    <a ajax="true" href="<?php echo url_to_pager('events') ?>"><?php echo lang('event::all-events') ?></a>
+                </div>
+                <!-- <div class="<?php echo (segment(1) == 'calender') ? 'active' : null ?>"><a ajax="true" href="<?php echo url_to_pager('events-calender', array('slug' => 'upcoming')) ?>"><?php echo lang('event::calender') ?></a> </div> -->
+                <?php if(is_loggedIn()): ?>
+                    <div class="link <?php echo ($event_type == 'invite') ? 'active' : null ?>">
+                        <a ajax="true" href="<?php echo url_to_pager('events') ?>?type=invite"><?php echo lang('event::invites') ?></a>
+                    </div>
+                    <div class="link <?php echo ($event_type == 'me') ? 'active' : null ?>">
+                        <a ajax="true" href="<?php echo url_to_pager('events') ?>?type=me"><?php echo lang('event::yours') ?></a>
+                    </div>
+                    <div class="link <?php echo ($event_type == 'birthdays') ? 'active' : null ?>">
+                        <a ajax="true" href="<?php echo url_to_pager('events') ?>?type=birthdays"><?php echo lang('event::birthdays') ?></a>
+                    </div>
+                <?php endif; ?>
+                <div class="link <?php echo ($event_type == 'past') ? 'active' : null ?>">
+                    <a ajax="true" href="<?php echo url_to_pager('events') ?>?type=past"><?php echo lang('event::past-events') ?></a>
+                </div>
+            </div>
+            <div class="filters global-filter-container filter-pane" data-url="<?php echo url('events') ?>">
+                <div class="left">
+                    <i class="icon ion-android-options"></i>
+                    <select id="event-category-list" onchange="return run_global_filter()" data-name="category" class="c-select filter-input">
+                        <option <?php echo (input('category', 'all') == 'all') ? 'selected' : null ?> value="all"><?php echo lang('event::all-categories') ?></option>
+                        <?php foreach(get_event_categories() as $category): ?>
+                            <option <?php echo (input('category', 'all') == $category['id']) ? 'selected' : null ?> value="<?php echo $category['id'] ?>"><?php echo lang($category['title']) ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="right">
+                    <form id="event-list-search" method="post" onsubmit="return run_global_filter()" action="" class="search form-inline list-search">
+                        <?php CSRFProtection::embed() ?>
+                        <input type="hidden" class="filter-input form-control" data-name="type" value="<?php echo input('type', 'upcoming') ?>"/>
+                        <input type="search" value="<?php echo input('term') ?>" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>" />
+                        <button type="submit">
+                            <i class="search-icon icon ion-ios-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="listings">
+                <div class="listing row">
+                    <?php foreach($events->results() as $event): $event = arrange_event($event); ?>
+                        <div class="item col-lg-6">
+                            <div class="thumb">
+                                <img class="image" src="<?php echo get_event_logo($event) ?>" alt="<?php echo $event['event_title'] ?> "/>
+                                <?php if(isset($event['featured']) && $event['featured']): ?>
+                                    <div class="featured">
+                                        <i class="ion-ios-star-outline"></i>
+                                    </div>
+                                <?php endif ?>
+                                <div class="top">
+                                    <div class="left">
+                                        <div class="date"><?php echo get_event_date($event)." ".get_event_date($event, 'day', 'd') ?></div>
+                                        <div class="weekday"><?php echo $week[get_event_date($event, 'day', 'w')]; ?></div>
+                                    </div>
+                                    <div class="right">
+                                        <div class="time"><?php echo date('h A', $event['start_time']) ?></div>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <a href="<?php echo event_url(null, $event) ?>" ajax="true" class="title"><?php echo $event['event_title'] ?></a>
+                                    <div class="location">
+                                        <i class="ion-ios-location"></i>
+                                        <?php echo $event['address'].', '.$event['location'] ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="details">
+                                <div class="top row">
+                                    <div class="going col-sm-6"><?php echo manage_interested(count_event_going($event['event_id'])) ?></div>
+                                    <?php if(is_loggedIn() && $event['user_id'] != get_userid()): ?>
+                                        <div class="rsvp col-sm-6">
+                                            <label><?php echo lang('event::rsvp') ?>:</label>
+                                            <select onchange="event_rsvp(this, '<?php echo $event['event_id'] ?>')" data-id="" class="c-select">
+                                                <?php $value = get_event_my_rsvp($event['event_id']) ?>
+                                                <option <?php echo ($value == 0) ? 'selected' : null ?> value="0"><?php echo lang('event::not-going') ?></option>
+                                                <option <?php echo ($value == 1) ? 'selected' : null ?> value="1"><?php echo lang('event::going') ?></option>
+                                                <option <?php echo ($value == 2) ? 'selected' : null ?> value="2"><?php echo lang('event::maybe') ?></option>
+                                            </select>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="actions">
+                                    <span class="event-social-share"><?php if(plugin_loaded('sharer')) echo view('sharer::share_link', array('link' => url('event/'.$event['event_id']))) ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-content">
+        <?php if(!$events->total): ?>
+            <div class="alert alert-info"><?php echo lang('event::no-event-found') ?></div>
+        <?php else: ?>
+            <?php echo $events->append(array('term' => input('term'), 'type' => input('type', 'upcoming'), 'filter' => input('filter')))->links(true) ?>
+        <?php endif ?>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="feed-wrapper clearfix">
+    <div class="col-sm-12 clearfix">
+        <div class="row">
+        <div class="col-sm-6">
+            <img class="img-responsive" src="<?php echo ($product['main_photo']) ? url_img($product['main_photo'], 700) : img("store::images/comingsoon.png")?>" alt="Product Image" />
+        </div>
+        <div class="col-sm-6">
+            <p class="feed-product-name"><strong> <?php echo ucfirst($product['name']) ?></strong></p>
+                 <p class="feed-product-price"><span class="price"> <?php echo config('currency-sign','$').''.number_format((float)getProductPrice($product),2,'.',','); ?> </span><?php echo (getProductDiscountedPrice($product)) ? '<small class="strikethroug">'. config('currency-sign','$').''.number_format((float)$product['price'],2,'.',',').'</small>': '' ?></p>
+            <p><strong><?php echo lang("store::category") ?> : </strong><?php
+                   getProductCategoryText($product);
+                ?></p>
+
+            <?php if ($product['additional_images']): ?>
+                <?php $additional = perfectUnserialize($product['additional_images']);
+                if (is_array($additional)): $i=1; ?>
+                    <div class="little_images">
+                        <img
+                            src="<?php echo ($product['main_photo']) ? url_img($product['main_photo']) : img("store::images/comingsoon.png"); ?>"
+                            alt="<?php echo $product['name'] . ' image'; ?>" class="store_thumb_images"/>
+
+                        <?php foreach ($additional as $ad): ?>
+                            <img src="<?php echo url_img($ad) ?>" class="store_thumb_images "
+                                 alt="thumb images"/>
+                            <?php if($i==2) break; ?>
+                        <?php $i++; endforeach; ?>
+                    </div>
+                <?php else: ?>
+
+                <?php endif; ?>
+            <?php endif; ?>
+            <a style="margin-top: 15px" ajax="true" href="<?php echo url_to_pager("single-product",array('slugs'=>$product['slug'])) ?>" class="btn btn-sm btn-info"><?php echo lang('store::buy-now') ?></a>
+        </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="wrapper">
+    <div class="wrapper-title">
+        <?php echo lang("mailautomation::mail-automation-statistics"); ?>
+    </div>
+    <div class="wrapper-content">
+        <?php
+        $from = (input('from_date')) ? input('val.from_date') : date('m/d/Y', (strtotime('-6 days')));
+        $end = (input('end_date')) ? input('val.end_date') : date('m/d/Y', time());
+        ?>
+
+        <form class="form" action="" method="get">
+            <div class="col-sm-3">
+
+                <div class="form-group">
+                    <label><?php echo lang("mailautomation::date-range"); ?></label>
+                    <input autocomplete="off" class="form-control" id="mastartDate" name="from_date"
+                           value="<?php echo $from ?>"/>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label>.</label>
+                    <input autocomplete="off" class="form-control" id="maendDate" name="end_date"
+                           value="<?php echo $end; ?>"/>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label>.</label>
+                    <button class="btn btn-block btn-info submit-auto-admin"><?php echo lang("mailautomation::filter"); ?></button>
+                </div>
+            </div>
+        </form>
+        <Br/>
+        <Br/>
+        <div id="stats-automation-wrapper">
+            <div class="indicator">
+                <img src="<?php echo img('images/loading.gif') ?>"/>
+            </div>
+                <div id="stats-automation"></div>
+        </div>
+
+        <br/><br/>
+
+
+    </div>
+</div>
+<?php if($data): ?>
+<input type="hidden" value='<?php echo json_encode($data); ?>' id="ma-data"/>
+<?php endif; ?>

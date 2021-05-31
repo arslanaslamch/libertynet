@@ -1,0 +1,72 @@
+<?php (isset($mark) && $mark) || !isset($mark) ?  mark_message_read($message['message_id']) : null; $user_id = isset($user_id) ? $user_id : get_userid() ?>
+<?php $color = '#0099FF'; if ($conversation && ($conversation['color1'] || $conversation['color2'])){ if ($conversation['user1'] == get_userid()) $color = $conversation['color1']; if ($conversation['user2'] == get_userid()) $color = $conversation['color2']; }
+?>
+<?php if($message['last_message_time_difference'] > 1800): ?>
+    <div class="time"><?php echo str_time($message['time']) ?></div>
+<?php endif; ?>
+<div class="message <?php echo $message['sender'] == $user_id ? 'owned' : '' ?> chat-message-<?php echo $message['message_id'] ?>">
+    <div class="avatar" data-toggle="tooltip" data-original-title="<?php echo get_user_name($message) ?>">
+        <img src="<?php echo get_avatar(75, $message) ?>" />
+    </div>
+    <div class="content" style="<?php echo ($message['sender'] == $user_id)? 'background-color: '.$color.' !important; color: #FFFCF0':'' ?>">
+        <?php $chatMessage = removeUrlLinks($message['message']) ?>
+        <?php if($chatMessage): ?>
+            <div class="text"><?php echo output_text($chatMessage) ?></div>
+        <?php endif ?>
+        <?php if($message['image']): ?>
+            <div class="image">
+                <img data-image="<?php echo url_img($message['image'], 920) ?>" data-id="0" class="photo-viewer" src="<?php echo url_img($message['image'], 600) ?>" />
+            </div>
+        <?php endif ?>
+        <?php if($message['gif']): ?>
+            <?php $gifPath = perfectUnserialize($message['gif'])?>
+            <div class="gif">
+                <img data-image="<?php echo url_img($gifPath) ?>" data-id="0" class="photo-viewer" src="<?php echo url_img($gifPath) ?>" />
+            </div>
+        <?php endif ?>
+        <?php if($message['voice']): ?>
+            <div class="chat-voice voice">
+                <div class="audio-player">
+                    <audio preload="true">
+                        <source src="<?php echo url($message['voice']) ?>" />
+                    </audio>
+                    <button class="playback-button ion-play" type="button"></button>
+                    <div class="timeline">
+                        <div class="play-head"></div>
+                    </div>
+                </div>
+            </div>
+        <?php endif ?>
+        <?php if($message['files']): ?>
+            <?php $file = perfectUnserialize($message['files']) ?>
+            <div class="attachment">
+                <div class="media">
+                    <div class="media-left">
+                        <img src="<?php echo img('images/file-icons/'.$file['extension'].'.png') ?>"/>
+                    </div>
+                    <div class="media-body">
+                        <h6 class="media-heading" style="font-size: 13px"><?php echo $file['name'] ?></h6>
+                        <a data-toggle="tooltip" title="<?php echo lang('download-file') ?>" href="<?php echo url_to_pager('chat-download') ?>?message_id=<?php echo $message['message_id'] ?>&path=<?php echo $file['path'] ?>&name=<?php echo $file['name'] ?>" class="btn btn-secondary-outline btn-sm" download><i class="ion-android-download"></i></a>
+                    </div>
+                </div>
+            </div>
+        <?php endif ?>
+        <?php $link_previews = get_chat_url_contents($message) ?>
+        <?php if($link_previews): ?>
+            <div class="link">
+                <?php echo $link_previews ?>
+            </div>
+        <?php endif ?>
+        <div class="actions">
+            <a class="action delete-button" href="#!" onclick="return delete_chat_message('<?php echo $message['message_id'] ?>')">
+                <i class="ion-android-delete"></i>
+            </a>
+        </div>
+        <div class="time"><span><?php echo str_time($message['time']) ?></span></div>
+    </div>
+</div>
+<?php if (isset($conversation) && $conversation && $conversation['type'] == 'single' && get_last_read_message_id($conversation['cid'], get_userid() == $conversation['user1'] ? $conversation['user2'] : $conversation['user1']) == $message['message_id']): ?>
+    <div class="seen">
+        <img src="<?php echo $conversation['avatar'] ?>" />
+    </div>
+<?php endif ?>

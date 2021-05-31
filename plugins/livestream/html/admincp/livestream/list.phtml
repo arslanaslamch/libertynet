@@ -1,0 +1,28 @@
+<?php /** @var Paginator $livestreams */ ?>
+<div class="list-table-container">
+    <div class="row list-table-select-actions hide" data-group="users">
+        <div class="col-sm-12">
+            <a href="<?php echo url_to_pager('admin-livestream-batch-action') ?>?action=delete" class="action-link list-table-select-action" data-group="users"><?php echo lang('delete') ?></a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped list-table">
+            <thead>
+                <tr>
+                    <th><div class="list-table-select" data-group="users" data-id="0"></div></th>
+                    <th style="width: 5%">ID</th>
+                    <th><?php echo lang('type') ?></th>
+                    <th><?php echo lang('livestream::title') ?></th>
+                    <th><?php echo lang('username') ?></th>
+                    <th><?php echo lang('featured') ?></th>
+                    <th><?php echo lang('actions') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach($livestreams->results() as $livestream): ?>
+                <?php echo view('livestream::admincp/livestream/get', array('livestream' => $livestream)) ?>
+            <?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
+</div>

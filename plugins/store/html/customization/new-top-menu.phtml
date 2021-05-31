@@ -1,0 +1,102 @@
+<div class="box">
+    <div class="store-top-mobile-customization">
+        <div id="dashboard-filter-menu" class="clearfix">
+		
+		
+		 <div class=""><!-- removed class nop top-menu-store hide-for-desktop -->
+                <!--<div class="cart-menu-dd store-container-menu each-row-st-menu">
+                    <?php /*$cart = session_get('my_product_cart_'.get_userid(),array()); */?>
+                    <a class="btn btn-lg cart-modal-toggle" href="<?php /*echo url_to_pager("comparete"); */?>"> <i
+                                class="ion-ios-cart"></i>
+                        <span class="ProductCount"> <?php /*echo count($cart); */?></span> <?php /*echo lang("store::item-s") */?></a>
+                    <div id="cartModal" class="modal fade" tabindex="-1" role="dialog"
+                         aria-labelledby="confirmModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="mcart-products-wraper">
+                                        <?php /*echo view("store::products/cart-list",array('cart'=>$cart)); */?>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal"><?php /*echo lang('store::continue-shopping'); */?></button>
+                                    <a type="button" ajax="true"  href="<?php /*echo url_to_pager("product-cart"); */?>"
+                                       class="btn btn-primary"><?php /*echo lang('store::checkout') */?></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="each-row-st-menu">
+                    <a aria-expanded="false" class="btn btn-lg dropdown-toggle nav-link" data-toggle="dropdown"
+                       href="<?php /*echo url_to_pager("comparete"); */?>">
+                        <i class="ion-android-menu"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <?php /*if (config('enable-guest-product-purchase', 1) || is_loggedIn()): */?>
+                            <li><a class="dropdown-item" href="<?php /*echo url_to_pager('products-home') */?>"
+                                   ajax="true"><?php /*_lang('store::all-products') */?></a></li>
+                            <li><a class="dropdown-item" href="<?php /*echo url_to_pager('products-categories-list') */?>"
+                                   ajax="true"><?php /*_lang('store::products-categories') */?></a></li>
+                            <li><a class="dropdown-item" href="<?php /*echo url('store/products?type=mine') */?>"
+                                   ajax="true"><?php /*_lang('store::my-products') */?></a></li>
+                            <li><a class="dropdown-item" href="<?php /*echo url_to_pager('my_orders') */?>"
+                                   ajax="true"><?php /*_lang('store::my-orders') */?></a></li>
+                            <li><a class="dropdown-item" href="<?php /*echo url_to_pager('my-wish-list') */?>"
+                                   ajax="true"><?php /*_lang('store::my-wishlist') */?></a></li>
+                            <li><a class="dropdown-item" href="<?php /*echo url('stores') */?>"
+                                   ajax="true"><?php /*echo ucwords(lang('store::stores')); */?></a></li>
+
+                        <?php /*endif */?>
+                        <?php /*if (is_loggedIn() and user_has_permission('can-create-store') and (config('allow-members-create-store', true))): */?>
+                            <li>
+                                <a ajax="true"
+                                   href="<?php /*echo (!is_seller()) ? url_to_pager("add-seller") : url_to_pager("store-manager"); */?>"
+                                   class="dropdown-item"><?php /*echo (!is_seller()) ? lang('store::add-store') : lang('store::manage_your-store'); */?></a>
+                            </li>
+                        <?php /*endif */?>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="each-row-st-menu">
+                <a class="btn btn-lg dropdown-toggle nav-link"
+                   onclick="return toggle_view('.saf-categories-box-mobile-wrapper') "
+                   href="">
+                   Categories
+                </a>
+            </div>
+		-->
+		
+            <ul class="pull-left left">
+                <li class="">
+                    <!--<a ajax="true" class="btn-bd-default" href="<?php /*echo url('stores') */?>"><?php /*echo lang('store::all-stores') */?></a>-->
+                    <select onchange="return run_global_filter_alpha('.parent-store-encolosed-wrapper','store-list',this)"
+                            data-name="galpha" class="c-select filter-input alpha-position-new-store">
+                        <option value="">Stores A-Z</option>
+                        <option value="all" <?php echo (input('galpha') == 'all') ? 'selected' : null ?>>Stores A-Z  </option>
+                        <?php foreach (range('a', 'z') as $alpha): ?>
+                            <option <?php echo (input('galpha') == $alpha) ? 'selected' : null ?>
+                                    value="<?php echo $alpha; ?>"><?php echo ucwords($alpha); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </li>
+                <li class="">
+                    <a ajax="true" class="btn-bd-default" href="<?php echo url_to_pager('store-manager'); ?>"><?php echo lang('store::my-stores') ?></a>
+                </li>
+                <li class="">
+                    <a ajax="true" style=" border: 1px solid #16a2e4 !important;" class="btn-bd-default" href="<?php echo url_to_pager('add-seller') ?>"><?php echo lang('store::add-new-store') ?></a>
+                </li>
+            </ul>
+            <br/>
+
+            <div class="pull-right action">
+                <!--<a href="<?php /*echo url_to_pager('add-seller') */?>" onclick="return toggle_view('.saf-categories-box-mobile')"  class="btn btn-info btn-sm">Categories</a>-->
+                &nbsp;
+                &nbsp;
+            </div>
+        </div>
+    </div>
+</div>

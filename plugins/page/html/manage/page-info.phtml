@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-md-4 left-column">
+        <?php echo view('page::manage/menu') ?>
+    </div>
+    <div class="col-md-8 right-column">
+        <div class="box">
+            <div class="title"><?php echo lang('page::page-info') ?></div>
+            <div class="box-content">
+                <form id="" class="" method="post" action="">
+                    <div class="row form-group">
+                        <div class="col-sm-6" style="font-weight: bold">
+                            <p class="title"><?php echo lang('page::company') ?></p>
+                            <input value="<?php echo $page['company'] ?>" name="val[company]" placeholder="<?php echo lang('page::company-name') ?>" type="text" class="form-control"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="title"><?php echo lang('page::telephone') ?></p>
+                            <input value="<?php echo $page['telephone'] ?>" name="val[telephone]" placeholder="<?php echo lang('page::telephone') ?>" type="text" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-6" style="font-weight: bold">
+                            <p class="title"><?php echo lang('page::location') ?></p>
+                            <input value="<?php echo $page['location'] ?>" id="feed-editor-geocomplete" name="val[location]" placeholder="<?php echo lang('page::location') ?>" type="text" class="form-control"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="title"><?php echo lang('page::website') ?></p>
+                            <input value="<?php echo $page['website'] ?>" name="val[website]" placeholder="<?php echo lang('page::website') ?>" type="text" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-9"></div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn-primary btn"><i class="font-awesome-ismall fa fa-check-square-o"></i> <span style="font-weight: bold;"><?php echo strtoupper(lang("save")) ?></span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

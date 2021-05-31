@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="col-sm-12">
+        <div class="col-sm-6 zero-padding">
+            <h4><?php echo lang("donation::donate-box-code"); ?></h4>
+            <textarea class="form-control txtr-iframe"><iframe src="<?php echo url_to_pager("donation-iframe").'?id='.$id ?>" scrolling="no" frameborder="0" style="border:none; overflow : hidden; width:300px; height : 600px;" allowTransparency="true"></iframe></textarea>
+        </div>
+        <div class="col-sm-6" style="padding-right:0px">
+            <?php echo view("donation::iframe/content",array('id'=>$id)); ?>
+        </div>
+    </div>
+</div>

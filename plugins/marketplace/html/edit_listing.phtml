@@ -1,0 +1,96 @@
+<div class="box">
+	<div class="title"><?php echo lang('marketplace::edit-listing') ?></div>
+	<?php if($message): ?>
+		<div class="alert alert-danger"><?php echo $message ?></div>
+	<?php endif ?>
+	<form action="" method="post" enctype="multipart/form-data" class="ajax-form">
+		<?php CSRFProtection::embed() ?>
+		<?php $categories = marketplace_get_categories(); ?>
+        <?php echo view('marketplace::category_select', ['categories' => $categories, 'top' => false, 'listing'=>$listing]); ?>
+		<div class="field">
+			<div class="left">
+				<label class="control-label" for="val[title]"><?php echo lang('marketplace::title') ?>: </label>
+				<p class="form-description"><?php echo lang('marketplace::edit-listing-title-desc') ?></p>
+			</div>
+			<div class="right">
+				<input name="val[title]" type="text" value="<?php echo $listing['title'] ?>" class="form-control" required/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label" for="val[description]"><?php echo lang('marketplace::description') ?>: </label>
+				<p class="form-description"><?php echo lang('marketplace::edit-listing-description-desc') ?></p>
+			</div>
+			<div class="right">
+				<textarea name="val[description]" class="form-control" maxlength="500"><?php echo $listing['description'] ?></textarea>
+			</div>
+		</div>
+		<!-- new hook -->
+        <?= fire_hook('item.condition', null, ['id'=>$listing['id']]); ?>
+        <!--end new hook -->
+
+		<div class="field">
+			<div class="left">
+				<label class="control-label" for="val[tags]"><?php echo lang('marketplace::tags') ?>: </label>
+				<p class="form-description"><?php echo lang('marketplace::edit-listing-tags-desc') ?>.</p>
+			</div>
+			<div class="right">
+				<input name="val[tags]" value="<?php echo $listing['tags'] ?>" type="text" class="form-control" maxlength="128"/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label" for="val[location]"><?php echo lang('marketplace::location') ?>: </label>
+				<p class="form-description"><?php echo lang('marketplace::edit-listing-location-desc') ?>.</p>
+			</div>
+			<div class="right">
+				<input type="text" name="val[location]" value="<?php echo $listing['location'] ?>" class="form-control marketplace-geocomplete" required/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label" for="val[link]"><?php echo lang('marketplace::link') ?>: </label>
+				<p class="form-description"><?php echo lang('marketplace::edit-listing-link-desc') ?>.</p>
+			</div>
+			<div class="right">
+				<input type="url" name="val[link]" value="<?php echo $listing['link'] ?>" class="form-control" placeholder="http://domain.com"/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label" for="val[contact]"><?php echo lang('marketplace::contact') ?>: </label>
+				<p class="form-description"><?php echo lang('marketplace::edit-listing-contact-desc') ?>.</p>
+			</div>
+			<div class="right">
+				<input type="text" name="val[contact]" value="<?php echo $listing['contact'] ?>" class="form-control" placeholder="<?php echo lang('marketplace::phone-email') ?>"/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="left">
+				<label class="control-label" for="val[price]"><?php echo lang('marketplace::price') ?>: </label>
+				<p class="form-description"><?php echo lang('marketplace::edit-listing-price-desc') ?>.</p>
+			</div>
+			<div class="right">
+				<input name="val[price]" value="<?php echo $listing['price'] ?>" type="text" class="form-control" placeholder="<?php echo config('currency', '$') ?> 0.00"/>
+			</div>
+		</div>
+		<?php fire_hook("listing.create.more.fields", null, array()); ?>
+		<div class="field">
+			<div class="left">
+				<label class="control-label" for="image"><?php echo lang('marketplace::image') ?>: </label>
+				<p class="form-description"><?php echo lang('marketplace::edit-listing-image-desc') ?></p>
+			</div>
+			<div class="right">
+				<div class="magic-input-image-preview" data-name="image" data-image="<?php echo $listing['image'] ? url_img($listing['image'], 200) : '' ?>">
+					<span class="dimension"></span>
+				</div>
+			</div>
+		</div>
+		<div class="submit">
+			<input type="submit" value="<?php echo lang('marketplace::save') ?>" class="btn btn-info action-button"/>
+		</div>
+		<input type="hidden" name="val[image]" value="<?php echo $listing['image'] ?>"/>
+		<input type="hidden" name="val[id]" value="<?php echo $listing['id'] ?>"/>
+		<input type="hidden" name="val[type]" value="edit_listing"/>
+	</form>
+</div>

@@ -1,0 +1,7 @@
+<?php if (is_loggedIn()) {
+    $_SESSION['update_phone_number'] = true;
+    $_SESSION['the_user_id'] = get_userid();
+    session_put('sms_update', true);
+} ?>
+<a href="<?php echo url_to_pager('sms-verify') ?>"
+   class="btn btn-secondary btn-block"><?php echo lang('sms::update-phone-number') ?></a>

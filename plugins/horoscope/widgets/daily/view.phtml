@@ -1,0 +1,30 @@
+<?php $signs = horoscope_get_signs_horoscope(); ?>
+
+<div class="box">
+    <div class="title"><?php echo lang('marketplace::daily-horoscope') ?>
+        <a ajax="true" href="<?php echo url_to_pager('horoscope') ?>" class="more-link pull-right"><i class="ion-ios-arrow-forward"></i></a>
+    </div>
+    <div class="box-content clearfix">
+        <div id="selectSign">
+            <select class="custom-select" id="signs">
+                <option disabled selected><?= lang('horoscope::select-sign'); ?></option>
+                <?php foreach ($signs as $sign) : ?>
+                    <option value="<?= $sign['title']; ?>"><?= $sign['title']; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="signs">
+            <?php foreach ($signs as $sign) : ?>
+                <div class="z-sign d-none" id="<?= $sign['title']; ?>">
+                    <div class="flex-column d-flex align-items-center">
+                        <div class="mb-2 d-flex align-items-center justify-content-center">
+                            <img src="<?= img('horoscope::images/' . $sign['title'] . '.jpg'); ?>" alt="<?= $sign['title']; ?> image" class="widget-horoscope-img">
+                        </div>
+                        <h6><?= $sign['title'] . " " . lang('horoscope::horoscope-for-today'); ?></h6>
+                        <p><?= $sign['horoscope']; ?></p>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>

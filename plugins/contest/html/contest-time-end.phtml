@@ -1,0 +1,21 @@
+<div class="box">
+    <div class="box-content">
+        <?php if(isset($c_end)): ?>
+        <div class="alert alert-info">
+            <?php echo lang("contest::entries-submission-has-ended") ?>
+            <br/>
+            <a href="<?php echo contestUrl($contest) ?>"><i class="ion-android-arrow-back"></i> <?php echo lang("contest::go-back"); ?></a>
+        </div>
+        <?php endif; ?>
+
+
+        <?php if(isset($start)): ?>
+        <div class="alert alert-info">
+            <?php echo lang("contest::entries-submission-not-started") ?>
+            <br/>
+            <a href="<?php echo contestUrl($contest) ?>"><i class="ion-android-arrow-back"></i> <?php echo lang("contest::go-back"); ?></a>
+        </div>
+        <?php endif; ?>
+
+    </div>
+</div>

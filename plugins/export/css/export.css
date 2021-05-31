@@ -1,0 +1,15 @@
+.export-col {
+    display: inline-block;
+    max-width: 100%;
+    font-size: 13px;
+    padding:45px;
+    margin: 0px 6px 10px 5px;
+    border: 1px solid #E9EBEE;
+    min-width: 153px;
+}
+.export-input{
+    display: none;
+}
+.export-selected{
+    border: 1px solid #3967ff !important;
+}

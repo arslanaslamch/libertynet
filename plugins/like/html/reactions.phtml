@@ -1,0 +1,8 @@
+<?php if(count_reactors($type, $type_id)): ?>
+    <a onclick="return show_reactors(this, '<?php echo $type ?>', <?php echo $type_id ?>)" href="">
+        <?php foreach(get_reactions($type, $type_id) as $reaction): ?>
+            <img src="<?php echo get_react_image($reaction) ?>" class="react-image" />
+        <?php endforeach; ?>
+        <span class="like-count-comment-<?php echo $type_id ?>"><?php echo count_reactors($type, $type_id) ?></span>
+    </a>
+<?php endif; ?>

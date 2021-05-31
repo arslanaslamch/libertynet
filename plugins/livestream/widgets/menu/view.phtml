@@ -1,0 +1,14 @@
+<div class="box">
+	<?php if(user_has_permission('can-add-livestream')): ?>
+		<div class="box-content">
+			<a class="btn btn-block btn-info action-button" href="<?php echo url_to_pager('livestream-add') ?>" data-toggle="modal" data-target="#livestream-modal" data-title="<?php echo lang('livestream::stream-live') ?>"><?php echo lang('livestream::start-new-livestream') ?></a>
+		</div>
+	<?php endif ?>
+	<ul class="menu">
+		<?php foreach(get_menus("livestreams-menu") as $menu): ?>
+			<li><a ajax="true" href="<?php echo $menu->link ?>"><?php echo lang($menu->title) ?></a></li>
+		<?php endforeach ?>
+		<li><a ajax="true" href="<?php echo url('livestreams') ?>"><?php echo lang('livestream::all-livestreams') ?></a></li>
+		<li><a ajax="true" href="<?php echo url('livestreams?u='.get_userid()) ?>"><?php echo lang('livestream::my-livestreams') ?></a></li>
+	</ul>
+</div>

@@ -1,0 +1,107 @@
+#statistic-site-widget .menu {
+    height: 243px;
+    overflow: hidden;
+}
+
+#statistic-site-widget .menu {
+    transition: height .5s;
+    -webkit-transition: height .5s;
+    -moz-transition: height .5s;
+    transition-timing-function: ease-out;
+    -webkit-transition-timing-function: ease-out;
+}
+
+#statistic-site-widget .height-toggle {
+    text-align: center;
+    cursor: pointer;
+}
+
+#statistic-site-widget .height-toggle:hover {
+    background: rgba(0, 0, 0, .02);
+}
+
+#statistic-site-widget .height-toggle .indicator {
+    display: inline-block;
+    font-size: 18px;
+    transition: transform .1s;
+    -webkit-transition: transform .1s;
+    -moz-transition: transform .1s;
+    transition-timing-function: ease-out;
+    -webkit-transition-timing-function: ease-out;
+}
+
+.statistic-widget span.left {
+    font-weight: lighter;
+}
+
+.statistic-widget span.left i {
+    font-size: 28px;
+    display: inline-block;
+    padding: 0px 8px;
+    width: 40px;
+    vertical-align: -5px;
+}
+
+#statistic-site-widget.statistic-widget span.right {
+    float: right;
+    font-weight: lighter;
+    color: #247BBA;
+    padding: 10px 0px;
+    display: inline-block;
+    border: solid 1px rgba(0, 0, 255, .1);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+}
+
+#statistic-site-widget.statistic-widget li:hover {
+    background-color: rgba(128, 128, 128, .1);
+}
+
+#statistic-user-widget.statistic-widget span.right {
+    float: right;
+    font-weight: bold;
+    color: #247BBA;
+}
+.session_list{
+    padding: 13px 10px;
+    position: relative;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+.session_list .platform-icon{
+    margin-right: 15px;
+    float: left;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    font-size: 30px;
+}
+.session_list .s-logout{
+    float: right;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 50%;
+    margin: 1px 0;
+}
+.session_list .session_details{
+    display: block;
+    margin-right: 50px;
+    font-family: "Lato", sans-serif;
+}
+.session_list .session_details h4{
+    margin-top: 0;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+.session_list .session_details p{
+    margin-bottom: 8px;
+    line-height: 1;
+}

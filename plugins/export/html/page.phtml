@@ -1,0 +1,68 @@
+<?php $page = input('action','feed')?>
+<div class="box">
+    <div class="box-content">
+        <a type="button" data-toggle="modal" data-target="#download-data-modal" href="#" class="pull-rigt" >Export data</a>
+    </div>
+    <div class="box-content">
+        <div class="row">
+            <div class="col-12">
+                <div style="margin-top: 15px" class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                        <?php echo $content; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="download-data-modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="<?php echo url_to_pager('personal_data_download'); ?>" method="post" enctype="multipart/form-data" class="">
+                <div class="modal-form-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title"><?php echo lang('export::download-information') ?></p>
+                </div>
+                <div class="modal-body">
+                    <?php CSRFProtection::embed() ?>
+                    <div class="row">
+                        <?php foreach(get_menus("export-data-menu") as $menu): ?>
+                            <div class="col-sm-3 export-col">
+                                <?php $colors = array('#7f8fbb','#2e2e2e','#e0624b','#673ab7','#f9bd54') ?>
+                                <?php $icons = array('fa fa-forumbee','fa fa-flickr','fa fa-dribbble','fa fa-dashcube','fa fa-list-alt') ?>
+                                <?php $rand = array_rand($colors) ?>
+                                <input class="export-input" onclick="return exportSelect(this)" type="checkbox" name="selected[]" value="<?php echo $menu->id ?>" id="<?php echo $menu->id ?>" />
+                                <label style="text-align: center"  data-toggle="tooltip" data-original-title="<?php echo lang($menu->title) ?>" class="" for="<?php echo $menu->id ?>">
+                                    <i style="font-size: 20px; margin-right: 4px; color: <?php echo $menu->icon?$menu->icon['color']:$colors[$rand]?>" class="<?php echo $menu->icon?$menu->icon['class']:$icons[$rand]?>"></i> <?php echo $menu->title ?>
+                                </label>
+                            </div>
+                        <?php endforeach ?>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="submit">
+                        <input onclick="return download_export_data()" type="submit" class="btn btn-default" value="<?php echo lang("download") ?>"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function exportSelect(e) {
+        let handler = $(e);
+        let confirmChecked = handler.prop('checked');
+        if (confirmChecked){
+            handler.closest('.export-col').addClass('export-selected');
+        } else {
+            handler.closest('.export-col').removeClass('export-selected');
+        }
+    }
+    function download_export_data() {
+        let checked = $("input[name='selected[]']:checked").length;
+       if (checked < 1){
+           notifyError('Check an option to download');
+           return false;
+       }
+    }
+</script>

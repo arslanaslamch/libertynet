@@ -1,0 +1,25 @@
+<div class="wrapper">
+	<div class="wrapper-title"><?php echo lang('ranker::manage-category') ?>  </div>
+	<div class="wrapper-content">
+		<form method="post" action="" enctype="multipart/form-data" class="wrapper-form">
+			<?php CSRFProtection::embed() ?>
+			<?php if($message): ?>
+				<div class="alert alert-danger"><?php echo $message ?></div>
+			<?php endif ?>
+			<div class="form-group row">
+				<label class="col-sm-3 form-control-label"><?php echo lang('ranker::category-title') ?></label>
+				<div class="col-sm-9">
+					<input value="<?php echo $category['title'] ?>" type="text" class="form-control" name="val[title]" placeholder="<?php echo lang('ranker::category-title') ?>"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-3 form-control-label"><?php echo lang('ranker::category-point') ?></label>
+				<div class="col-sm-9">
+					<input value="<?php echo $category['point'] ?>" type="number" class="form-control" name="val[point]" placeholder="<?php echo lang('ranker::category-point') ?>"/>
+				</div>
+			</div>
+
+			<button class="btn btn-info"><?php echo lang('ranker::save-category') ?></button>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,418 @@
+
+#get-started-container {
+    width: 100%;
+    max-width: 700px;
+    margin: auto !important;
+}
+
+#get-started-form {
+    display: none;
+    width: 100%;
+    background-color: #f5f5f5;
+    overflow: visible;
+}
+
+#get-started-form .getstarted-content.info {
+    text-align: center;
+}
+
+#get-started-form .getstarted-content .help-block {
+    font-size: 20px;
+    line-height: 25px;
+    padding: 10px 0 30px 0;
+}
+
+#get-started-form #getstarted-image-input.avatar-preview-box {
+    width: 200px !important;
+    min-height: 200px !important;
+    margin: auto !important;
+    border-radius: 20px;
+    padding: 0
+}
+
+#get-started-form .avatar-preview-box img {
+    border-radius: 20px;
+}
+
+#get-started-form a {
+    outline: 0
+}
+
+#get-started-form ul {
+    list-style: none !important;
+    padding: 0;
+    margin: 0
+}
+
+#get-started-form ul > li {
+    display: block;
+    padding: 0
+}
+
+#get-started-form > .steps .current-info {
+    position: absolute;
+    left: -999em
+}
+
+#get-started-form > .content > .title {
+    position: absolute;
+    left: -999em
+}
+
+#get-started-form > .steps {
+    position: relative;
+    display: block;
+    width: 100%
+}
+
+#get-started-form.vertical > .steps {
+    display: inline;
+    float: left;
+    width: 30%;
+    padding: 10px 0;
+}
+
+#get-started-form > .steps .number {
+    font-size: 1.429em;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#get-started-form > .steps > ul > li {
+    width: 25%
+}
+
+#get-started-form > .steps > ul > li,
+#get-started-form > .actions > ul > li {
+    float: left
+}
+
+#get-started-form.vertical > .steps > ul > li {
+    float: none;
+    width: 100%
+}
+
+#get-started-form > .steps a,
+#get-started-form > .steps a:hover,
+#get-started-form > .steps a:active {
+    display: block;
+    width: auto;
+    margin: 0 .5em .5em;
+    padding: 1em 1em;
+    text-decoration: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    font-size: 16px;
+    line-height: 10px;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#get-started-form > .steps .disabled a,
+#get-started-form > .steps .disabled a:hover,
+#get-started-form > .steps .disabled a:active {
+    background: #eee;
+    color: #aaa;
+    cursor: default
+}
+
+#get-started-form > .steps .current a,
+#get-started-form > .steps .current a:hover,
+#get-started-form > .steps .current a:active {
+    background: #2184be;
+    color: #fff;
+    cursor: default
+}
+
+#get-started-form > .steps .done a,
+#get-started-form > .steps .done a:hover,
+#get-started-form > .steps .done a:active {
+    background: #9dc8e2;
+    color: #fff
+}
+
+#get-started-form > .steps .error a,
+#get-started-form > .steps .error a:hover,
+#get-started-form > .steps .error a:active {
+    background: #ff3111;
+    color: #fff
+}
+
+#get-started-form > .content {
+    background-color: #FFFFFF;
+    display: block;
+    min-height: 40em;
+    overflow: hidden;
+    position: relative;
+    width: 70%;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 0;
+    margin: 0;
+}
+
+#get-started-form.vertical > .content {
+    display: inline;
+    float: left;
+    margin: 0;
+    width: 70%;
+    overflow: visible;
+}
+
+#get-started-form > .content > .body {
+    float: left;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#get-started-form > .content > .body.additional-info {
+    overflow-y: auto;
+}
+
+#get-started-form > .content > .body ul > li {
+    display: list-item
+}
+
+#get-started-form > .content > .body > iframe {
+    border: 0 none;
+    width: 100%;
+    height: 100%
+}
+
+#get-started-form > .content > .body input {
+    display: block;
+    border: 1px solid #ccc
+}
+
+#get-started-form > .content > .body input[type="checkbox"] {
+    display: inline-block
+}
+
+#get-started-form > .content > .body input.error {
+    background: #fbe3e4;
+    border: 1px solid #fbc2c4;
+    color: #8a1f11
+}
+
+#get-started-form > .content > .body label {
+    display: inline-block;
+    margin-bottom: .5em;
+    line-height: 20px;
+}
+
+#get-started-form > .content > .body .top label {
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+#get-started-form > .content > .body .bottom label {
+    font-weight: 600;
+}
+
+#get-started-form > .content > .body label.error {
+    color: #8a1f11;
+    display: inline-block;
+    margin-left: 1.5em
+}
+
+#get-started-form .getstarted-content .field {
+    padding-right: 0;
+}
+
+#get-started-form .getstarted-content.info button {
+    font-weight: 600;
+}
+
+#get-started-form > .actions {
+    position: relative;
+    display: block;
+    text-align: right;
+    width: 100%;
+    padding: 0 10px;
+}
+
+#get-started-form.vertical > .actions {
+    display: inline;
+    float: right;
+    width: 70%;
+    background-color: #FFFFFF;
+    margin: 0;
+}
+
+#get-started-form > .actions > ul {
+    margin: 10px 0 !important;
+    text-align: right;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+#get-started-form > .actions > ul > li {
+    margin: 0 .5em
+}
+
+#get-started-form.vertical > .actions > ul > li {
+    margin: 0 0 0 1em
+}
+
+#get-started-form > .actions a,
+#get-started-form > .actions a:hover,
+#get-started-form > .actions a:active {
+    background: #2184be;
+    color: #fff !important;
+    display: block;
+    padding: .5em 1em;
+    text-decoration: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px
+}
+
+#get-started-form > .actions .disabled a,
+#get-started-form > .actions .disabled a:hover,
+#get-started-form > .actions .disabled a:active {
+    background: #eee;
+    color: #aaa !important;
+}
+
+#get-started-form > .loading {
+}
+
+#get-started-form > .loading .spinner {
+}
+
+@media (max-width: 600px) {
+    #get-started-form ul {
+        text-align: center;
+    }
+
+    #get-started-form > .steps > ul > li {
+        width: auto !important;
+        display: inline-block;
+    }
+
+    #get-started-form > .steps a {
+        margin: 0 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 0;
+        text-align: center;
+    }
+
+    #get-started-form > .steps .number {
+        font-size: 30px;
+        line-height: 38px;
+    }
+
+    #get-started-form > .steps a,
+#get-started-form > .steps a:hover,
+#get-started-form > .steps a:active {
+        margin-top: .5em
+    }
+
+    #get-started-form.vertical > .steps,
+#get-started-form.vertical > .actions {
+        display: block;
+        float: none;
+        width: 100%
+    }
+
+    #get-started-form.vertical > .content {
+        display: block;
+        float: none;
+        margin: 0 .5em .5em;
+        width: auto
+    }
+}
+
+@media (max-width: 480px) {
+    #get-started-form > .steps > ul > li {
+        width: 100%
+    }
+}
+
+.getstarted-content .friend-button {
+    padding: .25rem .5rem;
+    height: unset;
+    line-height: 1.5;
+}
+
+.getstarted-content .user:not(:last-child) {
+    margin-bottom: 8px;
+}
+
+.getstarted-content .user .media-left a {
+    width: 30px;
+    height: 30px;
+    padding: 0 !important;
+}
+
+.getstarted-content .user .media-left img {
+    width: 100%;
+    height: unset;
+    min-height: unset;
+    border-radius: 30px;
+}
+
+.getstarted-content .user .media-body h6 {
+    display: inline-block;
+    margin: 0;
+    line-height: 30px;
+}
+
+.getstarted-content .user .media-body a {
+    margin-right: 20px;
+    float: right
+}
+
+.getstarted-content {
+    padding: 20px 40px;
+}
+
+.getstarted-footer {
+    border-top: solid 1px #d3d3d3;
+    padding: 20px 40px;
+}
+
+#get-started-form .awesome-cropper {
+    position: relative;
+}
+
+#getstarted-image-input .dropbox {
+    width: 100% !important;
+    height: 188px !important;
+    opacity: 0;
+    position: absolute;
+    z-index: 10;
+    overflow: hidden;
+}
+
+#getstarted-image-input .progress {
+    display: none !important;
+}
+
+#getstarted-image-input.avatar-preview-box {
+    width: 120px !important;
+    min-height: 120px !important;
+    background-size: cover;
+    background-position: center;
+    background-image: url(../images/droptargets.png);
+    border: dashed 2px #CCCCCC !important;
+}
+
+#get-started-title {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 200;
+    padding-bottom: 40px;
+}
+
+#get-started-container {
+    box-shadow: 0 0px 4px 0 rgba(0, 0, 0, 0.2) !important;
+    margin-bottom: 50px !important;
+
+
+}

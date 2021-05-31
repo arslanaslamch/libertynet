@@ -1,0 +1,34 @@
+<div id="dashboard-filter-menu" class="box  clearfix">
+    <ul class="pull-left left">
+        <li class="<?php echo (segment(0) == 'contests' and input('type') == '') ? 'active' : ''; ?>"><a ajax="true"
+                href="<?php echo url_to_pager("contests"); ?>"><?php _lang('contest::all-contests') ?></a></li>
+        <?php if(is_loggedIn()): ?>
+            <li class="<?php echo (input('type') == 'friends') ? 'active' : ''; ?>"><a ajax="true"
+                    href="<?php echo url('contests?type=friends') ?>"><?php _lang('contest::friends-contest') ?></a></li>
+        <?php endif; ?>
+
+        <li class="<?php echo (input('type') == 'featured') ? 'active' : ''; ?>"><a ajax="true"
+                href="<?php echo url('contests?type=featured') ?>"><?php _lang('contest::featured-contests') ?></a></li>
+
+        <!--<li class="<?php /*echo (input('type') == 'ongoing') ? 'active' : ''; */?>"><a ajax="true"
+                href="<?php /*echo url('contests?type=featured') */?>"><?php /*_lang('contest::ongoing-contest') */?></a></li>-->
+
+        <?php if(config('enable-premium-contest',true) and plugin_loaded('emoney')): ?>
+        <li class="<?php echo (input('type') == 'premium') ? 'active' : ''; ?>"><a ajax="true"
+                href="<?php echo url('contests?type=premium') ?>"><?php _lang('contest::premium-contest') ?></a></li>
+        <?php endif; ?>
+
+        <li class="<?php echo (input('type') == 'closed') ? 'active' : ''; ?>"><a ajax="true"
+                href="<?php echo url('contests?type=closed') ?>"><?php _lang('contest::closed-contests') ?></a></li>
+
+        <?php if(is_loggedIn()): ?>
+            <li class="<?php echo (input('type') == 'following') ? 'active' : ''; ?>"><a ajax="true"
+                    href="<?php echo url('contests?type=following') ?>"><?php _lang('contest::my-following-contests') ?></a></li>
+            <?php if(plugin_loaded('favorite')): ?>
+            <li class="<?php echo (input('type') == 'favorite') ? 'active' : ''; ?>"><a ajax="true"
+                    href="<?php echo url('contests?type=favorite') ?>"><?php _lang('contest::my-favorite-contests') ?></a></li>
+
+        <?php endif; ?>
+        <?php endif; ?>
+    </ul>
+</div>

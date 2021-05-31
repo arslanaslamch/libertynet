@@ -1,0 +1,96 @@
+<div class="box">
+    <div class="box-content">
+        <div class="row">
+
+            <div class="col-sm-8">
+                <div class="input-group input-group-md">
+                    <input type="text" class="form-control"
+                           id="store-top-key"
+                           placeholder="<?php echo lang("store::what-are-you-looking-for"); ?>"
+                           value=""
+                           aria-label="Text input with dropdown button">
+                    <div class="input-group-append">
+                        <select class="nobr-se" id="search-category-value">
+                            <option value="<?php echo url('store/products'); ?>" <?php echo (getFullUrl() == url('store/products')) ? 'selected' : ''; ?> ><?php echo lang("store::all-categories"); ?></option>
+                            <?php $categories = lp_store_categories('get_categories');
+                            foreach ($categories as $category):
+                                $u = url_to_pager('products-categories-home', array('slugs' => $category['id'] . '_' . toAscii(lang($category['title']))));
+                                ?>
+                                <option <?php echo (getFullUrl() == $u) ? 'selected' : ''; ?> value="<?php echo $u; ?>">
+                                    <?php echo ucwords(lang($category['title'])); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <button data-info="<?php echo ucfirst(lang("store::specify-what-you-look-for")); ?>" class="btn btn-info"
+                            onclick="return submitStoreCategoryFilter(this)" type="button"><i class="ion-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-4 nop ">
+                <div class="compare-container-menu each-row-st-menu">
+                    <?php $compare = session_get("compared-products", array()); ?>
+                    <a ajax="true" class="btn  btn-lg" href="<?php echo url_to_pager("compare-products") ?>"> <i
+                                class="ion-arrow-swap"></i> <?php echo ucfirst(lang("store::compare")); ?> (
+                        <span class="store-cc"> <?php echo count($compare); ?> </span> ) </a>
+                </div>
+                <div class="cart-menu-dd store-container-menu each-row-st-menu">
+                    <?php $cart = session_get('my_product_cart_'.get_userid(),array()); ?>
+                    <a class="btn btn-lg cart-modal-toggle" href="<?php echo url_to_pager("comparete"); ?>"> <i
+                                class="ion-ios-cart"></i>
+                        <span class="ProductCount"> <?php echo count($cart); ?></span> <?php echo lang("store::item-s") ?></a>
+                    <div id="cartModal" class="modal fade" tabindex="-1" role="dialog"
+                         aria-labelledby="confirmModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="mcart-products-wraper">
+                                        <?php echo view("store::products/cart-list",array('cart'=>$cart)); ?>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal"><?php echo lang('store::continue-shopping'); ?></button>
+                                    <a type="button" ajax="true"  href="<?php echo url_to_pager("product-cart"); ?>"
+                                            class="btn btn-primary"><?php echo lang('store::checkout') ?></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="each-row-st-menu">
+                    <a aria-expanded="false" class="btn btn-lg dropdown-toggle nav-link" data-toggle="dropdown"
+                       href="<?php echo url_to_pager("comparete"); ?>">
+                        <i class="ion-android-menu"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <?php if (config('enable-guest-product-purchase', 1) || is_loggedIn()): ?>
+                            <li><a class="dropdown-item" href="<?php echo url_to_pager('products-home') ?>"
+                                   ajax="true"><?php _lang('store::all-products') ?></a></li>
+                            <li><a class="dropdown-item" href="<?php echo url_to_pager('products-categories-list') ?>"
+                                   ajax="true"><?php _lang('store::products-categories') ?></a></li>
+                            <li><a class="dropdown-item" href="<?php echo url('store/products?type=mine') ?>"
+                                   ajax="true"><?php _lang('store::my-products') ?></a></li>
+                            <li><a class="dropdown-item" href="<?php echo url_to_pager('my_orders') ?>"
+                                   ajax="true"><?php _lang('store::my-orders') ?></a></li>
+                            <li><a class="dropdown-item" href="<?php echo url_to_pager('my-wish-list') ?>"
+                                   ajax="true"><?php _lang('store::my-wishlist') ?></a></li>
+                            <li><a class="dropdown-item" href="<?php echo url('stores') ?>"
+                                   ajax="true"><?php echo ucwords(lang('store::stores')); ?></a></li>
+
+                        <?php endif ?>
+                        <?php if (is_loggedIn() and user_has_permission('can-create-store') and (config('allow-members-create-store', true))): ?>
+                            <!-- <li class="dropdown-divider"></li>-->
+                            <li>
+                                <a ajax="true"
+                                   href="<?php echo (!is_seller()) ? url_to_pager("add-seller") : url_to_pager("store-manager"); ?>"
+                                   class="dropdown-item"><?php echo (!is_seller()) ? lang('store::add-store') : lang('store::manage_your-store'); ?></a>
+                            </li>
+                        <?php endif ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

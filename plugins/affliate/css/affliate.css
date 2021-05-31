@@ -1,0 +1,160 @@
+.contact-wrapper{
+    font-size:14px;
+}
+
+
+.single-request-box{
+    padding:10px;
+    text-align:center;
+    border:1px solid #ccc;
+    max-width:23%;
+    margin:5px;
+}
+.single-request-box span{
+    display:block;
+}
+.single-request-box .srbt{
+
+}
+
+.contact-wrapper #modify-aff-c-info{
+    font-size:20px !important;
+}
+
+.c-contact-wrapper{
+    margin:5px;
+    padding: 10px;
+    background:#f2f4f6;
+}
+
+.single-collection{
+    padding:5px;
+    border:1px solid #f2f4f6;
+    background:#f2f4f6;
+    padding-left:10px;
+    margin:5px;
+    width:23%;
+}
+.single-collection .col-title{
+    margin-bottom:8px;
+    font-size:16px !important;
+}
+.single-collection .denied-text i{
+    color: #CC4733;
+}
+.single-collection .waiting-text i{
+    color: #CC9933;
+}
+.single-collection .success-text i{
+    color: #2BAD5D;
+}
+
+#copy-codey{
+    font-size:12px;
+    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+}
+
+.round-aff{
+    height:30px;
+    width:30px;
+    border-radius:100%;
+}
+
+#copy-codey textarea{
+    height:250px;
+}
+.wrapper-result-com .indicator{
+    display:none;
+}
+
+.wrapper-result-com .indicator img{
+    height:30px;
+    width:30px;
+    display:block;
+    margin:10px auto;
+}
+
+#affliate-signup label,
+#RequestAff label,
+#ContactEditModal label{
+    font-weight:bold;
+}
+
+.font-16{
+    font-size:16px !important;
+}
+.font-14{
+    font-size:14px;
+}
+.aff-content{
+    font-size:14px;
+}
+
+/*#comissonTrack{
+    overflow-x:scroll;
+}*/
+#table-comission-rule .indicator,
+#affDetails .indicator,
+#lnkt .indicator,
+#request-manager .indicator,
+#admincp-aff-row .indicator,
+.chart-tins .indicator,
+#comissonTrack .indicator{
+    display:none;
+}
+
+#table-comission-rule .indicator img,
+#affDetails .indicator img,
+#lnkt .indicator img,
+#request-manager img,
+.chart-tins .indicator img,
+#admincp-aff-row .indicator img,
+#comissonTrack .indicator img{
+    height:30px;
+    width:30px;
+    display:block;
+    margin:5px auto;
+}
+
+.network-top img{
+    border-radius:100%;
+}
+.app-header-wrapper{
+    background:#f2f4f6;
+    padding:5px;
+    clear:both;
+}
+
+.app-header-wrapper label{
+   font-weight:bold;
+}
+.network-top .network-owner{
+    height:70px;
+    width:70px;
+}
+#sub-network{
+    margin-left:40px;
+}
+#sub-network img{
+    height:50px;
+    width:50px;
+}
+
+#sub-network .media{
+    margin:10px;
+    padding:10px;
+    border:1px solid #f2f4f6;
+}
+#sub-network .media-heading{
+    font-size:14px !important;
+    font-weight:normal;
+}
+
+#sub-network .media-body .media{
+    margin-top:30px;
+}
+.verticalLine {
+    height:100%;
+    width:2px;
+    position:relative;
+}

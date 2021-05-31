@@ -1,0 +1,106 @@
+<div class="box onlinetv">
+	<div class="global-filter-container" data-url="<?php echo url('onlinetvs') ?>">
+		<form id="onlinetv-list-search" method="post" onsubmit="return run_global_filter()" action="" class="form-inline list-search">
+			<?php CSRFProtection::embed() ?>
+			<input type="hidden" class="filter-input form-control" data-name="type" value="<?php echo input('type', 'browse') ?>"/>
+			<i class="search-icon ion-ios-search"></i>
+			<input value="<?php echo input('term') ?>" type="text" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>"/>
+		</form>
+		<div class="list-head">
+			<h3 class="heading">
+
+                <?php echo $title; ?>
+
+            </h3>
+		</div>
+		<div class="filter-pane">
+            <?php if(config('enable-country-filter',true)): ?>
+            <?php load_functions('country') ?>
+            <?php $countries = get_countries() ?>
+			<select id="video-category-list" onchange="return run_global_filter()" data-name="country" class="c-select filter-input">
+                <option <?php echo (input('country', 'all') == 'all') ? 'selected' : null ?> value="all"><?php echo lang("onlinetv::all-countries") ?></option>
+                <?php foreach($countries as $country => $name): ?>
+                    <option <?php echo (input('country', 'all') == $name) ? 'selected' : null ?> value="<?php echo $name ?>">
+                        <?php echo ucwords($name) ?>
+                    </option>
+                <?php endforeach ?>
+            </select>
+            <?php endif; ?>
+			<select id="video-category-list" onchange="return run_global_filter()" data-name="category" class="c-select filter-input">
+                <option <?php echo (input('category', 'all') == 'all') ? 'selected' : null ?> value="all"><?php echo lang('music::all-categories') ?></option>
+                <?php foreach(get_onlinetv_categories() as $category): ?>
+                    <?php $subCategories = get_onlinetv_parent_categories($category['id']) ?>
+                    <?php if($subCategories): ?>
+                        <optgroup label="<?php echo lang($category['title']) ?>">
+                            <?php foreach($subCategories as $cat): ?>
+                                <option <?php echo (input('category', 'all') == $cat['id']) ? 'selected' : null ?> value="<?php echo $cat['id'] ?>"><?php echo lang($cat['title']) ?></option>
+                            <?php endforeach ?>
+                        </optgroup>
+                    <?php else: ?>
+                        <option <?php echo (input('category', 'all') == $category['id']) ? 'selected' : null ?> value="<?php echo $category['id'] ?>"><?php echo lang($category['title']) ?></option>
+                    <?php endif ?>
+                <?php endforeach ?>
+			</select>
+			<select id="video-filter-select" onchange="return run_global_filter()" data-name="filter" class="c-select filter-input">
+				<option value="all"><?php echo lang('all') ?></option>
+				<option <?php echo (input('filter') == 'top') ? 'selected' : null ?> value="top"><?php echo lang('video::top') ?></option>
+				<option <?php echo (input('filter') == 'featured') ? 'selected' : null ?> value="featured"><?php echo lang('video::featured') ?></option>
+			</select>
+		</div>
+	</div>
+	<div id="onlinetvs-list-container" class="box-content clearfix onlinetv-listing-container">
+		<?php foreach($onlinetvs->results() as $onlinetv): ?>
+			<?php $onlinetv = arrange_onlinetv($onlinetv); ?>
+			<?php $user = find_user($onlinetv['user_id']) ?>
+			<?php $refId = $onlinetv['id'];
+			$refName = 'onlinetv'; ?>
+            <?php $onlinetv['image'] = ($onlinetv['image']) ? $onlinetv['image'] : img("onlinetv::images/tv.png"); ?>
+			<div class="each-item clearfix onlinetv-grid">
+                <?php /*if($onlinetv['category_id']): */?><!--
+                <?php /*$category = get_onlinetv_category($onlinetv['category_id']); */?>
+                <?php /*if($category): */?>
+                <span class="tv-category"><a href="<?php /*echo url('onlinetvs').'?category='.$onlinetv['category_id']; */?>" ajax="true">
+                                        <?php /* echo lang($category['title']); */?></a></span>
+                <?php /*endif; */?>
+                --><?php /*endif; */?>
+					<div class="left">
+						<?php if($onlinetv['featured']): ?>
+							<span class="featured-tag"><?php echo lang('featured') ?></span>
+						<?php endif ?>
+						<a href="<?php echo url('onlinetv/'.$onlinetv['slug']) ?>" style="background-image:url(<?php echo ($onlinetv['image']) ? url_img($onlinetv['image'], 700) : get_avatar(200, $user) ?>)"></a>
+					</div>
+					<div class="right">
+						<span class="item-title"><a  href="<?php echo url('onlinetv/'.$onlinetv['slug']) ?>"><?php echo $onlinetv['name'] ?></a></span>
+						<div class="item-info">
+                            <span><b><?php echo lang('onlinetv::tv-information'); ?></b></span>
+							<span class="help-block" style="display: block">
+                                <?php /*echo lang('onlinetv::By') */?><!--  :--> <b><a href="<?php echo url($onlinetv['publisher']['id']) ?>"><?php echo $onlinetv['publisher']['name'] ?></a></b>
+                                <br/>
+								<?php echo date('M j , Y', $onlinetv['time']) ?>
+                                <br/>
+
+                                <span><?php /*echo lang("onlinetv::price"); */?><!-- : --><span class="owo-color"><?php echo ($onlinetv['price'] == 0) ? lang('onlinetv::free') : $onlinetv['price'].' '.config('default-currency','USD');   ?></span></span>
+                            </span>
+						</div>
+						<!--<p class="item-desc"><?php /*echo strip_tags(str_limit($onlinetv['description'], 20)) */?></p>-->
+						<p>
+							<strong><?php echo $onlinetv['views']; ?></strong> <?php echo lang('onlinetv::views'); ?>
+							<strong><?php $likes = count_likes($refName, $refId);
+								echo $likes; ?></strong> <?php if($likes > 1) {
+								echo lang('onlinetv::likes');
+							} else {
+								echo lang('onlinetv::like');
+							} ?>
+						</p>
+					</div>
+			</div>
+		<?php endforeach ?>
+	</div>
+	<div class="box-content">
+		<?php if($onlinetvs->total): ?>
+			<?php echo $onlinetvs->append(array('category' => input('category'), 'type' => input('type', 'browse'), 'term' => input('term'), 'filter' => input('filter', 'all')))->links() ?>
+		<?php else: ?>
+			<div class="alert alert-info"><?php echo lang('onlinetv::onlinetvs-list-empty-found') ?></div>
+		<?php endif ?>
+	</div>
+</div>

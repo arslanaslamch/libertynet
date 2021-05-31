@@ -1,0 +1,623 @@
+.auction .advance-search {
+    margin-top: 3em;
+}
+
+.auction .auction-search {
+    width: 500px;
+    padding-left: 1em;
+}
+
+.auction .qty {
+    width: 50px;
+}
+
+.auction .per-page {
+    margin-left: 2em;
+    padding-top: -50px;
+}
+
+.auction #cat-img {
+    width: 530px;
+    padding: 5px;
+    background: rgba(4, 3, 5, 0.0);
+}
+
+.auction .box-content {
+
+}
+
+.auction.box label {
+    font-size: 16px;
+}
+
+.auction.box .g_info {
+    font-size: 16px;
+    padding-top: 2em;
+}
+
+.auction.box label > strong {
+    color: red;
+}
+
+.auction.box #new_auction {
+    font-size: 18px;
+
+}
+
+.auction #manage_cat {
+    font-size: 18px;
+    background-color: rgba(204, 204, 204, 1);
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.auction .form-group hr {
+    margin-top: -6px;
+}
+
+.auction .box-content #auction-title-details {
+    color: #0000FF;
+}
+
+.auction #auction-description {
+    text-justify: auto;
+    font-size: 17px;
+    word-spacing: 2px;
+
+}
+
+.auction img #auction_img {
+    background: rgba(4, 3, 5, 0.33);
+    padding: 20px;
+}
+
+.auction #list {
+    border: rgba(4, 3, 5, 0.09) solid 1px;
+}
+
+.auction #auction-btn {
+    margin-left: 1em;
+}
+
+.auction .reserve_price {
+    font-size: 19px;
+    font-weight: bolder;
+    margin-bottom: -8px;
+}
+
+.auction .auction-input {
+    height: 33px;
+    outline: 0;
+    box-sizing: border-box;
+    background: #f4f4f4;
+    border: 1px solid #D7D7D7;
+}
+
+.auction .bids-view {
+    text-align: center;
+}
+
+.auction .bids-view strong {
+    font-size: 16px;
+    margin-bottom: 4em;
+}
+
+.auction #auction-views {
+    margin-left: 6em;
+}
+
+.auction #count-view {
+    margin-left: 4em;
+}
+
+.auction .auction-info span {
+    color: #000;
+    font-size: 26px;
+    padding-top: 1em;
+
+}
+
+.auction #auction-title {
+    margin-top: 8em;
+    padding-top: 2em;
+    color: red;
+    font-size: 34px;
+}
+
+.auction .auction-price {
+    font-size: 16px;
+}
+
+.auction #auction-current-bid {
+    margin-left: 1.5em;
+}
+
+.auction .bid-label {
+    font-size: 14px;
+}
+
+.auction .current-bid {
+    margin-left: 10px;
+}
+
+.auction #auction-my-bid {
+    margin-left: 15px;
+}
+
+.auction .my-bid {
+    margin-left: 8px;
+}
+
+.auction .buy-now-details {
+    margin-top: 2em;
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+.auction .buy-now-title {
+    margin-top: 5px;
+    line-height: 30px;
+    font-size: 16px;
+    font-weight: bolder;
+    color: black;
+}
+
+.auction .buy-now-price {
+    margin-bottom: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #FB8E2D;
+    line-height: 40px;
+    display: block;
+    text-align: center;
+}
+
+.auction div #description {
+    font-size: 14px;
+}
+
+.auction .desc-box {
+    padding: 20px;
+}
+
+.auction .auction-desc {
+    padding-top: 10px;
+    text-align: justify;
+}
+
+.auction #countdown {
+    margin-bottom: -5px;
+    margin-top: -5px;
+    font-size: 16px;
+}
+
+.auction .auction-category .box-content {
+    width: 300px;
+    margin-left: -6em;
+}
+
+.auction .list-group .list-group-item {
+    font-size: 16px;
+}
+
+.auction .cart {
+    border: solid 1px rgba(4, 3, 5, 0.29);
+}
+
+.auction .cart .heading {
+    padding: 1em;
+    background: rgba(32, 25, 41, 0.04)
+}
+
+.auction .heading strong {
+    font-size: 22px;
+}
+
+.auction .heading span {
+    font-size: 14px;
+}
+
+.auction .auction-cart {
+    margin-top: 2em;
+    margin-bottom: 4em;
+    margin-left: 22em;
+}
+
+.auction .auction-cart strong {
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+.auction .cart input {
+    width: 3em;
+}
+
+.auction .table tr {
+    font-size: 20px;
+}
+
+.auction #timer {
+    font-size: 20px;
+}
+
+.auction .auction-header {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.auction #edit-auction-btn {
+    float: right;
+}
+
+.auction #timer-label label {
+
+}
+
+.auction .days-cover,
+.auction .hours-cover,
+.auction .mins-cover,
+.auction .secs-cover {
+    width: 20%;
+    background: rgba(102, 153, 255, .3);
+    padding: 1em;
+    margin-left: 10px;
+    float: left;
+    margin-bottom: 1em;
+}
+
+.auction .label {
+    font-size: 8px;
+    color: #000;
+    text-align: center;
+    margin-left: -12px;
+}
+
+.auction .timer-label label {
+    font-size: 10px;
+}
+
+.auction #auction-table th > td {
+    font-size: 14px;
+}
+
+.auction td {
+    font-size: 12px;
+    font-weight: bolder;
+}
+
+.auction tr #row-id {
+    margin: 0px;
+    padding: 0px;
+}
+
+.auction .username, .price, .option, .admin-username, .admin-price {
+
+}
+
+.auction .admin-price {
+    margin-left: 12em;
+}
+
+.auction .username-content, .price-content, .option {
+    width: 6em;
+}
+
+.auction .admin-price-content {
+
+    float: right;
+    margin-right: 20em;
+}
+
+.auction .admin-username-content {
+    width: 400px;
+}
+
+.auction .price {
+    margin-left: 12em;
+}
+
+.auction .price-content {
+    margin-left: 10em;
+}
+
+.auction .option {
+    margin-left: 10em;
+}
+
+.auction .option-content {
+    margin-left: 10em;
+}
+
+.auction .most-view {
+    margin: 10px;
+    border: rgba(4, 3, 5, 0.1);
+    color: rgba(4, 3, 5, 0.8);
+    font-size: 12px;
+    text-align: center;
+}
+
+.auction .list-listing-container .left {
+    height: unset !important;
+}
+
+.auction .list-listing-container span.price {
+    float: left;
+    margin-left: 10px;
+    font-size: 19px;
+    font-weight: bolder;
+}
+
+.auction .grid-listing-container .left img {
+    object-position: 0px -100px;
+    width: 100%;
+}
+
+.auction .grid-listing-container span.price {
+    float: left;
+    margin-left: 0;
+    margin-bottom: 2px;
+
+}
+
+.auction .grid-listing-container hr {
+    visibility: hidden;
+}
+
+.auction .grid-listing-container br {
+    visibility: hidden;
+}
+
+.auction .list-listing-container span.title {
+    font-weight: bolder;
+}
+
+.auction .list-listing-container div.each-item {
+    border: rgba(4, 3, 5, 0.09) solid 1px;
+}
+
+.auction .list-listing-container p.time-bid {
+    margin-left: 4em;
+}
+
+.auction .grid-listing-container span.item-title a {
+    padding-bottom: 3em;
+}
+
+.auction .grid-listing-container p.compare-user {
+    margin-top: -2em;
+}
+
+.auction .grid-listing-container div.time-bid {
+    margin-top: -2em;
+    float: left;
+}
+
+.auction .grid-listing-container div.each-item {
+    width: 45%;
+    margin-left: 4%;
+    margin-bottom: 4em;
+    height: 330px;
+}
+
+.auction .grid-listing-container div.each-item > div.item-info {
+    padding-top: 5em;
+}
+
+.auction .view-data {
+    text-align: center;
+    padding-top: 1em;
+}
+
+.auction .morecontent span {
+    display: none;
+}
+
+.auction .morelink {
+    display: block;
+}
+
+/* Smartphones (portrait and landscape) ---------- */
+@media screen and (min-width: 320px) and (max-width: 480px) {
+    /* styles */
+}
+
+/* Smartphones (portrait) ---------- */
+@media screen and (max-width: 736px) {
+    /* styles */
+    .auction .auction-category .box-content {
+        width: 100%;
+        margin-left: 1em;
+    }
+
+    .auction div.list-group {
+        width: 95%;
+    }
+
+    .auction .box-content {
+        width: 100%;
+    }
+
+    .auction.box > .title {
+        font-size: 3em;
+    }
+
+    .auction.box label {
+        font-size: 16px;
+    }
+
+    .auction .new-auction {
+        font-size: 8px;
+    }
+
+    .auction #list {
+
+        border: rgba(4, 3, 5, 0.09) solid 1px;
+    }
+
+    .auction .media-body {
+        float: none;
+        display: table-row;
+    }
+
+    .auction .auction-search {
+        width: 85%;
+        padding-left: 1em;
+    }
+
+    .auction .dropdown {
+        margin-top: 2em;
+        margin-left: 0em;
+    }
+
+    .auction div.dropdown button {
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+
+    .auction ul.dropdown-menu li {
+        margin-left: 1em;
+    }
+
+    .auction div .per-page {
+        margin-left: 2em;
+        padding-top: -50px;
+    }
+
+    .auction #timer {
+        margin-top: 1em;
+    }
+
+    .auction .auction-input {
+        height: 33px;
+        outline: 0;
+        width: 55%;
+        box-sizing: border-box;
+        background: #f4f4f4;
+        border: 1px solid #D7D7D7;
+    }
+
+    .auction #cat-img {
+        width: 95%;
+        padding: 5px;
+        background: rgba(4, 3, 5, 0.0);
+    }
+
+}
+
+/* Smartphones (landscape) ---------- */
+@media screen and (min-width: 321px) {
+    /* styles */
+}
+
+/* Tablets, iPads (portrait and landscape) ---------- */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    /* styles */
+    .auction .left-col {
+        float: left;
+    }
+
+    .auction .box-content {
+        width: 98%;
+    }
+
+    .auction.box > .title {
+
+        font-size: 3em;
+    }
+
+    .auction.box label {
+        font-size: 16px;
+    }
+
+    .auction .new-auction {
+        font-size: 8px;
+    }
+
+    .auction #list {
+
+        border: rgba(4, 3, 5, 0.09) solid 1px;
+    }
+
+    .auction .media-body {
+        float: none;
+        display: table-row;
+    }
+
+    .auction .auction-search {
+        width: 85%;
+        padding-left: 1em;
+    }
+
+    .auction .dropdown {
+        margin-top: 2em;
+        margin-left: 0em;
+    }
+
+    .auction div.dropdown button {
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+
+    .auction ul.dropdown-menu li {
+        margin-left: 1em;
+    }
+
+    .auction div .per-page {
+        margin-left: 2em;
+        padding-top: -50px;
+    }
+
+    .auction #timer {
+        margin-top: 1em;
+    }
+
+    .auction .auction-input {
+        height: 33px;
+        outline: 0;
+        width: 55%;
+        box-sizing: border-box;
+        background: #f4f4f4;
+        border: 1px solid #D7D7D7;
+    }
+
+    .auction #cat-img {
+        width: 95%;
+        padding: 5px;
+        background: rgba(4, 3, 5, 0.0);
+    }
+
+    .auction .auction-category .box-content {
+        width: 100%;
+        margin-left: 1em;
+        left: 0;
+    }
+
+    .auction .list-group {
+        width: 100%;
+    }
+
+    .auction .list-group .list-group-item {
+        font-size: 11px;
+    }
+}
+
+/* Tablets, iPads (portrait) ---------- */
+@media screen and (min-width: 700px) {
+    /* styles */
+}
+
+/* Tablets, iPads (landscape) ---------- */
+@media screen and (min-width: 1024px) {
+    /* styles */
+}
+
+/* Desktops and laptops ---------- */
+@media screen and (min-width: 1224px) {
+    /* styles */
+}
+
+/* Large screens ---------- */
+@media screen and (min-width: 1824px) {
+    /* styles */
+}

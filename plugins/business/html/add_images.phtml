@@ -1,0 +1,42 @@
+<div id="add-business-photo" class="business business-content box">
+	<div id="business-page-title" class="business-title"><?php echo lang('business::add-images') ?></div>
+	<?php if(!is_loggedIn()): ?>
+		<span class="error"><?php echo lang('business::business-create-login-error') ?></span>
+	<?php else: ?>
+		<?php if($message): ?>
+			<div class="alert alert-danger"><?php echo $message ?></div>
+		<?php endif ?>
+		<?php if(config('max-num-business-photos', 5) > $num_business_images): ?>
+			<form action="" method="post" enctype="multipart/form-data">
+				<?php CSRFProtection::embed() ?>
+				<div class="form-group row">
+					<div class="col-sm-4">
+						<h6>
+							<label class="control-label" for="images"><?php echo lang('business::images') ?>: </label>
+						</h6>
+						<p class="form-description"><?php echo lang('business::create-business-images-desc') ?></p>
+					</div>
+					<div class="col-sm-8">
+						<div class=="business-form-file-selector">
+							<input type="file" name="images[]" id="business-image-file" multiple onchange="businessAddPhotos(this)"/>
+						</div>
+						<div id="business-form-images-container"></div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-sm-5">
+					</div>
+					<div class="col-sm-4">
+						<div class="input-field col s12">
+							<input type="submit" value="<?php echo lang('business::add') ?>" class="btn btn-primary"/>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" name="val[business_id]" value="<?php echo $business_id ?>"/>
+				<input type="hidden" name="val[type]" value="add_images"/>
+			</form>
+		<?php else: ?>
+			<div class="alert alert-danger"><?php echo lang('business::max-image-error') ?></div>
+		<?php endif ?>
+	<?php endif ?>
+</div>

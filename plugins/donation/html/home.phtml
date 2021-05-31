@@ -1,0 +1,81 @@
+<div class="box">
+<?php
+$don = Donation::getInstance();
+?>
+    <div class="global-filter-container" data-url="<?php echo url('donations') ?>">
+        <form id="blog-list-search" method="post" onsubmit="return run_global_filter()" action="" class="form-inline list-search">
+            <?php CSRFProtection::embed() ?>
+            <input type="hidden" class="filter-input form-control" data-name="type" value="<?php echo input('type', 'browse') ?>"/>
+            <i class="search-icon ion-ios-search"></i>
+            <input value="<?php echo input('term') ?>" type="text" class="form-control search-box filter-input" data-name="term" placeholder="<?php echo lang('search') ?>"/>
+        </form>
+        <div class="list-head">
+            <h3 class="heading"><?php _lang('donation::donations')?></h3>
+        </div>
+        <div class="filter-pane">
+            <select id="video-category-list" onchange="return run_global_filter()" data-name="category" class="c-select filter-input" >
+                <option <?php echo (input('category', 'all') == 'all') ? 'selected'  : null?>  value="all"><?php _lang('donation::all-categories')?></option>
+                <?php foreach($don->get_categories() as $category):?>
+                    <option <?php echo (input('category', 'all') == $category['id']) ? 'selected'  : null?> value="<?php echo $category['id']?>"><?php _lang($category['title'])?></option>
+                <?php endforeach?>
+
+            </select>
+
+        </div>
+    </div>
+    <div id="donations-list-container" class="box-content clearfix list-listing-container">
+        <?php foreach($donations->results() as $donation):
+            if(isset($donation['did'])){
+                $donation = $don->getSingle($donation['did']);
+                if(!$donation) continue;
+                $donation = $donation[0];
+            }
+            $user = find_user($donation['user_id']);
+
+            ?>
+            <div class="each-item clearfix">
+                <div class="left">
+                    <?php if($donation['featured']):?>
+                        <span class="featured-tag"><?php _lang('featured')?></span>
+                    <?php endif?>
+                    <?php if(!$donation['published']):?>
+                        <span class="d-published-tag"><?php _lang('donation::draft')?></span>
+                    <?php endif?>
+                    <a ajax="true" href="<?php echo url('donation/'.$donation['id'])?>" style="background-image:url(<?php echo ($donation['image']) ? url_img($donation['image'], 700) : get_avatar(200, $user)?>)"></a>
+                </div>
+
+                <div class="right">
+                    <span class="item-title"><a ajax="true" href="<?php echo url('donation/'.$donation['id'])?>"><?php echo $donation['title']?></a> </span>
+                    <div class="item-info">
+                        <span class="help-block" style="display: block">
+                                    <?php _lang('donation::byy')?> : <a href="<?php echo profile_url(null, $user)?>"><?php echo get_user_name($user)?></a>
+                            <?php _lang('donation::on')?> <?php echo date('M j , Y', $donation['time'])?>
+                            <?php if(input('type') == 'mine' || input('type') == 'expired'): ?>
+                                <?php if((time() > $donation['expire_time']) && $donation['unlimited'] == 0): ?>
+                                    <span class="label label-danger"><?php echo strtolower(lang("donation::expired")); ?></span>
+                                <?php else: ?>
+                                    <span class="label label-success"><?php echo lang("donation::active");  ?></span>
+                                    <?php endif; ?>
+                            <?php endif; ?>
+
+                            <?php if($donation['closed']): ?>
+                                <span class="label label-danger"><?php echo strtolower(lang("donation::closed")); ?></span>
+                            <?php endif; ?>
+                                </span>
+
+                    </div>
+                    <p class="item-desc"><?php echo strip_tags(str_limit($donation['description'], 100))?></p>
+                </div>
+            </div>
+
+        <?php endforeach?>
+    </div>
+    <div class="box-content">
+        <?php if($donations->total):?>
+            <?php echo $donations->append(array('category' => input('category'), 'type' => input('type', 'all'), 'term' => input('term')))->links()?>
+        <?php else:?>
+            <div class="alert alert-info"><?php _lang('donation::donation-list-empty')?></div>
+        <?php endif?>
+    </div>
+
+</div>

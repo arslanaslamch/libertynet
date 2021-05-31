@@ -1,0 +1,87 @@
+<div class="auction box">
+	<div class="box-content">
+		<div id="new_auction"><?php echo lang('auction::auction-edit') ?></div>
+		<div class="g_info"><?php echo lang('auction::g_info') ?></div>
+		<form action="" method="post" enctype="multipart/form-data">
+			<?php $id = input('id');
+			if($id) {
+				$auction = get_auction($id); ?><?php CSRFProtection::embed(); ?>
+				<?php if($message): ?>
+					<div class="alert alert-danger"><?php echo $message ?></div>
+				<?php endif ?>
+				<div class="form-group">
+					<label><strong>*</strong><?php echo lang('auction::product-title') ?>
+					</label>
+					<input type="text" name="val[title]" class="form-control" id="" value="<?php echo $auction['title']; ?>"/>
+				</div>
+				<div class="form-group">
+					<label><strong>*</strong><?php echo lang('auction::category') ?>
+					</label>
+					<select class="form-control" name="val[category]">
+						<option><?php echo lang('auction::select') ?></option>
+						<?php foreach(get_auction_categories() as $cat): ?>
+							<option <?php echo $auction['category_id'] == $cat['id'] ? 'selected ' : '' ?>value="<?php echo $cat['id']; ?>"><?php echo lang($cat['title']); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</div>
+				<div class="form-group">
+					<label><strong>*</strong><?php echo lang('auction::quantity') ?>
+					</label>
+					<input type="number" class="form-control" name="val[quantity]" value="<?php echo $auction['quantity']; ?>" min="0"/>
+				</div>
+				<div class=" form-group">
+					<label><?php echo lang('auction::description') ?></label>
+					<textarea name="val[description]" class="form-control" rows="12"><?php echo $auction['description']; ?></textarea>
+				</div>
+				<div class="form-group">
+					<label><?php echo lang('auction::price') ?></label>
+					<label><strong>*</strong><?php echo lang('auction::price-reserved') ?>
+					</label>
+					<input type="number" name="val[reserved_price]" class="form-control" value="<?php echo $auction['reserved_price']; ?>" min="0"/>
+					<label><strong>*</strong><?php echo lang('auction::buy-now-price') ?>
+					</label>
+					<input type="number" name="val[buy_price]" class="form-control" value="<?php echo $auction['buy_price']; ?>" min="0"/>
+				</div>
+				<div class="form-group">
+					<label><?php echo lang('auction::info-shipment') ?></label>
+					<label><?php echo lang('auction::item-location') ?></label>
+					<select class="form-control" name="val[country]">
+						<option value="<?php echo $auction['country']; ?>"><?php echo $auction['country']; ?></option>
+						<?php foreach(get_countries() as $country => $name): ?>
+							<option value="<?php echo $name; ?>"><?php echo ucfirst($name); ?></option>
+						<?php endforeach; ?>
+					</select>
+					<div class="form-group">
+						<label><?php echo lang('auction::state') ?></label>
+						<input type="text" name="val[state]" placeholder="Enter State" class="form-control" value="<?php echo $auction['state']; ?>"/>
+					</div>
+					<div class="form-group">
+						<label><?php echo lang('auction::city') ?></label>
+						<input type="text" name="val[city]" placeholder="Enter City" class="form-control" value="<?php echo $auction['city']; ?>"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label><?php echo lang('auction::shipment-details') ?></label>
+					<textarea class="form-control" rows="12" name="val[ship_details]"><?php echo $auction['ship_details']; ?></textarea>
+				</div>
+				<div class="form-group">
+					<label><?php echo lang('auction::availability') ?></label>
+					<!--
+                    <label><strong>*</strong>Start Date</label>
+                    <input type="text" name="val[start_date]"  class="form-control" data-toggle="datepicker" value="<?php echo $auction['start_date']; ?>" />
+                    -->
+					<label><strong>*</strong><?php echo lang('auction::date-end') ?>
+					</label>
+					<input type="text" name="val[end_date]" class="form-control" data-toggle="datepicker" value="<?php echo $auction['end_date']; ?>"/>
+				</div>
+				<div class="form-group">
+					<button name="create" class="btn btn-info"><?php echo lang('auction::save') ?></button>
+					<!--<a href="" class="btn btn-success">Publish</a>-->
+					<a href="<?php echo url_to_pager('auction-details').'?id='.$id; ?>" class="btn btn-danger">Cancel</a>
+					<!--<button name="create" class="btn btn-success">Publish</button>-->
+					<!--<button name="create" class="btn btn-danger">Cancel</button>-->
+				</div>
+			<?php } ?>
+		</form>
+	</div>
+</div>

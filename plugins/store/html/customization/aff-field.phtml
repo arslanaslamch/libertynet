@@ -1,0 +1,19 @@
+<div class="form-group row">
+    <label for="productName" class="col-sm-3">
+        <?php echo  " Affiliate Link   (Optional) "; ?>
+    </label>
+    <div class="col-sm-9">
+        <input class="form-control" value="<?php echo urldecode($link); ?>" type="text" name="val[aff_link]" placeholder="https://externallink.com"/>
+    </div>
+</div>
+
+
+<div class="form-group row">
+    <label for="productName" class="col-sm-3">
+        <?php echo  "Choose Store"; ?>
+    </label>
+    <div class="col-sm-9">
+        <?php echo view("store::customization/select-store"); ?>
+    </div>
+</div>
+

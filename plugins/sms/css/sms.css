@@ -1,0 +1,67 @@
+.sms-invite .indicator{
+    display: none;
+}
+.sms-invite .indicator img{
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    display: block;
+}
+
+.sms-invite button {
+    padding: 6px 10px;
+    position: relative;
+    top: -2px;
+}
+
+.sms-container{
+    max-width: 300px;
+    margin:0px auto;
+}
+#sms-overall{
+    max-width: 400px;
+}
+.sms-container h4{
+    text-align: center;
+    font-weight: bold;
+}
+.sms-container #sms-desc {
+   text-align: center;
+    font-size: 16px;
+}
+
+#sms-form label{
+    font-weight: bold;
+}
+
+.forgotby{
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 10px 15px;
+}
+.forgotby >a {
+    display: block;
+}
+
+/** 2fa**/
+#backupModal .indicator {
+    display: none;
+    margin: 10px auto;
+}
+
+#backupModal .indicator img {
+    width: 30px;
+    margin: auto;
+    display: block;
+}
+
+.code-box{
+    border: 1px solid #ccc;
+    padding:5px;
+    display:block;
+    border-radius : 5px;
+}
+
+.code-box .each-code-b{
+    padding:5px
+}

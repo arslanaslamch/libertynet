@@ -1,0 +1,97 @@
+<div class="box-content">
+    <form action="" method="post" enctype="multipart/form-data" class="ajax-form blog-contest-add">
+        <?php CSRFProtection::embed() ?>
+        <input type="hidden" id="photo-url-sb" name="val[photo_url]" value="0" />
+        <div class="form-group">
+            <label><?php echo lang("contest::choose-photo"); ?> * </label>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div id="photos-list" class="photos-list photo-directory" data-type="all" data-offset="0"
+                             style="margin: 0px;box-shadow: 0px 0px 0px #FFFFFF;border-radius: 0px;border: none;">
+
+
+                            <div class="photo upload-photo" style="width: 100%;max-width: 150px;">
+                                <div class="local">
+
+                                        <span class="file-input"><input onchange="upload_contest_photos(this)" type="file"
+                                                                        accept="image/*" id="photo-upload-input"
+                                                                        name="photos"
+                                                                        style="position: absolute; cursor:pointer; width: 100%; height: 100%; opacity: 0; z-index: 10; display: none"/></span>
+                                        <a onclick="return file_chooser('#photo-upload-input')" href=""><i
+                                                    class="ion-ios-cloud-upload-outline"></i><span><?php echo lang('photo::click-or-drag-photo') ?></span></a>
+
+                                    <div class="indicator">
+                                        <img src="<?php echo img('images/loading.gif') ?>"/> <?php echo lang('photo::uploading') ?>
+                                        <span>0%</span>
+                                    </div>
+                                </div>
+                                <div class="remote">
+                                    <div data-toggle="modal" data-target="#photo-modal">
+                                        <i id="urlLink" class="ion-android-upload"></i><span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="contest-image-preview">
+                            <div class="contest-image-preview-wrapper"><img id="preview-image-c-entry" class="img img-responsive"
+                                                                            src="<?php echo (isset($entry['image'])) ? url_img($entry['image'],920) : ''; ?>" /></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label><?php echo lang("contest::title"); ?></label>
+            <input autocomplete="off" type="text" class="form-control" name="val[title]"
+                   value="<?php echo isset($entry['title']) ? $entry['title'] : input('title'); ?>"/>
+        </div>
+        <div class="form-group">
+            <label><?php echo lang("contest::description"); ?></label>
+            <textarea name="val[description]"
+                      class="form-control"><?php echo isset($entry['description']) ? $entry['description'] : input('description'); ?></textarea>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-info"><?php echo lang("contest::submit-entry") ?></button>
+            <?php if ($entry): ?>
+                <a href="<?php echo getEntryContestUrl($contest, $entry) . '?action=del'; ?>"
+                   class="btn btn-danger"><?php echo lang("contest::delete-entry") ?></a>
+            <?php endif; ?>
+        </div>
+    </form>
+</div>
+
+<div class="modal modal-photo" tabindex="-1" role="dialog" id="photo-modal" aria-hidden="true" aria-labelledby="photo">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-title"><?php echo lang("photo::url-image-upload") ?></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="photo-modal-error"></div>
+                <div class="indicatorUrl" style="display: none">
+                    <img src="<?php echo img('images/loading.gif') ?>"/> <?php echo lang('photo::uploading') ?>
+                    <span>0%</span>
+                </div>
+                <div class="indicatorUrlFilter" style="display: none">
+                    <?php echo lang('photo::initiating-filter') ?>
+                </div>
+                <div class="form-group">
+                    <input name="urlLink" id="urlLink" class="form-control urlLink" type="text"
+                           placeholder="<?php echo lang('photo::url-image-upload') ?>"/>
+                </div>
+                <div class="form-group">
+                    <button onclick="return uploadContestUrlImage()"
+                            class="form-control btn btn-primary" type="submit"> Upload
+                    </button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

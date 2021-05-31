@@ -1,0 +1,11 @@
+<?php if(is_loggedIn()){
+    $_SESSION['update_phone_number'] = true;
+    $_SESSION['the_user_id'] = get_userid();
+    session_put('sms_update',true);
+}
+?>
+<fieldset class="form-group" id="pn">
+    <label><?php _lang('sms::phone-number')?>: </label>
+    <input class="form-control" disabled="disabled" type="text" name="" value="<?php echo getMyPhoneNumber(); ?>"/>
+    <span class="pull-right"><a href="<?php echo url_to_pager('sms-verify')  ?>"><?php echo lang('sms::update-phone-number'); ?></a></span>
+</fieldset>

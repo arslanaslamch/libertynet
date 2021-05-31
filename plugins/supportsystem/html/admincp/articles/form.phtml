@@ -1,0 +1,46 @@
+<?php
+$default_c = (isset($article)) ? $article['category_id'] : input('category', 'all');
+$default_title = (isset($article)) ? $article['subject'] : input('title');
+$default_content = (isset($article)) ? $article['content'] : input('content');
+?>
+<form class="wrapper-form" action="" enctype="multipart/form-data" method="post">
+    <?php CSRFProtection::embed() ?>
+    <?php if($message): ?>
+        <div class="alert alert-danger"><?php echo $message ?></div>
+    <?php endif ?>
+    <input type="hidden" name="val[entity]" value="user-<?php echo get_userid() ?>" />
+    <fieldset class="form-group row">
+        <label class="control-label col-sm-4"><?php echo lang('blog::category') ?></label>
+        <select name="val[category]" class="c-select" required>
+            <?php foreach(get_ss_categories('faq') as $category): ?>
+                <?php $subCategories = get_ss_parent_categories($category['id'],'faq') ?>
+                <?php if($subCategories): ?>
+                    <optgroup label="<?php echo lang($category['title']) ?>">
+                        <?php foreach($subCategories as $cat): ?>
+                            <option <?php echo ($default_c == $cat['id']) ? 'selected' : null ?> value="<?php echo $cat['id'] ?>"><?php echo lang($cat['title']) ?></option>
+                        <?php endforeach ?>
+                    </optgroup>
+                <?php else: ?>
+                    <option <?php echo ($default_c == $category['id']) ? 'selected' : null ?> value="<?php echo $category['id'] ?>"><?php echo lang($category['title']) ?></option>
+                <?php endif ?>
+            <?php endforeach ?>
+        </select>
+    </fieldset>
+    <br/>
+    <br/>
+    <input type="hidden" name="val[entity]" value="user-<?php echo get_userid() ?>">
+    <fieldset>
+        <label class="control-label"><?php echo lang('supportsystem::article-title') ?></label>
+        <input value="<?php echo $default_title; ?>" type="text" class="form-control" name="val[title]"/>
+    </fieldset>
+
+    <br/>
+    <br/>
+    <fieldset>
+        <label class="control-label"><?php echo lang("supportsystem::content") ?></label>
+        <textarea name="val[content]" class="ckeditor"><?php echo $default_content; ?></textarea>
+    </fieldset>
+
+
+    <button class="btn btn-info" style="margin-top: 20px"><?php echo lang("blog::save") ?></button>
+</form>
